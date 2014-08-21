@@ -1,0 +1,146 @@
+表结构:
+
+用户表
+user:
+    id          用户id
+    name        真是姓名
+    email       email
+    tel         手机(固话?)
+    password    密码
+    type        类型 0:学生, 1:老师, -1:管理员
+    head        头像
+    certificate 教师证
+    regtime     注册时间
+    lastlogin   最后登陆时间
+    status      账号状态 0:生效, 1:无效
+
+用户登陆记录
+loginlog:
+    id
+    userid      用户id
+    logintime   登陆时间
+    ip          登陆ip
+    browser     浏览器信息
+
+班级
+class:
+    id          班级id
+    name        班级名称
+    creater     创建人id
+    teacherid   老师id
+    createtime  创建时间
+    memo        备注
+
+
+班级_学生_对应表
+classmate:
+    id
+    userid      学生id
+    classid     班级id
+    status      学生对应班级状态, 0:正常, 1:邀请, 2:申请
+
+
+题库
+question:
+    id
+    stem_txt    题干文字
+    stem_pic    题干图片
+    prompt      提示音
+    audio       题干音响
+    count       题干音响播放次数, 默认x次
+    interval    题干音响播放次数间隔, 默认x秒
+    example_pic 题干示例图
+    option_a    选择项A
+    option_b    选择项B
+    option_c    选择项C
+    option_d    选择项D
+    answer      答案
+    explain     详解
+    sort        试题分类
+    status      试题状态 0:发布, 1:下架, 2:待发布
+
+题型分类表
+sort:
+    id
+    name
+
+
+教材
+textbook:
+    id
+    name
+
+
+试卷
+paper:
+    id
+    userid          用户id
+    createtime      创建时间
+    teacherid       老师id(老师布置的训练会有对应老师)
+
+
+考试
+exam:
+    id
+    paperid     试卷id
+    questionid  试题id
+    value       分值
+    spendtime   答题时间
+    result      答题结果
+
+
+收藏
+favorite:
+    id
+    userid      用户id
+    questionid  试题id
+    favtime     收藏时间
+
+
+产品
+product:
+    id      产品id
+    name    产品名称
+    price   产品价格
+    addtime 添加时间
+
+
+
+用户_产品_对应表
+myproduct:
+    id
+    productid   产品id
+    purchaser   购买用户id
+    buytime     购买时间
+
+
+站内消息
+message:
+    id
+    sender      发送者
+    receiver    接受者
+    content     信息内容
+    sendtime    发送时间
+    status      是否看过 0:看过, 1:未看
+    type        信息类型 0:公共信息, 1:私信
+
+
+上传题库信息
+uploadfile:
+    id
+    filename    文件名
+    filepath    保存路径
+    uploaderid  上传者
+
+用户行为日志
+activelog
+    id
+    userid  用户id
+    url     浏览url
+    visittime   访问时间
+    visitip     访问ip
+
+
+
+
+
