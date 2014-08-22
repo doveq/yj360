@@ -77,6 +77,7 @@ paper:
     userid          用户id
     createtime      创建时间
     teacherid       老师id(老师布置的训练会有对应老师)
+    spendtime       试卷总时间
 
 
 考试
@@ -84,9 +85,12 @@ exam:
     id
     paperid     试卷id
     questionid  试题id
-    value       分值
+    val       分值
     spendtime   答题时间
-    result      答题结果
+    res      答题结果 0:错误 1:正确 2:待判断(比如录音题)
+    res_audio1  答题附加录音1
+    res_audio2  答题附加录音2
+    res_audio3  答题附加录音3
 
 
 收藏
