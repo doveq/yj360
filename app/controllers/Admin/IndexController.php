@@ -6,8 +6,8 @@ class IndexController extends \BaseController {
 
 	public function getIndex()
 	{
-		//return View::make('hello');
-		echo "后台页面";
+
+		return View::make('Admin.index');
 	}
 
 	public function test()
