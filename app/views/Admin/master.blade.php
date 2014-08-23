@@ -9,9 +9,10 @@
     <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="/assets/css/admin.css" rel="stylesheet">
+    @yield('css')
   </head>
   <body role="document">
-      <!-- Fixed navbar -->
+      @section('nav')
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -21,7 +22,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="#">音基360</a>
+            <a class="navbar-brand" href="/admin">音基360</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -44,7 +45,7 @@
           </div><!--/.nav-collapse -->
         </div>
       </div>
-
+      @show
 
       @yield('content')
 
