@@ -18,4 +18,12 @@ Route::get('/', function()
 });
 */
 
+
+// 后台管理路由组
+Route::group(array('prefix' => 'admin'), function(){
+	// 需要使用完整命名空间
+	Route::get('/test', '\Admin\IndexController@test');
+	Route::Controller('/', '\Admin\IndexController');
+});
+
 Route::Controller('/', 'IndexController');

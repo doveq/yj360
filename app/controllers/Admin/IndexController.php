@@ -1,11 +1,18 @@
 <?php
+namespace Admin;
+use View;
 
-class IndexController extends BaseController {
+class IndexController extends \BaseController {
 
 	public function getIndex()
 	{
 		//return View::make('hello');
-		echo "开始。。。";
+		echo "后台页面";
+	}
+
+	public function test()
+	{
+		echo "后台测试~";
 	}
 
 
