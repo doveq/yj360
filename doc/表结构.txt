@@ -14,6 +14,7 @@ user:
     lastlogin   最后登陆时间
     status      账号状态 0:生效, 1:无效
 
+
 用户登陆记录
 loginlog:
     id
@@ -21,6 +22,7 @@ loginlog:
     logintime   登陆时间
     ip          登陆ip
     browser     浏览器信息
+
 
 班级
 class:
@@ -58,6 +60,7 @@ question:
     explain     详解
     sort        试题分类
     status      试题状态 0:发布, 1:下架, 2:待发布
+
 
 题型分类表
 sort:
@@ -101,13 +104,23 @@ favorite:
     favtime     收藏时间
 
 
+错题记录
+wronglog:
+    id
+    userid      用户id
+    questionid  试题id
+    dotime      做题时间
+    dores       当时的答案
+    twiceres    再次做题的答案
+    status      状态 0:未删除, 1:已删除
+
+
 产品
 product:
     id      产品id
     name    产品名称
     price   产品价格
     addtime 添加时间
-
 
 
 用户_产品_对应表
@@ -135,6 +148,7 @@ uploadfile:
     filename    文件名
     filepath    保存路径
     uploaderid  上传者
+
 
 用户行为日志
 activelog
