@@ -12,7 +12,7 @@ return array(
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
     'HomeController' => $baseDir . '/app/controllers/HomeController.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
-    'IndexController' => $baseDir . '/app/controllers/index/IndexController.php',
+    'IndexController' => $baseDir . '/app/controllers/IndexController.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
     'Sql' => $baseDir . '/app/models/Sql.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',
