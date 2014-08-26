@@ -21,6 +21,14 @@ Route::get('/', function()
 
 // 后台管理路由组
 Route::group(array('prefix' => 'admin'), function(){
+	
+	// 开发使用，创建修改数据
+	Route::get('/sql', function(){
+		$sql = new Sql();
+		$sql->up();
+		echo "sql ok !";
+	});
+
 	// 需要使用完整命名空间
 	Route::get('/login', '\Admin\LoginController@index');
 	Route::Controller('/', '\Admin\IndexController');
