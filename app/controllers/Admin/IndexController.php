@@ -1,13 +1,12 @@
-<?php
-namespace Admin;
+<?php namespace Admin;
 use View;
 
 class IndexController extends \BaseController {
 
-	public function getIndex()
+	public function index()
 	{
 
-		return View::make('Admin.index');
+		return $this->adminView('index');
 	}
 
 	public function test()

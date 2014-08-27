@@ -30,8 +30,12 @@ Route::group(array('prefix' => 'admin'), function(){
 	});
 
 	// 需要使用完整命名空间
-	Route::get('/login', '\Admin\LoginController@index');
-	Route::Controller('/', '\Admin\IndexController');
+	Route::get('/login', 'LoginController@admin');
+	Route::post('/doLogin', 'LoginController@doAdminLogin');
+	Route::get('/', '\Admin\IndexController@index');
 });
 
-Route::Controller('/', 'IndexController');
+Route::get('/login', 'LoginController@index');
+Route::get('/register', 'LoginController@register');
+Route::post('/doRegister', 'LoginController@doRegister');
+Route::get('/', 'IndexController@index');

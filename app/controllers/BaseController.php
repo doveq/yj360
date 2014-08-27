@@ -1,7 +1,8 @@
 <?php
 
-class BaseController extends Controller {
-
+class BaseController extends Controller 
+{
+    
 	/**
 	 * Setup the layout used by the controller.
 	 *
@@ -15,4 +16,13 @@ class BaseController extends Controller {
 		}
 	}
 
+	protected function adminView($layout)
+	{
+		return View::make('Admin.' . $layout);
+	}
+
+	protected function indexView($layout)
+	{
+		return View::make('Index.' . $layout);
+	}
 }

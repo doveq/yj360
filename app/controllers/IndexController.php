@@ -2,7 +2,7 @@
 
 class IndexController extends BaseController {
 
-	public function getIndex()
+	public function index()
 	{
 		//return View::make('hello');
 		echo "开始。。。";

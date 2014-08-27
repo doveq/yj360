@@ -51,8 +51,9 @@
 @section('content')
     <div class="container">
 
-      <form class="form-signin" role="form">
-        <h2 class="form-signin-heading">音基360管理平台</h2>
+      <form class="form-signin" role="form" action="dologin" method="post">
+        <h2 class="form-signin-heading">音基360</h2>
+        <div class="alert alert-danger" role="alert">音基360管</div>
         <input type="email" class="form-control" placeholder="用户名" required autofocus>
         <input type="password" class="form-control" placeholder="密码" required>
         <!--
