@@ -21,14 +21,15 @@ class LoginController extends BaseController
 	}
 
 	/* 登录处理 */ 
-	public function doLogin($data)
+	public function doLogin()
 	{
 
 	}
 
 	public function doAdminLogin()
 	{
-		$result = $this->doLogin(Input::all());
+		$data = Input::all();
+
 		return $this->adminView('login');
 	}
 
@@ -40,6 +41,24 @@ class LoginController extends BaseController
 
 	public function doRegister()
 	{
-		return $this->indexView('register');
+		$data = Input::all();
+		$validator = Validator::make($data , array(
+	        'tel' => 'required|digits:13|unique:users',
+	        'password' => 'required|min:6|confirmed')
+		);
+
+		if($validator->passes())
+		{
+			$user = new User;
+			$user->add($data);
+			echo "ook";
+		}
+		else
+		{
+			return Redirect::to('register')->withErrors($validator);
+		}
 	}
+
+
+	
 }

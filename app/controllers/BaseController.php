@@ -16,13 +16,13 @@ class BaseController extends Controller
 		}
 	}
 
-	protected function adminView($layout)
+	protected function adminView($layout, $data = array())
 	{
-		return View::make('Admin.' . $layout);
+		return View::make('Admin.' . $layout, $data);
 	}
 
-	protected function indexView($layout)
+	protected function indexView($layout, $data = array())
 	{
-		return View::make('Index.' . $layout);
+		return View::make('Index.' . $layout, $data);
 	}
 }
