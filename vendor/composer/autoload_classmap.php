@@ -7,12 +7,12 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Admin\\IndexController' => $baseDir . '/app/controllers/Admin/IndexController.php',
-    'Admin\\LoginController' => $baseDir . '/app/controllers/Admin/LoginController.php',
     'BaseController' => $baseDir . '/app/controllers/BaseController.php',
     'DatabaseSeeder' => $baseDir . '/app/database/seeds/DatabaseSeeder.php',
     'HomeController' => $baseDir . '/app/controllers/HomeController.php',
     'IlluminateQueueClosure' => $vendorDir . '/laravel/framework/src/Illuminate/Queue/IlluminateQueueClosure.php',
     'IndexController' => $baseDir . '/app/controllers/IndexController.php',
+    'LoginController' => $baseDir . '/app/controllers/LoginController.php',
     'SessionHandlerInterface' => $vendorDir . '/symfony/http-foundation/Symfony/Component/HttpFoundation/Resources/stubs/SessionHandlerInterface.php',
     'Sql' => $baseDir . '/app/models/Sql.php',
     'TestCase' => $baseDir . '/app/tests/TestCase.php',
