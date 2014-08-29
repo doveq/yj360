@@ -7,7 +7,6 @@
     <title>@yield('title', '后台管理')</title>
 
     <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
     <link href="/assets/css/admin.css" rel="stylesheet">
     @yield('css')
   </head>
@@ -27,7 +26,7 @@
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <li class="active"><a href="#">Home</a></li>
-              <li><a href="#about">About</a></li>
+              <li><a href="/admin/userList">用户管理</a></li>
               <li><a href="#contact">Contact</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
@@ -42,6 +41,12 @@
                 </ul>
               </li>
             </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#{{Session::get('uid')}}">{{Session::get('uname')}}</a></li>
+                <li><a href="/logout">退出</a></li>
+            </ul>
+
           </div><!--/.nav-collapse -->
         </div>
       </div>

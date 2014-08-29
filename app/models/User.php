@@ -62,10 +62,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	/* 添加用户 */
 	public function add($data)
 	{
-		$this->name = $data['name'];
-		$this->tel = $data['tel'];
-		$this->password = $this->encPasswd($data['password']);
-		$this->save();
+		$user = new User();
+		$user->name = $data['name'];
+		$user->tel = $data['tel'];
+		$user->password = $this->encPasswd($data['password']);
+		$user->save();
 	}
 
 	/* 加密用户密码 */
@@ -75,5 +76,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	}
 
 
+	/* 用户列表 */
+	public function getList($data = array())
+	{
+		$users = User::all();
+		return $users;
+	}
 
+	/* 单个用户信息 */
+	public function getInfo($data)
+	{
+		
+	}
 }

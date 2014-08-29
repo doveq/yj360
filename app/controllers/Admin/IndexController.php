@@ -1,11 +1,13 @@
 <?php namespace Admin;
 use View;
+use Session;
+use Auth;
 
 class IndexController extends \BaseController {
 
 	public function index()
 	{
-
+		print_r( Auth::user() );
 		return $this->adminView('index');
 	}
 

@@ -29,7 +29,11 @@ class LoginController extends BaseController
 		if(Auth::attempt( array('name' => $data['name'], 'password' => $data['password'], 'status' => 1)))
 		{
 			//login(UserInterface $user, bool $remember = false);
-			Auth::login( Auth::user() );
+			$user = Auth::user();
+			Auth::login( $user );
+			Session::put('uid', $user->id);
+			Session::put('uname', $user->name);
+
 			echo "登录成功~";
     		//return Redirect::to('/');
 		}
@@ -43,7 +47,10 @@ class LoginController extends BaseController
 		if(Auth::attempt( array('name' => $data['name'], 'password' => $data['password'], 'type' => -1, 'status' => 1)))
 		{
 			//login(UserInterface $user, bool $remember = false);
-			Auth::login( Auth::user() );
+			$user = Auth::user();
+			Auth::login( $user );
+			Session::put('uid', $user->id);
+			Session::put('uname', $user->name);
 
     		return Redirect::to('admin');
 		}

@@ -36,6 +36,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	});
 	
 	Route::get('/', '\Admin\IndexController@index');
+	Route::get('/userList', '\Admin\UserController@showList');
 });
 
 

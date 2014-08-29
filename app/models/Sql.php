@@ -19,7 +19,7 @@ class Sql
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '注册时间',
 			  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '最后登录时间',
 			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '账号状态 0:无效, 1:生效',
-			  `remember_token` varchar(255) NOT NULL DEFAULT '',
+			  `remember_token` varchar(100) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`),
 			  KEY `tel` (`tel`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
