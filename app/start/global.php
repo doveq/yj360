@@ -17,7 +17,6 @@ ClassLoader::addDirectories(array(
 	app_path().'/controllers',
 	app_path().'/models',
 	app_path().'/database/seeds',
-	app_path().'/libraries',
 ));
 
 /*
@@ -79,10 +78,3 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
-
-/* 自定义 */
-Auth::extend('QlEloquent', function($app)
-{
-    $provider = new \Auth\QlEloquentUserProvider('User');
-    return $provider;
-});

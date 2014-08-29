@@ -10,6 +10,7 @@
         @foreach($errors->all() as $message)
             <p>{{ $message }}</p>
         @endforeach
+        <p><input type="text" name="name" value="" placeholder="用户名" ></p>
         <p><input type="text" name="tel" value="" placeholder="手机号" ></p>
         <p><input type="text" name="verify" value="" placeholder="验证码" ></p>
         <p><input type="password" name="password" value="" class="form-control" placeholder="密码" ></p>

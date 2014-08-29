@@ -87,6 +87,13 @@ return array(
 			'rule-name' => 'custom-message',
 		),
 
+		'name' => array(
+			'required' => '用户名必须填写.',
+			'alpha_dash' => '必须全部由字母、数字、中划线或下划线字符构成.',
+			'unique' => '用户名已经使用.',
+			'between' => '用户名必须是:min - :max位.',
+		),
+
 		'tel' => array(
 			'required' => '手机号码必须填写.',
 			'digits' => '手机号码错误.',

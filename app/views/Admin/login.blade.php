@@ -51,11 +51,13 @@
 @section('content')
     <div class="container">
 
-      <form class="form-signin" role="form" action="dologin" method="post">
+      <form class="form-signin" role="form" action="doLogin" method="post">
         <h2 class="form-signin-heading">音基360</h2>
-        <div class="alert alert-danger" role="alert">音基360管</div>
-        <input type="name" class="form-control" placeholder="用户名" required autofocus>
-        <input type="password" class="form-control" placeholder="密码" required>
+        @if($message)
+        <div class="alert alert-danger" role="alert">{{$message}}</div>
+        @endif
+        <input type="text" name="name" class="form-control" placeholder="用户名" required autofocus>
+        <input type="password" name ="password" class="form-control" placeholder="密码" required>
         <!--
         <div class="checkbox">
           <label>

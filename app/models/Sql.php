@@ -19,11 +19,18 @@ class Sql
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '注册时间',
 			  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '最后登录时间',
 			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '账号状态 0:无效, 1:生效',
+			  `remember_token` varchar(255) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`),
 			  KEY `tel` (`tel`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 		";
 		DB::statement($userTable);
+
+		$userData = "
+			INSERT INTO `users` (`id`, `name`, `email`, `tel`, `password`, `type`, `is_avatar`, `is_certificate`, `created_at`, `updated_at`, `status`) VALUES
+			(1, 'admin', '', '0000000000000', '5f1d7a84db00d2fce00b31a7fc73224f', -1, 0, 0, '2014-08-28 19:01:10', '2014-08-28 19:01:10', 1);
+		";
+		DB::statement($userData);
 
 	}
 

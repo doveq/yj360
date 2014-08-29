@@ -11,31 +11,38 @@
 |
 */
 
-/*
-Route::get('/', function()
+
+// 后台登录认证
+Route::filter('adminLogin', function()
 {
-	return View::make('hello');
+    if( !Auth::check() || Auth::user()->type != -1 || Auth::user()->status != 1 )
+    {
+        return Redirect::to('/admin/login');
+    }
 });
-*/
 
+// 后台未登录可以访问页面
+Route::get('/admin/login', 'LoginController@admin');
+Route::post('/admin/doLogin', 'LoginController@doAdminLogin');
 
-// 后台管理路由组
-Route::group(array('prefix' => 'admin'), function(){
-	
-	// 开发使用，创建修改数据
+// 后台管理路由组,需要后台登录认证
+Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
+
+	// 开发使用，创建修改数据库
 	Route::get('/sql', function(){
 		$sql = new Sql();
 		$sql->up();
 		echo "sql ok !";
 	});
-
-	// 需要使用完整命名空间
-	Route::get('/login', 'LoginController@admin');
-	Route::post('/doLogin', 'LoginController@doAdminLogin');
+	
 	Route::get('/', '\Admin\IndexController@index');
 });
 
-Route::get('/login', 'LoginController@index');
+
+// 前台路由
 Route::get('/register', 'LoginController@register');
 Route::post('/doRegister', 'LoginController@doRegister');
+Route::get('/login', 'LoginController@index');
+Route::post('/doLogin', 'LoginController@doLogin');
+Route::get('/logout', 'LoginController@logout');
 Route::get('/', 'IndexController@index');

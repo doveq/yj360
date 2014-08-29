@@ -5,32 +5,50 @@ class LoginController extends BaseController
 
 	public function __construct()
     {
-    	$this->beforeFilter('csrf', array('on' => 'post'));
+    	//$this->beforeFilter('csrf', array('on' => 'post'));
     }
 
 	/*  后台登录 */
 	public function admin()
 	{
-		return $this->adminView('login');
+		$data['message'] = Session::get('message');
+		return $this->adminView('login', $data);
 	}
 
 	/* 前台登录 */
 	public function index()
 	{
-
+		$data['message'] = Session::get('message');
+		return $this->indexView('login', $data);
 	}
 
 	/* 登录处理 */ 
 	public function doLogin()
 	{
-
+		$data = Input::all();
+		if(Auth::attempt( array('name' => $data['name'], 'password' => $data['password'], 'status' => 1)))
+		{
+			//login(UserInterface $user, bool $remember = false);
+			Auth::login( Auth::user() );
+			echo "登录成功~";
+    		//return Redirect::to('/');
+		}
+		else
+			return Redirect::to('login')->with('message', '登录失败');
 	}
 
 	public function doAdminLogin()
 	{
 		$data = Input::all();
+		if(Auth::attempt( array('name' => $data['name'], 'password' => $data['password'], 'type' => -1, 'status' => 1)))
+		{
+			//login(UserInterface $user, bool $remember = false);
+			Auth::login( Auth::user() );
 
-		return $this->adminView('login');
+    		return Redirect::to('admin');
+		}
+		else
+			return Redirect::to('admin/login')->with('message', '登录失败');
 	}
 
 	/* 用户注册 */
@@ -43,6 +61,7 @@ class LoginController extends BaseController
 	{
 		$data = Input::all();
 		$validator = Validator::make($data , array(
+			'name' => 'required|alpha_dash|between:4,12|unique:users',
 	        'tel' => 'required|digits:13|unique:users',
 	        'password' => 'required|min:6|confirmed')
 		);
@@ -60,5 +79,10 @@ class LoginController extends BaseController
 	}
 
 
-	
+	/* 退出 */
+	public function logout()
+	{
+		Auth::logout();
+		return Redirect::to('/');
+	}
 }

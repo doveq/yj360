@@ -31,7 +31,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	public function getAuthIdentifier()
 	{
-		return $tihs->getKey();
+		return $this->getKey();
 	}
 
 	/**
@@ -41,12 +41,28 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	 */
 	public function getAuthPassword()
 	{
-		return $tihs->password;
+		return $this->password;
 	}
+
+	// public function getRememberToken()
+	// {
+	//     return $this->remember_token;
+	// }
+
+	// public function setRememberToken($value)
+	// {
+	//     $this->remember_token = $value;
+	// }
+
+	// public function getRememberTokenName()
+	// {
+	//     return 'remember_token';
+	// }
 
 	/* 添加用户 */
 	public function add($data)
 	{
+		$this->name = $data['name'];
 		$this->tel = $data['tel'];
 		$this->password = $this->encPasswd($data['password']);
 		$this->save();
@@ -57,5 +73,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	{
 		return md5(md5($password) . $password);
 	}
+
+
 
 }
