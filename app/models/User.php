@@ -79,13 +79,58 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	/* 用户列表 */
 	public function getList($data = array())
 	{
-		$users = User::all();
-		return $users;
+		$whereArr = array();
+		$valueArr = array();
+		if( $data['name'] )
+		{
+			$whereArr[] = " `name` like ? ";
+			$valueArr[] = '%'. $data['name'] .'%';
+		}
+
+		if( is_numeric($data['tel']) )
+		{
+			$whereArr[] = " `tel` = ? ";
+			$valueArr[] = $data['tel'];
+		}
+
+		if( is_numeric($data['type']) )
+		{
+			$whereArr[] = " `type` = ? ";
+			$valueArr[] = $data['type'];
+		}
+
+		if( is_numeric($data['status']) )
+		{
+			$whereArr[] = " `status` = ? ";
+			$valueArr[] = $data['status'];
+		}
+
+		$where = '';
+		if($whereArr)
+			$where = ' where ' . implode(' and ', $whereArr);
+
+		$sql = "select * from {$this->table} {$where} order by id desc";
+		$results = DB::select($sql, $valueArr);
+		#print_r(DB::getQueryLog());
+
+		foreach($results as &$item)
+		{
+			$item = (array)$item;
+		}
+		
+		return $results;
 	}
 
-	/* 单个用户信息 */
-	public function getInfo($data)
+	/* 查找单个用户信息 */
+	public function getInfoById($id)
 	{
-		
+		return User::find($id)->toArray();
+	}
+
+	/* 跟新用户信息 */
+	public function setInfo($id, $data)
+	{ 
+		$affectedRows = User::where('id', '=', $id)->update($data);
+		return $affectedRows;
 	}
 }
