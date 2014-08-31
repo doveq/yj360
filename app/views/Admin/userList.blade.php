@@ -8,12 +8,12 @@
     		<form class="form-inline" role="form">
 			  <div class="form-group">
 			    <label class="sr-only" for="inputName">用户名</label>
-			    <input type="text" name="name" value="{{$query['name'] or ''}}" class="form-control" id="inputName" placeholder="用户名">
+			    <input type="text" name="name" value="{{$query['name']}}" class="form-control" id="inputName" placeholder="用户名">
 			  </div>
 
 			  <div class="form-group">
 			    <label class="sr-only" for="inputTel">手机号</label>
-			    <input type="text" name="tel" value="{{$query['tel'] or ''}}" class="form-control" id="inputTel" placeholder="手机号">
+			    <input type="text" name="tel" value="{{$query['tel']}}" class="form-control" id="inputTel" placeholder="手机号">
 			  </div>
 
 			  <div class="form-group">
@@ -66,6 +66,10 @@
 		      </tbody>
 		    </table>
 
+      	</div>
+
+      	<div class="row text-right">
+      		{{$paginator->links()}}
       	</div>
    	</div>
 @stop

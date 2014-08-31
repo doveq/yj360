@@ -105,32 +105,52 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 			$valueArr[] = $data['status'];
 		}
 
+		$limit = "";
+		if( is_numeric($data['page']) && is_numeric($data['pageSize']) )
+		{
+			$num = $data['pageSize'] * ($data['page'] -1);
+			$limit = " limit {$num},{$data['pageSize']} ";
+		}
+
 		$where = '';
 		if($whereArr)
 			$where = ' where ' . implode(' and ', $whereArr);
 
-		$sql = "select * from {$this->table} {$where} order by id desc";
+		$sql = "select * from {$this->table} {$where} order by id desc {$limit} ";
 		$results = DB::select($sql, $valueArr);
 		#print_r(DB::getQueryLog());
+
+		// 获取总数分页使用
+		$sql = "select count(*) as num from {$this->table} {$where}";
+		$re2 = DB::select($sql, $valueArr);
+		$count = $re2[0]->num;
 
 		foreach($results as &$item)
 		{
 			$item = (array)$item;
 		}
 		
-		return $results;
+		return array('data' => $results, 'total' => $count);
 	}
 
 	/* 查找单个用户信息 */
 	public function getInfoById($id)
 	{
-		return User::find($id)->toArray();
+		$re = DB::table($this->table)->where('id', $id)->get();
+		return (array)$re[0];
 	}
 
 	/* 跟新用户信息 */
 	public function setInfo($id, $data)
-	{ 
-		$affectedRows = User::where('id', '=', $id)->update($data);
-		return $affectedRows;
+	{
+		DB::table($this->table)
+            ->where('id', $id)
+           	->update($data);
 	}
+
+	public function del($id)
+	{
+		DB::table($this->table)->where('id', $id)->delete();
+	}
+
 }

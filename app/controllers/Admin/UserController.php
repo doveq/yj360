@@ -4,6 +4,7 @@ use Session;
 use User;
 use Validator;
 use Input;
+use Paginator;
 
 class UserController extends \BaseController {
 
@@ -12,8 +13,15 @@ class UserController extends \BaseController {
 
 	public function showList()
 	{
-		$query = Input::only('name', 'tel', 'type', 'status');
+		$pageSize = 2;  // 每页显示条数
+
+		$query = Input::only('name', 'tel', 'type', 'status', 'page');
+		$query['pageSize'] = $pageSize;
 		//$query = array_filter($query); // 删除空值
+
+		// 当前页数
+		if( !is_numeric($query['page']) || $query['page'] < 1 )
+			$query['page'] = 1;
 
 		$validator = Validator::make($query, 
 			array('name' => 'alpha_dash',
@@ -28,8 +36,21 @@ class UserController extends \BaseController {
     	}
 
 		$user = new User();
-		$data = $user->getList($query);
-		return $this->adminView('userList', array('list' => $data, 'typeEnum' => $this->typeEnum, 'statusEnum' => $this->statusEnum, 'query' => $query ));
+		$info = $user->getList($query);
+		
+
+		// 分页
+		$paginator = Paginator::make($info['data'], $info['total'], $pageSize);
+		unset($query['pageSize']); // 减少分页url无用参数
+		$paginator->appends($query);  // 设置分页url参数
+
+		$p = array('list' => $info['data'], 
+			'typeEnum' => $this->typeEnum, 
+			'statusEnum' => $this->statusEnum, 
+			'query' => $query,
+			'paginator' => $paginator );
+
+		return $this->adminView('userList', $p);
 	}
 
 	public function showEdit($id)
@@ -70,7 +91,18 @@ class UserController extends \BaseController {
 
 	public function doDel()
 	{
+		$data = Input::all();
+		$validator = Validator::make($data , array('id' => 'required|integer') );
 
+		if($validator->fails())
+    	{
+        	dd( $validator->messages()->all() );
+    	}
+
+    	$user = new User();
+    	$user->del($data['id']);
+
+    	echo "删除成功！";
 	}
 
 }
