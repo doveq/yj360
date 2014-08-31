@@ -62,11 +62,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	/* 添加用户 */
 	public function add($data)
 	{
-		$user = new User();
-		$user->name = $data['name'];
-		$user->tel = $data['tel'];
-		$user->password = $this->encPasswd($data['password']);
-		$user->save();
+		$id = DB::table('users')->insertGetId(
+    		array('name' =>  $data['name'], 
+    			   'tel' => $data['tel'],
+    			   'password' => $this->encPasswd($data['password']),
+    			   )
+    	);
+
+    	return $id;
 	}
 
 	/* 加密用户密码 */
