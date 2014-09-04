@@ -9,7 +9,8 @@ class Upload
 
 	/* 上传录音文件 
 		$file 上传文件
-		$saveName 保存文件名
+		$uid  用户id
+		$tid  题目id
 		$type 文件类型
 
 		return -1 文件保存路径错误
@@ -17,17 +18,17 @@ class Upload
 		        0 失败
 		        1 成功
 	*/
-	public function recorder($file, $saveName, $type = 'wav')
+	public function recorder($file, $uid, $tid, $type = 'wav')
 	{
-		$save_folder = Config::get('app.recorder_dir');
+		$saveFolder = Config::get('app.recorder_dir') .'/'. $uid;
 
-		if(! file_exists($save_folder)) 
+		if( !file_exists($saveFolder) ) 
 		{
-		  if(! mkdir($save_folder))
+		  if( !mkdir($saveFolder, 0777, true) )
 		  	  return -1;
 		}
 
-		$filename = "{$save_folder}/{$saveName}.{$type}";
+		$filename = "{$saveFolder}/{$tid}.{$type}";
 		$saved = 0;
 		if($type == 'wav' && $this->validWavFile($file)) {
 		  	$saved = move_uploaded_file($file, $filename) ? 1 : 0;

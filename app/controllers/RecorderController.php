@@ -22,7 +22,10 @@ class RecorderController extends BaseController
 	{
 		$upload = new Upload();
 		#Log::info( var_export($_FILES, true) );
-		$saved = $upload->recorder($_FILES["upload_file"]["tmp_name"]['filename'], 'testname');
+
+		$tid = 999;  // 所属题目id
+		$uid = Session::get('uid');
+		$saved = $upload->recorder($_FILES["upload_file"]["tmp_name"]['filename'], $uid, $tid);
 
 		if($_POST['format'] == 'json') {
 		  header('Content-type: application/json');
