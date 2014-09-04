@@ -191,4 +191,7 @@ return array(
 
 	),
 
+	
+	/* 上传录音文件保存目录 */
+	'recorder_dir' => storage_path().'/recorder',
 );

@@ -15,7 +15,7 @@
       @yield('content')
 
     
-      <script src="/assets/jquery/jquery-1.11.1.min.js"></script>
+      <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
       @yield('js')
   </body>
 </html>

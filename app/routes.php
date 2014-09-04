@@ -44,6 +44,9 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 
 
 // 前台路由
+Route::get('/recorder', 'RecorderController@index');  // flash录音
+Route::post('/recorder/upload', 'RecorderController@upload');  // flash录音
+
 Route::get('/register', 'LoginController@register');
 Route::post('/doRegister', 'LoginController@doRegister');
 Route::get('/login', 'LoginController@index');
