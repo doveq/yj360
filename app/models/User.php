@@ -62,12 +62,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	/* 添加用户 */
 	public function add($data)
 	{
-		$id = DB::table('users')->insertGetId(
-    		array('name' =>  $data['name'], 
-    			   'tel' => $data['tel'],
-    			   'password' => $this->encPasswd($data['password']),
-    			   )
-    	);
+		$id = DB::table($this->table)->insertGetId(array(
+				'name' =>  $data['name'], 
+    			'tel' => $data['tel'],
+    			'password' => $this->encPasswd($data['password']),
+    		));
 
     	return $id;
 	}
@@ -146,9 +145,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	/* 跟新用户信息 */
 	public function setInfo($id, $data)
 	{
-		DB::table($this->table)
-            ->where('id', $id)
-           	->update($data);
+		DB::table($this->table)->where('id', $id)->update($data);
 	}
 
 	public function del($id)

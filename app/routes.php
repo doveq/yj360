@@ -33,7 +33,7 @@ Route::filter('indexLogin', function()
 
 
 // 开发使用，创建修改数据库
-Route::get('/sql', function(){
+Route::get('/admin/sql', function(){
 	$sql = new Sql();
 	$sql->up();
 	echo "sql ok !";

@@ -25,7 +25,7 @@ class RecorderController extends BaseController
 
 		$tid = 999;  // 所属题目id
 		$uid = Session::get('uid');
-		$saved = $upload->recorder($_FILES["upload_file"]["tmp_name"]['filename'], $uid, $tid);
+		$saved = $upload->setRecorder($_FILES["upload_file"]["tmp_name"]['filename'], $uid, $tid);
 
 		if($_POST['format'] == 'json') {
 		  header('Content-type: application/json');
