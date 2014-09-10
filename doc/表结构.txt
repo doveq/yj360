@@ -19,7 +19,7 @@ user:
 loginlog:
     id
     userid      用户id
-    logintime   登陆时间
+    login_at    登陆时间
     ip          登陆ip
     browser     浏览器信息
 
@@ -30,7 +30,7 @@ class:
     name        班级名称
     creater     创建人id
     teacherid   老师id
-    createtime  创建时间
+    created_at  创建时间
     memo        备注
 
 
@@ -78,7 +78,7 @@ textbook:
 paper:
     id
     userid          用户id
-    createtime      创建时间
+    create_at       创建时间
     teacherid       老师id(老师布置的训练会有对应老师)
     spendtime       试卷总时间
 
@@ -117,10 +117,15 @@ wronglog:
 
 产品
 product:
-    id      产品id
-    name    产品名称
-    price   产品价格
-    addtime 添加时间
+    id              产品id
+    name            产品名称
+    description     产品描述
+    thumbnail       产品缩略图
+    price           产品价格
+    valid_period    产品有效期
+    created_at      添加时间
+    status          状态 -1:下线, 1:上线, 0:待发布
+    policy          策略
 
 
 用户_产品_对应表
@@ -128,7 +133,8 @@ myproduct:
     id
     productid   产品id
     purchaser   购买用户id
-    buytime     购买时间
+    buy_at      购买时间
+    deadline    有效期
 
 
 站内消息
@@ -137,7 +143,7 @@ message:
     sender      发送者
     receiver    接受者
     content     信息内容
-    sendtime    发送时间
+    send_at    发送时间
     status      是否看过 0:看过, 1:未看
     type        信息类型 0:公共信息, 1:私信
 
@@ -148,6 +154,7 @@ uploadfile:
     filename    文件名
     filepath    保存路径
     uploaderid  上传者
+    upload_at  上传时间
 
 
 用户行为日志
@@ -157,6 +164,30 @@ activelog
     url     浏览url
     visittime   访问时间
     visitip     访问ip
+
+科目
+subject
+    id
+    name            科目名称
+    description     科目描述
+    online_at       上线时间
+    created_at      创建时间
+    status          状态 0:准备,1:发布, -1:下线
+
+科目功能项
+subject_item
+    id      项目id
+    name    项目名称
+
+教材
+textbook
+    id      教材id
+    name    教材名称
+    thumbnail   缩略图
+    created_at  创建时间
+    description 教材描述
+
+
 
 
 
