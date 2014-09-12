@@ -74,7 +74,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li>欢迎您,<a href="#{{Session::get('uid')}}">{{Session::get('uname')}}</a></li>
+                <li><a href="#{{Session::get('uid')}}">欢迎您,{{Session::get('uname')}}</a></li>
                 <li><a href="/logout">退出</a></li>
             </ul>
 
