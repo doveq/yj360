@@ -32,7 +32,8 @@ class UserController extends \BaseController {
 
 		if($validator->fails())
     	{
-        	dd( $validator->messages()->all() );
+        	#dd( $validator->messages()->all() );
+        	return $this->adminPrompt("用户查找失败", $validator->messages()->first(), $url = "userList");
     	}
 
 		$user = new User();
@@ -61,7 +62,8 @@ class UserController extends \BaseController {
 
 		if($validator->fails())
     	{
-        	dd( $validator->messages()->all() );
+        	#dd( $validator->messages()->all() );
+        	return $this->adminPrompt("用户查找失败", $validator->messages()->first(), $url = "userList");
     	}
 
     	$user = new User();
@@ -96,13 +98,14 @@ class UserController extends \BaseController {
 
 		if($validator->fails())
     	{
-        	dd( $validator->messages()->all() );
+        	#dd( $validator->messages()->all() );
+        	return $this->adminPrompt("用户删除失败", $validator->messages()->first(), $url = "userList");
     	}
 
     	$user = new User();
     	$user->del($data['id']);
 
-    	echo "删除成功！";
+    	return $this->adminPrompt("操做成功", "用户删除成功!", $url = "userList");
 	}
 
 }

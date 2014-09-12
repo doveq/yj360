@@ -42,6 +42,8 @@ Route::get('/admin/sql', function(){
 // 后台未登录可以访问页面
 Route::get('/admin/login', 'LoginController@admin');
 Route::post('/admin/doLogin', 'LoginController@doAdminLogin');
+Route::get('/admin/prompt', '\Admin\PromptController@index');
+Route::get('/admin/prompt/test', '\Admin\PromptController@test');
 
 // 后台管理路由组,需要后台登录认证
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
