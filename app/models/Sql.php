@@ -45,7 +45,7 @@ class Sql
 			  `file_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '文件类型，1:mav, 2:mp3, 3:flv, 4:img',
 			  PRIMARY KEY (`id`),
 			  KEY `uid` (`uid`),
-			  KEY `tid` (`tid`)
+			  KEY `qid` (`qid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 		";
 		DB::statement($table);
@@ -79,7 +79,7 @@ class Sql
 			  `video` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答案视频',
 			  `is_right` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0:错误答案, 1:正确答案',
 			  PRIMARY KEY (`id`),
-			  KEY `uid` (`qid`)
+			  KEY `qid` (`qid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 		";
 		DB::statement($table);
