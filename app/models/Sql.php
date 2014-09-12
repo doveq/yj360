@@ -70,7 +70,7 @@ class Sql
 
 		DB::statement('drop table if exists `answers`');
 		$table = "
-			CREATE TABLE IF NOT EXISTS `questions` (
+			CREATE TABLE IF NOT EXISTS `answers` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `qid` int(11) unsigned NOT NULL COMMENT '题目id',
 			  `txt` varchar(255) NOT NULL DEFAULT '' COMMENT '答案文字',
