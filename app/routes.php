@@ -50,6 +50,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	Route::get('/userEdit/{id}', '\Admin\UserController@showEdit');
 	Route::post('/doUserEdit', '\Admin\UserController@doEdit');
 	Route::post('/doUserDel', '\Admin\UserController@doDel');
+    Route::get('/subjectList', '\Admin\SubjectController@showList');
 });
 
 
@@ -63,6 +64,6 @@ Route::get('/', 'IndexController@index');
 
 Route::group(array('before' => 'indexLogin'), function(){
 	// flash录音
-	Route::get('/recorder', 'RecorderController@index');  
+	Route::get('/recorder', 'RecorderController@index');
 	Route::post('/recorder/upload', 'RecorderController@upload');
 });
