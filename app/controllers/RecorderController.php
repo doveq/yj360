@@ -20,12 +20,12 @@ class RecorderController extends BaseController
 	/* 上传录音数据 */
 	public function upload()
 	{
-		$upload = new Upload();
+		$att = new Attachments();
 		#Log::info( var_export($_FILES, true) );
 
-		$tid = 999;  // 所属题目id
+		$qid = 999;  // 所属题目id
 		$uid = Session::get('uid');
-		$saved = $upload->setRecorder($_FILES["upload_file"]["tmp_name"]['filename'], $uid, $tid);
+		$saved = $att->setRecorder($_FILES["upload_file"]["tmp_name"]['filename'], $uid, $qid);
 
 		if($_POST['format'] == 'json') {
 		  header('Content-type: application/json');

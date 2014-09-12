@@ -18,7 +18,7 @@ class Sql
 			  `is_certificate` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否有教师证，0:没有,1:有',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '注册时间',
 			  `updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '最后登录时间',
-			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '账号状态 0:无效, 1:生效',
+			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '账号状态 0:未审核, 1:审核通过，-1:审核拒绝',
 			  `remember_token` varchar(100) NOT NULL DEFAULT '',
 			  PRIMARY KEY (`id`),
 			  KEY `tel` (`tel`)
@@ -33,19 +33,53 @@ class Sql
 		DB::statement($sql);
 
 
-		DB::statement('drop table if exists `uploads`');
+		DB::statement('drop table if exists `attachments`');
 		$table = "
-			CREATE TABLE IF NOT EXISTS `uploads` (
+			CREATE TABLE IF NOT EXISTS `attachments` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属用户id',
-			  `tid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属题目id',
-			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '上传类型，1:用户录音上传',
+			  `qid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属题目id',
+			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型，1:用户录音上传，2:题干附件，3:答案附件',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `file_name` varchar(100) NOT NULL DEFAULT '' COMMENT '文件名',
 			  `file_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '文件类型，1:mav, 2:mp3, 3:flv, 4:img',
 			  PRIMARY KEY (`id`),
 			  KEY `uid` (`uid`),
 			  KEY `tid` (`tid`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+		";
+		DB::statement($table);
+
+		DB::statement('drop table if exists `questions`');
+		$table = "
+			CREATE TABLE IF NOT EXISTS `questions` (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `txt` varchar(255) NOT NULL DEFAULT '' COMMENT '题干文字',
+			  `sound` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干配音',
+			  `img` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干图片',
+			  `video` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干视频',
+			  `disabuse` text NOT NULL DEFAULT '' COMMENT '题目解答',
+			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
+			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '题目类型',
+			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 0:未审核, 1:审核通过，-1:审核拒绝',
+			  PRIMARY KEY (`id`),
+			  KEY `type` (`type`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+		";
+		DB::statement($table);
+
+		DB::statement('drop table if exists `answers`');
+		$table = "
+			CREATE TABLE IF NOT EXISTS `questions` (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `qid` int(11) unsigned NOT NULL COMMENT '题目id',
+			  `txt` varchar(255) NOT NULL DEFAULT '' COMMENT '答案文字',
+			  `sound` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答案配音',
+			  `img` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答案图片',
+			  `video` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答案视频',
+			  `is_right` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0:错误答案, 1:正确答案',
+			  PRIMARY KEY (`id`),
+			  KEY `uid` (`qid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 		";
 		DB::statement($table);
