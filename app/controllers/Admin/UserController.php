@@ -6,7 +6,7 @@ use Validator;
 use Input;
 use Paginator;
 
-class SubjectController extends \BaseController {
+class UserController extends \BaseController {
 
 	public $typeEnum = array('-1' => '管理员', '0' => '学生', '1' => '老师');
 	public $statusEnum = array('0' => '未审核', '1' => '审核通过', '-1' => '审核拒绝');
