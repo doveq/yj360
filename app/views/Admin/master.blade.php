@@ -21,19 +21,50 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/admin">音基360</a>
+            <a class="navbar-brand" href="/admin">音基360 管理系统</a>
           </div>
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-              <li class="active"><a href="#">Home</a></li>
+              <!-- <li class="active"><a href="#">Home</a></li> -->
               <li><a href="/admin/userList">用户管理</a></li>
-              <li><a href="#contact">Contact</a></li>
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
+                  <li><a href="/admin/subjectList">浏览科目</a></li>
+                  <li><a href="/admin/subjectAdd">添加科目</a></li>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">题库管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">基础测试题库</a></li>
+                  <li><a href="#">基础教材强化库</a></li>
+                  <li><a href="#">基础难点解答</a></li>
+                  <li><a href="#">真题题库</a></li>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">教材管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">浏览教材</a></li>
+                  <li><a href="#">添加教材</a></li>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">产品管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">浏览产品</a></li>
+                  <li><a href="#">添加产品</a></li>
+                </ul>
+              </li>
+
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">其他 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">科目功能项</a></li>
                   <li class="divider"></li>
                   <li class="dropdown-header">Nav header</li>
                   <li><a href="#">Separated link</a></li>
@@ -43,7 +74,7 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#{{Session::get('uid')}}">{{Session::get('uname')}}</a></li>
+                <li>欢迎您,<a href="#{{Session::get('uid')}}">{{Session::get('uname')}}</a></li>
                 <li><a href="/logout">退出</a></li>
             </ul>
 
@@ -54,7 +85,7 @@
 
       @yield('content')
 
-    
+
       <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
       <script src="/assets/jquery/jquery-1.11.1.min.js"></script>
       <!-- Include all compiled plugins (below), or include individual files as needed -->
