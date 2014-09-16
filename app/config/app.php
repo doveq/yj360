@@ -39,7 +39,8 @@ return array(
 	|
 	*/
 
-	'timezone' => 'UTC',
+	// 'timezone' => 'UTC',
+	'timezone' => 'Asia/Shanghai',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -191,7 +192,7 @@ return array(
 
 	),
 
-	
+
 	/* 上传录音文件保存目录 */
 	'recorder_dir' => public_path().'/data/recorder',
 	'recorder_url' => '/data/recorder',

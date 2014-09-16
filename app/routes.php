@@ -52,8 +52,12 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	Route::get('/userEdit/{id}', '\Admin\UserController@showEdit');
 	Route::post('/doUserEdit', '\Admin\UserController@doEdit');
 	Route::post('/doUserDel', '\Admin\UserController@doDel');
+
     Route::get('/subjectList', '\Admin\SubjectController@showList');
     Route::get('/subjectAdd', '\Admin\SubjectController@showAdd');
+    Route::get('/subjectEdit/{id}', '\Admin\SubjectController@showEdit');
+    Route::post('/doSubjectAdd', '\Admin\SubjectController@doAdd');
+    Route::post('/doSubjectEdit', '\Admin\SubjectController@doEdit');
 });
 
 

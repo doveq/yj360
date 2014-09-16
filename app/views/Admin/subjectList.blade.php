@@ -25,11 +25,6 @@
         </div>
 
         <div class="form-group">
-          <label class="sr-only" for="inputOnlineat">科目描述</label>
-          <input type="text" name="online_at" value="{{$query['online_at']}}" class="form-control" id="inputOnlineat" placeholder="上线时间">
-        </div>
-
-        <div class="form-group">
           <label class="sr-only" for="inputStatus">状态</label>
           <select class="form-control" name="status" id="inputStatus">
               <option value="" >所有状态</option>
@@ -39,7 +34,7 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-success">查找</button>
+        <button type="submit" class="btn btn-info">查找</button>
       </form>
   </div>
 
@@ -63,10 +58,22 @@
           <tr>
             <td>{{$subject['id']}}</td>
             <td>{{$subject['name']}}</td>
-            <td>{{$subject['desc']}}</td>
+            <td>{{$subject['description']}}</td>
             <td>{{$subject['online_at']}}</td>
             <td>{{$statusEnum[$subject['status']]}}</td>
-            <td><a href="/admin/userEdit/{{$subject['id']}}" class="btn btn-primary btn-xs">编辑</a></td>
+            <td>
+              <div class="btn-group btn-xs">
+                  <a class="btn btn-default btn-xs" href="/admin/subjectEdit/{{$subject['id']}}"><i class="icon-edit"></i> 编辑</a>
+                  <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
+                  <ul class="dropdown-menu">
+                      <li><a href="#"><i class="icon-asterisk"></i> 功能管理</a></li>
+                      <li><a href="#"><i class="icon-magic"></i> 内容管理</a></li>
+                      <li class="divider"></li>
+                      <li><a href="#"><i class="icon-ok"></i> 发布</a></li>
+                      <li><a href="#"><i class="icon-trash"></i> 下线</a></li>
+                  </ul>
+              </div>
+            </td>
           </tr>
           @endforeach
         </tbody>
@@ -75,6 +82,24 @@
   <div class="row text-right">
       {{$paginator->links()}}
   </div>
-</div>
+<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <form class="form-horizontal" role="form" action="/admin/doUserDel" method="post">
+  <input type="hidden" name="id" value="{{$user['id']}}" />
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+      </div>
+      <div class="modal-body">
+          确定删除{{$user['name']}}用户 ？
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <button type="submit" class="btn btn-primary">确定删除</button>
+      </div>
+    </div>
+    </form>
+  </div>
 </div>
 @stop
