@@ -12,7 +12,7 @@
     @yield('css')
   </head>
   <body role="document">
-      @section('nav')
+      @section('menu')
       <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
           <div class="navbar-header">
@@ -84,7 +84,16 @@
       </div>
       @show
 
-      @yield('content')
+      <div class="container theme-showcase" role="main">
+          <div class="row">
+              <div class="col-md-2">
+                  @yield('nav')
+              </div>
+              <div class="col-md-10">
+                  @yield('content')
+              </div>
+          </div>
+      </div>
 
 
       <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
