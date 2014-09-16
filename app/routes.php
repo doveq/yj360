@@ -53,6 +53,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	Route::post('/doUserEdit', '\Admin\UserController@doEdit');
 	Route::post('/doUserDel', '\Admin\UserController@doDel');
     Route::get('/subjectList', '\Admin\SubjectController@showList');
+    Route::get('/subjectAdd', '\Admin\SubjectController@showAdd');
 });
 
 
