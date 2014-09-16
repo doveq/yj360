@@ -43,7 +43,6 @@ Route::get('/admin/sql', function(){
 Route::get('/admin/login', 'LoginController@admin');
 Route::post('/admin/doLogin', 'LoginController@doAdminLogin');
 Route::get('/admin/prompt', '\Admin\PromptController@index');
-Route::get('/admin/prompt/test', '\Admin\PromptController@test');
 
 // 后台管理路由组,需要后台登录认证
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
@@ -53,6 +52,9 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	Route::post('/doUserEdit', '\Admin\UserController@doEdit');
 	Route::post('/doUserDel', '\Admin\UserController@doDel');
     Route::get('/subjectList', '\Admin\SubjectController@showList');
+    Route::get('/topicList', '\Admin\TopicController@showList');
+    Route::get('/topicAdd', '\Admin\TopicController@showAdd');
+    Route::post('/doTopicAdd', '\Admin\TopicController@doAdd');
 });
 
 

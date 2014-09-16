@@ -42,7 +42,7 @@ class Sql
 			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型，1:用户录音上传，2:题干附件，3:答案附件',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `file_name` varchar(100) NOT NULL DEFAULT '' COMMENT '文件名',
-			  `file_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '文件类型，1:mav, 2:mp3, 3:flv, 4:img',
+			  `file_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '文件类型，1:mav, 2:mp3, 3:flv, 4:jpg',
 			  PRIMARY KEY (`id`),
 			  KEY `uid` (`uid`),
 			  KEY `qid` (`qid`)
@@ -55,10 +55,11 @@ class Sql
 			CREATE TABLE IF NOT EXISTS `questions` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `txt` varchar(255) NOT NULL DEFAULT '' COMMENT '题干文字',
-			  `sound` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干配音',
+			  `hint` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提示音',
+			  `sound` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干音',
 			  `img` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干图片',
 			  `video` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干视频',
-			  `disabuse` text NOT NULL DEFAULT '' COMMENT '题目解答',
+			  `disabuse` text NOT NULL DEFAULT '' COMMENT '题目详解',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '题目类型',
 			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 0:未审核, 1:审核通过，-1:审核拒绝',

@@ -82,7 +82,8 @@ class UserController extends \BaseController {
 
 		if($validator->fails())
     	{
-        	dd( $validator->messages()->all() );
+        	#dd( $validator->messages()->all() );
+        	return $this->adminPrompt("操做失败", $validator->messages()->first(), $url = "userList");
     	}
 
     	$user = new User();

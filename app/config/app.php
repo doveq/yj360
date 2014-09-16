@@ -195,4 +195,9 @@ return array(
 	/* 上传录音文件保存目录 */
 	'recorder_dir' => public_path().'/data/recorder',
 	'recorder_url' => '/data/recorder',
+	/* 题目上传文件保存目录 */
+	'topic_dir' => public_path().'/data/topic',
+	'topic_url' => '/data/topic',
+
+	'image_magick' => 'D:/ImageMagick',
 );
