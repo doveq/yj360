@@ -53,13 +53,17 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	Route::post('/doUserEdit', '\Admin\UserController@doEdit');
 	Route::post('/doUserDel', '\Admin\UserController@doDel');
 
-    Route::get('/subjectList', '\Admin\SubjectController@showList');
-    Route::get('/subjectAdd', '\Admin\SubjectController@showAdd');
-    Route::get('/subjectEdit/{id}', '\Admin\SubjectController@showEdit');
-    Route::post('/doSubjectAdd', '\Admin\SubjectController@doAdd');
-    Route::post('/doSubjectEdit', '\Admin\SubjectController@doEdit');
+    // Route::get('/subjectList', '\Admin\SubjectController@showList');
+    // Route::get('/subjectAdd', '\Admin\SubjectController@showAdd');
+    // Route::get('/subjectEdit/{id}', '\Admin\SubjectController@showEdit');
+    // Route::post('/doSubjectAdd', '\Admin\SubjectController@doAdd');
+    // Route::post('/doSubjectEdit', '\Admin\SubjectController@doEdit');
 });
 
+Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
+    Route::resource('/subject', '\Admin\SubjectController');
+    Route::resource('/subject_item', '\Admin\SubjectItemController');
+});
 
 // 前台路由
 Route::get('/register', 'LoginController@register');
@@ -74,3 +78,6 @@ Route::group(array('before' => 'indexLogin'), function(){
 	Route::get('/recorder', 'RecorderController@index');
 	Route::post('/recorder/upload', 'RecorderController@upload');
 });
+
+
+

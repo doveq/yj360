@@ -2,7 +2,7 @@
 @section('title')浏览科目@stop
 
 @section('nav')
-  @include('Admin.subject_nav')
+  @include('Admin.subject.nav')
 @stop
 
 @section('content')
@@ -63,14 +63,27 @@
             <td>{{$statusEnum[$subject['status']]}}</td>
             <td>
               <div class="btn-group btn-xs">
-                  <a class="btn btn-default btn-xs" href="/admin/subjectEdit/{{$subject['id']}}"><i class="icon-edit"></i> 编辑</a>
+                  <a class="btn btn-default btn-xs" href="/admin/subject/{{$subject['id']}}/edit"><i class="icon-edit"></i> 编辑</a>
                   <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                   <ul class="dropdown-menu">
                       <li><a href="#"><i class="icon-asterisk"></i> 功能管理</a></li>
                       <li><a href="#"><i class="icon-magic"></i> 内容管理</a></li>
+                      <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#chgModal">确认</button> -->
                       <li class="divider"></li>
-                      <li><a href="#"><i class="icon-ok"></i> 发布</a></li>
-                      <li><a href="#"><i class="icon-trash"></i> 下线</a></li>
+                      <li>
+                        <form  action="/admin/subject/{{$subject['id']}}" method="POST" style="padding: 3px 20px;">
+                          <input type="hidden" value="PUT" name="_method">
+                          <input type="hidden" value="1" name="status">
+                          <button type="submit" class="btn btn-link btn-xs"><i class="icon-ok"></i> 发布</button>
+                        </form>
+                      </li>
+                      <li>
+                        <form  action="/admin/subject/{{$subject['id']}}" method="POST" style="padding: 3px 20px;">
+                          <input type="hidden" value="PUT" name="_method">
+                          <input type="hidden" value="-1" name="status">
+                          <button type="submit" class="btn btn-link btn-xs"><i class="icon-trash"></i> 下线</button>
+                        </form>
+                      </li>
                   </ul>
               </div>
             </td>
@@ -82,21 +95,22 @@
   <div class="row text-right">
       {{$paginator->links()}}
   </div>
-<div class="modal fade" id="delModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <form class="form-horizontal" role="form" action="/admin/doUserDel" method="post">
-  <input type="hidden" name="id" value="{{$user['id']}}" />
+<div class="modal fade" id="chgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <form class="form-horizontal" role="form" action="/admin/subject" method="post">
+  <input type="hidden" name="id" value="" id="chg_id"/>
+  <input type="hidden" name="status" value="" id="chg_status"/>
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">删除用户</h4>
+        <h4 class="modal-title" id="myModalLabel">确认</h4>
       </div>
       <div class="modal-body">
-          确定删除{{$user['name']}}用户 ？
+          确认执行此操作吗?
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="submit" class="btn btn-primary">确定删除</button>
+        <button type="submit" class="btn btn-primary">确定</button>
       </div>
     </div>
     </form>

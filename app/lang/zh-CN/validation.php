@@ -88,10 +88,10 @@ return array(
 		),
 
 		'name' => array(
-			'required' => '用户名必须填写.',
+			'required' => ' :attribute 必须填写.',
 			'alpha_dash' => '必须全部由字母、数字、中划线或下划线字符构成.',
-			'unique' => '用户名已经使用.',
-			'between' => '用户名必须是:min - :max位.',
+			'unique' => ' :attribute 已经使用.',
+			'between' => ' :attribute 必须是:min - :max位.',
 		),
 
 		'tel' => array(
