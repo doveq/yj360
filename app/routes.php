@@ -52,23 +52,9 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	Route::post('/doUserEdit', '\Admin\UserController@doEdit');
 	Route::post('/doUserDel', '\Admin\UserController@doDel');
 
-<<<<<<< HEAD
-    // Route::get('/subjectList', '\Admin\SubjectController@showList');
-    // Route::get('/subjectAdd', '\Admin\SubjectController@showAdd');
-    // Route::get('/subjectEdit/{id}', '\Admin\SubjectController@showEdit');
-    // Route::post('/doSubjectAdd', '\Admin\SubjectController@doAdd');
-    // Route::post('/doSubjectEdit', '\Admin\SubjectController@doEdit');
-=======
-    Route::get('/subjectList', '\Admin\SubjectController@showList');    
-    Route::get('/subjectAdd', '\Admin\SubjectController@showAdd');
-    Route::get('/subjectEdit/{id}', '\Admin\SubjectController@showEdit');
-    Route::post('/doSubjectAdd', '\Admin\SubjectController@doAdd');
-    Route::post('/doSubjectEdit', '\Admin\SubjectController@doEdit');
-    
     Route::get('/topicList', '\Admin\TopicController@showList');
     Route::get('/topicAdd', '\Admin\TopicController@showAdd');
     Route::post('/doTopicAdd', '\Admin\TopicController@doAdd');
->>>>>>> FETCH_HEAD
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
