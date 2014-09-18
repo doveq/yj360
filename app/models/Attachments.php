@@ -77,14 +77,10 @@ class Attachments
 		  	  return -1;
 		}
 
-		
 		$attid = 0;
-		if($type == 'wav' && $this->validWavFile($file)) 
+		if( rename($file, $route['path']) )
 		{
-			if( rename($file, $route['path']) )
-			{
-				$attid = $this->insert('recorder', $uid, $qid, $route['name'], $type);
-			}
+			$attid = $this->insert('recorder', $uid, $qid, $route['name'], $type);
 		}
 
 		return $attid;
@@ -112,17 +108,6 @@ class Attachments
 			);
 	}
 
-	/* 验证wav文件 */
-	public function validWavFile($file) 
-	{
-	  	$handle = fopen($file, 'r');
-	  	$header = fread($handle, 4);
-	  	list($chunk_size) = array_values(unpack('V', fread($handle, 4)));
-	  	$format = fread($handle, 4);
-	  	fclose($handle);
-	  	return $header == 'RIFF' && $format == 'WAVE' && $chunk_size == (filesize($file) - 8);
-	}
-
 	/* 验证图片文件 */
 	public function validImgFile($file)
 	{
@@ -138,7 +123,7 @@ class Attachments
 
 
 	/* 添加问题附件 */
-	public function addTopicImg($file, $qid)
+	public function addTopicImg($qid, $file)
 	{
 		if( !$this->validImgFile($file) )
 			return false;
@@ -159,6 +144,23 @@ class Attachments
 		return $attid;
 	}
 
+	public function addTopicAudio($qid, $file, $type)
+	{
+		// 生成文件名		
+		$name = md5( $qid . uniqid() ) . '.' . $type;
+		$route = $this->getTopicRoute($qid, $name);
+
+		if(!is_dir($route['folder']))
+            mkdir($route['folder'], 0777, true);
+
+        $attid = 0;
+        if( rename($file, $route['path']) )
+		{
+			$attid = $this->insert('topic', 0, $qid, $name, $type);
+		}
+
+		return $attid;
+	}
 
 	/*  获取问题附件路径 
 		return  
