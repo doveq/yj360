@@ -13,29 +13,21 @@
     </ol>
   </div>
   <div class="row text-right">
-      <form class="form-inline" role="form">
-        <div class="form-group">
-          <label class="sr-only" for="inputName">科目名称</label>
-          <input type="text" name="name" value="{{$query['name']}}" class="form-control" id="inputName" placeholder="科目名称">
-        </div>
-
-        <div class="form-group">
-          <label class="sr-only" for="inputDesc">科目描述</label>
-          <input type="text" name="desc" value="{{$query['desc']}}" class="form-control" id="inputDesc" placeholder="科目描述">
-        </div>
-
-        <div class="form-group">
-          <label class="sr-only" for="inputStatus">状态</label>
-          <select class="form-control" name="status" id="inputStatus">
-              <option value="" >所有状态</option>
-              @foreach ($statusEnum as $v => $n)
-                  <option value="{{$v}}" @if( is_numeric($query['status']) && $v == $query['status']) selected="selected" @endif >{{$n}}</option>
-              @endforeach
-          </select>
-        </div>
-
-        <button type="submit" class="btn btn-info">查找</button>
-      </form>
+    {{ Form::open(array('role' => 'form', 'class' => 'form-inline', 'method' => 'get')) }}
+      <div class="form-group">
+        {{ Form::label('inputName', '科目名称', array('class' => 'sr-only')) }}
+        {{ Form::text('name', $query['name'], array('class' => 'form-control', 'id' => 'inputName', 'placeholder' => '科目名称')) }}
+      </div>
+      <div class="form-group">
+        {{ Form::label('inputDesc', '科目描述', array('class' => 'sr-only')) }}
+        {{ Form::text('desc', $query['desc'], array('class' => 'form-control', 'id' => 'inputDesc', 'placeholder' => '科目描述')) }}
+      </div>
+      <div class="form-group">
+        {{ Form::label('inputStatus', '状态', array('class' => 'sr-only')) }}
+        {{ Form::select('status', $statusEnum, $query['status'], array('class' => 'form-control', 'id' => 'inputStatus')) }}
+      </div>
+      {{ Form::button('查找', array('class' => 'btn btn-info', 'type' =>'submit')) }}
+    {{ Form::close() }}
   </div>
 
   <div class="row text-right">
@@ -63,27 +55,15 @@
             <td>{{$statusEnum[$subject['status']]}}</td>
             <td>
               <div class="btn-group btn-xs">
-                  <a class="btn btn-default btn-xs" href="/admin/subject/{{$subject['id']}}/edit"><i class="icon-edit"></i> 编辑</a>
+                  <a class="btn btn-default btn-xs" href="{{url('/admin/subject/'. $subject['id'] .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
                   <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                   <ul class="dropdown-menu">
                       <li><a href="#"><i class="icon-asterisk"></i> 功能管理</a></li>
                       <li><a href="#"><i class="icon-magic"></i> 内容管理</a></li>
                       <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#chgModal">确认</button> -->
                       <li class="divider"></li>
-                      <li>
-                        <form  action="/admin/subject/{{$subject['id']}}" method="POST" style="padding: 3px 20px;">
-                          <input type="hidden" value="PUT" name="_method">
-                          <input type="hidden" value="1" name="status">
-                          <button type="submit" class="btn btn-link btn-xs"><i class="icon-ok"></i> 发布</button>
-                        </form>
-                      </li>
-                      <li>
-                        <form  action="/admin/subject/{{$subject['id']}}" method="POST" style="padding: 3px 20px;">
-                          <input type="hidden" value="PUT" name="_method">
-                          <input type="hidden" value="-1" name="status">
-                          <button type="submit" class="btn btn-link btn-xs"><i class="icon-trash"></i> 下线</button>
-                        </form>
-                      </li>
+                        <li><a class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="1"><i class="icon-ok"></i> 发布</a></li>
+                        <li><a class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="-1"><i class="icon-trash"></i> 下线</a></li>
                   </ul>
               </div>
             </td>
@@ -95,25 +75,60 @@
   <div class="row text-right">
       {{$paginator->links()}}
   </div>
-<div class="modal fade" id="chgModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <form class="form-horizontal" role="form" action="/admin/subject" method="post">
-  <input type="hidden" name="id" value="" id="chg_id"/>
-  <input type="hidden" name="status" value="" id="chg_status"/>
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">确认</h4>
-      </div>
-      <div class="modal-body">
-          确认执行此操作吗?
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-        <button type="submit" class="btn btn-primary">确定</button>
+
+  <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    {{ Form::open(array('role' => 'form', 'class' => 'form-horizontal', 'id' => 'myModalForm', 'method' => 'post')) }}
+    {{ Form::hidden('id', '', array('id' => 'subject_id')) }}
+    {{ Form::hidden('status', '', array('id' => 'subject_status')) }}
+    {{ Form::hidden('_method', '', array('id' => 'form_method')) }}
+
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+          <h4 class="modal-title" id="myModalLabel"></h4>
+        </div>
+        <div class="modal-body" id="myModalBody">
+        </div>
+        <div class="modal-footer">
+          {{ Form::button('取消', array('class' => 'btn btn-default', 'data-dismiss' => 'modal')) }}
+          {{ Form::button('确定', array('class' => 'btn btn-primary', 'type' => 'submit')) }}
+        </div>
       </div>
     </div>
-    </form>
+    {{ Form::close() }}
   </div>
-</div>
+
+@stop
+
+@section('js')
+<script type="text/javascript">
+
+$(function(){
+
+  //删除
+  $(".btn_publish").bind("click", function(){
+      var $this = $(this);
+      var subject_id = $this.data("id");
+      var subject_val = $this.data("val");
+      var subject_status = $this.data("status");
+      if (subject_id <= 0) {
+          alert("data error");
+          return false;
+      }
+      if (subject_status == '1') {
+        status_txt = '上线';
+      } else if (subject_status == '-1') {
+        status_txt = '下线';
+      }
+      $("#myModalLabel").html('提示:');
+      $("#myModalBody").html('你确定要' + status_txt + ' '+subject_val+' 吗?');
+      $("#subject_id").val(subject_id);
+      $("#subject_status").val(subject_status);
+      $("#myModalForm").attr('action', '{{ url('/admin/subject/') }}/' + subject_id);
+      $("#form_method").attr('value', 'PUT');
+      $('#myModal').modal('show');
+  });
+});
+</script>
 @stop

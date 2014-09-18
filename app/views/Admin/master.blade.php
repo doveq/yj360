@@ -31,8 +31,8 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="/admin/subjectList">浏览科目</a></li>
-                  <li><a href="/admin/subjectAdd">添加科目</a></li>
+                  <li><a href="/admin/subject">浏览科目</a></li>
+                  <li><a href="/admin/subject/create">添加科目</a></li>
                 </ul>
               </li>
 
@@ -65,7 +65,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">其他 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">科目功能项</a></li>
+                  <li><a href="/admin/subject_item">科目功能项</a></li>
                   <li class="divider"></li>
                   <li class="dropdown-header">Nav header</li>
                   <li><a href="#">Separated link</a></li>

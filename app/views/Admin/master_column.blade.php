@@ -5,10 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', '后台管理')</title>
-
-    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="/assets/css/font-awesome.min.css" rel="stylesheet">
-    <link href="/assets/css/admin.css" rel="stylesheet">
+    {{ HTML::style('/assets/bootstrap/css/bootstrap.min.css') }}
+    {{ HTML::style('/assets/css/font-awesome.min.css') }}
+    {{ HTML::style('/assets/css/admin.css') }}
     @yield('css')
   </head>
   <body role="document">
@@ -31,8 +30,8 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="/admin/subjectList">浏览科目</a></li>
-                  <li><a href="/admin/subjectAdd">添加科目</a></li>
+                  <li><a href="/admin/subject">浏览科目</a></li>
+                  <li><a href="/admin/subject/create">添加科目</a></li>
                 </ul>
               </li>
 
@@ -96,9 +95,11 @@
 
 
       <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      <script src="/assets/jquery/jquery-1.11.1.min.js"></script>
+      {{ HTML::script('/assets/jquery/jquery-1.11.1.min.js') }}
+
       <!-- Include all compiled plugins (below), or include individual files as needed -->
-      <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+      {{ HTML::script('/assets/bootstrap/js/bootstrap.min.js') }}
+
       @yield('js')
   </body>
 </html>

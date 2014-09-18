@@ -58,8 +58,8 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
-    Route::resource('/subject', '\Admin\SubjectController');
-    Route::resource('/subject_item', '\Admin\SubjectItemController');
+    Route::resource('subject', 'Admin\SubjectController');
+    Route::resource('subject_item', 'Admin\SubjectItemController');
 });
 
 // 前台路由

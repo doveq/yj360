@@ -117,11 +117,11 @@ class SubjectController extends \BaseController {
 
         $subject = Subject::find($id);
 
-        if ($data['name']) $subject->name           = $data['name'];
-        if ($data['desc']) $subject->description    = $data['desc'];
-        if ($data['online_at']) $subject->online_at = $data['online_at'];
-        if ($data['status']) $subject->status       = $data['status'];
-        if ($data['created_at']) $subject->created_at       = $data['created_at'];
+        if (isset($data['name'])) $subject->name           = $data['name'];
+        if (isset($data['desc'])) $subject->description    = $data['desc'];
+        if (isset($data['online_at'])) $subject->online_at = $data['online_at'];
+        if (isset($data['status'])) $subject->status       = $data['status'];
+        if (isset($data['created_at'])) $subject->created_at       = $data['created_at'];
 
         $subject->save();
 

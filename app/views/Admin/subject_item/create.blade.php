@@ -13,19 +13,19 @@
     </ol>
   </div>
   <div class="row">
-    @include('admin.notifications')
-      <form class="form-horizontal" role="form" action="/admin/subject_item" method="post">
+      {{ HTML::ul($errors->all()) }}
+      {{ Form::open(array('url' => '/admin/subject_item/', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal')) }}
         <div class="form-group">
-          <label for="subject_name" class="col-md-2 control-label">科目项目名称</label>
+          {{ Form::label('subject_item_name', '科目功能名称', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
-            <input class="form-control" id="subject_name" name="name" />
+            {{ Form::text('name', '', array('class' => 'form-control', 'id' => 'subject_item_name')) }}
           </div>
         </div>
         <div class="form-group">
           <div class="col-md-offset-2 col-md-6">
-            <button type="submit" class="btn btn-default">提交</button>
-          </div>
+            {{ Form::submit('提交', array('class' => 'btn btn-default')) }}
+           </div>
         </div>
-      </form>
+      {{ Form::close() }}
   </div>
 @stop

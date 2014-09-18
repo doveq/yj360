@@ -83,7 +83,9 @@ class SubjectItemController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "subject_item/create");
+            // return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "subject_item/create");
+            return Redirect::to('admin/subject_item/create')
+                ->withErrors($validator);
         }
         $subject_item = new SubjectItem();
         if ($subject_item->add($data)) {

@@ -1,5 +1,4 @@
 <ul class="nav nav-list">
-  <li><a href="/admin/subject"><i class="icon-list"></i> 浏览科目</a></li>
-  <li><a href="/admin/subject/create"><i class="icon-edit"></i> 添加科目</a></li>
-
+  <li>{{ link_to_route('admin.subject.index', ' 浏览科目', array(), array('class' => 'icon-list')) }}</li>
+  <li>{{ link_to_route('admin.subject.create', ' 添加科目', array(), array('class' => 'icon-edit')) }}</li>
 </ul>
