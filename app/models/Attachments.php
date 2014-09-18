@@ -10,10 +10,18 @@ class Attachments
 	protected $table = 'attachments';
 	
 	// 附件类型
-	public $typeEnum = array('recorder' => 1);
+	public $typeEnum = array('recorder' => 1, 'topic' => 2);
 
 	// 文件类型
-	public $fileTypeEnum = array('wav' => 1, 'mp3' => 2, 'flv' => 3, 'img' => 4);
+	public $fileTypeEnum = array('wav' => 1, 'mp3' => 2, 'flv' => 3, 'jpg' => 4);
+
+
+	/* 根据id获取附件信息 */
+	public function get($attid)
+	{
+		$find = DB::table($this->table)->where('id', $attid)->get();
+		return (array)$find[0];
+	}
 
 	/* 信息添加数据库 */
 	public function insert($type, $uid, $qid, $fileName, $fileType)
@@ -34,7 +42,7 @@ class Attachments
 		}
 		else
 		{
-			$id = DB::table($this->table)->insertGeqid(array(
+			$id = DB::table($this->table)->insertGetid(array(
 					   'uid' =>  $uid, 
 	    			   'qid' => $qid,
 	    			   'type' => $_type,
@@ -59,7 +67,7 @@ class Attachments
 		        0 失败
 		        1 成功
 	*/
-	public function setRecorder($file, $uid, $qid, $type = 'wav')
+	public function addRecorder($file, $uid, $qid, $type = 'wav')
 	{
 		$route = $this->getRecorderRoute($uid, $qid, $type);
 
@@ -70,17 +78,16 @@ class Attachments
 		}
 
 		
-		$saved = 0;
+		$attid = 0;
 		if($type == 'wav' && $this->validWavFile($file)) 
 		{
-			if( move_uploaded_file($file, $route['path']) )
+			if( rename($file, $route['path']) )
 			{
-				$this->insert('recorder', $uid, $qid, $route['name'], $type);
-				$saved = 1;
+				$attid = $this->insert('recorder', $uid, $qid, $route['name'], $type);
 			}
 		}
 
-		return $saved;
+		return $attid;
 	}
 
 	/*  获取录音路径 
@@ -106,7 +113,7 @@ class Attachments
 	}
 
 	/* 验证wav文件 */
-	function validWavFile($file) 
+	public function validWavFile($file) 
 	{
 	  	$handle = fopen($file, 'r');
 	  	$header = fread($handle, 4);
@@ -116,4 +123,61 @@ class Attachments
 	  	return $header == 'RIFF' && $format == 'WAVE' && $chunk_size == (filesize($file) - 8);
 	}
 
+	/* 验证图片文件 */
+	public function validImgFile($file)
+	{
+		$type = exif_imagetype($file);
+		if($type == IMAGETYPE_GIF || $type == IMAGETYPE_JPEG || $type == IMAGETYPE_PNG ||
+			$type == IMAGETYPE_BMP)
+		{
+			return true;
+		}
+
+		return flase;
+	}
+
+
+	/* 添加问题附件 */
+	public function addTopicImg($file, $qid)
+	{
+		if( !$this->validImgFile($file) )
+			return false;
+
+		// 生成文件名		
+		$name = md5( $qid . uniqid() ) . '.jpg';
+		$route = $this->getTopicRoute($qid, $name);
+
+		if(!is_dir($route['folder']))
+            mkdir($route['folder'], 0777, true);
+
+        $attid = 0;
+        if( rename($file, $route['path']) )
+		{
+			$attid = $this->insert('topic', 0, $qid, $name, 'jpg');
+		}
+
+		return $attid;
+	}
+
+
+	/*  获取问题附件路径 
+		return  
+			folder: 保存目录绝对路径
+			path: 文件绝对路径
+			url: url访问路径
+	*/
+	public function getTopicRoute($qid, $name)
+	{
+		$dir = $qid - ($qid % 1000);
+		$folder = Config::get('app.topic_dir') .'/'. $dir;
+
+		$path = $folder .'/'. $name;
+		$url = Config::get('app.topic_url') .'/'. $dir .'/'. $name;
+
+		return array(
+			'folder' => $folder,
+			'path' => $path,
+			'url' => $url,
+			);
+	}
 }
