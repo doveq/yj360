@@ -58,12 +58,19 @@
                   <a class="btn btn-default btn-xs" href="{{url('/admin/subject/'. $subject['id'] .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
                   <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                   <ul class="dropdown-menu">
-                      <li><a href="#"><i class="icon-asterisk"></i> 功能管理</a></li>
+                      <li><a href="{{url('/admin/subject_item_relation/'. $subject['id'] .'/edit') }}"><i class="icon-asterisk"></i> 功能管理</a></li>
                       <li><a href="#"><i class="icon-magic"></i> 内容管理</a></li>
-                      <!-- <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#chgModal">确认</button> -->
                       <li class="divider"></li>
-                        <li><a class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="1"><i class="icon-ok"></i> 发布</a></li>
-                        <li><a class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="-1"><i class="icon-trash"></i> 下线</a></li>
+                      @if($subject['status'] === 1)
+                      <li><a style='color:#999;'><i class="icon-ok"></i> 发布</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="-1"><i class="icon-trash"></i> 下线</a></li>
+                      @elseif($subject['status'] === -1)
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="1"><i class="icon-ok"></i> 发布</a></li>
+                      <li><a style='color:#999;'><i class="icon-trash"></i> 下线</a></li>
+                      @else
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="1"><i class="icon-ok"></i> 发布</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="-1"><i class="icon-trash"></i> 下线</a></li>
+                      @endif
                   </ul>
               </div>
             </td>

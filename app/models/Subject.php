@@ -1,14 +1,6 @@
 <?php
 
-use Illuminate\Auth\UserTrait;
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableTrait;
-use Illuminate\Auth\Reminders\RemindableInterface;
-
-class Subject extends Eloquent implements UserInterface, RemindableInterface {
-
-    use UserTrait, RemindableTrait;
-
+class Subject extends Eloquent {
     /**
      * The database table used by the model.
      *
@@ -135,6 +127,11 @@ class Subject extends Eloquent implements UserInterface, RemindableInterface {
     public function del($id)
     {
         DB::table($this->table)->where('id', $id)->delete();
+    }
+
+    public function relation()
+    {
+        return $this->belongsToMany('subjectItem', 'subject_item_relation', 'subject_id', 'subject_item_id');
     }
 
 }
