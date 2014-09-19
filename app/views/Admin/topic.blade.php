@@ -54,7 +54,7 @@
 			      <input type="file" title="上传声音" name="answers_sound[]" />
 			      <div class="checkbox">
 				    <label>
-				      <input type="checkbox" name="answers_right[]" /> 正确答案
+				      <input type="checkbox" name="answers_right[]" value="1" /> 正确答案
 				    </label>
 				  </div>
 			    </div>

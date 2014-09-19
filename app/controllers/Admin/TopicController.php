@@ -10,6 +10,10 @@ use Attachments;
 /* 原始题库功能 */
 class TopicController extends \BaseController {
 
+	public function __construct()
+	{
+		$this->att = new Attachments();
+	}
 	
 	public function showAdd()
 	{
@@ -25,58 +29,83 @@ class TopicController extends \BaseController {
 
 		#$this->adminPrompt("操作失败", '添加题目失败，请返回重试。', $url = "topicList");
 		
-		$att = new Attachments();
+		
 		/* 处理题干附件 */
 		// 题干图片
 		$questionAtt = array();
-		if( $attid = $this->setImg('file_img') )
+		if($_FILES['file_img']['error'] == UPLOAD_ERR_OK &&  
+			$attid = $this->setImg( $qid, $_FILES['file_img']['tmp_name']) )
+		{
 			$questionAtt['img'] = $attid;
-		
+		}
+
 		// 提示音
-		if( $attid = $this->setAudio('file_hint') )
+		if($_FILES['file_hint']['error'] == UPLOAD_ERR_OK && 
+			$attid = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $_FILES['file_hint']['type']) )
+		{
 			$questionAtt['hint'] = $attid;
+		}
 
 		// 提干音
-		if( $attid = $this->setAudio('file_sound') )
+		if( $_FILES['file_sound']['error'] == UPLOAD_ERR_OK && 
+			$attid = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $_FILES['file_sound']['type']) )
+		{
 			$questionAtt['sound'] = $attid;
-
-		// 处理答案
-		foreach($inputs['answers_txt'] as $k => $v)
-		{
-
 		}
 
-	}
+		// 跟新题目数据
+		$topic->edit($qid, $questionAtt);
 
 
-	public function setImg($name)
-	{
-		if(Input::hasFile($name))
+		/* 处理答案 */
+		foreach($inputs['answers_txt'] as $k => $atxt)
 		{
-		    $attid = $att->addTopicImg($qid, Input::file($name)->getRealPath());
-		    return $attid;
-		}
+			$answers = array();
+			if($atxt)
+				$answers['txt'] = $atxt;
 
-		return 0;
-	}
-
-	public function setAudio($name)
-	{
-		if(Input::hasFile($name))
-		{
-			$type = 0
-			$mime = Input::file($name)->getMimeType();
-			if($mime == 'audio/mp3')
-				$type = 'mp3';
-			else if($mime == 'audio/wav')
-				$type = 'wav';
-
-			if($type)
+			if($_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK &&  
+				$attid = $this->setImg( $qid, $_FILES['answers_img']['tmp_name'][$k]) )
 			{
-			    $attid = $att->addTopicAudio($qid, Input::file($name)->getRealPath(), $type);
-			    return $attid;
+				$answers['img'] = $attid;
+			}
+
+			if($_FILES['answers_sound']['error'][$k] == UPLOAD_ERR_OK && 
+				$attid = $this->setAudio( $qid, $_FILES['answers_sound']['tmp_name'][$k], $_FILES['answers_sound']['type'][$k]) )
+			{
+				$answers['sound'] = $attid;
+			}
+
+			// 插入数据
+			if($answers)
+			{
+				$topic->addAnswers($qid, $data);
 			}
 		}
+
+		echo "完成！";
+
+	}
+
+
+	public function setImg($qid, $file)
+	{
+	    $attid = $this->att->addTopicImg($qid, $file);
+	    return $attid;
+	}
+
+	public function setAudio($qid, $file, $mime)
+	{
+		
+		if($mime == 'audio/mp3')
+			$type = 'mp3';
+		else if($mime == 'audio/wav')
+			$type = 'wav';
+		else
+			return 0;
+
+	    $attid = $this->att->addTopicAudio($qid, $file, $type);
+	    return $attid;
 
 		return 0;
 	}
