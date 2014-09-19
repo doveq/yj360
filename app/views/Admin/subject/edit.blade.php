@@ -30,7 +30,7 @@
       <div class="form-group">
         {{ Form::label('subject_online_at', '上线时间', array('class' => 'col-md-2 control-label')) }}
         <div class="col-md-6">
-          {{ Form::text('online_at', $subject['online_at'], array('class' => 'form-control', 'id' => 'subject_online_at')) }}
+          {{ Form::text('online_at', $subject['online_at'], array('class' => 'form-control form_datetime', 'id' => 'subject_online_at', 'readonly' => 1)) }}
         </div>
       </div>
       <div class="form-group">
@@ -48,3 +48,22 @@
     {{ Form::close() }}
   </div>
 @stop
+
+@section('js')
+<script type="text/javascript">
+$(function(){
+  $('.form_datetime').datetimepicker({
+    format: "yyyy-mm-dd",
+    autoclose: true,
+    todayBtn: true,
+    minView: "month",
+    maxView: "month",
+    language: 'zh-CN',
+    viewSelect: "month"
+  });
+});
+
+
+</script>
+@stop
+

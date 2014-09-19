@@ -7,6 +7,7 @@
     <title>@yield('title', '后台管理')</title>
     {{ HTML::style('/assets/bootstrap/css/bootstrap.min.css') }}
     {{ HTML::style('/assets/css/font-awesome.min.css') }}
+    {{ HTML::style('/assets/bootstrap/css/bootstrap-datetimepicker.min.css') }}
     {{ HTML::style('/assets/css/admin.css') }}
     @yield('css')
   </head>
@@ -99,6 +100,9 @@
 
       <!-- Include all compiled plugins (below), or include individual files as needed -->
       {{ HTML::script('/assets/bootstrap/js/bootstrap.min.js') }}
+      <!-- datapicker plugin -->
+      {{ HTML::script('/assets/bootstrap/js/bootstrap-datetimepicker.min.js') }}
+      {{ HTML::script('/assets/bootstrap/js/bootstrap-datetimepicker.zh-CN.js') }}
 
       @yield('js')
   </body>
