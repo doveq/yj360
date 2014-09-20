@@ -46,6 +46,8 @@
             <th>手机号</th>
             <th>类型</th>
             <th>状态</th>
+            <th>注册时间</th>
+            <th>最后登陆时间</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -57,6 +59,8 @@
             <td>{{$user['tel']}}</td>
             <td>{{$typeEnum[$user['type']]}}</td>
             <td>{{$statusEnum[$user['status']]}}</td>
+            <td>{{$user['created_at']}}</td>
+            <td>{{$user['updated_at']}}</td>
             <td>
               <div class="btn-group btn-xs">
                   <a class="btn btn-default btn-xs" href="{{url('/admin/user/'. $user['id'] .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
