@@ -27,7 +27,7 @@
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <!-- <li class="active"><a href="#">Home</a></li> -->
-              <li><a href="/admin/userList">用户管理</a></li>
+              <li><a href="/admin/user">用户管理</a></li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">

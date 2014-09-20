@@ -47,10 +47,10 @@ Route::get('/admin/prompt', '\Admin\PromptController@index');
 // 后台管理路由组,需要后台登录认证
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	Route::get('/', '\Admin\IndexController@index');
-	Route::get('/userList', '\Admin\UserController@showList');
-	Route::get('/userEdit/{id}', '\Admin\UserController@showEdit');
-	Route::post('/doUserEdit', '\Admin\UserController@doEdit');
-	Route::post('/doUserDel', '\Admin\UserController@doDel');
+	// Route::get('/userList', '\Admin\UserController@showList');
+	// Route::get('/userEdit/{id}', '\Admin\UserController@showEdit');
+	// Route::post('/doUserEdit', '\Admin\UserController@doEdit');
+	// Route::post('/doUserDel', '\Admin\UserController@doDel');
 
     Route::get('/topicList', '\Admin\TopicController@showList');
     Route::get('/topicAdd', '\Admin\TopicController@showAdd');
@@ -58,6 +58,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
+    Route::resource('user', 'Admin\UserController');
     Route::resource('subject', 'Admin\SubjectController');
     Route::resource('subject_item', 'Admin\SubjectItemController');
     Route::resource('subject_item_relation', 'Admin\SubjectItemRelationController');
