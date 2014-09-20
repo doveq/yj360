@@ -8,7 +8,7 @@
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
-      <li><a href="#">科目管理</a></li>
+      <li>{{link_to_route('admin.subject.index', '科目管理')}}</li>
       <li class="active">浏览科目</li>
     </ol>
   </div>
@@ -59,7 +59,7 @@
                   <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                   <ul class="dropdown-menu">
                       <li><a href="{{url('/admin/subject_item_relation/'. $subject['id'] .'/edit') }}"><i class="icon-asterisk"></i> 功能管理</a></li>
-                      <li><a href="#"><i class="icon-magic"></i> 内容管理</a></li>
+                      <li><a href="{{url('/admin/subject_content/'. $subject['id'] .'/edit') }}"><i class="icon-magic"></i> 内容管理</a></li>
                       <li class="divider"></li>
                       @if($subject['status'] === 1)
                       <li><a style='color:#999;'><i class="icon-ok"></i> 发布</a></li>
@@ -69,8 +69,11 @@
                       <li><a style='color:#999;'><i class="icon-trash"></i> 下线</a></li>
                       @else
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="1"><i class="icon-ok"></i> 发布</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="-1"><i class="icon-trash"></i> 下线</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="-1"><i class="icon-remove"></i> 下线</a></li>
                       @endif
+                      <li class="divider"></li>
+                      <li><a href="#" class="btn_delete" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="1"><i class="icon-trash"></i> 删除</a></li>
+
                   </ul>
               </div>
             </td>
@@ -113,7 +116,7 @@
 
 $(function(){
 
-  //删除
+  //发布,下线
   $(".btn_publish").bind("click", function(){
       var $this = $(this);
       var subject_id = $this.data("id");
@@ -134,6 +137,22 @@ $(function(){
       $("#subject_status").val(subject_status);
       $("#myModalForm").attr('action', '{{ url('/admin/subject/') }}/' + subject_id);
       $("#form_method").attr('value', 'PUT');
+      $('#myModal').modal('show');
+  });
+  //删除
+  $(".btn_delete").bind("click", function(){
+      var $this = $(this);
+      var subject_id = $this.data("id");
+      var subject_val = $this.data("val");
+      if (subject_id <= 0) {
+          alert("data error");
+          return false;
+      }
+      $("#myModalLabel").html('提示:');
+      $("#myModalBody").html('你确定要删除 '+subject_val+' 吗?');
+      $("#subject_id").val(subject_id);
+      $("#myModalForm").attr('action', '/admin/subject/'+ subject_id);
+      $("#form_method").attr('value', 'DELETE');
       $('#myModal').modal('show');
   });
 });

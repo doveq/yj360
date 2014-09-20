@@ -8,7 +8,7 @@
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
-      <li><a href="#">科目管理</a></li>
+      <li>{{link_to_route('admin.subject.index', '科目管理')}}</li>
       <li class="active">编辑科目</li>
     </ol>
   </div>

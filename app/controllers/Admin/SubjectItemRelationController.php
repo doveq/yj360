@@ -70,14 +70,13 @@ class SubjectItemRelationController extends \BaseController {
         $subject = Subject::find($id);
         $subject_items = SubjectItem::all();
         // $relations = SubjectItemRelation::where('subject_id', '=', $id)->get();
-        $relations = $subject->relation;
+        $items = $subject->items;
         // var_dump($relations);
         $tmp = array();
-        foreach ($relations as $key => $relation) {
-            $tmp[] = $relation->id;
+        foreach ($items as $key => $item) {
+            $tmp[] = $item->id;
         }
-        // $relas = array_fetch($relations, 'id');
-        // dd($relas);
+
         foreach ($subject_items as $key => $subject_item) {
             if (in_array($subject_item->id, $tmp)) {
                 $subject_item->checked = 1;

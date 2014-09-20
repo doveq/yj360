@@ -129,9 +129,13 @@ class Subject extends Eloquent {
         DB::table($this->table)->where('id', $id)->delete();
     }
 
-    public function relation()
+    public function items()
     {
         return $this->belongsToMany('subjectItem', 'subject_item_relation', 'subject_id', 'subject_item_id');
     }
 
+    public function contents()
+    {
+        return $this->hasMany('subject_content');
+    }
 }

@@ -5,6 +5,7 @@ use Subject;
 use Validator;
 use Input;
 use Paginator;
+use Redirect;
 
 class SubjectController extends \BaseController {
 
