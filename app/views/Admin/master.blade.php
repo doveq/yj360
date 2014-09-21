@@ -10,6 +10,9 @@
     <link href="/assets/css/font-awesome.min.css" rel="stylesheet">
     <link href="/assets/css/admin.css" rel="stylesheet">
     @yield('css')
+
+    <script src="/assets/jquery/jquery-1.11.1.min.js"></script>
+    @yield('headjs')
   </head>
   <body role="document">
       @section('nav')
@@ -42,7 +45,7 @@
                   <li><a href="#">基础测试题库</a></li>
                   <li><a href="#">基础教材强化库</a></li>
                   <li><a href="#">基础难点解答</a></li>
-                  <li><a href="#">真题题库</a></li>
+                  <li><a href="/admin/topic/list">真题题库</a></li>
                 </ul>
               </li>
 
@@ -86,9 +89,6 @@
 
       @yield('content')
 
-
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      <script src="/assets/jquery/jquery-1.11.1.min.js"></script>
       <!-- Include all compiled plugins (below), or include individual files as needed -->
       <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
       @yield('js')

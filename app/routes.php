@@ -52,9 +52,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	// Route::post('/doUserEdit', '\Admin\UserController@doEdit');
 	// Route::post('/doUserDel', '\Admin\UserController@doDel');
 
-    Route::get('/topicList', '\Admin\TopicController@showList');
-    Route::get('/topicAdd', '\Admin\TopicController@showAdd');
-    Route::post('/doTopicAdd', '\Admin\TopicController@doAdd');
+    Route::get('/topic/list', '\Admin\TopicController@showList');
+    Route::get('/topic/add', '\Admin\TopicController@showAdd');
+    Route::post('/topic/doAdd', '\Admin\TopicController@doAdd');
+    Route::get('/topic/edit', '\Admin\TopicController@showEdit');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){

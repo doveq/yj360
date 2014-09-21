@@ -115,10 +115,10 @@ class Attachments
 		if($type == IMAGETYPE_GIF || $type == IMAGETYPE_JPEG || $type == IMAGETYPE_PNG ||
 			$type == IMAGETYPE_BMP)
 		{
-			return true;
+			return 1;
 		}
 
-		return flase;
+		return 0;
 	}
 
 
@@ -181,5 +181,12 @@ class Attachments
 			'path' => $path,
 			'url' => $url,
 			);
+	}
+
+
+	/* 获取文件扩展名 */
+	public function getExt($name)
+	{
+		return strtolower( pathinfo($name, PATHINFO_EXTENSION) );
 	}
 }

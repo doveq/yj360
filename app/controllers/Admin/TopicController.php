@@ -17,7 +17,7 @@ class TopicController extends \BaseController {
 	
 	public function showAdd()
 	{
-		return $this->adminView('topic', array('user' => ''));
+		return $this->adminView('topic');
 	}
 
 	public function doAdd()
@@ -27,9 +27,7 @@ class TopicController extends \BaseController {
 		$topic = new Topic();
 		$qid = $topic->add($inputs);
 
-		#$this->adminPrompt("操作失败", '添加题目失败，请返回重试。', $url = "topicList");
-		
-		
+
 		/* 处理题干附件 */
 		// 题干图片
 		$questionAtt = array();
@@ -40,17 +38,27 @@ class TopicController extends \BaseController {
 		}
 
 		// 提示音
-		if($_FILES['file_hint']['error'] == UPLOAD_ERR_OK && 
-			$attid = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $_FILES['file_hint']['type']) )
+		if($_FILES['file_hint']['error'] == UPLOAD_ERR_OK)
 		{
-			$questionAtt['hint'] = $attid;
+			$type = $this->att->getExt($_FILES['file_hint']['name']);
+			if($type == 'mp3' || $type == 'wav')
+			{
+				if( $attid = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type) )
+					$questionAtt['hint'] = $attid;
+			}
+			
 		}
 
 		// 提干音
-		if( $_FILES['file_sound']['error'] == UPLOAD_ERR_OK && 
-			$attid = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $_FILES['file_sound']['type']) )
+		if($_FILES['file_sound']['error'] == UPLOAD_ERR_OK)
 		{
-			$questionAtt['sound'] = $attid;
+			$type = $this->att->getExt($_FILES['file_sound']['name']);
+			if($type == 'mp3' || $type == 'wav')
+			{
+				if( $attid = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type) )
+					$questionAtt['sound'] = $attid;
+			}
+			
 		}
 
 		// 跟新题目数据
@@ -70,21 +78,40 @@ class TopicController extends \BaseController {
 				$answers['img'] = $attid;
 			}
 
-			if($_FILES['answers_sound']['error'][$k] == UPLOAD_ERR_OK && 
-				$attid = $this->setAudio( $qid, $_FILES['answers_sound']['tmp_name'][$k], $_FILES['answers_sound']['type'][$k]) )
+
+			if($_FILES['answers_sound']['error'][$k] == UPLOAD_ERR_OK)
 			{
-				$answers['sound'] = $attid;
+				$type = $this->att->getExt($_FILES['answers_sound']['name'][$k]);
+				if($type == 'mp3' || $type == 'wav')
+				{
+					if( $attid = $this->setAudio( $qid, $_FILES['answers_sound']['tmp_name'][$k], $type) )
+						$answers['sound'] = $attid;
+				}
+				
 			}
 
 			// 插入数据
 			if($answers)
 			{
-				$topic->addAnswers($qid, $data);
+				$topic->addAnswers($qid, $answers);
 			}
 		}
 
-		echo "完成！";
+		return Redirect::to('admin/topic/edit?id='.$qid);
+	}
 
+
+	public function showEdit()
+	{
+		$id = Input::get('id');
+		if( !is_numeric($id) )
+			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic/list");
+
+		$topic = new Topic();
+		$info = $topic->get($id);
+		print_r($info);
+		exit;
+		return $this->adminView('topic', $info);
 	}
 
 
@@ -94,20 +121,10 @@ class TopicController extends \BaseController {
 	    return $attid;
 	}
 
-	public function setAudio($qid, $file, $mime)
+	public function setAudio($qid, $file, $type)
 	{
-		
-		if($mime == 'audio/mp3')
-			$type = 'mp3';
-		else if($mime == 'audio/wav')
-			$type = 'wav';
-		else
-			return 0;
-
 	    $attid = $this->att->addTopicAudio($qid, $file, $type);
 	    return $attid;
-
-		return 0;
 	}
 
 }

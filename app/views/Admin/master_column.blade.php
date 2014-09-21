@@ -10,6 +10,10 @@
     {{ HTML::style('/assets/bootstrap/css/bootstrap-datetimepicker.min.css') }}
     {{ HTML::style('/assets/css/admin.css') }}
     @yield('css')
+
+    {{ HTML::script('/assets/jquery/jquery-1.11.1.min.js') }}
+    @yield('headjs')
+
   </head>
   <body role="document">
       @section('menu')
@@ -94,9 +98,6 @@
           </div>
       </div>
 
-
-      <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-      {{ HTML::script('/assets/jquery/jquery-1.11.1.min.js') }}
 
       <!-- Include all compiled plugins (below), or include individual files as needed -->
       {{ HTML::script('/assets/bootstrap/js/bootstrap.min.js') }}
