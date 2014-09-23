@@ -46,6 +46,7 @@
                   <li><a href="#">基础教材强化库</a></li>
                   <li><a href="#">基础难点解答</a></li>
                   <li><a href="/admin/topic/list">真题题库</a></li>
+                  <li><a href="/admin/topic/add">添加题目</a></li>
                 </ul>
               </li>
 
