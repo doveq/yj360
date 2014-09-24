@@ -23,6 +23,20 @@ class Attachments
 		return (array)$find[0];
 	}
 
+	/* 删除附件信息 */
+	public function del($attid)
+	{
+		$info = $this->get($attid);
+		if($info)
+		{
+			// 删除文件
+			if($info['type'] == 2)
+			{
+				
+			}
+		}
+	}
+
 	/* 信息添加数据库 */
 	public function insert($type, $uid, $qid, $fileName, $fileType)
 	{
@@ -128,8 +142,9 @@ class Attachments
 		if( !$this->validImgFile($file) )
 			return false;
 
-		// 生成文件名		
+		// 生成文件名
 		$name = md5( $qid . uniqid() ) . '.jpg';
+		
 		$route = $this->getTopicRoute($qid, $name);
 
 		if(!is_dir($route['folder']))
@@ -144,10 +159,11 @@ class Attachments
 		return $attid;
 	}
 
-	public function addTopicAudio($qid, $file, $type)
+	public function addTopicAudio($qid, $file, $type, $name)
 	{
-		// 生成文件名		
+		// 生成文件名
 		$name = md5( $qid . uniqid() ) . '.' . $type;
+		
 		$route = $this->getTopicRoute($qid, $name);
 
 		if(!is_dir($route['folder']))

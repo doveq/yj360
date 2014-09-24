@@ -118,10 +118,65 @@ class TopicController extends \BaseController {
 	public function doEdit()
 	{
 		$inputs = Input::all();
-		if( !is_numeric($inputs['id']) )
+		$qid = $inputs['qid'];
+		if( !is_numeric($qid) )
 			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic/list");
 
-		
+		$topic = new Topic();
+		$info = $topic->get($qid);
+
+
+		/* 处理题干附件 */
+		// 题干图片
+		if($_FILES['file_img']['error'] == UPLOAD_ERR_OK )
+		{
+			if($inputs['file_img_id'])
+			{
+				$this->setImg( $qid, $_FILES['file_img']['tmp_name'], $info['q']['img_name']);
+				$questionAtt['img'] = $inputs['file_img_id'];
+			}
+			else
+				$questionAtt['img'] = $this->setImg( $qid, $_FILES['file_img']['tmp_name']);
+
+		}
+
+		// 提示音
+		if($_FILES['file_hint']['error'] == UPLOAD_ERR_OK)
+		{
+			$type = $this->att->getExt($_FILES['file_hint']['name']);
+
+			if($type == 'mp3' || $type == 'wav')
+			{
+				if($inputs['file_hint_id'])
+				{
+					$this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type, $info['q']['hint_name']);
+					$questionAtt['hint'] = $inputs['file_hint_id'];
+				}
+				else
+					$questionAtt['hint'] = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type);
+			}
+			
+		}
+
+		// 提干音
+		if($_FILES['file_sound']['error'] == UPLOAD_ERR_OK)
+		{
+			$type = $this->att->getExt($_FILES['file_sound']['name']);
+
+			if($type == 'mp3' || $type == 'wav')
+			{
+				if($inputs['file_sound_id'])
+				{
+					$this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type);
+					$questionAtt['sound'] = $inputs['file_sound_id'];
+				}
+				else
+					$questionAtt['sound'] = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type);
+			}
+		}
+
+		$topic->edit($qid, $inputs);
+		echo "ok";
 	}
 
 	public function setImg($qid, $file)

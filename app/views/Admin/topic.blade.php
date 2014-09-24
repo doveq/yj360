@@ -14,7 +14,7 @@
       	<div class="row">
       		@if(isset($is_edit))
       		<form class="form-horizontal" role="form" action="/admin/topic/doEdit" method="post" enctype="multipart/form-data">
-      		<input type="hidden" name="id" value="{{$q['id']}}" />
+      		<input type="hidden" name="qid" value="{{$q['id']}}" />
       		@else
       		<form class="form-horizontal" role="form" action="/admin/topic/doAdd" method="post" enctype="multipart/form-data">
       		@endif

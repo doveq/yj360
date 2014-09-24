@@ -56,6 +56,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::get('/topic/add', '\Admin\TopicController@showAdd');
     Route::post('/topic/doAdd', '\Admin\TopicController@doAdd');
     Route::get('/topic/edit', '\Admin\TopicController@showEdit');
+    Route::post('/topic/doEdit', '\Admin\TopicController@doEdit');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){

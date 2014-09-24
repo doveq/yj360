@@ -22,6 +22,7 @@ class Topic  {
 			$route = $att->getTopicRoute($qid, $item['file_name']);
 			$info['q']['img_url'] =  $route['url'];
 			$info['q']['img_att_id'] = $item['id'];
+			$info['q']['img_name'] =  $item['file_name'];
 		}
 
 		if($info['q']['hint'])
@@ -30,6 +31,7 @@ class Topic  {
 			$route = $att->getTopicRoute($qid, $item['file_name']);
 			$info['q']['hint_url'] =  $route['url'];
 			$info['q']['hint_att_id'] = $item['id'];
+			$info['q']['hint_name'] =  $item['file_name'];
 		}
 
 		if($info['q']['sound'])
@@ -38,6 +40,7 @@ class Topic  {
 			$route = $att->getTopicRoute($qid, $item['file_name']);
 			$info['q']['sound_url'] =  $route['url'];
 			$info['q']['sound_att_id'] = $item['id'];
+			$info['q']['sound_name'] =  $item['file_name'];
 		}
 
 		$answers = DB::table('answers')->where('qid', $id)->get();
@@ -50,6 +53,7 @@ class Topic  {
 				$route = $att->getTopicRoute($qid, $item['file_name']);
 				$data['img_url'] =  $route['url'];
 				$data['img_att_id'] = $item['id'];
+				$data['img_name'] =  $item['file_name'];
 			}
 
 			if($data['sound'])
@@ -58,6 +62,7 @@ class Topic  {
 				$route = $att->getTopicRoute($qid, $item['file_name']);
 				$data['sound_url'] =  $route['url'];
 				$data['sound_att_id'] = $item['id'];
+				$data['sound_name'] =  $item['file_name'];
 			}
 
 			$info['a'][] = $data;
