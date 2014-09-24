@@ -22,7 +22,7 @@ class SubjectController extends \BaseController {
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
-
+        // dd($query);
         $validator = Validator::make($query,
             array(
                 'name'      => 'alpha_dash',

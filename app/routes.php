@@ -63,8 +63,9 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('subject', 'Admin\SubjectController');
     Route::resource('subject_item', 'Admin\SubjectItemController');
     Route::resource('subject_item_relation', 'Admin\SubjectItemRelationController');
+    Route::resource('product', 'Admin\ProductController');
     Route::resource('subject_content', 'Admin\SubjectContentController');
-    // Route::get('subject_item_relation', 'Admin\SubjectItemRelationController@create');
+
 });
 
 // 前台路由
