@@ -20,7 +20,10 @@ class Attachments
 	public function get($attid)
 	{
 		$find = DB::table($this->table)->where('id', $attid)->get();
-		return (array)$find[0];
+		if($find)
+			return (array)$find[0];
+		else
+			return false;
 	}
 
 	/* 删除附件信息 */
@@ -29,10 +32,12 @@ class Attachments
 		$info = $this->get($attid);
 		if($info)
 		{
-			// 删除文件
+			// 删除数据和文件
 			if($info['type'] == 2)
 			{
-				
+				DB::table($this->table)->where('id', $info['id'])->delete();
+				$route = $this->getTopicRoute($info['qid'], $info['file_name']);
+				unlink($route['path']);
 			}
 		}
 	}

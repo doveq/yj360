@@ -130,14 +130,11 @@ class TopicController extends \BaseController {
 		// 题干图片
 		if($_FILES['file_img']['error'] == UPLOAD_ERR_OK )
 		{
-			if($inputs['file_img_id'])
+			if(is_numeric($inputs['file_img_id']))
 			{
-				$this->setImg( $qid, $_FILES['file_img']['tmp_name'], $info['q']['img_name']);
-				$questionAtt['img'] = $inputs['file_img_id'];
-			}
-			else
+				$this->att->del($inputs['file_img_id']);
 				$questionAtt['img'] = $this->setImg( $qid, $_FILES['file_img']['tmp_name']);
-
+			}
 		}
 
 		// 提示音
@@ -147,13 +144,11 @@ class TopicController extends \BaseController {
 
 			if($type == 'mp3' || $type == 'wav')
 			{
-				if($inputs['file_hint_id'])
+				if(is_numeric($inputs['file_hint_id']))
 				{
-					$this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type, $info['q']['hint_name']);
-					$questionAtt['hint'] = $inputs['file_hint_id'];
-				}
-				else
+					$this->att->del($inputs['file_hint_id']);
 					$questionAtt['hint'] = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type);
+				}
 			}
 			
 		}
@@ -165,13 +160,11 @@ class TopicController extends \BaseController {
 
 			if($type == 'mp3' || $type == 'wav')
 			{
-				if($inputs['file_sound_id'])
+				if(is_numeric($inputs['file_sound_id']))
 				{
-					$this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type);
-					$questionAtt['sound'] = $inputs['file_sound_id'];
-				}
-				else
+					$this->att->del($inputs['file_sound_id']);
 					$questionAtt['sound'] = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type);
+				}
 			}
 		}
 
