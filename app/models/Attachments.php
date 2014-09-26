@@ -164,7 +164,7 @@ class Attachments
 		return $attid;
 	}
 
-	public function addTopicAudio($qid, $file, $type, $name)
+	public function addTopicAudio($qid, $file, $type)
 	{
 		// 生成文件名
 		$name = md5( $qid . uniqid() ) . '.' . $type;

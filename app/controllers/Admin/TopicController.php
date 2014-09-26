@@ -74,6 +74,9 @@ class TopicController extends \BaseController {
 			if($atxt)
 				$answers['txt'] = $atxt;
 
+			if( isset($inputs['answers_right'][$k]) )
+				$answers['is_right'] = 1;
+
 			if($_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK &&  
 				$attid = $this->setImg( $qid, $_FILES['answers_img']['tmp_name'][$k]) )
 			{
@@ -131,10 +134,10 @@ class TopicController extends \BaseController {
 		if($_FILES['file_img']['error'] == UPLOAD_ERR_OK )
 		{
 			if(is_numeric($inputs['file_img_id']))
-			{
 				$this->att->del($inputs['file_img_id']);
-				$questionAtt['img'] = $this->setImg( $qid, $_FILES['file_img']['tmp_name']);
-			}
+			
+
+			$inputs['img'] = $this->setImg( $qid, $_FILES['file_img']['tmp_name']);
 		}
 
 		// 提示音
@@ -145,10 +148,10 @@ class TopicController extends \BaseController {
 			if($type == 'mp3' || $type == 'wav')
 			{
 				if(is_numeric($inputs['file_hint_id']))
-				{
 					$this->att->del($inputs['file_hint_id']);
-					$questionAtt['hint'] = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type);
-				}
+				
+
+				$inputs['hint'] = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type);
 			}
 			
 		}
@@ -161,14 +164,54 @@ class TopicController extends \BaseController {
 			if($type == 'mp3' || $type == 'wav')
 			{
 				if(is_numeric($inputs['file_sound_id']))
-				{
 					$this->att->del($inputs['file_sound_id']);
-					$questionAtt['sound'] = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type);
-				}
+				
+
+				$inputs['sound'] = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type);
 			}
 		}
 
 		$topic->edit($qid, $inputs);
+
+
+		/* 处理答案 */
+		foreach($inputs['answers_txt'] as $k => $atxt)
+		{
+			$answers = array();
+			if($atxt)
+				$answers['txt'] = $atxt;
+
+			if( isset($inputs['answers_right'][$k]) )
+				$answers['is_right'] = 1;
+
+			if($_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK )
+			{
+				if(is_numeric($inputs['answers_img_id'][$k]))
+					$topic->editAnswers($inputs['answers_img_id'][$k]), $answers);
+
+				$attid = $this->setImg( $qid, $_FILES['answers_img']['tmp_name'][$k]);
+				$answers['img'] = $attid;
+			}
+
+
+			if($_FILES['answers_sound']['error'][$k] == UPLOAD_ERR_OK)
+			{
+				$type = $this->att->getExt($_FILES['answers_sound']['name'][$k]);
+				if($type == 'mp3' || $type == 'wav')
+				{
+					if( $attid = $this->setAudio( $qid, $_FILES['answers_sound']['tmp_name'][$k], $type) )
+						$answers['sound'] = $attid;
+				}
+			}
+
+			// 插入数据
+			if($answers)
+			{
+				$topic->editAnswers($inputs['answers_id'][$k]), $answers);
+			}
+		}
+
+
 		echo "ok";
 	}
 

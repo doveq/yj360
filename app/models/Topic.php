@@ -166,4 +166,29 @@ class Topic  {
 		return $id;
 	}
 
+	/* 编辑答案 */
+	public function editAnswers($aid, $data)
+	{
+		$info = array();
+		
+		if(isset($data['txt']) && !empty($data['txt']))
+			$info['txt'] = $data['txt'];
+
+		if(isset($data['sound']) && is_numeric($data['sound']))
+			$info['sound'] = $data['sound'];
+
+		if(isset($data['img']) && is_numeric($data['img']))
+			$info['img'] = $data['img'];
+
+		if(isset($data['video']) && is_numeric($data['video']))
+			$info['video'] = $data['video'];
+
+		if(isset($data['is_right']) && is_numeric($data['is_right']))
+				$info['is_right'] = $data['is_right'];
+
+		if($info)
+			DB::table("questions")->where('id', $aid)->update($info);
+	
+	}
+
 }
