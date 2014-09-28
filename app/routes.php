@@ -66,7 +66,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('subject_item_relation', 'Admin\SubjectItemRelationController');
     Route::resource('product', 'Admin\ProductController');
     Route::resource('log', 'Admin\LogController');
-    Route::resource('subject_content', 'Admin\SubjectContentController');
+    Route::resource('item_content', 'Admin\ItemContentController');
 
 });
 

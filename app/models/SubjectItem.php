@@ -90,22 +90,9 @@ class SubjectItem extends Eloquent {
         return array('data' => $results, 'total' => $count);
     }
 
-    /* 查找单个用户信息 */
-    public function getInfoById($id)
+    public function contents()
     {
-        $re = DB::table($this->table)->where('id', $id)->get();
-        return (array)$re[0];
-    }
-
-    /* 跟新用户信息 */
-    public function setInfo($id, $data)
-    {
-        DB::table($this->table)->where('id', $id)->update($data);
-    }
-
-    public function del($id)
-    {
-        DB::table($this->table)->where('id', $id)->delete();
+        return $this->hasMany('subject_content');
     }
 
 }

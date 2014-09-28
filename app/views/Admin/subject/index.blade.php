@@ -59,7 +59,7 @@
                   <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                   <ul class="dropdown-menu">
                       <li><a href="{{url('/admin/subject_item_relation/'. $subject['id'] .'/edit') }}"><i class="icon-asterisk"></i> 功能管理</a></li>
-                      <li><a href="{{url('/admin/subject_content/'. $subject['id'] .'/edit') }}"><i class="icon-magic"></i> 内容管理</a></li>
+                      <li><a href="{{url('/admin/item_content?subject_id='. $subject['id']) }}"><i class="icon-magic"></i> 内容管理</a></li>
                       <li class="divider"></li>
                       @if($subject['status'] === 1)
                       <li><a style='color:#999;'><i class="icon-ok"></i> 发布</a></li>

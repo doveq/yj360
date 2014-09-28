@@ -2,11 +2,12 @@
 use View;
 use Session;
 use Subject;
+use SubjectItem;
 use Validator;
 use Input;
 use Paginator;
 
-class SubjectContentController extends \BaseController {
+class ItemContentController extends \BaseController {
 
     /**
      * Display a listing of the resource.
@@ -16,6 +17,24 @@ class SubjectContentController extends \BaseController {
     public function index()
     {
         //
+        $query = Input::only('subject_id', 'page');
+        //$query = array_filter($query); // 删除空值
+
+        // dd($query);
+        $validator = Validator::make($query,
+            array(
+                'subject_id'    => 'numeric',
+            )
+        );
+
+        if($validator->fails())
+        {
+            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "item_content");
+        }
+
+        $subject = Subject::find($query['subject_id']);
+        $items = $subject->items;
+        return $this->adminView('item_content.index', compact('subject','items','query'));
     }
 
 
@@ -27,6 +46,24 @@ class SubjectContentController extends \BaseController {
     public function create()
     {
         //
+        $query = Input::only('subject_id', 'subject_item_id');
+        $validator = Validator::make($query,
+            array(
+                'subject_id'    => 'numeric',
+                'subject_item_id'    => 'numeric',
+            )
+        );
+
+        if($validator->fails())
+        {
+            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "item_content");
+        }
+
+        $subject = Subject::find($query['subject_id']);
+        $items = $subject->items;
+        $subject_item = SubjectItem::find($query['subject_item_id']);
+
+        return $this->adminView('item_content.create', compact('subject', 'items', 'subject_item', 'query'));
     }
 
 
