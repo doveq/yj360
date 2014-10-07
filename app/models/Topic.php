@@ -2,6 +2,64 @@
 
 class Topic  {
 
+
+	/* 题目列表 */
+	public function getList($data = array())
+	{
+		$whereArr = array();
+		$valueArr = array();
+		if( $data['txt'] )
+		{
+			$whereArr[] = " `txt` like ? ";
+			$valueArr[] = '%'. $data['txt'] .'%';
+		}
+
+		if( $data['source'] )
+		{
+			$whereArr[] = " `source` like ? ";
+			$valueArr[] = '%'. $data['source'] .'%';
+		}
+
+		if( is_numeric($data['type']) )
+		{
+			$whereArr[] = " `type` = ? ";
+			$valueArr[] = $data['type'];
+		}
+
+		if( is_numeric($data['status']) )
+		{
+			$whereArr[] = " `status` = ? ";
+			$valueArr[] = $data['status'];
+		}
+
+		$limit = "";
+		if( is_numeric($data['page']) && is_numeric($data['pageSize']) )
+		{
+			$num = $data['pageSize'] * ($data['page'] -1);
+			$limit = " limit {$num},{$data['pageSize']} ";
+		}
+
+		$where = '';
+		if($whereArr)
+			$where = ' where ' . implode(' and ', $whereArr);
+
+		$sql = "select * from questions {$where} order by id desc {$limit} ";
+		$results = DB::select($sql, $valueArr);
+		#print_r(DB::getQueryLog());
+
+		// 获取总数分页使用
+		$sql = "select count(*) as num from questions {$where}";
+		$re2 = DB::select($sql, $valueArr);
+		$count = $re2[0]->num;
+
+		foreach($results as &$item)
+		{
+			$item = (array)$item;
+		}
+		
+		return array('data' => $results, 'total' => $count);
+	}
+
 	/* 获取题目信息 */
 	public function get($id)
 	{
@@ -76,6 +134,9 @@ class Topic  {
 	{
 		$info = array();
 		
+		if(isset($data['source']) && !empty($data['source']))
+			$info['source'] = $data['source'];
+
 		if(isset($data['txt']) && !empty($data['txt']))
 			$info['txt'] = $data['txt'];
 
@@ -96,6 +157,9 @@ class Topic  {
 
 		if(isset($data['type']) && is_numeric($data['type']))
 				$info['type'] = $data['type'];
+
+		if(isset($data['status']) && is_numeric($data['status']))
+				$info['status'] = $data['status'];
 	
 		$info['created_at'] = date('Y-m-d H:i:s');
 		$id = DB::table("questions")->insertGetId($info);
@@ -107,7 +171,10 @@ class Topic  {
 	public function edit($qid, $data)
 	{
 		$info = array();
-		
+
+		if(isset($data['source']) && !empty($data['source']))
+			$info['source'] = $data['source'];
+
 		if(isset($data['txt']) && !empty($data['txt']))
 			$info['txt'] = $data['txt'];
 
@@ -128,6 +195,9 @@ class Topic  {
 
 		if(isset($data['type']) && is_numeric($data['type']))
 				$info['type'] = $data['type'];
+
+		if(isset($data['status']) && is_numeric($data['status']))
+				$info['status'] = $data['status'];
 
 		if($info)
 			DB::table("questions")->where('id', $qid)->update($info);
@@ -187,8 +257,55 @@ class Topic  {
 				$info['is_right'] = $data['is_right'];
 
 		if($info)
-			DB::table("questions")->where('id', $aid)->update($info);
+			DB::table("answers")->where('id', $aid)->update($info);
 	
+	}
+
+
+	/* 删除题目 */
+	public function del($id)
+	{
+		$questions = DB::table('questions')->where('id', $id)->get();
+		if( !$questions )
+			return 0;
+
+		$att = new Attachments();
+
+		$q = (array)$questions[0];
+
+		// 删除题目
+		if($q['hint'] > 0)
+			$att->del($q['hint']);
+
+		if($q['sound'] > 0)
+			$att->del($q['sound']);
+
+		if($q['img'] > 0)
+			$att->del($q['img']);
+
+		if($q['video'] > 0)
+			$att->del($q['video']);
+
+		DB::table('questions')->where('id', $id)->delete();
+
+		// 删除答案
+		$answers = DB::table('answers')->where('qid', $id)->get();
+		foreach ($answers as $data) 
+		{
+			$data = (array)$data;
+			if($data['img'] > 0)
+				$att->del($data['img']);
+
+			if($data['sound'] > 0)
+				$att->del($data['sound']);
+
+			if($data['video'] > 0)
+				$att->del($data['video']);
+
+			DB::table('answers')->where('id', $data['id'])->delete();
+		}
+
+		return 1;
 	}
 
 }

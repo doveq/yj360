@@ -20,6 +20,13 @@
       		@endif
 
       		  <div class="form-group">
+			    <label class="col-sm-2 control-label">原始编号</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="source" value="{{$q['source'] or ''}}" />
+			    </div>
+			  </div>
+
+      		  <div class="form-group">
 			    <label class="col-sm-2 control-label">类型</label>
 			    <div class="col-sm-10">
 			      <select class="form-control" name="type">
@@ -43,6 +50,11 @@
 			      	<input type="hidden" name="file_img_id" value="{{$q['img_att_id']}}" />
 			      	<img src="{{$q['img_url']}}" />
 		      	  </div>
+		      	  <div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="del_img" value="{{$q['img_att_id']}}" /> 删除题干图片
+				    </label>
+				  </div>
 			      @endif
 			      <input type="file" title="选择上传" name="file_img" />
 			    </div>
@@ -56,6 +68,11 @@
 			      	<input type="hidden" name="file_sound_id" value="{{$q['sound_att_id']}}" />
 			      	<audio src="{{$q['sound_url']}}">
 			      </div>
+			      <div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="del_sound" value="{{$q['sound_att_id']}}" /> 删除提干音
+				    </label>
+				  </div>
 			      @endif
 			      <input type="file" title="选择上传" name="file_sound" />
 			    </div>
@@ -69,6 +86,11 @@
 			      	<input type="hidden" name="file_hint_id" value="{{$q['hint_att_id']}}" />
 			      	<audio src="{{$q['hint_url']}}">
 			      </div>
+			      <div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="del_hint" value="{{$q['hint_att_id']}}" /> 删除提示音
+				    </label>
+				  </div>
 			      @endif
 			      <input type="file" title="选择上传" name="file_hint" />
 			    </div>
@@ -80,18 +102,33 @@
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">答案{{$i}}</label>
 			    <div class="col-sm-10">
+			      @if(isset($a[$i]['id']))
+			      	<input type="hidden" name="aid[]" value="{{$a[$i]['id']}}" />
+			      @endif
+
 			      <input type="text" class="form-control" name="answers_txt[]" value="{{$a[$i]['txt'] or ''}}" />
+			      
 			      @if(isset($a[$i]['img_url']))
 			      <div>
 			      	<input type="hidden" name="answers_img_id[]" value="{{$a[$i]['img_att_id']}}" />
 			      	<img src="{{$a[$i]['img_url']}}" />
 			      </div>
+			      <div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="del_answers_img[]" value="{{$a[$i]['img_att_id']}}" /> 删除答案图片
+				    </label>
+				  </div>
 			      @endif
 			      @if(isset($a[$i]['sound_url']))
 			      <div>
 			      	<input type="hidden" name="answers_sound_id[]" value="{{$a[$i]['sound_att_id']}}" />
 			      	<audio src="{{$a[$i]['sound_url']}}">
 			      </div>
+			      <div class="checkbox">
+				    <label>
+				      <input type="checkbox" name="del_answers_sound[]" value="{{$a[$i]['sound_att_id']}}" /> 删除答案声音
+				    </label>
+				  </div>
 			      @endif
 			      <input type="file" title="上传图片"  name="answers_img[]" />
 			      <input type="file" title="上传声音" name="answers_sound[]" />
@@ -118,7 +155,6 @@
 			  <div class="form-group">
 			    <label for="inputPassword" class="col-sm-3 control-label"></label>
 			    <div class="col-sm-9">
-			      	<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#delModal">删除</button>
 			      	<button type="submit" class="btn btn-success">保存编辑</button>
 			    </div>
 			  </div>

@@ -39,7 +39,7 @@ class Sql
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属用户id',
 			  `qid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属题目id',
-			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型，1:用户录音上传，2:题干附件，3:答案附件',
+			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型，1:用户录音上传，2:题干附件,
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `file_name` varchar(100) NOT NULL DEFAULT '' COMMENT '文件名',
 			  `file_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '文件类型，1:mav, 2:mp3, 3:flv, 4:jpg',
@@ -63,6 +63,7 @@ class Sql
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '题目类型',
 			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 0:未审核, 1:审核通过，-1:审核拒绝',
+			  `source` varchar(100) NOT NULL DEFAULT '' COMMENT '原始题目编号',
 			  PRIMARY KEY (`id`),
 			  KEY `type` (`type`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;

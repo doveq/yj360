@@ -1,0 +1,135 @@
+blockquote, body, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, hr, input, legend, li, ol, p, pre, td, textarea, th, ul {
+    margin: 0;
+    padding: 0;
+}
+
+body, button, input, select, textarea {
+    font: 12px/1.5 tahoma,arial,"Hiragino Sans GB",宋体,sans-serif;
+}
+
+body {
+    color: #3c3c3c;
+    overflow-x: hidden;
+}
+a {
+    text-decoration: none;
+}
+a img {
+	display: block;
+}
+.clear{
+	clear:both;
+	overflow: hidden;
+}
+
+.wrap {
+    margin: 0 auto;
+    position: relative;
+    width: 1000px;
+}
+
+#site-head {
+    background: none repeat scroll 0 0 #499528;
+    z-index: 10000;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+    height:60px;
+    overflow:hidden;
+    position: relative;
+}
+#site-logo{
+	float:left;
+	margin-right:20px;
+}
+#site-nav{
+	text-decoration: none;
+}
+#site-nav li{
+	float:left;
+	list-style-type:none;
+}
+#site-nav li a{
+	color:#fff;
+	display: inline;
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    overflow: hidden;
+    font-size: 18px;
+    font-weight:bold;
+    padding:0 15px;
+}
+.stite-nav-select {
+	background-color:#3d7722;
+}
+#footer{
+	border-top: 1px solid #d2d2d2;
+	background: none repeat scroll 0 0 #e4e4e4;
+	padding:15px 0;
+	margin-top:30px;
+	position: relative;
+}
+
+.container{
+	margin-top:20px;
+}
+
+.index-block{
+	float:left;
+}
+#index-block-ksrk {
+	float:left;
+	height: 60px;
+	width:300px;
+	overflow:hidden;
+}
+.index-list {
+	float:left;
+	width: 240px;
+	overflow: hidden;
+	margin-right:10px;
+}
+.index-list-head img, .index-list-footer img {
+	display: block;
+	overflow: hidden;
+}
+.index-list ul {
+	padding:5px 0;
+}
+.index-list li{
+	padding:3px 0;
+	list-style-type:none;
+}
+.index-list li a {
+	color:#fff;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight:bold;
+    padding:0 15px;
+}
+li.index-list-more a {
+	font-size: 12px;
+}
+
+#index-list-1 {
+	background-color: #4ea3da;
+}
+#index-list-2 {
+	background-color: #e6c311;
+}
+#index-list-3 {
+	background-color: #b88bcc;
+}
+#index-list-4 {
+	background-color: #e77d70;
+}
+
+#topic-tools{
+	background: none repeat scroll 0 0 #333333;
+	width:100%;
+	position: relative;
+	padding:5px 0;
+}
+#topic-bnt-tj{
+	float:left;
+}

@@ -10,12 +10,29 @@
     @yield('css')
   </head>
   <body role="document">
-     
+      <div id="site-head">
+          <div class="wrap">
+              <a id="site-logo" href="/"><img src="/assets/img/logo.jpg" /></a>
+
+              <ul id="site-nav">
+                <li class="stite-nav-select"><a href="/">首页</a></li>
+                <li><a href="/">音基考级</a></li>
+                <li><a href="/">中小学音基</a></li>
+                <li><a href="/">趣味测评</a></li>
+                <li><a href="/">APP下载</a></li>
+                <li><a href="/">产品商店</a></li>
+              </ul>
+          </div>
+      </div>
 
       @yield('content')
 
     
       <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
       @yield('js')
+
+      <div id="footer" class="wrap">
+        关于我们
+      </div>
   </body>
 </html>

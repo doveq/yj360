@@ -52,11 +52,12 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 	// Route::post('/doUserEdit', '\Admin\UserController@doEdit');
 	// Route::post('/doUserDel', '\Admin\UserController@doDel');
 
-    Route::get('/topic/list', '\Admin\TopicController@showList');
+    Route::get('/topic', '\Admin\TopicController@index');
     Route::get('/topic/add', '\Admin\TopicController@showAdd');
     Route::post('/topic/doAdd', '\Admin\TopicController@doAdd');
     Route::get('/topic/edit', '\Admin\TopicController@showEdit');
     Route::post('/topic/doEdit', '\Admin\TopicController@doEdit');
+    Route::get('/topic/doDel', '\Admin\TopicController@doDel');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
@@ -82,6 +83,9 @@ Route::group(array('before' => 'indexLogin'), function(){
 	// flash录音
 	Route::get('/recorder', 'RecorderController@index');
 	Route::post('/recorder/upload', 'RecorderController@upload');
+
+    // 答题页面
+    Route::get('/topic', 'topicController@index');    
 });
 
 

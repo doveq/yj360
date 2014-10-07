@@ -4,8 +4,7 @@ class IndexController extends BaseController {
 
 	public function index()
 	{
-		//return View::make('hello');
-		echo "开始。。。";
+		return $this->indexView('index');
 	}
 
 
