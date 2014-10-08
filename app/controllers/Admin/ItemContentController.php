@@ -3,6 +3,7 @@ use View;
 use Session;
 use Subject;
 use SubjectItem;
+use SubjectContent;
 use Validator;
 use Input;
 use Paginator;
@@ -23,13 +24,13 @@ class ItemContentController extends \BaseController {
         // dd($query);
         $validator = Validator::make($query,
             array(
-                'subject_id'    => 'numeric',
+                'subject_id'    => 'numeric|required',
             )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "item_content");
+            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "subject");
         }
 
         $subject = Subject::find($query['subject_id']);
@@ -49,14 +50,14 @@ class ItemContentController extends \BaseController {
         $query = Input::only('subject_id', 'subject_item_id');
         $validator = Validator::make($query,
             array(
-                'subject_id'    => 'numeric',
-                'subject_item_id'    => 'numeric',
+                'subject_id'    => 'numeric|required',
+                'subject_item_id'    => 'numeric|required',
             )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "item_content");
+            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "subject");
         }
 
         $subject = Subject::find($query['subject_id']);
@@ -75,6 +76,31 @@ class ItemContentController extends \BaseController {
     public function store()
     {
         //
+        $data = Input::all();
+        // $data['online_at'] = date("Y-m-d H:i:s");
+        $data['created_at'] = date("Y-m-d H:i:s");
+        // $data['status'] = 0;
+        $validator = Validator::make($data ,
+            array('name' => 'required'
+                )
+        );
+        // dd($data);
+        // unset($data['pic']);
+
+        if($validator->fails())
+        {
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "subject");
+        }
+        $subjectcontent = new SubjectContent();
+        $subjectcontent->name = $data['name'];
+        $subjectcontent->pic = $data['pic'];
+        $subjectcontent->description = $data['description'];
+        $subjectcontent->created_at = $data['created_at'];
+        $subjectcontent->subject_item_id = $data['subject_item_id'];
+        $subjectcontent->save();
+        if ($subjectcontent->save()) {
+            return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "subject");
+        }
     }
 
 
