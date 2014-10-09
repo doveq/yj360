@@ -2,18 +2,15 @@
 @section('title')真题题库@stop
 
 @section('nav')
-  <ul class="nav nav-list">
-    <li><a class="icon-list" href="topic"> 所有类型</a></li>
-  </ul>
+  <div class="list-group">
+    <a href="topic" class="list-group-item @if(!isset($query['type'])) active @endif ">所有类型</a>
+    @foreach($typeEnum as $k => $v)
+      <a href="topic?type={{$k}}" class="list-group-item @if(isset($query['type']) && $query['type'] == $k) active @endif ">{{$v}}</a>
+    @endforeach
+  </div>
 @stop
 
 @section('content')
-  <div class="row">
-    <ol class="breadcrumb">
-      <li class="active">题目类型</li>
-      <li class="active">所有类型</li>
-    </ol>
-  </div>
   <div class="row text-right">
     {{ Form::open(array('role' => 'form', 'class' => 'form-inline', 'method' => 'get')) }}
       <div class="form-group">
