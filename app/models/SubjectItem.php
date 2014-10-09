@@ -90,9 +90,9 @@ class SubjectItem extends Eloquent {
         return array('data' => $results, 'total' => $count);
     }
 
-    public function contents()
-    {
-        return $this->hasMany('subject_content');
-    }
+    // public function contents()
+    // {
+    //     return $this->hasMany('subject_content');
+    // }
 
 }
