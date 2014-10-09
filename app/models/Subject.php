@@ -131,7 +131,7 @@ class Subject extends Eloquent {
 
     public function items()
     {
-        return $this->belongsToMany('subjectItem', 'subject_item_relation', 'subject_id', 'subject_item_id');
+        return $this->belongsToMany('SubjectItem', 'subject_item_relation', 'subject_id', 'subject_item_id');
     }
 
 }
