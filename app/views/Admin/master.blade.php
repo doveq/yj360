@@ -56,15 +56,15 @@
                   <li><a href="#">浏览教材</a></li>
                   <li><a href="#">添加教材</a></li>
                 </ul>
-              </li>
+              </li> -->
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">产品管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">浏览产品</a></li>
-                  <li><a href="#">添加产品</a></li>
+                  <li><a href="/admin/product">浏览产品</a></li>
+                  <li><a href="/admin/product/create">添加产品</a></li>
                 </ul>
-              </li> -->
+              </li>
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">其他 <span class="caret"></span></a>

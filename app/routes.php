@@ -68,6 +68,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('product', 'Admin\ProductController');
     Route::resource('log', 'Admin\LogController');
     Route::resource('item_content', 'Admin\ItemContentController');
+    Route::resource('textbook_item', 'Admin\TextbookItemController');
 
 });
 
@@ -85,7 +86,7 @@ Route::group(array('before' => 'indexLogin'), function(){
 	Route::post('/recorder/upload', 'RecorderController@upload');
 
     // 答题页面
-    Route::get('/topic', 'topicController@index');    
+    Route::get('/topic', 'topicController@index');
 });
 
 

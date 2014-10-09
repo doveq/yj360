@@ -64,8 +64,8 @@
                 <a class="btn btn-default btn-xs" href="{{url('/admin/product/'. $product['id'] .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
                 <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{url('/admin/product_item_relation/'. $product['id'] .'/edit') }}"><i class="icon-asterisk"></i> 功能管理</a></li>
-                    <li><a href="{{url('/admin/product_content/'. $product['id'] .'/edit') }}"><i class="icon-magic"></i> 内容管理</a></li>
+                    <!-- <li><a href="{{url('/admin/product_item_relation/'. $product['id'] .'/edit') }}"><i class="icon-asterisk"></i> 功能管理</a></li> -->
+                    <!-- <li><a href="{{url('/admin/product_content/'. $product['id'] .'/edit') }}"><i class="icon-magic"></i> 内容管理</a></li> -->
                     <li class="divider"></li>
                     @if($product['status'] === 1)
                     <li><a style='color:#999;'><i class="icon-ok"></i> 发布</a></li>

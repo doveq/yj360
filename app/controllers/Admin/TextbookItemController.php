@@ -1,16 +1,13 @@
 <?php namespace Admin;
 use View;
 use Session;
-use Product;
-use Subject;
+use TextbookItem;
 use Validator;
 use Input;
 use Paginator;
-use Redirect;
 
-class ProductController extends \BaseController {
+class TextbookItemController extends \BaseController {
 
-    public $statusEnum = array('' => '所有状态', '0' => '准备发布', '1' => '已发布', '-1' => '下线');
     /**
      * Display a listing of the resource.
      *
@@ -20,47 +17,35 @@ class ProductController extends \BaseController {
     {
         $pageSize = 20;  // 每页显示条数
 
-        // $query = Input::all();
-        $query = Input::only('name', 'status', 'page', 'subject_id');
-
+        $query = Input::only('name', 'page');
         $query['pageSize'] = $pageSize;
         //$query = array_filter($query); // 删除空值
 
         // 当前页数
-        if( !isset($query['page']) || !is_numeric($query['page']) || $query['page'] < 1 )
+        if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        // dd($query);
         $validator = Validator::make($query,
             array(
                 'name'      => 'alpha_dash',
-                'subject_id'      => 'numeric',
-                'status'    => 'numeric'
             )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "product");
+            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "textbook_item");
         }
 
-        $product = new Product();
-        $lists = $product->getList($query);
-        $products = $lists['data'];
-
-        $subjects_list = Subject::all();
-        $subjects = array('' => '所有科目');
-        foreach ($subjects_list as $key => $subject) {
-            # code...
-            $subjects[$subject->id] = $subject->name;
-        }
+        $textbook_item = new TextbookItem();
+        $data = $textbook_item->getList($query);
 
         // 分页
-        $paginator = Paginator::make($products, $lists['total'], $pageSize);
+        $paginator = Paginator::make($data['data'], $data['total'], $pageSize);
         unset($query['pageSize']); // 减少分页url无用参数
         $paginator->appends($query);  // 设置分页url参数
-        $statusEnum = $this->statusEnum;
-        return $this->adminView('product.index', compact('products','subjects','query', 'paginator', 'statusEnum'));
+// dd($textbook_items);
+        $textbook_items = $data['data'];
+        return $this->adminView('textbook_item.index', compact('textbook_items','query', 'paginator'));
     }
 
 
@@ -71,8 +56,7 @@ class ProductController extends \BaseController {
      */
     public function create()
     {
-        //
-        return $this->adminView('product.create');
+        return $this->adminView('textbook_item.create');
     }
 
 
@@ -83,21 +67,31 @@ class ProductController extends \BaseController {
      */
     public function store()
     {
-        // dd(Input::all());
+        //
         $data = Input::all();
+        // $data['online_at'] = date("Y-m-d H:i:s");
         $data['created_at'] = date("Y-m-d H:i:s");
+        // $data['status'] = 0;
         $validator = Validator::make($data ,
             array('name' => 'required'
                 )
         );
+        // dd($data);
+        // unset($data['pic']);
 
         if($validator->fails())
         {
-            return Redirect::to('admin/product/create')->withErrors($validator);
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "subject");
         }
-        $product = new Product();
-        if ($product->add($data)) {
-            return $this->adminPrompt("添加成功", $validator->messages()->first(), $url = "product");
+        $subjectcontent = new SubjectContent();
+        $subjectcontent->name = $data['name'];
+        $subjectcontent->pic = $data['pic'];
+        $subjectcontent->description = $data['description'];
+        $subjectcontent->created_at = $data['created_at'];
+        $subjectcontent->subject_item_id = $data['subject_item_id'];
+        $subjectcontent->save();
+        if ($subjectcontent->save()) {
+            return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "subject");
         }
     }
 
@@ -123,6 +117,9 @@ class ProductController extends \BaseController {
     public function edit($id)
     {
         //
+        $subject = Subject::find($id);
+        $items = $subject->items;
+        return $this->adminView('subject_content.edit', compact('subject','items'));
     }
 
 
