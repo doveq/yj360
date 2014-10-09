@@ -2,7 +2,7 @@
 use View;
 use Session;
 use Subject;
-use SubjectItem;
+// use SubjectItem;
 use SubjectContent;
 use Validator;
 use Input;
