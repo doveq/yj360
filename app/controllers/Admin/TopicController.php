@@ -13,7 +13,7 @@ use Attachments;
 class TopicController extends \BaseController {
 
 	public $statusEnum = array('' => '所有状态', '0' => '无效', '1' => '审核通过', '-1' => '审核拒绝');
-	public $typeEnum = array('' => '所有类型', '-1' => '管理员', '0' => '学生', '1' => '老师');
+	public $typeEnum = array('1' => '选择题', '2' => '填空题', '3' => '模唱', '4' => '试唱');
 
 	public function __construct()
 	{
@@ -56,7 +56,9 @@ class TopicController extends \BaseController {
 
 	public function showAdd()
 	{
-		return $this->adminView('topic.topic');
+		$info = array();
+		$info['typeEnum'] = $this->typeEnum;
+		return $this->adminView('topic.topic', $info);
 	}
 
 	public function doAdd()
@@ -151,6 +153,7 @@ class TopicController extends \BaseController {
 		$topic = new Topic();
 		$info = $topic->get($id);
 		$info['is_edit'] = 1;
+		$info['typeEnum'] = $this->typeEnum;
 
 		return $this->adminView('topic.topic', $info);
 	}

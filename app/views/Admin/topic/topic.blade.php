@@ -30,7 +30,9 @@
 			    <label class="col-sm-2 control-label">类型</label>
 			    <div class="col-sm-10">
 			      <select class="form-control" name="type">
-					  <option value="1" selected="selected">类型</option>
+			      	@foreach($typeEnum as $k => $v)
+					  <option value="{{$k}}" @if(isset($q['type']) && $k == $q['type']) selected="selected" @endif >{{$v}}</option>
+					@endforeach
 				  </select>
 			    </div>
 			  </div>
