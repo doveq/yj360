@@ -39,7 +39,7 @@ class Sql
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属用户id',
 			  `qid` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属题目id',
-			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型，1:用户录音上传，2:题干附件,
+			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '类型，1:用户录音上传，2:题干附件',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `file_name` varchar(100) NOT NULL DEFAULT '' COMMENT '文件名',
 			  `file_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '文件类型，1:mav, 2:mp3, 3:flv, 4:jpg',
