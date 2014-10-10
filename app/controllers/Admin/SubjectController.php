@@ -9,7 +9,7 @@ use Redirect;
 
 class SubjectController extends \BaseController {
 
-    public $statusEnum = array('0' => '准备发布', '1' => '已发布', '-1' => '下线');
+    public $statusEnum = array('所有状态', '0' => '准备发布', '1' => '已发布', '-1' => '下线');
 
     public function index()
     {

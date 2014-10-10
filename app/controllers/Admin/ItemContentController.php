@@ -35,7 +35,9 @@ class ItemContentController extends \BaseController {
 
         $subject = Subject::find($query['subject_id']);
         $items = $subject->items;
-        return $this->adminView('item_content.index', compact('subject','items','query'));
+        // dd($items);
+        $subjects = Subject::all();
+        return $this->adminView('item_content.index', compact('subject','subjects','items', 'query'));
     }
 
 
@@ -75,32 +77,7 @@ class ItemContentController extends \BaseController {
      */
     public function store()
     {
-        //
-        $data = Input::all();
-        // $data['online_at'] = date("Y-m-d H:i:s");
-        $data['created_at'] = date("Y-m-d H:i:s");
-        // $data['status'] = 0;
-        $validator = Validator::make($data ,
-            array('name' => 'required'
-                )
-        );
-        // dd($data);
-        // unset($data['pic']);
 
-        if($validator->fails())
-        {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "subject");
-        }
-        $subjectcontent = new SubjectContent();
-        $subjectcontent->name = $data['name'];
-        $subjectcontent->pic = $data['pic'];
-        $subjectcontent->description = $data['description'];
-        $subjectcontent->created_at = $data['created_at'];
-        $subjectcontent->subject_item_id = $data['subject_item_id'];
-        $subjectcontent->save();
-        if ($subjectcontent->save()) {
-            return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "subject");
-        }
     }
 
 

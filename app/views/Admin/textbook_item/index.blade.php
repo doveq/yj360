@@ -83,7 +83,22 @@
 <script type="text/javascript">
 
 $(function(){
-
+  //删除
+  $(".btn_delete").bind("click", function(){
+      var $this = $(this);
+      var textbook_item_id = $this.data("id");
+      var textbook_item_val = $this.data("val");
+      if (textbook_item_id <= 0) {
+          alert("data error");
+          return false;
+      }
+      $("#myModalLabel").html('提示:');
+      $("#myModalBody").html('你确定要删除 '+textbook_item_val+' 吗?');
+      $("#textbook_item_id").val(textbook_item_id);
+      $("#myModalForm").attr('action', '/admin/textbook_item/'+ textbook_item_id);
+      $("#form_method").attr('value', 'DELETE');
+      $('#delModal').modal('show');
+  });
 });
 </script>
 @stop

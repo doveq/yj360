@@ -1,13 +1,13 @@
 <?php
 
-class SubjectItem extends Eloquent {
+class ContentExam extends Eloquent {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'subject_item';
+    protected $table = 'content_exam';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -37,30 +37,23 @@ class SubjectItem extends Eloquent {
     //  return $this->password;
     // }
 
-    /* 添加用户 */
-    public function add($data)
-    {
-        $id = DB::table($this->table)->insertGetId(
-            array(
-                'name'        => $data['name'],
-                'created_at'  => $data['created_at'],
-            )
-
-        );
-
-        return $id;
-    }
-
     /* 用户列表 */
     public function getList($data = array())
     {
         $whereArr = array();
         $valueArr = array();
-        if( $data['name'] )
+
+        if( is_numeric($data['subject_content_id']) )
         {
-            $whereArr[] = " `name` like ? ";
-            $valueArr[] = '%'. $data['name'] .'%';
+            $whereArr[] = " `subject_content_id` = ? ";
+            $valueArr[] = $data['subject_content_id'];
         }
+
+        // if( is_numeric($data['exam_id']) )
+        // {
+        //     $whereArr[] = " `exam_id` = ? ";
+        //     $valueArr[] = $data['exam_id'];
+        // }
 
         $limit = "";
         if( is_numeric($data['page']) && is_numeric($data['pageSize']) )
@@ -88,17 +81,6 @@ class SubjectItem extends Eloquent {
         }
 
         return array('data' => $results, 'total' => $count);
-    }
-
-    public function subject()
-    {
-        return $this->belongsToMany('Subject', 'subject_item_relation', 'subject_id', 'subject_item_id');
-    }
-
-
-    public function contents()
-    {
-        return $this->hasMany('SubjectContent');
     }
 
 }
