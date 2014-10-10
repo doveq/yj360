@@ -93,11 +93,9 @@ class SubjectContentController extends \BaseController {
     public function store()
     {
         //
-        $data = Input::all();
-        // $data['online_at'] = date("Y-m-d H:i:s");
-        $data['created_at'] = date("Y-m-d H:i:s");
-        // $data['status'] = 0;
-        $validator = Validator::make($data ,
+        $query = Input::all();
+        $query['created_at'] = date("Y-m-d H:i:s");
+        $validator = Validator::make($query ,
             array('name' => 'required',
                 'subject_id'    => 'numeric|required',
                 'subject_item_id'    => 'numeric|required',
@@ -106,18 +104,19 @@ class SubjectContentController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "subject");
+            return $this->adminPrompt("参数错误", $validator->messages()->first(),
+                $url = "subject_content?subject_id=".$query['subject_id']."&subject_item_id=".$query['subject_item_id']);
         }
-        $subjectcontent = new SubjectContent();
-        $subjectcontent->name = $data['name'];
-        $subjectcontent->pic = $data['pic'];
-        $subjectcontent->description = $data['description'];
-        $subjectcontent->created_at = $data['created_at'];
-        $subjectcontent->subject_id = $data['subject_id'];
-        $subjectcontent->subject_item_id = $data['subject_item_id'];
-        $subjectcontent->save();
+        $subjectcontent                  = new SubjectContent();
+        $subjectcontent->name            = $query['name'];
+        $subjectcontent->pic             = $query['pic'];
+        $subjectcontent->description     = $query['description'];
+        $subjectcontent->created_at      = $query['created_at'];
+        $subjectcontent->subject_id      = $query['subject_id'];
+        $subjectcontent->subject_item_id = $query['subject_item_id'];
         if ($subjectcontent->save()) {
-            return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "subject");
+            return $this->adminPrompt("操作成功", $validator->messages()->first(),
+                $url = "subject_content?subject_id=".$query['subject_id']."&subject_item_id=".$query['subject_item_id']);
         }
     }
 
@@ -161,9 +160,9 @@ class SubjectContentController extends \BaseController {
      */
     public function update($id)
     {
-        $data = Input::only('name', 'desc', 'status');
+        $query = Input::only('name', 'desc', 'status');
 
-        $validator = Validator::make($data ,
+        $validator = Validator::make($query ,
             array('name' => 'alpha_dash',
                 // 'desc' => 'alpha_dash',
                 // 'online_at' => 'date',
@@ -177,9 +176,9 @@ class SubjectContentController extends \BaseController {
                 $url = "subject_content?subject_id=".$subject_content->subject_id."&subject_item_id=".$subject_content->subject_item_id);
         }
 
-        if (isset($data['name'])) $subject_content->name           = $data['name'];
-        if (isset($data['desc'])) $subject_content->description    = $data['desc'];
-        if (isset($data['status'])) $subject_content->status       = $data['status'];
+        if (isset($query['name'])) $subject_content->name           = $query['name'];
+        if (isset($query['desc'])) $subject_content->description    = $query['desc'];
+        if (isset($query['status'])) $subject_content->status       = $query['status'];
 
         $subject_content->save();
 

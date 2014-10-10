@@ -108,7 +108,7 @@ class SubjectItemRelationController extends \BaseController {
             }
         }
         // echo "ok";
-        return $this->adminPrompt("编辑成功", '', $url = "subject");
+        return $this->adminPrompt("编辑成功", '', $url = "item_content?subject_id=" . $id);
 
     }
 

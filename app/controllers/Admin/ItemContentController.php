@@ -36,7 +36,8 @@ class ItemContentController extends \BaseController {
         $subject = Subject::find($query['subject_id']);
         $items = $subject->items;
         // dd($items);
-        return $this->adminView('item_content.index', compact('subject','items','query'));
+        $subjects = Subject::all();
+        return $this->adminView('item_content.index', compact('subject','subjects','items', 'query'));
     }
 
 

@@ -11,7 +11,8 @@
       <ol class="breadcrumb">
         <li>{{link_to_route('admin.subject.index', '科目管理')}}</li>
         <li>{{link_to_route('admin.item_content.index', $subject['name'], array('subject_id' => $subject['id']))}}</li>
-        <li class="active">科目功能项</li>
+        <li class="active">浏览</li>
+{{link_to_route('admin.subject_item_relation.edit', '修改功能', array('subject_id' => $subject['id']),array('class' => 'btn btn-primary btn-xs pull-right'))}}
       </ol>
     </div>
     <div class='row'>    </div>
