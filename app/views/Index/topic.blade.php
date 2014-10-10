@@ -1,13 +1,34 @@
 @extends('Index.master')
 @section('title')题目@stop
 
+@section('css')
+    <link href="/assets/mediaelement/build/mediaelementplayer.min.css" rel="stylesheet">
+@stop
+@section('headjs')
+    <script src="/assets/mediaelement/build/mediaelement-and-player.min.js"></script>
+@stop
+
 @section('content')
     <div class="container wrap">
         <div>
             @if( !empty($q['txt']) ) <h2>{{$q['txt']}}</h2> @endif
             @if( !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
-
         </div>
+
+        <div>
+            @if( !empty($a) )
+                <ul class="answers-list">
+                @foreach($a as $item)
+                    @if( !empty($item['img_url']) )
+                        <li><img src="{{$item['img_url']}}" /></li>
+                    @elseif( !empty($item['sound_url']) )
+                        <li><button type="button" onclick="" >播放</button></li>
+                    @endif
+                @endforeach
+                </ul>
+            @endif    
+        </div>
+
         <br><br>
         
         <div id="topic-tools">
@@ -26,4 +47,43 @@
         </div>
 
     </div> <!-- /container -->
+
+    <div style="display:none;">
+        <!-- 题干音 -->
+        <audio id="q_sound" src="{{$q['sound_url'] or ''}}">
+        <!-- 提示音 -->
+        <audio id="q_hint" src="{{$q['hint_url'] or ''}}">
+
+        <audio id="aplay" src="">
+    </div>
+
+    <script>
+        @if(!empty($q['sound_url']))
+        {
+            var q_sound = true;
+        }
+        @elseif(!empty($q['hint_url']))
+        {
+            var q_hint = true;
+        }
+        @endif
+        
+        function aplay($url)
+        {
+            var player = new MediaElementPlayer('#aplay');
+            player.setSrc($url);
+            player.play();
+        }
+        
+        $(document).ready(function(){
+            if(q_sound)
+            {
+                var player = new MediaElementPlayer('#q_sound');
+                player.play();  
+            }
+        });
+
+    </script>
+
 @stop
+

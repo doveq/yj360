@@ -145,7 +145,7 @@ class Attachments
 	public function addTopicImg($qid, $file)
 	{
 		if( !$this->validImgFile($file) )
-			return false;
+			return 0;
 
 		// 生成文件名
 		$name = md5( $qid . uniqid() ) . '.jpg';

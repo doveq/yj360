@@ -13,7 +13,7 @@ use Attachments;
 class TopicController extends \BaseController {
 
 	public $statusEnum = array('' => '所有状态', '0' => '无效', '1' => '审核通过', '-1' => '审核拒绝');
-	public $typeEnum = array('1' => '选择题', '2' => '判断题', '3' => '填空题', '4' => '模唱', '5' => '试唱');
+	public $typeEnum = array('1' => '单选择题', '2' => '多选择题',  '3' => '判断题', '4' => '填空题', '5' => '写作题', '6' => '模唱', '7' => '视唱');
 
 	public function __construct()
 	{
@@ -65,6 +65,10 @@ class TopicController extends \BaseController {
 	{
 		$inputs = Input::all();
 
+		if( empty($inputs['txt']))
+			return $this->adminPrompt("操作失败", '题干必须填写', $url = "topic/add");
+
+
 		$topic = new Topic();
 		$qid = $topic->add($inputs);
 
@@ -113,7 +117,7 @@ class TopicController extends \BaseController {
 			if($atxt)
 				$answers['txt'] = $atxt;
 
-			if( isset($inputs['answers_right'][$k]) )
+			if( !empty($inputs['answers_right']) && in_array($k, $inputs['answers_right']) )
 				$answers['is_right'] = 1;
 
 			if($_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK &&  
@@ -241,8 +245,10 @@ class TopicController extends \BaseController {
 				if($atxt)
 					$answers['txt'] = $atxt;
 
-				if( isset($inputs['answers_right'][$k]) )
+				if( !empty($inputs['answers_right']) && in_array($k, $inputs['answers_right']) )
 					$answers['is_right'] = 1;
+				else
+					$answers['is_right'] = 0;
 
 				if(isset($_FILES['answers_img']) && $_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK )
 				{

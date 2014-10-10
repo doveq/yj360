@@ -194,3 +194,9 @@ li.index-list-more a {
 #topic-btn-checkbox input, #topic-btn-checkbox label {
 	vertical-align:middle;
 }
+
+.answers-list li{
+	list-style-position : inside;
+	list-style-type: upper-alpha;
+	vertical-align: middle;
+}

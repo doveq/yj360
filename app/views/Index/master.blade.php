@@ -8,6 +8,9 @@
 
     <link href="/assets/css/index.css" rel="stylesheet">
     @yield('css')
+
+    <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
+    @yield('headjs')
   </head>
   <body role="document">
       <div id="site-head">
@@ -28,7 +31,6 @@
       @yield('content')
 
     
-      <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
       @yield('js')
 
       <div id="footer" class="wrap">
