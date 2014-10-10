@@ -13,7 +13,7 @@ use Attachments;
 class TopicController extends \BaseController {
 
 	public $statusEnum = array('' => '所有状态', '0' => '无效', '1' => '审核通过', '-1' => '审核拒绝');
-	public $typeEnum = array('1' => '选择题', '2' => '填空题', '3' => '模唱', '4' => '试唱');
+	public $typeEnum = array('1' => '选择题', '2' => '判断题', '3' => '填空题', '4' => '模唱', '5' => '试唱');
 
 	public function __construct()
 	{

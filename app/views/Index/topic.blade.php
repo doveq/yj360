@@ -4,12 +4,14 @@
 @section('content')
     <div class="container wrap">
         <div>
-            <h3>{{$q['txt']}}</h3>
+            @if( !empty($q['txt']) ) <h2>{{$q['txt']}}</h2> @endif
+            @if( !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
+
         </div>
         <br><br>
         
         <div id="topic-tools">
-            <a class="topic-btn" id="topic-btn-1" hint="提交" href="#">提交</a>
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="#"></a>
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="#"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="#"></a>
             <a class="topic-btn" id="topic-btn-4" hint="收藏" href="#"></a>
