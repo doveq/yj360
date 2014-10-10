@@ -17,22 +17,9 @@
       {{ HTML::ul($errors->all()) }}
       {{ Form::open(array('url' => '/admin/textbook_item/', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal')) }}
         <div class="form-group">
-          {{ Form::label('content_name', '名称', array('class' => 'col-md-2 control-label')) }}
+          {{ Form::label('item_name', '名称', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
-            {{ Form::text('name', '', array('class' => 'form-control', 'id' => 'content_name')) }}
-          </div>
-        </div>
-        <div class="form-group">
-          {{ Form::label('pic', '图片', array('class' => 'col-md-2 control-label')) }}
-          <div class="col-md-6">
-            {{ Form::file('pic', '', array('id' => 'pic')) }}
-            <p class="help-block">请选择展示图片</p>
-          </div>
-        </div>
-        <div class="form-group">
-          {{ Form::label('description', '描述', array('class' => 'col-md-2 control-label')) }}
-          <div class="col-md-6">
-            {{ Form::textarea('description', '', array('class' => 'form-control', 'id' => 'description', 'rows' => 3)) }}
+            {{ Form::text('name', '', array('class' => 'form-control', 'id' => 'item_name')) }}
           </div>
         </div>
         <div class="form-group">

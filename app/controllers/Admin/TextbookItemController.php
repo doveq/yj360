@@ -5,6 +5,7 @@ use TextbookItem;
 use Validator;
 use Input;
 use Paginator;
+use Redirect;
 
 class TextbookItemController extends \BaseController {
 
@@ -81,17 +82,14 @@ class TextbookItemController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "subject");
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "textbook_item/create");
         }
-        $subjectcontent = new SubjectContent();
-        $subjectcontent->name = $data['name'];
-        $subjectcontent->pic = $data['pic'];
-        $subjectcontent->description = $data['description'];
-        $subjectcontent->created_at = $data['created_at'];
-        $subjectcontent->subject_item_id = $data['subject_item_id'];
-        $subjectcontent->save();
-        if ($subjectcontent->save()) {
-            return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "subject");
+        $textbook_item = new TextbookItem();
+        $textbook_item->name = $data['name'];
+        $textbook_item->created_at = $data['created_at'];
+        // $textbook_item->save();
+        if ($textbook_item->save()) {
+            return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "textbook_item");
         }
     }
 
@@ -117,9 +115,8 @@ class TextbookItemController extends \BaseController {
     public function edit($id)
     {
         //
-        $subject = Subject::find($id);
-        $items = $subject->items;
-        return $this->adminView('subject_content.edit', compact('subject','items'));
+        $textbook_item = TextbookItem::find($id);
+        return $this->adminView('textbook_item.edit', compact('textbook_item'));
     }
 
 
@@ -132,6 +129,24 @@ class TextbookItemController extends \BaseController {
     public function update($id)
     {
         //
+        $data = Input::only('name');
+        // dd($data);
+        $validator = Validator::make($data,
+            array(
+                'name'      => 'required|alpha_dash',
+            )
+        );
+        if($validator->fails())
+        {
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "textbook_item");
+        }
+        $textbook_item = TextbookItem::find($id);
+        $textbook_item->name = $data['name'];
+        // dd($data);
+        // dd($textbook_item);
+        $textbook_item->save();
+
+        return $this->adminPrompt("保存成功", $validator->messages()->first(), $url = "textbook_item");
     }
 
 
@@ -143,7 +158,8 @@ class TextbookItemController extends \BaseController {
      */
     public function destroy($id)
     {
-        //
+        TextbookItem::destroy($id);
+        return Redirect::to('admin/textbook_item');
     }
 
 

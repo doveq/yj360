@@ -8,8 +8,9 @@ use Paginator;
 use Subject;
 use SubjectItem;
 use SubjectContent;
+use ContentExam;
 
-class SubjectContentController extends \BaseController {
+class ContentExamController extends \BaseController {
 
     public $statusEnum = array('所有状态', '0' => '准备发布', '1' => '已发布', '-1' => '下线');
 
@@ -21,7 +22,7 @@ class SubjectContentController extends \BaseController {
     public function index()
     {
         $pageSize = 20;  // 每页显示条数
-        $query = Input::only('name', 'subject_id', 'subject_item_id', 'page');
+        $query = Input::only('subject_content_id', 'page');
         $query['pageSize'] = $pageSize;
 
         // 当前页数
@@ -30,30 +31,34 @@ class SubjectContentController extends \BaseController {
 
         $validator = Validator::make($query,
             array(
-                'subject_id'    => 'numeric|required',
-                'subject_item_id'    => 'numeric|required',
+                'subject_content_id'    => 'numeric',
             )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "subject_content");
+            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "subject");
         }
-        $subject_contents = new SubjectContent();
-        $info = $subject_contents->getList($query);
+        $content_exams = new ContentExam();
+        $info = $content_exams->getList($query);
 
         // 分页
         $paginator = Paginator::make($info['data'], $info['total'], $pageSize);
         unset($query['pageSize']); // 减少分页url无用参数
         $paginator->appends($query);  // 设置分页url参数
 
-        $subject_item = SubjectItem::find($query['subject_item_id']);
+        $subject_content = SubjectContent::find($query['subject_content_id']);
+        $subject = Subject::find($subject_content->subject_id);
+        $subject_item = Subjectitem::find($subject_content->subject_item_id);
 
+        $subject_contents = SubjectContent::where('subject_id','=',$subject_content->subject_id)
+                                            ->where('subject_item_id', '=', $subject_content->subject_item_id)
+                                            ->get();
 
-        $subject = Subject::find($query['subject_id']);
-        $subject_items = $subject->items;
+        // $subject = Subject::find($query['subject_id']);
+        // $subject_items = $subject->items;
         $contents = $info['data'];
-        return $this->adminView('subject_content.index', compact('subject_item','contents','subject', 'subject_items', 'query', 'paginator'));
+        return $this->adminView('content_exam.index', compact('contents', 'query', 'paginator', 'subject', 'subject_item', 'subject_content', 'subject_contents'));
     }
 
 
