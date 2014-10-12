@@ -137,9 +137,9 @@
 			      <div class="checkbox">
 				    <label>
 				      @if(isset($a[$i]['is_right']) && $a[$i]['is_right'])
-				      <input type="checkbox" name="answers_right[]" checked="checked" value="{{$i}}" /> 正确答案
+				      <input type="checkbox" name="answers_right[]" checked="checked" value="{{$a[$i]['id'] or '0'}}" /> 正确答案
 				      @else
-				      <input type="checkbox" name="answers_right[]" value="{{$i}}" /> 正确答案
+				      <input type="checkbox" name="answers_right[]" value="{{$a[$i]['id'] or '0'}}" /> 正确答案
 				      @endif
 				    </label>
 				  </div>

@@ -169,6 +169,7 @@ class TopicController extends \BaseController {
 		if( !is_numeric($qid) )
 			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic");
 
+
 		$topic = new Topic();
 		$info = $topic->get($qid);
 
@@ -241,19 +242,23 @@ class TopicController extends \BaseController {
 		{
 			foreach($inputs['answers_txt'] as $k => $atxt)
 			{
+				$aid = empty($inputs['aid'][$k]) ? 0 : $inputs['aid'][$k];
+				$aimgid = empty($inputs['answers_img_id'][$k]) ? 0 : $inputs['answers_img_id'][$k];
+				$asoundid = empty($inputs['answers_sound_id'][$k]) ? 0 : $inputs['answers_sound_id'][$k];
+
 				$answers = array();
 				if($atxt)
 					$answers['txt'] = $atxt;
 
-				if( !empty($inputs['answers_right']) && in_array($k, $inputs['answers_right']) )
+				if( !empty($inputs['answers_right']) && in_array($aid, $inputs['answers_right']) )
 					$answers['is_right'] = 1;
 				else
 					$answers['is_right'] = 0;
 
 				if(isset($_FILES['answers_img']) && $_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK )
 				{
-					if(isset($inputs['answers_img_id'][$k]) && is_numeric($inputs['answers_img_id'][$k]))
-						$this->att->del($inputs['answers_img_id'][$k]);
+					if($aimgid)
+						$this->att->del($aimgid);
 
 					$attid = $this->setImg( $qid, $_FILES['answers_img']['tmp_name'][$k]);
 					$answers['img'] = $attid;
@@ -265,23 +270,23 @@ class TopicController extends \BaseController {
 					$type = $this->att->getExt($_FILES['answers_sound']['name'][$k]);
 					if($type == 'mp3' || $type == 'wav')
 					{
-						if(isset($inputs['answers_sound_id'][$k]) && is_numeric($inputs['answers_sound_id'][$k]))
-							$this->att->del($inputs['answers_sound_id'][$k]);
+						if($asoundid)
+							$this->att->del($asoundid);
 
 						$answers['sound'] = $this->setAudio( $qid, $_FILES['answers_sound']['tmp_name'][$k], $type);
 					}
 				}
 
 
-				if(isset($inputs['del_answers_img'][$k]) && is_numeric($inputs['del_answers_img'][$k]))
+				if(isset($inputs['del_answers_img']) && in_array($aimgid, $inputs['del_answers_img']) )
 				{
-					$this->att->del($inputs['del_answers_img'][$k]);
+					$this->att->del($aimgid);
 					$answers['img'] = 0;
 				}
 
-				if(isset($inputs['del_answers_sound'][$k]) && is_numeric($inputs['del_answers_sound'][$k]))
+				if(isset($inputs['del_answers_sound']) && in_array($asoundid, $inputs['del_answers_sound']) )
 				{
-					$this->att->del($inputs['del_answers_sound'][$k]);
+					$this->att->del($asoundid);
 					$answers['sound'] = 0; 
 				}
 
