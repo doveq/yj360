@@ -10,13 +10,12 @@ use Redirect;
 class SubjectController extends \BaseController {
 
     public $statusEnum = array('所有状态', '0' => '准备发布', '1' => '已发布', '-1' => '下线');
+    public $pageSize = 30;
 
     public function index()
     {
-        $pageSize = 20;  // 每页显示条数
-
         $query = Input::only('name', 'desc', 'online_at', 'status', 'page');
-        $query['pageSize'] = $pageSize;
+        $query['pageSize'] = $this->pageSize;
         //$query = array_filter($query); // 删除空值
 
         // 当前页数
@@ -41,8 +40,7 @@ class SubjectController extends \BaseController {
         $info = $subject->getList($query);
 
         // 分页
-        $paginator = Paginator::make($info['data'], $info['total'], $pageSize);
-        unset($query['pageSize']); // 减少分页url无用参数
+        $paginator = Paginator::make($info['data'], $info['total'], $this->pageSize);
         $paginator->appends($query);  // 设置分页url参数
 
         $p = array('list' => $info['data'],
@@ -102,9 +100,9 @@ class SubjectController extends \BaseController {
 
     public function update($id)
     {
-        $data = Input::only('name', 'desc', 'online_at', 'status');
+        $query = Input::only('name', 'desc', 'online_at', 'status');
 
-        $validator = Validator::make($data ,
+        $validator = Validator::make($query ,
             array('name' => 'alpha_dash',
                 // 'desc' => 'alpha_dash',
                 // 'online_at' => 'date',
@@ -118,11 +116,11 @@ class SubjectController extends \BaseController {
 
         $subject = Subject::find($id);
 
-        if (isset($data['name'])) $subject->name           = $data['name'];
-        if (isset($data['desc'])) $subject->description    = $data['desc'];
-        if (isset($data['online_at'])) $subject->online_at = $data['online_at'];
-        if (isset($data['status'])) $subject->status       = $data['status'];
-        if (isset($data['created_at'])) $subject->created_at       = $data['created_at'];
+        if (isset($query['name'])) $subject->name           = $query['name'];
+        if (isset($query['desc'])) $subject->description    = $query['desc'];
+        if (isset($query['online_at'])) $subject->online_at = $query['online_at'];
+        if (isset($query['status'])) $subject->status       = $query['status'];
+        if (isset($query['created_at'])) $subject->created_at       = $query['created_at'];
 
         $subject->save();
 

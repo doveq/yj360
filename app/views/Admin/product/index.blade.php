@@ -58,7 +58,15 @@
           <td>{{$product['valid_period']}}</td>
           <td>{{$product['policy']}}</td>
           <td>{{$product['created_at']}}</td>
-          <td>{{$statusEnum[$product['status']]}}</td>
+          <td>
+            @if ($product['status'] == 1)
+            <span class="label label-success">{{$statusEnum[$product['status']]}}</span>
+            @elseif ($product['status'] == 0)
+            <span class="label label-warning">{{$statusEnum[$product['status']]}}</span>
+            @else
+            <span class="label label-default">{{$statusEnum[$product['status']]}}</span>
+            @endif
+          </td>
           <td>
             <div class="btn-group btn-xs">
                 <a class="btn btn-default btn-xs" href="{{url('/admin/product/'. $product['id'] .'/edit') }}"><i class="icon-edit"></i> 编辑</a>

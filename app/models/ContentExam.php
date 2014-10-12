@@ -49,12 +49,6 @@ class ContentExam extends Eloquent {
             $valueArr[] = $data['subject_content_id'];
         }
 
-        // if( is_numeric($data['exam_id']) )
-        // {
-        //     $whereArr[] = " `exam_id` = ? ";
-        //     $valueArr[] = $data['exam_id'];
-        // }
-
         $limit = "";
         if( is_numeric($data['page']) && is_numeric($data['pageSize']) )
         {

@@ -48,6 +48,8 @@ class ContentExamController extends \BaseController {
         $paginator->appends($query);  // 设置分页url参数
 
         $subject_content = SubjectContent::find($query['subject_content_id']);
+        $exams = $subject_content->exams;
+        // dd($subject_content::take(2)->skip(1)->get());
         $subject = Subject::find($subject_content->subject_id);
         $subject_item = Subjectitem::find($subject_content->subject_item_id);
 
@@ -58,7 +60,7 @@ class ContentExamController extends \BaseController {
         // $subject = Subject::find($query['subject_id']);
         // $subject_items = $subject->items;
         $contents = $info['data'];
-        return $this->adminView('content_exam.index', compact('contents', 'query', 'paginator', 'subject', 'subject_item', 'subject_content', 'subject_contents'));
+        return $this->adminView('content_exam.index', compact('contents', 'query', 'paginator', 'subject', 'subject_item', 'subject_content', 'subject_contents', 'exams'));
     }
 
 

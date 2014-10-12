@@ -36,7 +36,13 @@
     <div class="col-md-6">
       <div class="panel panel-primary">
         <div class="panel-heading">试题列表</div>
-        <div class="panel-body">试题列表...</div>
+        <div class="panel-body">
+          <ol>
+            @foreach ($exams as $exam)
+            <li>{{$exam->txt}}</li>
+            @endforeach
+          </ol>
+        </div>
       </div>
     </div>
   </div>

@@ -58,7 +58,15 @@
             <td>{{$user['name']}}</td>
             <td>{{$user['tel']}}</td>
             <td>{{$typeEnum[$user['type']]}}</td>
-            <td>{{$statusEnum[$user['status']]}}</td>
+            <td>
+              @if ($user['status'] == 1)
+              <span class="label label-success">{{$statusEnum[$user['status']]}}</span>
+              @elseif ($user['status'] == 0)
+              <span class="label label-warning">{{$statusEnum[$user['status']]}}</span>
+              @else
+              <span class="label label-default">{{$statusEnum[$user['status']]}}</span>
+              @endif
+            </td>
             <td>{{$user['created_at']}}</td>
             <td>{{$user['updated_at']}}</td>
             <td>
