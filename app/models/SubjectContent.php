@@ -88,4 +88,8 @@ class SubjectContent extends Eloquent {
         return array('data' => $results, 'total' => $count);
     }
 
+    public function exams()
+    {
+        return $this->belongsToMany('Question', 'content_exam', 'subject_content_id', 'exam_id');
+    }
 }

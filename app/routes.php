@@ -73,6 +73,11 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('log', 'Admin\LogController');
     Route::resource('textbook_item', 'Admin\TextbookItemController');
 
+    Route::resource('classes', 'Admin\ClassesController');
+    Route::resource('classmate', 'Admin\ClassmateController');
+
+    Route::resource('message', 'Admin\MessageController');
+
 });
 
 // 前台路由

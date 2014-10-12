@@ -98,15 +98,19 @@ class SubjectItemRelationController extends \BaseController {
     public function update($id)
     {
         //
-        $data = Input::all();
-        SubjectItemRelation::where('subject_id', '=', $id)->delete();
-        // var_dump($data['relations']);
-        if (count($data['relations']) > 0) {
-            foreach ($data['relations'] as $key => $relation) {
-                // var_dump($relation);
-                SubjectItemRelation::insertGetId(array('subject_id' => $id, 'subject_item_id' => $relation));
-            }
+        $query = Input::all();
+
+        $cur_ids = array();
+        $subject = Subject::find($id);
+        foreach($subject->items as $list){
+          $cur_ids[] = $list->id;
         }
+        $a = array_diff($query['relations'], $cur_ids);
+        $b = array_diff($cur_ids, $query['relations']);
+        //detach IDs
+        if (!empty($b)) $subject->items()->detach($b);
+        //add new IDs
+        if (!empty($a)) $subject->items()->attach($a);
         // echo "ok";
         return $this->adminPrompt("编辑成功", '', $url = "item_content?subject_id=" . $id);
 

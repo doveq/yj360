@@ -53,7 +53,8 @@ class SubjectContentController extends \BaseController {
         $subject = Subject::find($query['subject_id']);
         $subject_items = $subject->items;
         $contents = $info['data'];
-        return $this->adminView('subject_content.index', compact('subject_item','contents','subject', 'subject_items', 'query', 'paginator'));
+        $statusEnum = $this->statusEnum;
+        return $this->adminView('subject_content.index', compact('subject_item','contents','subject', 'subject_items', 'query', 'paginator', 'statusEnum'));
     }
 
 

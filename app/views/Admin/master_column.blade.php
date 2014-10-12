@@ -31,7 +31,15 @@
           <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
               <!-- <li class="active"><a href="#">Home</a></li> -->
-              <li><a href="/admin/user">用户管理</a></li>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">用户管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="/admin/user">用户管理</a></li>
+                  <li><a href="/admin/classes">班级管理</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/message">我的消息</a></li>
+                </ul>
+              </li>
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -80,6 +88,7 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#{{Session::get('uid')}}">欢迎您,{{Session::get('uname')}}</a></li>
+                <li><a href="/admin/message"><span class="icon-envelope"> </span></a></li>
                 <li><a href="/logout">退出</a></li>
             </ul>
 

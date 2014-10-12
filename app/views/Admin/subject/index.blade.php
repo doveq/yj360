@@ -52,7 +52,15 @@
             <td>{{$subject['name']}}</td>
             <td>{{$subject['description']}}</td>
             <td>{{$subject['online_at']}}</td>
-            <td>{{$statusEnum[$subject['status']]}}</td>
+            <td>
+              @if ($subject['status'] == 1)
+              <span class="label label-success">{{$statusEnum[$subject['status']]}}</span>
+              @elseif ($subject['status'] == 0)
+              <span class="label label-warning">{{$statusEnum[$subject['status']]}}</span>
+              @else
+              <span class="label label-default">{{$statusEnum[$subject['status']]}}</span>
+              @endif
+            </td>
             <td>
               <div class="btn-group btn-xs">
                   <a class="btn btn-default btn-xs" href="{{url('/admin/subject/'. $subject['id'] .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
@@ -62,11 +70,11 @@
                       <li><a href="{{url('/admin/item_content?subject_id='. $subject['id']) }}"><i class="icon-magic"></i> 内容管理</a></li>
                       <li class="divider"></li>
                       @if($subject['status'] === 1)
-                      <li><a style='color:#999;'><i class="icon-ok"></i> 发布</a></li>
+                      <li class="disabled"><a href="#"><i class="icon-ok"></i> 发布</a></li>
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="-1"><i class="icon-trash"></i> 下线</a></li>
                       @elseif($subject['status'] === -1)
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="1"><i class="icon-ok"></i> 发布</a></li>
-                      <li><a style='color:#999;'><i class="icon-trash"></i> 下线</a></li>
+                      <li class="disabled"><a href="#"><i class="icon-trash"></i> 下线</a></li>
                       @else
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="1"><i class="icon-ok"></i> 发布</a></li>
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$subject['id']}}" data-val="{{$subject['name']}}" data-status="-1"><i class="icon-remove"></i> 下线</a></li>

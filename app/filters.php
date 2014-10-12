@@ -88,3 +88,10 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+
+DB::listen(function($sql, $bindings, $time)
+{
+    Log::info('[SQL]' . $sql . " with ". join(',', $bindings));
+});

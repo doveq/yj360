@@ -25,6 +25,7 @@
             <tr>
               <th>#</th>
               <th>项目名称</th>
+              <th>状态</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -33,6 +34,15 @@
             <tr>
               <td>{{$item['id']}}</td>
               <td>{{$item['name']}}</td>
+              <td>
+                @if ($item['status'] == 1)
+                <span class="label label-success">{{$statusEnum[$item['status']]}}</span>
+                @elseif ($item['status'] == 0)
+                <span class="label label-warning">{{$statusEnum[$item['status']]}}</span>
+                @else
+                <span class="label label-default">{{$statusEnum[$item['status']]}}</span>
+                @endif
+              </td>
               <td>
                 <div class="btn-group btn-xs">
                     <a class="btn btn-default btn-xs" href="{{ url('/admin/subject_content/'.$item['id'].'/edit') }}"><i class="icon-edit"></i> 编辑</a>

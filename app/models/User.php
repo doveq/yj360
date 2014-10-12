@@ -63,7 +63,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function add($data)
 	{
 		$id = DB::table($this->table)->insertGetId(array(
-				'name' =>  $data['name'], 
+				'name' =>  $data['name'],
     			'tel' => $data['tel'],
     			'password' => $this->encPasswd($data['password']),
     		));
@@ -131,7 +131,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		{
 			$item = (array)$item;
 		}
-		
+
 		return array('data' => $results, 'total' => $count);
 	}
 
@@ -151,6 +151,16 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function del($id)
 	{
 		DB::table($this->table)->where('id', $id)->delete();
+	}
+
+	public function sender()
+	{
+		return $this->hasMany('Message', 'sender_id');
+	}
+
+	public function receiver()
+	{
+		return $this->hasMany('Message', 'receiver_id');
 	}
 
 }
