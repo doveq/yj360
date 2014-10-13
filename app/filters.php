@@ -25,6 +25,7 @@ App::after(function($request, $response)
 		$log             = new UserLog();
 		$log->user_id    = Session::get('uid');
 		$log->url        = Request::fullUrl();
+		$log->referer        = Request::header('referer');
 		$log->method     = Request::method();
 		$log->code    	 = 200;
 		$log->created_at = date("Y-m-d H:i:s");

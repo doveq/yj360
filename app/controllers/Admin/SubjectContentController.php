@@ -108,13 +108,13 @@ class SubjectContentController extends \BaseController {
             return $this->adminPrompt("参数错误", $validator->messages()->first(),
                 $url = "subject_content?subject_id=".$query['subject_id']."&subject_item_id=".$query['subject_item_id']);
         }
-        $subjectcontent                  = new SubjectContent();
-        $subjectcontent->name            = $query['name'];
-        $subjectcontent->pic             = $query['pic'];
-        $subjectcontent->description     = $query['description'];
-        $subjectcontent->created_at      = $query['created_at'];
-        $subjectcontent->subject_id      = $query['subject_id'];
-        $subjectcontent->subject_item_id = $query['subject_item_id'];
+        $subjectcontent                                                 = new SubjectContent();
+        if ($query['name']) $subjectcontent->name                       = $query['name'];
+        if ($query['pic']) $subjectcontent->pic                         = $query['pic'];
+        if ($query['description']) $subjectcontent->description         = $query['description'];
+        if ($query['created_at']) $subjectcontent->created_at           = $query['created_at'];
+        if ($query['subject_id']) $subjectcontent->subject_id           = $query['subject_id'];
+        if ($query['subject_item_id']) $subjectcontent->subject_item_id = $query['subject_item_id'];
         if ($subjectcontent->save()) {
             return $this->adminPrompt("操作成功", $validator->messages()->first(),
                 $url = "subject_content?subject_id=".$query['subject_id']."&subject_item_id=".$query['subject_item_id']);

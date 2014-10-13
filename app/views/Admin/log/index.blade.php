@@ -40,11 +40,11 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->user->name}}</td>
-            <td>{{$list->url}}</td>
+            <td>{{str_replace('http://'.Request::header('host'),'', $list->url)}}</td>
             <td>{{$list->method}}</td>
             <td>{{$list->code}}</td>
             <td>{{$list->created_at}}</td>
-            <td>{{$list->user_agent}}</td>
+            <td>{{str_limit($list->user_agent, 50, '...')}}</td>
           </tr>
           @endforeach
         </tbody>
