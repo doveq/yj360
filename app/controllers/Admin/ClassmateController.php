@@ -15,6 +15,7 @@ class ClassmateController extends \BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '申请', '1' => '审核通过', '-1' => '无效');
     public $userstatusEnum = array('' => '所有状态', '0' => '无效', '1' => '有效', '-1' => '审核拒绝');
+    public $genderEnum = array('f' => '女', 'm' => '男');
     public $pageSize = 30;
     /**
      * Display a listing of the resource.
@@ -43,11 +44,12 @@ class ClassmateController extends \BaseController {
         $lists = $classes->students;
         $teacher = $classes->teacher;
         $statusEnum = $this->statusEnum;
+        $genderEnum = $this->genderEnum;
 
         // $paginator = Paginator::make($lists->toArray(), $lists->count(), $this->pageSize);
         // $paginator->appends($query);  // 设置分页url参数
 
-        return $this->adminView('classmate.index', compact('query', 'statusEnum', 'lists', 'classes', 'teacher'));
+        return $this->adminView('classmate.index', compact('query', 'statusEnum', 'genderEnum', 'lists', 'classes', 'teacher'));
     }
 
 
@@ -108,7 +110,8 @@ class ClassmateController extends \BaseController {
         }
 
         $statusEnum = $this->userstatusEnum;
-        return $this->adminView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum'));
+        $genderEnum = $this->genderEnum;
+        return $this->adminView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum'));
     }
 
 

@@ -25,12 +25,17 @@
                 <li><a href="/">APP下载</a></li>
                 <li><a href="/">产品商店</a></li>
               </ul>
+              <ul id="site-nav">
+                <li><a href="">欢迎您</a></li>
+                <li><a href="/admin/message"><span class="icon-envelope"> </span></a></li>
+                <li><a href="/logout">退出</a></li>
+            </ul>
           </div>
       </div>
 
       @yield('content')
 
-    
+
       @yield('js')
 
       <div id="footer" class="wrap">

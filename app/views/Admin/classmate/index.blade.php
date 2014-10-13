@@ -18,7 +18,9 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>学生名</th>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>电话</th>
             <th>状态</th>
             <th>加入时间</th>
             <th>操作</th>
@@ -29,6 +31,8 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->name}}</td>
+            <td>{{$genderEnum[$list->gender]}}</td>
+            <td>{{$list->tel}}</td>
             <td>
               @if ($list->pivot->status == 1)
               <span class="label label-success">{{$statusEnum[$list->pivot->status]}}</span>

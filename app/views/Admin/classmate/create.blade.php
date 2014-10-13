@@ -44,6 +44,7 @@
               <th class="text-center">#</th>
               <th class="text-center">ID</th>
               <th class="text-center">名称</th>
+              <th class="text-center">性别</th>
               <th class="text-center">电话</th>
             </tr>
           </thead>
@@ -63,7 +64,8 @@
               <td>
                 {{ Form::label('userid'.$list->id, $list->name) }}
               </td>
-              <td>{{$list->tel}}</td>
+              <td>{{ $genderEnum[$list->gender] }}</td>
+              <td>{{ $list->tel }}</td>
             </tr>
             @endforeach
           </tbody>
