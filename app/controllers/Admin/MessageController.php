@@ -94,7 +94,7 @@ class MessageController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "message");
+            return $this->adminPrompt("提交失败", $validator->messages()->first(), $url = "message");
         }
         $message = new Message();
         $message->sender_id = Session::get('uid');

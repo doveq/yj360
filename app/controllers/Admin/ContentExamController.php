@@ -49,7 +49,7 @@ class ContentExamController extends \BaseController {
 
         $subject_content = SubjectContent::find($query['subject_content_id']);
         $exams = $subject_content->exams;
-        // dd($subject_content::take(2)->skip(1)->get());
+
         $subject = Subject::find($subject_content->subject_id);
         $subject_item = Subjectitem::find($subject_content->subject_item_id);
 
