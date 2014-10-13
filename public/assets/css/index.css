@@ -289,3 +289,9 @@ li.index-list-more a {
 	background-image: url("/assets/img/topic-btn.png");
 	background-position:-1234px -456px;
 }
+#save_button{
+	position:absolute; 
+	bottom:80px;
+	left:35%;
+	z-index:-999;
+}

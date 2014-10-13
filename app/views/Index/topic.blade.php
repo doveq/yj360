@@ -5,86 +5,136 @@
     <link href="/assets/mediaelement/build/mediaelementplayer.min.css" rel="stylesheet">
 @stop
 @section('headjs')
+    <script src="/assets/mediaelement/build/mediaelement-and-player.min.js"></script>
     <script type="text/javascript" src="/assets/recorder/js/swfobject.js"></script>
     <script type="text/javascript" src="/assets/recorder/js/recorder.js"></script>
     <script type="text/javascript" src="/assets/recorder/js/main.js"></script>
-
-    <script src="/assets/mediaelement/build/mediaelement-and-player.min.js"></script>
-
 @stop
 
 @section('content')
     <div class="container wrap">
-        <div>
-            @if( !empty($q['txt']) ) <h2>{{$q['txt']}}</h2> @endif
-            @if( !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
-        </div>
+        <div style="position:relative;overflow:hidden;">
+            <div>
+                @if( !empty($q['txt']) ) <h2>{{$q['txt']}}</h2> @endif
+                @if( !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
+            </div>
 
-        <div id="answers">
-            @if( !empty($a) )
-                {{-- 单选，多选，判断 --}}
-                @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
-                    <table class="answers-list">
-                    @foreach($a as $k => $item)
-                        <tr>
-                            <td class="flag">
-                                <label>
-                                    @if( $q['type'] == 1 || $q['type'] == 3)
-                                        <input type="radio" name="daan" value="{{$item['id']}}" />
-                                    @else
-                                        <input type="checkbox" name="daan" value="{{$item['id']}}" />
+            <div id="answers">
+                @if( !empty($a) )
+                    {{-- 单选，多选，判断 --}}
+                    @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
+                        <table class="answers-list">
+                        @foreach($a as $k => $item)
+                            <tr>
+                                <td class="flag">
+                                    <label>
+                                        @if( $q['type'] == 1 || $q['type'] == 3)
+                                            <input type="radio" name="daan[]" value="{{$item['id']}}" is-right="{{$item['is_right']}}" onclick="correcting()" />
+                                        @else
+                                            <input type="checkbox" name="daan[]" value="{{$item['id']}}" is-right="{{$item['is_right']}}" />
+                                        @endif
+                                        <b>{{$flag[$k]}}.</b>
+                                    </label>
+                                </td>
+                                <td>
+                                    @if( !empty($item['img_url']) )
+                                        <img src="{{$item['img_url']}}" />
+                                    @elseif( !empty($item['sound_url']) )
+                                        <button type="button" class="sound-play" sound-id="{{$item['sound_att_id']}}" >播放</button>
+                                        <span style="display:none;">
+                                            <audio id="{{$item['sound_att_id']}}" src="{{$item['sound_url']}}">
+                                        </span>
+                                    @elseif( !empty($item['txt']) )
+                                        {{$item['txt']}}
                                     @endif
-                                    <b>{{$flag[$k]}}.</b>
-                                </label>
-                            </td>
-                            <td>
-                                @if( !empty($item['img_url']) )
-                                    <img src="{{$item['img_url']}}" />
-                                @elseif( !empty($item['sound_url']) )
-                                    <button type="button" class="sound-play" sound-id="{{$item['sound_att_id']}}" >播放</button>
-                                    <span style="display:none;">
-                                        <audio id="{{$item['sound_att_id']}}" src="{{$item['sound_url']}}">
-                                    </span>
-                                @elseif( !empty($item['txt']) )
-                                    {{$item['txt']}}
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                    </table>
-                {{-- 填空，写作 --}}
-                @elseif($q['type'] == 4 || $q['type'] == 5 )
-                {{-- 模唱 --}}
-                @elseif( $q['type'] == 6 )
-                {{-- 视唱 --}}
-                @elseif( $q['type'] == 7 ) 
+                                </td>
+                            </tr>
+                        @endforeach
+                        </table>
+                    {{-- 填空，写作 --}}
+                    @elseif($q['type'] == 4 || $q['type'] == 5 )
+                    {{-- 模唱 --}}
+                    @elseif( $q['type'] == 6 )
+                    {{-- 视唱 --}}
+                    @elseif( $q['type'] == 7 ) 
+                        @foreach($a as $k => $item)
+                            @if( !empty($item['img_url']) )
+                                <img src="{{$item['img_url']}}" />
+                            @endif
+                        @endforeach
+                    @endif 
+
+                    
 
                 @endif 
+            </div>
 
-                @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )        
-                <div id="disabuse" class="disabuse-close">
-                    <div id="disabuse-box">
-                        <div id="disabuse-tit">答案详解</div>
-                        <div id="disabuse-con">
-                            {{$q['disabuse']}}
-                        </div>
+            @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )        
+            <div id="disabuse" class="disabuse-close">
+                <div id="disabuse-box">
+                    <div id="disabuse-tit">答案详解</div>
+                    <div id="disabuse-con">
+                        {{$q['disabuse']}}
                     </div>
-                    <div id="disabuse-flag" onclick="disabuse();"></div>
                 </div>
-                @endif 
+                <div id="disabuse-flag" onclick="disabuse();"></div>
+            </div>
+            @endif
 
-            @endif 
+        </div>
+        
+        {{-- 录音相关 --}}
+        <span id="save_button">
+            <span id="flashcontent">
+              <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
+            </span>
+        </span>
+        <div style="display:none;">
+            <div id="recorder-audio" class="control_panel idle">
+                <button class="record_button" onclick="FWRecorder.record('audio', 'audio.wav');" title="Record">
+                    <img src="/assets/recorder/images/record.png" alt="Record"/>
+                </button>
+                <button class="stop_recording_button" onclick="FWRecorder.stopRecording('audio');" title="Stop Recording">
+                    <img src="/assets/recorder/images/stop.png" alt="Stop Recording"/>
+                </button>
+                <button class="play_button" onclick="FWRecorder.playBack('audio');" title="Play">
+                    <img src="/assets/recorder/images/play.png" alt="Play"/>
+                </button>
+                <button class="pause_playing_button" onclick="FWRecorder.pausePlayBack('audio');" title="Pause Playing">
+                    <img src="/assets/recorder/images/pause.png" alt="Pause Playing"/>
+                </button>
+                <button class="stop_playing_button" onclick="FWRecorder.stopPlayBack();" title="Stop Playing">
+                    <img src="/assets/recorder/images/stop.png" alt="Stop Playing"/>
+                </button>
+                <div class="level"></div>
+            </div>
+            <div class="details" >
+              <button class="show_level" onclick="FWRecorder.observeLevel();">Show Level</button>
+              <button class="hide_level" onclick="FWRecorder.stopObservingLevel();" style="display: none;">Hide Level</button>
+              
+              
+              <div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
+              <div id="status">
+               Recorder Status...
+              </div>
+              <div>Duration: <span id="duration"></span></div>
+              <div>Activity Level: <span id="activity_level"></span></div>
+              <div>Upload status: <span id="upload_status"></span></div>
+            </div>
+
+            <form id="uploadForm" name="uploadForm" action="/recorder/upload">
+              <input name="authenticity_token" value="{{$session_id}}" type="hidden">
+              <input name="format" value="json" type="hidden">
+            </form>
         </div>
 
-        <br><br>
-        
         <div id="topic-tools">
             @if( $q['type'] == 2)
-            <a class="topic-btn" id="topic-btn-1" hint="提交" href="#"></a>
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
             @endif
-            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="#"></a>
-            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="#"></a>
-            <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="#"></a>
+            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;"></a>
+            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" ></a>
+            <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;"></a>
             
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
             <a class="topic-btn" id="topic-btn-5" hint="详解" href="javascript:;" onclick="disabuse();"></a>
@@ -99,8 +149,8 @@
             <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="#"></a>
             -->
             <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="soundPlay();"></a>
-            <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="FWRecorder.record('audio', 'audio.wav');"></a>
-            <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="FWRecorder.playBack('audio');"></a>
+            <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="$('.record_button').click();"></a>
+            <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick=""></a>
             @endif
             <a class="topic-btn" id="topic-btn-6" hint="答题卡" href="#"></a>
             <div class="clear"></div>
@@ -118,56 +168,10 @@
         <audio id="q-hint" src="{{$q['hint_url'] or ''}}">
     </div>
 
-    {{-- 录音相关 --}}
-    <div style="display:none;">
-        <div id="recorder-audio" class="control_panel idle">
-            <button class="record_button" onclick="FWRecorder.record('audio', 'audio.wav');" title="Record">
-                <img src="/assets/recorder/images/record.png" alt="Record"/>
-            </button>
-            <button class="stop_recording_button" onclick="FWRecorder.stopRecording('audio');" title="Stop Recording">
-                <img src="/assets/recorder/images/stop.png" alt="Stop Recording"/>
-            </button>
-            <button class="play_button" onclick="FWRecorder.playBack('audio');" title="Play">
-                <img src="/assets/recorder/images/play.png" alt="Play"/>
-            </button>
-            <button class="pause_playing_button" onclick="FWRecorder.pausePlayBack('audio');" title="Pause Playing">
-                <img src="/assets/recorder/images/pause.png" alt="Pause Playing"/>
-            </button>
-            <button class="stop_playing_button" onclick="FWRecorder.stopPlayBack();" title="Stop Playing">
-                <img src="/assets/recorder/images/stop.png" alt="Stop Playing"/>
-            </button>
-            <div class="level"></div>
-        </div>
-        <div class="details">
-          <button class="show_level" onclick="FWRecorder.observeLevel();">Show Level</button>
-          <button class="hide_level" onclick="FWRecorder.stopObservingLevel();" style="display: none;">Hide Level</button>
-          <span id="save_button">
-            <span id="flashcontent">
-              <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
-            </span>
-          </span>
-          <div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
-          <div id="status">
-           Recorder Status...
-          </div>
-          <div>Duration: <span id="duration"></span></div>
-          <div>Activity Level: <span id="activity_level"></span></div>
-          <div>Upload status: <span id="upload_status"></span></div>
-        </div>
-
-        <form id="uploadForm" name="uploadForm" action="/recorder/upload">
-          <input name="authenticity_token" value="xxxxx" type="hidden">
-          <input name="format" value="json" type="hidden">
-        </form>
-    </div>
+    
 
     <script>
-        @if(!empty($q['sound_url']))
-            var q_sound = true;
-        @elseif(!empty($q['hint_url']))
-            var q_hint = true;
-        @endif
-        
+
         $(document).ready(function(){
 
             $('.sound-play').click(function(){
@@ -186,9 +190,7 @@
             new MediaElementPlayer('#q-hint', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function(e) {
-
                         soundPlay();
-
                     }, false);
                      
                     mediaElement.play();
@@ -208,9 +210,26 @@
             player.play();
         }
 
+        // js 判断答题对错
         function correcting()
         {
+            var err = new Array();
+            $('input[name=daan]').each(function(){
+                is_right = $(this).attr('is-right');
 
+                if( $(this).is(':checked') )
+                {
+                    if(is_right == 0)
+                        err.push( $(this).val() );
+                }
+                else if(is_right == 1)
+                    err.push( $(this).val() );
+            });
+
+            if(err.length > 0)
+                console.log(err);
+            else
+                console.log('all right!');
         }
 
         function disabuse()

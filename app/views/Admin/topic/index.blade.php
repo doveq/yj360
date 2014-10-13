@@ -1,18 +1,15 @@
-@extends('Admin.master_column')
+@extends('Admin.master')
 @section('title')真题题库@stop
 
-@section('nav')
-  <div class="list-group">
-    <a href="topic" class="list-group-item @if(!isset($query['type'])) active @endif ">所有类型</a>
-    @foreach($typeEnum as $k => $v)
-      <a href="topic?type={{$k}}" class="list-group-item @if(isset($query['type']) && $query['type'] == $k) active @endif ">{{$v}}</a>
-    @endforeach
-  </div>
-@stop
 
 @section('content')
+<div class="container theme-showcase" role="main">
   <div class="row text-right">
     {{ Form::open(array('role' => 'form', 'class' => 'form-inline', 'method' => 'get')) }}
+      <div class="form-group">
+        {{ Form::label('inputType', '类型', array('class' => 'sr-only')) }}
+        {{ Form::select('type', $typeEnum, $query['type'], array('class' => 'form-control', 'id' => 'inputType')) }}
+      </div>
       <div class="form-group">
         {{ Form::label('inputName', '题干', array('class' => 'sr-only')) }}
         {{ Form::text('txt', $query['txt'], array('class' => 'form-control', 'id' => 'inputName', 'placeholder' => '题干')) }}
@@ -106,7 +103,7 @@
     </div>
     {{ Form::close() }}
   </div>
-
+</div>
 @stop
 
 @section('js')

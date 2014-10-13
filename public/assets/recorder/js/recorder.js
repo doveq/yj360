@@ -133,7 +133,8 @@
         if (options && options.permanent) {
           Recorder.recorder.permitPermanently();
         } else {
-          Recorder.recorder.permit();
+          //Recorder.recorder.permit();
+          Recorder.recorder.permitPermanently();
         }
       };
       setTimeout(permissionCommand, 1);

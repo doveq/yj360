@@ -27,20 +27,16 @@ class TopicController extends BaseController {
 		{
 			// 随机答案顺序
 			shuffle($info['a']);
-
-			// 获取正确答案信息
-			$right = array();
-			foreach($info['a'] as $value) 
-			{
-				if($value['is_right'])
-					$right[] = $value['id']; 
-			}
-
-			$info['right'] = $right;
 		}
 
-		
+		$info['session_id'] = Session::getId();
 
 		return $this->indexView('topic', $info);
+	}
+
+	/* 记入答题情况 */
+	public function correcting()
+	{
+		
 	}
 }
