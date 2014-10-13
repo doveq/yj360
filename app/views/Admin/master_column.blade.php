@@ -59,14 +59,6 @@
                 </ul>
               </li>
 
-              <!-- <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">教材管理 <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">浏览教材</a></li>
-                  <li><a href="#">添加教材</a></li>
-                </ul>
-              </li> -->
-
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">产品管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
@@ -81,15 +73,15 @@
                   <li><a href="/admin/subject_item">科目功能项</a></li>
                   <li><a href="/admin/textbook_item">教材题库</a></li>
                   <li class="divider"></li>
-                  <li class="dropdown-header">Nav header</li>
-                  <li><a href="#">Separated link</a></li>
+                  <li><a href="/admin/feedback">反馈信息</a></li>
+                  <li><a href="/admin/log">访问日志</a></li>
                 </ul>
               </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="#{{Session::get('uid')}}">欢迎您,{{Session::get('uname')}}</a></li>
-                <li><a href="/admin/message"><span class="icon-envelope"> </span></a></li>
+                <li><a href="/admin/message?status=0"><span class="icon-envelope"> </span>@if (Session::get('newmassage_count') > 0)<span class="badge">{{Session::get('newmassage_count')}}</span>@endif</a></li>
                 <li><a href="/logout">退出</a></li>
             </ul>
 

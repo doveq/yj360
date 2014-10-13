@@ -1,12 +1,13 @@
 <?php
 
-class UserLog extends Eloquent {
+class Feedback extends Eloquent {
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'log';
+    protected $table = 'feedback';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -36,8 +37,10 @@ class UserLog extends Eloquent {
     //  return $this->password;
     // }
 
+
     public function user()
     {
-        return $this->belongsTo("User");
+        return $this->belongsTo('User', 'user_id', 'id');
     }
+
 }

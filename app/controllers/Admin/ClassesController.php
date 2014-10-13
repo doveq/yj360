@@ -6,6 +6,7 @@ use Input;
 use Paginator;
 use Redirect;
 use DB;
+use Request;
 
 use Classes;
 use User;
@@ -30,8 +31,8 @@ class ClassesController extends \BaseController {
         $validator = Validator::make($query,
             array(
                 'id'      => 'numeric',
-                'name' => 'alpha_dash',
-                'teacher_name' => 'alpha_dash',
+                // 'name' => 'alpha_dash',
+                // 'teacher_name' => 'alpha_dash',
                 'status' => 'numeric',
             )
         );
@@ -138,7 +139,7 @@ class ClassesController extends \BaseController {
         $validator = Validator::make($query,
             array(
                 'id'      => 'numeric|required',
-                'name'  => 'alpha_dash',
+                // 'name'  => 'alpha_dash',
                 'status'  => 'numeric',
                 'teacherid' => 'numeric',
             )

@@ -32,7 +32,7 @@ class UserController extends \BaseController {
 
         $validator = Validator::make($query,
             array(
-                'name'   => 'alpha_dash',
+                // 'name'   => 'alpha_dash',
                 'tel'    => 'numeric',
                 'type'   => 'numeric',
                 'status' => 'numeric'
@@ -126,10 +126,12 @@ class UserController extends \BaseController {
         $data = Input::only('name', 'tel', 'type', 'status');
 
         $validator = Validator::make($data ,
-            array('name' => 'alpha_dash',
+            array(
+                // 'name' => 'alpha_dash',
                 'tel' => 'numeric',
                 'type' => 'numeric',
-                'status' => 'numeric')
+                'status' => 'numeric'
+                )
         );
 
         if($validator->fails())

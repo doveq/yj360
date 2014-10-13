@@ -69,7 +69,7 @@ class ClassmateController extends \BaseController {
 
         $validator = Validator::make($query,
             array(
-                'name'   => 'alpha_dash',
+                // 'name'   => 'alpha_dash',
                 'tel'    => 'numeric',
                 'class_id'   => 'numeric',
                 'status' => 'numeric'

@@ -33,7 +33,7 @@ class ProductController extends \BaseController {
         // dd($query);
         $validator = Validator::make($query,
             array(
-                'name'      => 'alpha_dash',
+                // 'name'      => 'alpha_dash',
                 'subject_id'      => 'numeric',
                 'status'    => 'numeric'
             )

@@ -1,12 +1,13 @@
 <?php
 
-class UserLog extends Eloquent {
+class Favorite extends Eloquent {
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'log';
+    protected $table = 'favorite';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -36,8 +37,17 @@ class UserLog extends Eloquent {
     //  return $this->password;
     // }
 
+
+
     public function user()
     {
-        return $this->belongsTo("User");
+        return $this->belongsTo('User');
     }
+
+    public function question()
+    {
+        return $this->belongsTo('Question');
+    }
+
+
 }
