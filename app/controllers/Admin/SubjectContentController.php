@@ -164,10 +164,12 @@ class SubjectContentController extends \BaseController {
         $query = Input::only('name', 'desc', 'status');
 
         $validator = Validator::make($query ,
-            array('name' => 'alpha_dash',
+            array(
+                // 'name' => 'alpha_dash',
                 // 'desc' => 'alpha_dash',
                 // 'online_at' => 'date',
-                'status' => 'numeric')
+                'status' => 'numeric'
+                )
         );
         $subject_content = SubjectContent::find($id);
 

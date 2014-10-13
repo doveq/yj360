@@ -27,18 +27,18 @@ class LogController extends \BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        $validator = Validator::make($query,
-            array(
-                'name'      => 'alpha_dash',
-                // 'online_at' => 'date',
-                // 'user_id'    => 'numeric'
-            )
-        );
+        // $validator = Validator::make($query,
+        //     array(
+        //         // 'name'      => 'alpha_dash',
+        //         // 'online_at' => 'date',
+        //         // 'user_id'    => 'numeric'
+        //     )
+        // );
 
-        if($validator->fails())
-        {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "log");
-        }
+        // if($validator->fails())
+        // {
+        //     return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "log");
+        // }
 
         // if (Input::get('name')) {
         //     $user = User::whereName(Input::get('name'))->first();

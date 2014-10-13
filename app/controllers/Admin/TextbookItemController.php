@@ -26,16 +26,16 @@ class TextbookItemController extends \BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        $validator = Validator::make($query,
-            array(
-                'name'      => 'alpha_dash',
-            )
-        );
+        // $validator = Validator::make($query,
+        //     array(
+        //         'name'      => 'alpha_dash',
+        //     )
+        // );
 
-        if($validator->fails())
-        {
-            return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "textbook_item");
-        }
+        // if($validator->fails())
+        // {
+        //     return $this->adminPrompt("访问失败", $validator->messages()->first(), $url = "textbook_item");
+        // }
 
         $textbook_item = new TextbookItem();
         $data = $textbook_item->getList($query);
@@ -133,7 +133,7 @@ class TextbookItemController extends \BaseController {
         // dd($data);
         $validator = Validator::make($data,
             array(
-                'name'      => 'required|alpha_dash',
+                'name'      => 'required',
             )
         );
         if($validator->fails())

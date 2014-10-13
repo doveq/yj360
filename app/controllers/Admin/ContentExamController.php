@@ -31,7 +31,7 @@ class ContentExamController extends \BaseController {
 
         $validator = Validator::make($query,
             array(
-                'subject_content_id'    => 'numeric',
+                'subject_content_id'    => 'numeric|required',
             )
         );
 
@@ -171,10 +171,12 @@ class ContentExamController extends \BaseController {
         $data = Input::only('name', 'desc', 'status');
 
         $validator = Validator::make($data ,
-            array('name' => 'alpha_dash',
+            array(
+                // 'name' => 'alpha_dash',
                 // 'desc' => 'alpha_dash',
                 // 'online_at' => 'date',
-                'status' => 'numeric')
+                'status' => 'numeric'
+                )
         );
         $subject_content = SubjectContent::find($id);
 

@@ -24,8 +24,8 @@ class SubjectController extends \BaseController {
         // dd($query);
         $validator = Validator::make($query,
             array(
-                'name'      => 'alpha_dash',
-                'desc'      => 'alpha_dash',
+                // 'name'      => 'alpha_dash',
+                // 'desc'      => 'alpha_dash',
                 'online_at' => 'date',
                 'status'    => 'numeric'
             )
@@ -103,10 +103,12 @@ class SubjectController extends \BaseController {
         $query = Input::only('name', 'desc', 'online_at', 'status');
 
         $validator = Validator::make($query ,
-            array('name' => 'alpha_dash',
+            array(
+                // 'name' => 'alpha_dash',
                 // 'desc' => 'alpha_dash',
                 // 'online_at' => 'date',
-                'status' => 'numeric')
+                'status' => 'numeric'
+                )
         );
 
         if($validator->fails())

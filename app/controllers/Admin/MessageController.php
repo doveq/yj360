@@ -87,8 +87,8 @@ class MessageController extends \BaseController {
         $validator = Validator::make($query,
             array(
                 'receiver_id'      => 'numeric|required',
-                'content' => 'alpha_dash|required',
-                'name' => 'alpha_dash',
+                'content' => 'required',
+                // 'name' => 'alpha_dash',
             )
         );
 

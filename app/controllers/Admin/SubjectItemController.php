@@ -27,16 +27,16 @@ class SubjectItemController extends \BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        $validator = Validator::make($query,
-            array(
-                'name'      => 'alpha_dash',
-            )
-        );
+        // $validator = Validator::make($query,
+        //     array(
+        //         'name'      => 'alpha_dash',
+        //     )
+        // );
 
-        if($validator->fails())
-        {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "subject_item");
-        }
+        // if($validator->fails())
+        // {
+        //     return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "subject_item");
+        // }
 
         $subject_item = new SubjectItem();
         $info = $subject_item->getList($query);
@@ -135,7 +135,7 @@ class SubjectItemController extends \BaseController {
         // dd($data);
         $validator = Validator::make($data,
             array(
-                'name'      => 'required|alpha_dash',
+                'name'      => 'required',
             )
         );
         if($validator->fails())
