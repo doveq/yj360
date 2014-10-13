@@ -6,6 +6,7 @@ use Input;
 use Paginator;
 use Redirect;
 use DB;
+use Request;
 
 use Classes;
 use User;

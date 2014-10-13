@@ -1,13 +1,18 @@
 <?php namespace Admin;
 use View;
 use Session;
-use UserLog;
 use Validator;
 use Input;
 use Paginator;
 use Redirect;
+use DB;
+use Request;
+
+use UserLog;
+use User;
 
 class LogController extends \BaseController {
+    public $pageSize = 30;
 
 	/**
 	 * Display a listing of the resource.
@@ -16,45 +21,47 @@ class LogController extends \BaseController {
 	 */
 	public function index()
 	{
-		$pageSize = 20;  // 每页显示条数
-
-        $query = Input::only('content', 'user_id', 'type', 'page');
-        $query['pageSize'] = $pageSize;
-        //$query = array_filter($query); // 删除空值
+        $query = Input::only('name', 'page');
 
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
-        // dd($query);
+
         $validator = Validator::make($query,
             array(
-                // 'name'      => 'alpha_dash',
-                // 'desc'      => 'alpha_dash',
+                'name'      => 'alpha_dash',
                 // 'online_at' => 'date',
-                'type'    => 'numeric',
-                'user_id'    => 'numeric'
+                // 'user_id'    => 'numeric'
             )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "subject");
+            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "log");
         }
 
-        $userlog = new UserLog();
-        $info = $userlog->getList($query);
+        // if (Input::get('name')) {
+        //     $user = User::whereName(Input::get('name'))->first();
+        //     if (!$user) {
+        //         return $this->adminPrompt("未找到用户", '', $url = "log");
+        //     } else {
+        //         $query['user_id'] = $user->id;
+        //     }
+        // }
+        $lists = UserLog::where(function($q){
+            if (Input::get('name')) {
+                $user = User::whereName(Input::get('name'))->first();
+                if (!$user) {
+                    // return $LogController->adminPrompt("未找到用户", '', $url = "log");
+                    return Redirect::to('admin/prompt')->with('prompt', array('title' => '未找到用户', 'info' => '未找到用户', 'url' => 'classes', 'auto' => true));
+                    // dd("未找到用户");
+                } else {
+                    $q->whereUserId($user->id);
+                }
+            }
+        })->orderBy("created_at", "DESC")->paginate($this->pageSize);
 
-        // 分页
-        $paginator = Paginator::make($info['data'], $info['total'], $pageSize);
-        unset($query['pageSize']); // 减少分页url无用参数
-        $paginator->appends($query);  // 设置分页url参数
-
-        $p = array('list' => $info['data'],
-            // 'statusEnum' => $this->statusEnum,
-            'query' => $query,
-            'paginator' => $paginator );
-
-        return $this->adminView('log.index', $p);
+        return $this->adminView('log.index', compact('lists', 'query'));
 	}
 
 

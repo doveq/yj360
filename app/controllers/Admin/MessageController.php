@@ -14,7 +14,7 @@ class MessageController extends \BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '未读', '1' => '已读', '-1' => '已删除');
     public $typeEnum = array('0' => '系统信息', '1' => '私信');
-    public $pageSize = 5;
+    public $pageSize = 30;
     /**
      * Display a listing of the resource.
      *
@@ -22,12 +22,12 @@ class MessageController extends \BaseController {
      */
     public function index()
     {
-        $query = Input::only('page','status','action');
+        $query = Input::only('page','status','type');
 
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
-        $lists = Message::where(function($q)
+        $lists = Message::whereReceiverId(Session::get('uid'))->where(function($q)
             {
                 if (Input::get('status') == "0") {
                     $q->whereStatus(0);
@@ -36,6 +36,14 @@ class MessageController extends \BaseController {
                 } else if (Input::get('status') == '-1') {
                     $q->whereStatus(-1);
                 }
+                if (Input::get('type') == "0") {
+                    $q->whereType(0);
+                } else if (Input::get('type') == '1') {
+                    $q->whereType(1);
+                } else if (Input::get('type') == '-1') {
+                    $q->whereType(-1);
+                }
+
             })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
         $statusEnum = $this->statusEnum;
@@ -154,7 +162,6 @@ class MessageController extends \BaseController {
         if ($query['status']) $message->status = $query['status'];
 
         $message->save();
-
         return Redirect::to('admin/message');
     }
 

@@ -7,7 +7,7 @@ class IndexController extends \BaseController {
 
 	public function index()
 	{
-		print_r( Auth::user() );
+		// print_r( Auth::user() );
 		return $this->adminView('index');
 	}
 

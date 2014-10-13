@@ -77,6 +77,8 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('classmate', 'Admin\ClassmateController');
 
     Route::resource('message', 'Admin\MessageController');
+    Route::resource('feedback', 'Admin\FeedbackController');
+    Route::resource('favorite', 'Admin\FavoriteController');
 
 });
 
