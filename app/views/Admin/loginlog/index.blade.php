@@ -8,7 +8,7 @@
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
-      <li>{{link_to_route('admin.log.index', '访问日志')}}</li>
+      <li>{{link_to_route('admin.log.index', '登陆日志')}}</li>
       <li class="active">浏览日志</li>
     </ol>
   </div>
@@ -18,26 +18,19 @@
         {{ Form::label('inputName', '用户', array('class' => 'sr-only')) }}
         {{ Form::text('name', $query['name'], array('class' => 'form-control', 'id' => 'inputName', 'placeholder' => '用户')) }}
       </div>
-      <div class="form-group">
-        {{ Form::label('inputUrl', 'URL', array('class' => 'sr-only')) }}
-        {{ Form::text('url', $query['url'], array('class' => 'form-control', 'id' => 'inputUrl', 'placeholder' => 'URL')) }}
-      </div>
       {{ Form::button('查找', array('class' => 'btn btn-info', 'type' =>'submit')) }}
     {{ Form::close() }}
   </div>
   <div class="row">
-    {{ HTML::ul($errors->all()) }}
       <table class="table table-hover">
         <thead>
           <tr>
             <th>#</th>
             <th>用户</th>
-            <th>URL</th>
-            <th>方法</th>
-            <th>状态</th>
-            <th>访问时间</th>
+            <th>登陆时间</th>
+            <th>ip</th>
+            <th>省市</th>
             <th>浏览器信息</th>
-            <!-- <th>操作</th> -->
           </tr>
         </thead>
         <tbody>
@@ -45,10 +38,13 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->user->name}}</td>
-            <td>{{str_replace('http://'.Request::header('host'),'', $list->url)}}</td>
-            <td>{{$list->method}}</td>
-            <td>{{$list->code}}</td>
             <td>{{$list->created_at}}</td>
+            <td>{{$list->ip}}</td>
+            <td>
+              @if ($list->city)
+              {{$list->city}}
+              @endif
+            </td>
             <td>{{str_limit($list->user_agent, 50, '...')}}</td>
           </tr>
           @endforeach

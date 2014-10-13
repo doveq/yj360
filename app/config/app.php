@@ -199,6 +199,8 @@ return array(
 	/* 题目上传文件保存目录 */
 	'topic_dir' => public_path().'/data/topic',
 	'topic_url' => '/data/topic',
+	/*上传的题库保存目录 */
+	'uploadbank_dir' => public_path() . '/data/uploadbank',
 
 	'image_magick' => 'D:/ImageMagick',
 );

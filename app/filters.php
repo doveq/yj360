@@ -24,13 +24,14 @@ App::after(function($request, $response)
 		Session::put('newmassage_count', User::find(Session::get('uid'))->receiver()->whereStatus(0)->count());
 		$log             = new UserLog();
 		$log->user_id    = Session::get('uid');
+		$log->ip         = Request::getClientIp();
 		$log->url        = Request::fullUrl();
-		$log->referer        = Request::header('referer');
+		$log->referer    = Request::header('referer');
 		$log->method     = Request::method();
-		$log->code    	 = 200;
+		$log->code       = 200;
 		$log->created_at = date("Y-m-d H:i:s");
 		$log->user_agent = Request::header('user-agent');
-		$log->type 		 = 1;
+		$log->type       = 1;
 		$log->save();
 	}
 });

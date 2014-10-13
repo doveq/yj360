@@ -1,6 +1,6 @@
 <?php
 
-class LoginController extends BaseController 
+class LoginController extends BaseController
 {
 
 	public function __construct()
@@ -22,7 +22,7 @@ class LoginController extends BaseController
 		return $this->indexView('login', $data);
 	}
 
-	/* 登录处理 */ 
+	/* 登录处理 */
 	public function doLogin()
 	{
 		$data = Input::all();
@@ -33,6 +33,14 @@ class LoginController extends BaseController
 			Auth::login( $user );
 			Session::put('uid', $user->id);
 			Session::put('uname', $user->name);
+
+			//记录登陆日志
+			$loginlog = new Loginlog();
+			$loginlog->user_id = $user->id;
+			$loginlog->ip = Request::getClientIp();
+			$loginlog->created_at = date("Y-m-d H:i:s");
+			$loginlog->user_agent = Request::header('user-agent');
+			$loginlog->save();
 
 			echo "登录成功~";
     		//return Redirect::to('/');
@@ -51,6 +59,14 @@ class LoginController extends BaseController
 			Auth::login( $user );
 			Session::put('uid', $user->id);
 			Session::put('uname', $user->name);
+
+			//记录登陆日志
+			$loginlog = new Loginlog();
+			$loginlog->user_id = $user->id;
+			$loginlog->ip = Request::getClientIp();
+			$loginlog->created_at = date("Y-m-d H:i:s");
+			$loginlog->user_agent = Request::header('user-agent');
+			$loginlog->save();
 
     		return Redirect::to('admin');
 		}

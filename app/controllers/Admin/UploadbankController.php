@@ -6,13 +6,16 @@ use Input;
 use Paginator;
 use Redirect;
 use DB;
+use Config;
+use Response;
+use Request;
 
-use Feedback;
+use Uploadbank;
 use User;
 
-class FeedbackController extends \BaseController {
+class UploadbankController extends \BaseController {
 
-    public $typeEnum = array('' => '所有类型', '1' => '网站使用', '2' => '其他');
+    public $statusEnum = array('' => '所有类型', '0' => '未处理', '1' => '已处理');
     public $pageSize = 30;
     /**
      * Display a listing of the resource.
@@ -21,21 +24,22 @@ class FeedbackController extends \BaseController {
      */
     public function index()
     {
-        $query = Input::only('page', 'type');
-
+        $query = Input::only('page', 'status');
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
-        $lists = Feedback::where(function($q)
+        $lists = Uploadbank::where(function($q)
             {
-                if (Input::get('type')) {
-                    $q->whereType(Input::get('type'));
+                if (Input::get('status') == '0') {
+                    $q->whereStatus(0);
+                } elseif(Input::get('status') == '1') {
+                    $q->whereStatus(1);
                 }
 
             })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-        $typeEnum = $this->typeEnum;
-        return $this->adminView('feedback.index', compact('query', 'lists', 'typeEnum'));
+        $statusEnum = $this->statusEnum;
+        return $this->adminView('uploadbank.index', compact('query', 'lists', 'statusEnum'));
     }
 
 
@@ -46,7 +50,7 @@ class FeedbackController extends \BaseController {
      */
     public function create()
     {
-        // return $this->adminView('feedback.create');
+        // return $this->adminView('uploadbank.create');
     }
 
 
@@ -102,9 +106,9 @@ class FeedbackController extends \BaseController {
      */
     public function show($id)
     {
-        $feedback = Feedback::find($id);
-        $typeEnum = $this->typeEnum;
-        return $this->adminView('feedback.show', compact('feedback', 'typeEnum'));
+        $uploadbank = uploadbank::find($id);
+        $file = Config::get('app.uploadbank_dir') . "/" . $uploadbank->filename;
+        return Response::download($file);
 
     }
 
@@ -131,23 +135,23 @@ class FeedbackController extends \BaseController {
     public function update($id)
     {
         //
-        // $query = Input::only('id','status');
-        // // dd($data);
-        // $validator = Validator::make($query,
-        //     array(
-        //         'id'      => 'numeric|required',
-        //         'status'  => 'numeric',
-        //     )
-        // );
-        // if($validator->fails())
-        // {
-        //     return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "message");
-        // }
-        // $message = Message::find($id);
-        // if ($query['status']) $message->status = $query['status'];
+        $query = Input::only('id','status');
+        // dd($data);
+        $validator = Validator::make($query,
+            array(
+                'id'      => 'numeric|required',
+                'status'  => 'numeric',
+            )
+        );
+        if($validator->fails())
+        {
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "uploadbank");
+        }
+        $uploadbank = Uploadbank::find($id);
+        if ($query['status']) $uploadbank->status = $query['status'];
 
-        // $message->save();
-        // return Redirect::to('admin/message');
+        $uploadbank->save();
+        return Redirect::to('admin/uploadbank');
     }
 
 
@@ -160,8 +164,8 @@ class FeedbackController extends \BaseController {
     public function destroy($id)
     {
         //
-        Feedback::destroy($id);
-        return Redirect::to('admin/feedback');
+        Uploadbank::destroy($id);
+        return Redirect::to('admin/uploadbank');
     }
 
 

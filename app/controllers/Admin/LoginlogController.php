@@ -8,10 +8,10 @@ use Redirect;
 use DB;
 use Request;
 
-use UserLog;
+use Loginlog;
 use User;
 
-class LogController extends \BaseController {
+class LoginlogController extends \BaseController {
     public $pageSize = 30;
 
 	/**
@@ -21,28 +21,23 @@ class LogController extends \BaseController {
 	 */
 	public function index()
 	{
-        $query = Input::only('name', 'url', 'page');
+        $query = Input::only('name', 'page');
 
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        $lists = UserLog::where(function($q){
+        $lists = Loginlog::where(function($q){
             if (Input::get('name')) {
                 $user = User::whereName(Input::get('name'))->first();
                 if (!$user) {
                     // return $this->adminPrompt("未找到用户", '', $url = "classes");
-                    // return Redirect::to('admin/prompt')->with('prompt', array('title' => '未找到用户', 'info' => '未找到用户', 'url' => 'log', 'auto' => true));
-                    return Redirect::to('admin/log')->withErrors('未找到用户');
+                    return Redirect::to('admin/prompt')->with('prompt', array('title' => '未找到用户', 'info' => '未找到用户', 'url' => 'loginlog', 'auto' => true));
                     // return Redirect::to('admin/prompt');
                     // dd("未找到用户");
                 } else {
                     $q->whereUserId($user->id);
                 }
-            }
-
-            if (Input::get('url')) {
-                $q->where('url', 'like', '%'.Input::get('url').'%');
             }
         })->orderBy("created_at", "DESC")->paginate($this->pageSize);
         foreach ($lists as $key => $list) {
@@ -59,7 +54,7 @@ class LogController extends \BaseController {
             }
         }
 
-        return $this->adminView('log.index', compact('lists', 'query'));
+        return $this->adminView('loginlog.index', compact('lists', 'query'));
 	}
 
 

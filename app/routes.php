@@ -71,6 +71,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 
     Route::resource('product', 'Admin\ProductController');
     Route::resource('log', 'Admin\LogController');
+    Route::resource('loginlog', 'Admin\LoginlogController');
     Route::resource('textbook_item', 'Admin\TextbookItemController');
 
     Route::resource('classes', 'Admin\ClassesController');
@@ -79,6 +80,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('message', 'Admin\MessageController');
     Route::resource('feedback', 'Admin\FeedbackController');
     Route::resource('favorite', 'Admin\FavoriteController');
+    Route::resource('uploadbank', 'Admin\UploadbankController');
 
 });
 
