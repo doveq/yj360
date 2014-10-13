@@ -29,8 +29,6 @@ class TopicController extends BaseController {
 			shuffle($info['a']);
 		}
 
-		$info['session_id'] = Session::getId();
-
 		return $this->indexView('topic', $info);
 	}
 

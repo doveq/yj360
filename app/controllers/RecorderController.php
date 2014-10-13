@@ -24,7 +24,7 @@ class RecorderController extends BaseController
 		#Log::info( var_export($_FILES, true) );
 
 		$qid = 999;  // 所属题目id
-		$uid = Session::get('uid');
+		$uid = Session::get('uid') ? Session::get('uid') : 8888;
 		
 		$saved = $att->addRecorder($_FILES["upload_file"]["tmp_name"]['filename'], $uid, $qid);
 

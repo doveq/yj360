@@ -58,6 +58,19 @@ class Attachments
 				DB::table($this->table)->where('id', $find[0]->id)->update(array('created_at' => date('Y-m-d H:i:s')));
 				return $find[0]->id;
 			}
+			else
+			{
+				$id = DB::table($this->table)->insertGetid(array(
+					   'uid' =>  $uid, 
+	    			   'qid' => $qid,
+	    			   'type' => $_type,
+	    			   'created_at' => date('Y-m-d H:i:s'),
+	    			   'file_name' => $fileName,
+	    			   'file_type' => $_filetype,
+	    		));
+
+	    		return $id;
+			}
 		}
 		else
 		{
@@ -99,7 +112,8 @@ class Attachments
 		$attid = 0;
 		if( rename($file, $route['path']) )
 		{
-			$attid = $this->insert('recorder', $uid, $qid, $route['name'], $type);
+			//$attid = $this->insert('recorder', $uid, $qid, $route['name'], $type);
+			return 1;
 		}
 
 		return $attid;

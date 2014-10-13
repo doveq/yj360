@@ -14,7 +14,7 @@
 @section('content')
     <div class="container wrap">
         <div style="position:relative;overflow:hidden;">
-            <div>
+            <div style="padding-bottom:20px;">
                 @if( !empty($q['txt']) ) <h2>{{$q['txt']}}</h2> @endif
                 @if( !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
             </div>
@@ -29,11 +29,15 @@
                                 <td class="flag">
                                     <label>
                                         @if( $q['type'] == 1 || $q['type'] == 3)
-                                            <input type="radio" name="daan[]" value="{{$item['id']}}" is-right="{{$item['is_right']}}" onclick="correcting()" />
+                                            <input type="radio" name="daan" value="{{$item['id']}}" is-right="{{$item['is_right']}}" onclick="correcting()" />
                                         @else
-                                            <input type="checkbox" name="daan[]" value="{{$item['id']}}" is-right="{{$item['is_right']}}" />
+                                            <input type="checkbox" name="daan" value="{{$item['id']}}" is-right="{{$item['is_right']}}" />
                                         @endif
+
                                         <b>{{$flag[$k]}}.</b>
+
+                                        <div class="flag-true"></div>
+                                        <div class="flag-false"></div>
                                     </label>
                                 </td>
                                 <td>
@@ -53,6 +57,17 @@
                         </table>
                     {{-- 填空，写作 --}}
                     @elseif($q['type'] == 4 || $q['type'] == 5 )
+                    <div >
+                        @foreach($a as $k => $item)
+                            @if( !empty($item['txt']) )
+                                <div>{{$item['txt']}}</div>
+                            @elseif( !empty($item['img_url']) )
+                                <div><img src="{{$item['img_url']}}" /></div>
+                            @elseif( !empty($item['sound_url']) )
+                                <div><audio src="$item['sound_url']"></div>
+                            @endif
+                        @endforeach
+                    </div>
                     {{-- 模唱 --}}
                     @elseif( $q['type'] == 6 )
                     {{-- 视唱 --}}
@@ -135,7 +150,10 @@
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" ></a>
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;"></a>
-            
+            @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
+                <a class="topic-btn" id="topic-btn-11" hint="显示答案"  href="javascript:;"></a>
+            @endif
+
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
             <a class="topic-btn" id="topic-btn-5" hint="详解" href="javascript:;" onclick="disabuse();"></a>
             <div class="topic-btn" id="topic-btn-checkbox">
@@ -149,7 +167,8 @@
             <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="#"></a>
             -->
             <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="soundPlay();"></a>
-            <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="$('.record_button').click();"></a>
+            <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart()"></a>
+            <a class="topic-btn" id="topic-btn-11" hint="停止录音"  href="javascript:;" onclick="$('.record_button').click();"></a>
             <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick=""></a>
             @endif
             <a class="topic-btn" id="topic-btn-6" hint="答题卡" href="#"></a>
@@ -220,11 +239,26 @@
                 if( $(this).is(':checked') )
                 {
                     if(is_right == 0)
+                    {
                         err.push( $(this).val() );
+                        $(this).parent('label').addClass('correcting-false');
+                    }
                 }
                 else if(is_right == 1)
+                {
                     err.push( $(this).val() );
+                    $(this).parent('label').addClass('correcting-false');
+                }
+
+                if(is_right == 1)
+                {
+                    $(this).parent('label').removeClass('correcting-false');
+                    $(this).parent('label').addClass('correcting-true');
+                }
+
             });
+
+
 
             if(err.length > 0)
                 console.log(err);
@@ -247,6 +281,18 @@
                 obj.addClass('disabuse-open');
                 obj.data.show = 1;
             }
+        }
+
+        function recorderStart()
+        {
+            $('.record_button').click();
+            $('#topic-btn-10').hide();
+            $('#topic-btn-11').show();
+        }
+
+        function recorderStop()
+        {
+
         }
     </script>
 

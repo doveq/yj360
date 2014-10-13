@@ -1,6 +1,6 @@
 @extends('Admin.master')
 
-@section('title')添加题目@stop
+@section('title')题目编辑@stop
 
 @section('css')
 	<link href="/assets/mediaelement/build/mediaelementplayer.min.css" rel="stylesheet">
