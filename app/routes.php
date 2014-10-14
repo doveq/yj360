@@ -83,7 +83,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('uploadbank', 'Admin\UploadbankController');
 
     Route::resource('column', 'Admin\ColumnController');
-    Route::resource('zhuanti', 'Admin\ZhuantiController');
+    Route::resource('sort', 'Admin\SortController');
 
 
 });

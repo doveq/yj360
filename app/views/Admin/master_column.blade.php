@@ -56,7 +56,9 @@
                   <li><a href="/admin/topic">真题题库</a></li>
                   <li><a href="/admin/topic/add">添加题目</a></li>
                   <li class="divider"></li>
-                  <li><a href="/admin/uploadbank">上传题库</a></li>
+                  <li><a href="/admin/sort">题库分类</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/uploadbank">原始题库</a></li>
                 </ul>
               </li>
 
@@ -71,9 +73,6 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">其他 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="/admin/subject_item">科目功能项</a></li>
-                  <li><a href="/admin/textbook_item">教材题库</a></li>
-                  <li class="divider"></li>
                   <li><a href="/admin/feedback">反馈信息</a></li>
                   <li><a href="/admin/log">访问日志</a></li>
                 </ul>

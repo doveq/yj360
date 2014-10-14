@@ -10,9 +10,9 @@ use Request;
 use Str;
 use Config;
 
-use Column;
+use Sort;
 
-class ColumnController extends \BaseController {
+class SortController extends \BaseController {
     public $pageSize = 30;
     public $statusEnum = array('0' => '准备', '1' => '上线');
 
@@ -29,7 +29,7 @@ class ColumnController extends \BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        $lists = Column::where(function($q){
+        $lists = Sort::where(function($q){
             if (Input::get('name')) {
                 $q->whereName(Input::get('name'));
             }
@@ -40,7 +40,7 @@ class ColumnController extends \BaseController {
             }
         })->whereType(0)->orderBy("id", "ASC")->paginate($this->pageSize);
         $statusEnum = $this->statusEnum;
-        return $this->adminView('column.index', compact('lists', 'query', 'statusEnum'));
+        return $this->adminView('sort.index', compact('lists', 'query', 'statusEnum'));
 	}
 
 
@@ -60,19 +60,19 @@ class ColumnController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column/create");
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort/create");
         }
         if (!is_null($query['parent_id']) && $query['parent_id'] > 0) {
-            $parent = Column::find($query['parent_id'])->parent_id;
+            $parent = Sort::find($query['parent_id'])->parent_id;
         } else {
             $parent = 0;
         }
-        $column = array('' => '--所有--');
-        $columns = Column::whereParentId($parent)->whereType(0)->select('id','name')->get();
-        foreach ($columns as $key => $value) {
-            $column[$value->id] = $value->name;
+        $sort = array('' => '--所有--');
+        $sorts = Sort::whereParentId($parent)->whereType(0)->select('id','name')->get();
+        foreach ($sorts as $key => $value) {
+            $sort[$value->id] = $value->name;
         }
-        return $this->adminView('column.create', compact('query', 'column'));
+        return $this->adminView('sort.create', compact('query', 'sort'));
 	}
 
 
@@ -92,30 +92,30 @@ class ColumnController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column/create");
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort/create");
         }
         if(Input::hasFile('thumbnail')) {
             // $originalName = Input::file('pic')->getClientOriginalName();
             $extension = Input::file('thumbnail')->getClientOriginalExtension();
             $filename = Str::random() . "." . $extension;
-            $destinationPath = Config::get('app.column_thumbnail_dir');
+            $destinationPath = Config::get('app.sort_thumbnail_dir');
             Input::file('thumbnail')->move($destinationPath, $filename);
             $query['filename'] = $filename;
         }
-        $column             = new Column();
+        $sort             = new Sort();
         if ($query['parent_id'] > 0) {
-            $column->parent_id = $query['parent_id'];
+            $sort->parent_id = $query['parent_id'];
         } else {
-            $column->parent_id = 0;
+            $sort->parent_id = 0;
         }
-        $column->name                                     = $query['name'];
-        if ($query['desc']) $column->desc                 = $query['desc'];
-        if (isset($query['filename'])) $column->thumbnail = $query['filename'];
-        $column->created_at                               = date("Y-m-d H:i:s");
-        $column->status                                   = 0;
-        $column->type                                     = 0;
-        if ($column->save()) {
-            return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "column?parent_id=".$query['parent_id']);
+        $sort->name                                     = $query['name'];
+        if ($query['desc']) $sort->desc                 = $query['desc'];
+        if (isset($query['filename'])) $sort->thumbnail = $query['filename'];
+        $sort->created_at                               = date("Y-m-d H:i:s");
+        $sort->status                                   = 0;
+        $sort->type                                     = 0;
+        if ($sort->save()) {
+            return Redirect::to('admin/sort?parent_id='.$sort->parent_id);
         }
 	}
 
@@ -146,10 +146,10 @@ class ColumnController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column");
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort");
         }
-		$column = Column::find($id);
-        return $this->adminView('column.edit', compact("column"));
+		$sort = Sort::find($id);
+        return $this->adminView('sort.edit', compact("sort"));
 	}
 
 
@@ -174,27 +174,27 @@ class ColumnController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column");
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort");
         }
         if(Input::hasFile('thumbnail')) {
             // $originalName = Input::file('pic')->getClientOriginalName();
             $extension = Input::file('thumbnail')->getClientOriginalExtension();
             $filename = Str::random() . "." . $extension;
-            $destinationPath = Config::get('app.column_thumbnail_dir');
+            $destinationPath = Config::get('app.sort_thumbnail_dir');
             Input::file('thumbnail')->move($destinationPath, $filename);
             $query['filename'] = $filename;
             // dd($filename);
         }
-        $column = Column::find($id);
+        $sort = Sort::find($id);
 
-        if (isset($query['name'])) $column->name           = $query['name'];
-        if (isset($query['desc'])) $column->desc           = $query['desc'];
-        if (isset($query['status'])) $column->status       = $query['status'];
-        if (isset($query['filename'])) $column->thumbnail       = $query['filename'];
+        if (isset($query['name'])) $sort->name           = $query['name'];
+        if (isset($query['desc'])) $sort->desc           = $query['desc'];
+        if (isset($query['status'])) $sort->status       = $query['status'];
+        if (isset($query['filename'])) $sort->thumbnail       = $query['filename'];
 
-        $column->save();
+        $sort->save();
 
-        return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "column?parent_id=" . $column->parent_id);
+        return Redirect::to('admin/sort?parent_id='.$sort->parent_id);
 	}
 
 
@@ -206,13 +206,13 @@ class ColumnController extends \BaseController {
 	 */
 	public function destroy($id)
 	{
-		$column = Column::find($id);
-        $child_count = $column->child->count();
+		$sort = Sort::find($id);
+        $child_count = $sort->child->count();
         if ($child_count > 0) {
-            return $this->adminPrompt("操作失败", '此科目有子科目,不能删除', $url = "column?parent_id=".$column->parent_id);
+            return $this->adminPrompt("操作失败", '此科目有子科目,不能删除', $url = "sort?parent_id=".$sort->parent_id);
         }
-        $column->delete();
-        return Redirect::to('admin/column?parent_id='.$column->parent_id);
+        $sort->delete();
+        return Redirect::to('admin/sort?parent_id='.$sort->parent_id);
 	}
 
 

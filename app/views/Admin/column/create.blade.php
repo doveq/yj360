@@ -9,7 +9,7 @@
   <div class="row">
     <ol class="breadcrumb">
       <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
-      <li class="active">添加科目功能</li>
+      <li class="active">添加科目</li>
     </ol>
   </div>
   <div class="row">

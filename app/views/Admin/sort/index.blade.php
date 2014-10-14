@@ -2,14 +2,14 @@
 @section('title')科目管理@stop
 
 @section('nav')
-  @include('Admin.zhuanti.nav')
+  @include('Admin.sort.nav')
 @stop
 
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
-      <li>{{link_to_route('admin.zhuanti.index', '科目管理')}}</li>
-      <li class="active">浏览科目</li>
+      <li>{{link_to_route('admin.sort.index', '题目分类管理')}}</li>
+      <li class="active">浏览分类</li>
     </ol>
   </div>
 
@@ -19,6 +19,7 @@
           <tr>
             <th>#</th>
             <th>名称</th>
+            <th>图片</th>
             <th>描述</th>
             <th>创建时间</th>
             <th>状态</th>
@@ -30,6 +31,11 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->name}}</td>
+            <td>
+              @if ($list->thumbnail)
+              <img src="{{Config::get('app.column_thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.column_thumbnail_width')}}" height="{{Config::get('app.column_thumbnail_height')}}" class="thumbnail"/>
+              @endif
+            </td>
             <td>{{$list->desc}}</td>
             <td>{{$list->created_at}}</td>
             <td>
@@ -43,10 +49,11 @@
             </td>
             <td>
               <div class="btn-group btn-xs">
-                <a class="btn btn-default btn-xs" href="{{url('/admin/zhuanti/'. $list->id .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
+                <a class="btn btn-default btn-xs" href="{{url('/admin/sort/'. $list->id .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
                 <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="{{url('/admin/zhuanti/'.$list->id) }}"><i class="icon-magic"></i> 内容管理</a></li>
+                    <li><a href="{{url('/admin/sort?parent_id='. $list->id) }}"><i class="icon-magic"></i> 内容管理</a></li>
+                    <li><a href="{{url('/admin/sort/create?parent_id='. $list->id) }}"><i class="icon-plus-sign"></i> 新建子科目</a></li>
                     <li class="divider"></li>
                     @if($list->status === 1)
                     <li class="disabled"><a href="#"><i class="icon-ok"></i> 发布</a></li>
@@ -74,8 +81,8 @@
   </div>
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     {{ Form::open(array('role' => 'form', 'class' => 'form-horizontal', 'id' => 'myModalForm', 'method' => 'post')) }}
-    {{ Form::hidden('id', '', array('id' => 'zhuanti_id')) }}
-    {{ Form::hidden('status', '', array('id' => 'zhuanti_status')) }}
+    {{ Form::hidden('id', '', array('id' => 'sort_id')) }}
+    {{ Form::hidden('status', '', array('id' => 'sort_status')) }}
     {{ Form::hidden('_method', '', array('id' => 'form_method')) }}
 
     <div class="modal-dialog">
@@ -105,39 +112,39 @@ $(function(){
   //发布,下线
   $(".btn_publish").bind("click", function(){
       var $this = $(this);
-      var zhuanti_id = $this.data("id");
-      var zhuanti_status = $this.data("status");
-      if (zhuanti_id <= 0) {
+      var sort_id = $this.data("id");
+      var sort_status = $this.data("status");
+      if (sort_id <= 0) {
           alert("data error");
           return false;
       }
-      if (zhuanti_status == '1') {
+      if (sort_status == '1') {
         status_txt = '发布';
-      } else if (zhuanti_status == '-1') {
+      } else if (sort_status == '-1') {
         status_txt = '下线';
       } else {
         status_txt = '准备';
       }
       $("#myModalLabel").html('提示:');
       $("#myModalBody").html('你确定要设置成' + status_txt + '吗?');
-      $("#zhuanti_id").val(zhuanti_id);
-      $("#zhuanti_status").val(zhuanti_status);
-      $("#myModalForm").attr('action', '{{ url('/admin/zhuanti/') }}/' + zhuanti_id);
+      $("#sort_id").val(sort_id);
+      $("#sort_status").val(sort_status);
+      $("#myModalForm").attr('action', '{{ url('/admin/sort/') }}/' + sort_id);
       $("#form_method").attr('value', 'PUT');
       $('#myModal').modal('show');
   });
   //删除
   $(".btn_delete").bind("click", function(){
       var $this = $(this);
-      var zhuanti_id = $this.data("id");
-      if (zhuanti_id <= 0) {
+      var sort_id = $this.data("id");
+      if (sort_id <= 0) {
           alert("data error");
           return false;
       }
       $("#myModalLabel").html('提示:');
       $("#myModalBody").html('你确定要删除吗?');
-      $("#zhuanti_id").val(zhuanti_id);
-      $("#myModalForm").attr('action', '/admin/zhuanti/'+ zhuanti_id);
+      $("#sort_id").val(sort_id);
+      $("#myModalForm").attr('action', '/admin/sort/'+ sort_id);
       $("#form_method").attr('value', 'DELETE');
       $('#myModal').modal('show');
   });
