@@ -42,6 +42,7 @@
               <span class="label label-default">{{$statusEnum[$list->status]}}</span>
               @endif
             </td>
+            <td>{{$typeEnum[$list->type]}}</td>
             <td>
               <div class="btn-group btn-xs">
                 @if ($list->status === 1)
