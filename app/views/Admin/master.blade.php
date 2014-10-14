@@ -45,7 +45,7 @@
                   <li><a href="/admin/column">浏览科目</a></li>
                   <li><a href="/admin/column/create">添加科目</a></li>
                   <li class="divider"></li>
-                  <li><a href="/admin/zhuanti">专题管理</a></li>
+                  <!-- <li><a href="/admin/zhuanti">专题管理</a></li> -->
                 </ul>
               </li>
 
