@@ -30,12 +30,9 @@ class UploadbankController extends \BaseController {
             $query['page'] = 1;
         $lists = Uploadbank::where(function($q)
             {
-                if (Input::get('status') == '0') {
-                    $q->whereStatus(0);
-                } elseif(Input::get('status') == '1') {
-                    $q->whereStatus(1);
+                if (!is_null(Input::get('status'))) {
+                    $q->whereStatus(Input::get('status'));
                 }
-
             })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
         $statusEnum = $this->statusEnum;

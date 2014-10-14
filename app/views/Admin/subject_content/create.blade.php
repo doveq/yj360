@@ -16,7 +16,7 @@
   </div>
   <div class="row">
       {{ HTML::ul($errors->all()) }}
-      {{ Form::open(array('url' => '/admin/subject_content/', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal')) }}
+      {{ Form::open(array('url' => '/admin/subject_content/', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal', 'files' => true)) }}
         <div class="form-group">
           {{ Form::label('content_name', '名称', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">

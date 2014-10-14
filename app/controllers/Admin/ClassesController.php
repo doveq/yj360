@@ -45,12 +45,8 @@ class ClassesController extends \BaseController {
             if (Input::get('id')) {
                 $query->whereId(Input::get('id'));
             }
-            if (Input::get('status') == "0") {
-                $q->whereStatus(0);
-            } else if (Input::get('status') == '1') {
-                $q->whereStatus(1);
-            } else if (Input::get('status') == '-1') {
-                $q->whereStatus(-1);
+            if (!is_null(Input::get('status'))) {
+                $query->whereStatus(Input::get('status'));
             }
             if (Input::get('name')) {
                 $query->where('name', 'LIKE', '%'.Input::get('name').'%');

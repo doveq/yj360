@@ -92,7 +92,7 @@ class ClassmateController extends \BaseController {
             if (Input::get('tel')) {
                 $query->whereTel(Input::get('tel'));
             }
-            if (Input::get('status')) {
+            if (!is_null(Input::get('status'))) {
                 $query->whereStatus(Input::get('status'));
             }
             if (Input::get('name')) {

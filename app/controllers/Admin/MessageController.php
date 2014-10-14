@@ -29,19 +29,11 @@ class MessageController extends \BaseController {
             $query['page'] = 1;
         $lists = Message::whereReceiverId(Session::get('uid'))->where(function($q)
             {
-                if (Input::get('status') == "0") {
-                    $q->whereStatus(0);
-                } else if (Input::get('status') == '1') {
-                    $q->whereStatus(1);
-                } else if (Input::get('status') == '-1') {
-                    $q->whereStatus(-1);
+                if (!is_null(Input::get('status'))) {
+                    $q->whereStatus(Input::get('status'));
                 }
-                if (Input::get('type') == "0") {
-                    $q->whereType(0);
-                } else if (Input::get('type') == '1') {
-                    $q->whereType(1);
-                } else if (Input::get('type') == '-1') {
-                    $q->whereType(-1);
+                if (!is_null(Input::get('type'))) {
+                    $q->whereStatus(Input::get('type'));
                 }
 
             })->orderBy('created_at', 'DESC')->paginate($this->pageSize);

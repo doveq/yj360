@@ -4,6 +4,8 @@ use Session;
 use Validator;
 use Input;
 use Paginator;
+use Config;
+use Str;
 
 use Subject;
 use SubjectItem;
@@ -95,9 +97,11 @@ class SubjectContentController extends \BaseController {
     {
         //
         $query = Input::all();
+        // dd($query);
         $query['created_at'] = date("Y-m-d H:i:s");
         $validator = Validator::make($query ,
             array('name' => 'required',
+                'pic' => 'mimes:jpg,jpeg,png|required',
                 'subject_id'    => 'numeric|required',
                 'subject_item_id'    => 'numeric|required',
                 )
@@ -108,9 +112,17 @@ class SubjectContentController extends \BaseController {
             return $this->adminPrompt("参数错误", $validator->messages()->first(),
                 $url = "subject_content?subject_id=".$query['subject_id']."&subject_item_id=".$query['subject_item_id']);
         }
+
+        if(Input::hasFile('pic')) {
+            // $originalName = Input::file('pic')->getClientOriginalName();
+            $extension = Input::file('pic')->getClientOriginalExtension();
+            $filename = $query['subject_id'] . "_" . $query['subject_item_id'] . "_" . Str::random() . "." . $extension;
+            $destinationPath = Config::get('app.subject_pic_dir');
+            Input::file('pic')->move($destinationPath, $filename);
+        }
         $subjectcontent                                                 = new SubjectContent();
         if ($query['name']) $subjectcontent->name                       = $query['name'];
-        if ($query['pic']) $subjectcontent->pic                         = $query['pic'];
+        if ($query['pic']) $subjectcontent->pic                         = $filename;
         if ($query['description']) $subjectcontent->description         = $query['description'];
         if ($query['created_at']) $subjectcontent->created_at           = $query['created_at'];
         if ($query['subject_id']) $subjectcontent->subject_id           = $query['subject_id'];
@@ -168,6 +180,7 @@ class SubjectContentController extends \BaseController {
                 // 'name' => 'alpha_dash',
                 // 'desc' => 'alpha_dash',
                 // 'online_at' => 'date',
+                'pic' => 'mimes:jpg,jpeg,png',
                 'status' => 'numeric'
                 )
         );
@@ -178,10 +191,18 @@ class SubjectContentController extends \BaseController {
             return $this->adminPrompt("参数错误", $validator->messages()->first(),
                 $url = "subject_content?subject_id=".$subject_content->subject_id."&subject_item_id=".$subject_content->subject_item_id);
         }
-
-        if (isset($query['name'])) $subject_content->name           = $query['name'];
-        if (isset($query['desc'])) $subject_content->description    = $query['desc'];
-        if (isset($query['status'])) $subject_content->status       = $query['status'];
+        if(Input::hasFile('pic')) {
+            // $originalName = Input::file('pic')->getClientOriginalName();
+            $extension = Input::file('pic')->getClientOriginalExtension();
+            $filename = $subject_content['subject_id'] . "_" . $subject_content['subject_item_id'] . "_" . Str::random() . "." . $extension;
+            $destinationPath = Config::get('app.subject_pic_dir');
+            Input::file('pic')->move($destinationPath, $filename);
+            $query['filename'] = $filename;
+        }
+        if (isset($query['name'])) $subject_content->name        = $query['name'];
+        if (isset($query['filename'])) $subject_content->pic          = $query['filename'];
+        if (isset($query['desc'])) $subject_content->description = $query['desc'];
+        if (isset($query['status'])) $subject_content->status    = $query['status'];
 
         $subject_content->save();
 

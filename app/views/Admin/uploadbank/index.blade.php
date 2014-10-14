@@ -19,6 +19,8 @@
           <tr>
             <th>#</th>
             <th>上传者</th>
+            <th>题库名称</th>
+            <th>题库说明</th>
             <th>文件</th>
             <th>上传时间</th>
             <th>状态</th>
@@ -30,6 +32,8 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->user->name}}</td>
+            <td>{{$list->name}}</td>
+            <td>{{$list->desc}}</td>
             <td><a href="{{url('/admin/uploadbank/'.$list->id)}}"><i class="glyphicon glyphicon-download"> </i> {{$list->filename}}</a></td>
             <td>{{$list->created_at}}</td>
             <td>

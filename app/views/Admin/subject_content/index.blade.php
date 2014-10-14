@@ -24,6 +24,7 @@
           <thead>
             <tr>
               <th>#</th>
+              <th>图片</th>
               <th>项目名称</th>
               <th>状态</th>
               <th>操作</th>
@@ -33,6 +34,7 @@
             @foreach ($contents as $item)
             <tr>
               <td>{{$item['id']}}</td>
+              <td><img src="{{Config::get('app.subject_pic_url')}}/{{$item['pic']}}" width="{{Config::get('app.subject_thumb_width')}}" height="{{Config::get('app.subject_thumb_width')}}" class="thumbnail"/></td>
               <td>{{$item['name']}}</td>
               <td>
                 @if ($item['status'] == 1)

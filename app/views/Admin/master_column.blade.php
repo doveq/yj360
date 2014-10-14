@@ -43,19 +43,20 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="/admin/subject">浏览科目</a></li>
-                  <li><a href="/admin/subject/create">添加科目</a></li>
+                  <li><a href="/admin/column">浏览科目</a></li>
+                  <li><a href="/admin/column/create">添加科目</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/zhuanti">专题管理</a></li>
                 </ul>
               </li>
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">题库管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">基础测试题库</a></li>
-                  <li><a href="#">基础教材强化库</a></li>
-                  <li><a href="#">基础难点解答</a></li>
                   <li><a href="/admin/topic">真题题库</a></li>
                   <li><a href="/admin/topic/add">添加题目</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/uploadbank">上传题库</a></li>
                 </ul>
               </li>
 

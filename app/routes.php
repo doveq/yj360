@@ -62,12 +62,12 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('user', 'Admin\UserController');
-    Route::resource('subject', 'Admin\SubjectController');
-    Route::resource('subject_item', 'Admin\SubjectItemController');
-    Route::resource('subject_item_relation', 'Admin\SubjectItemRelationController');
-    Route::resource('item_content', 'Admin\ItemContentController');
-    Route::resource('subject_content', 'Admin\SubjectContentController');
-    Route::resource('content_exam', 'Admin\ContentExamController');
+    // Route::resource('subject', 'Admin\SubjectController');
+    // Route::resource('subject_item', 'Admin\SubjectItemController');
+    // Route::resource('subject_item_relation', 'Admin\SubjectItemRelationController');
+    // Route::resource('item_content', 'Admin\ItemContentController');
+    // Route::resource('subject_content', 'Admin\SubjectContentController');
+    // Route::resource('content_exam', 'Admin\ContentExamController');
 
     Route::resource('product', 'Admin\ProductController');
     Route::resource('log', 'Admin\LogController');
@@ -81,6 +81,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('feedback', 'Admin\FeedbackController');
     Route::resource('favorite', 'Admin\FavoriteController');
     Route::resource('uploadbank', 'Admin\UploadbankController');
+
+    Route::resource('column', 'Admin\ColumnController');
+    Route::resource('zhuanti', 'Admin\ZhuantiController');
+
 
 });
 

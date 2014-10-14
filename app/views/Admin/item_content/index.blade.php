@@ -34,10 +34,6 @@
               <td>
                 <div class="btn-group btn-xs">
                     <a class="btn btn-default btn-xs" href="{{ url('/admin/subject_content?subject_id=' . $subject->id . '&subject_item_id=' . $item['id']) }}"><i class="icon-edit"></i> 内容管理</a>
-                    <!-- <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
-                    <ul class="dropdown-menu">
-                      <li><a class="btn_delete" data-toggle="modal" data-id="{{$item['id']}}" data-val="{{$item['name']}}"><i class="icon-trash"></i> 删除</a></li>
-                    </ul> -->
                 </div>
               </td>
             </tr>
