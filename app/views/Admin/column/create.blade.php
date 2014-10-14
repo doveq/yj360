@@ -14,11 +14,18 @@
   </div>
   <div class="row">
       {{ HTML::ul($errors->all()) }}
-      {{ Form::open(array('url' => '/admin/column/', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal')) }}
+      {{ Form::open(array('url' => '/admin/column/', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal', 'files' => true)) }}
         <div class="form-group">
           {{ Form::label('column_name', '科目名称', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
             {{ Form::text('name', '', array('class' => 'form-control', 'id' => 'column_name')) }}
+          </div>
+        </div>
+        <div class="form-group">
+          {{ Form::label('column_thumbnail', '图片', array('class' => 'col-md-2 control-label')) }}
+          <div class="col-md-6">
+            {{ Form::file('thumbnail', '', array('id' => 'column_thumbnail')) }}
+            <p class="help-block">请选择展示图片</p>
           </div>
         </div>
         <div class="form-group">

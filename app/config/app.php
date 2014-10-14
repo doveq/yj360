@@ -202,10 +202,10 @@ return array(
 	/*上传的题库保存目录 */
 	'uploadbank_dir' => public_path() . '/data/uploadbank',
 	//科目展示图片保存目录
-	'subject_pic_dir' => public_path() . '/data/subject_pic',
-	'subject_pic_url' => '/data/subject_pic',
-	'subject_thumb_width' => 150,
-	'subject_thumb_height' => 150,
+	'column_thumbnail_dir' => public_path() . '/data/column_thumbnail_dir',
+	'column_thumbnail_url' => '/data/column_thumbnail_dir',
+	'column_thumbnail_width' => 150,
+	'column_thumbnail_height' => 150,
 
 	'image_magick' => 'D:/ImageMagick',
 );

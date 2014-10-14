@@ -7,6 +7,8 @@ use Paginator;
 use Redirect;
 use DB;
 use Request;
+use Str;
+use Config;
 
 use Column;
 
@@ -92,17 +94,26 @@ class ColumnController extends \BaseController {
         {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column/create");
         }
+        if(Input::hasFile('thumbnail')) {
+            // $originalName = Input::file('pic')->getClientOriginalName();
+            $extension = Input::file('thumbnail')->getClientOriginalExtension();
+            $filename = Str::random() . "." . $extension;
+            $destinationPath = Config::get('app.column_thumbnail_dir');
+            Input::file('thumbnail')->move($destinationPath, $filename);
+            $query['filename'] = $filename;
+        }
         $column             = new Column();
         if ($query['parent_id'] > 0) {
             $column->parent_id = $query['parent_id'];
         } else {
             $column->parent_id = 0;
         }
-        $column->name       = $query['name'];
-        if ($query['desc']) $column->desc = $query['desc'];
-        $column->created_at = date("Y-m-d H:i:s");
-        $column->status     = 0;
-        $column->type       = 1;
+        $column->name                              = $query['name'];
+        if ($query['desc']) $column->desc          = $query['desc'];
+        if ($query['filename']) $column->thumbnail = $query['filename'];
+        $column->created_at                        = date("Y-m-d H:i:s");
+        $column->status                            = 0;
+        $column->type                              = 0;
         if ($column->save()) {
             return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "column?parent_id=".$query['parent_id']);
         }
@@ -165,12 +176,21 @@ class ColumnController extends \BaseController {
         {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column");
         }
-
+        if(Input::hasFile('thumbnail')) {
+            // $originalName = Input::file('pic')->getClientOriginalName();
+            $extension = Input::file('thumbnail')->getClientOriginalExtension();
+            $filename = Str::random() . "." . $extension;
+            $destinationPath = Config::get('app.column_thumbnail_dir');
+            Input::file('thumbnail')->move($destinationPath, $filename);
+            $query['filename'] = $filename;
+            // dd($filename);
+        }
         $column = Column::find($id);
 
         if (isset($query['name'])) $column->name           = $query['name'];
         if (isset($query['desc'])) $column->desc           = $query['desc'];
         if (isset($query['status'])) $column->status       = $query['status'];
+        if (isset($query['filename'])) $column->thumbnail       = $query['filename'];
 
         $column->save();
 

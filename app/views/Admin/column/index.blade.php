@@ -19,6 +19,7 @@
           <tr>
             <th>#</th>
             <th>名称</th>
+            <th>图片</th>
             <th>描述</th>
             <th>创建时间</th>
             <th>状态</th>
@@ -30,6 +31,11 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->name}}</td>
+            <td>
+              @if ($list->thumbnail)
+              <img src="{{Config::get('app.column_thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.column_thumbnail_width')}}" height="{{Config::get('app.column_thumbnail_height')}}" class="thumbnail"/>
+              @endif
+            </td>
             <td>{{$list->desc}}</td>
             <td>{{$list->created_at}}</td>
             <td>
