@@ -49,7 +49,7 @@
 			    <div class="col-sm-10">
 			      @if(isset($q['img_url']))
 		      	  <div>
-			      	<input type="hidden" name="file_img_id" value="{{$q['img_att_id']}}" />
+			      	<input type="hidden" name="file_img_id" value="{{$q['img_att_id']}}"  />
 			      	<img src="{{$q['img_url']}}" />
 		      	  </div>
 		      	  <div class="checkbox">
@@ -98,11 +98,13 @@
 			    </div>
 			  </div>
 
-			  
+			  <?php
+			  		$answersBox = "";
+			  ?>
 
 			  @for ($i = 0; $i < 4; $i++)
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">答案{{$i}}</label>
+			    <label class="col-sm-2 control-label">答案{{$flag[$i]}}</label>
 			    <div class="col-sm-10">
 			      @if(isset($a[$i]['id']))
 			      	<input type="hidden" name="aid[]" value="{{$a[$i]['id']}}" />
@@ -134,23 +136,36 @@
 			      @endif
 			      <input type="file" title="上传图片"  name="answers_img[]" />
 			      <input type="file" title="上传声音" name="answers_sound[]" />
-			      <div class="checkbox">
-				    <label>
-				      @if(isset($a[$i]['is_right']) && $a[$i]['is_right'])
-				      <input type="checkbox" name="answers_right[]" checked="checked" value="{{$a[$i]['id'] or '0'}}" /> 正确答案
-				      @else
-				      <input type="checkbox" name="answers_right[]" value="{{$a[$i]['id'] or '0'}}" /> 正确答案
-				      @endif
-				    </label>
-				  </div>
+
+			      <?php
+
+			      	$v = isset($a[$i]["id"]) ? $a[$i]["id"] : 0;
+			  		$answersBox .= '<span style="padding:0 10px;width:auto;"><label>';
+
+					if(isset($a[$i]['is_right']) && $a[$i]['is_right'])
+						$answersBox .= "<input type='checkbox' name='answers_right[]' checked='checked' value='$v' /> $flag[$i]";
+					else
+					   	$answersBox .= "<input type='checkbox' name='answers_right[]' value='$v' /> $flag[$i]";
+
+					    
+					$answersBox .= '</label></span>';
+				  ?>
+
 			    </div>
 			  </div>
 			  @endfor
 
 			  <div class="form-group">
+			    <label class="col-sm-2 control-label">正确答案</label>
+			    <div class="col-sm-10" id="answers-box">
+			    	<?php echo $answersBox; ?>
+			    </div>
+			  </div>
+
+			  <div class="form-group">
 			    <label class="col-sm-2 control-label">题目详解</label>
 			    <div class="col-sm-10">
-			      <textarea class="form-control" rows="3" name="disabuse">{{$q['disabuse'] or ''}}</textarea>
+			      <textarea rows="3" id="disabuse" name="disabuse">{{$q['disabuse'] or ''}}</textarea>
 			    </div>
 			  </div>
 
@@ -169,10 +184,16 @@
 
 @section('js')
 	<script src="/assets/bootstrap/js/bootstrap.file-input.js"></script>
+    <script type="text/javascript" src="/assets/ueditor/ueditor.config.js"></script>
+    <script type="text/javascript" src="/assets/ueditor/ueditor.all.min.js"></script>
+    <script type="text/javascript" src="/assets/ueditor/lang/zh-cn/zh-cn.js"></script>
+
 	<script>
 		$(document).ready(function(){
 			$('input[type=file]').bootstrapFileInput();
 			$('audio,video').mediaelementplayer();
+
+			UE.getEditor('disabuse');
 		});
 	</script>
 @stop

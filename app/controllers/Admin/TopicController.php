@@ -14,6 +14,7 @@ class TopicController extends \BaseController {
 
 	public $statusEnum = array('' => '所有状态', '0' => '无效', '1' => '审核通过', '-1' => '审核拒绝');
 	public $typeEnum = array('' => '所有题目', '1' => '单选择题', '2' => '多选择题',  '3' => '判断题', '4' => '填空题', '5' => '写作题', '6' => '模唱', '7' => '视唱');
+	public $flag = array(0 => 'A', 1 => 'B', 2 => 'C', 3 => 'D');
 
 	public function __construct()
 	{
@@ -58,6 +59,7 @@ class TopicController extends \BaseController {
 	{
 		$info = array();
 		$info['typeEnum'] = $this->typeEnum;
+		$info['flag'] = $this->flag;
 		return $this->adminView('topic.topic', $info);
 	}
 
@@ -158,6 +160,7 @@ class TopicController extends \BaseController {
 		$info = $topic->get($id);
 		$info['is_edit'] = 1;
 		$info['typeEnum'] = $this->typeEnum;
+		$info['flag'] = $this->flag;
 
 		return $this->adminView('topic.topic', $info);
 	}
