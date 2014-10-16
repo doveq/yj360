@@ -19,6 +19,17 @@
       		<form class="form-horizontal" role="form" action="/admin/topic/doAdd" method="post" enctype="multipart/form-data">
       		@endif
 
+      		 <div class="form-group">
+      		 	<label class="col-sm-2 control-label">分类</label>
+      		 	<div class="col-sm-10" id="sort">
+			    {{Form::select('sort1', array(), '', array('class' => 'sort1', 'data-value' => $sort1))}}
+			    {{Form::select('sort2', array(), '', array('class' => 'sort2', 'data-value' => $sort2))}}
+			    {{Form::select('sort3', array(), '', array('class' => 'sort3', 'data-value' => $sort3))}}
+			    {{Form::select('sort4', array(), '', array('class' => 'sort4', 'data-value' => $sort4))}}
+			    {{Form::select('sort5', array(), '', array('class' => 'sort5', 'data-value' => $sort5))}}
+			  	</div>
+			  </div>
+
       		  <div class="form-group">
 			    <label class="col-sm-2 control-label">原始编号</label>
 			    <div class="col-sm-10">
@@ -187,11 +198,20 @@
     <script type="text/javascript" src="/assets/ueditor/ueditor.config.js"></script>
     <script type="text/javascript" src="/assets/ueditor/ueditor.all.min.js"></script>
     <script type="text/javascript" src="/assets/ueditor/lang/zh-cn/zh-cn.js"></script>
+    {{ HTML::script('/assets/jquery.cxselect.min.js') }}
 
 	<script>
 		$(document).ready(function(){
 			$('input[type=file]').bootstrapFileInput();
 			$('audio,video').mediaelementplayer();
+
+			$.cxSelect.defaults.url = '/admin/column.json';
+			$('#sort').cxSelect({
+			      url:'/admin/sort.json',
+			      firstTitle: '-请选择-分类-',
+			      selects: ['sort1', 'sort2', 'sort3', 'sort4', 'sort5'],
+			      nodata: 'none'
+			  });
 
 			UE.getEditor('disabuse');
 		});

@@ -7,13 +7,14 @@ use Paginator;
 use Redirect;
 use Topic;
 use Attachments;
-
+use SortQuestionRelation;
+use Sort;
 
 /* 原始题库功能 */
 class TopicController extends \BaseController {
 
 	public $statusEnum = array('' => '所有状态', '0' => '无效', '1' => '审核通过', '-1' => '审核拒绝');
-	public $typeEnum = array('' => '所有题目', '1' => '单选择题', '2' => '多选择题',  '3' => '判断题', '4' => '填空题', '5' => '写作题', '6' => '模唱', '7' => '视唱');
+	public $typeEnum = array('1' => '单选择题', '2' => '多选择题',  '3' => '判断题', '4' => '填空题', '5' => '写作题', '6' => '模唱', '7' => '视唱', '8' => '视频', '9' => '教材', '10' => '游戏');
 	public $flag = array(0 => 'A', 1 => 'B', 2 => 'C', 3 => 'D');
 
 	public function __construct()
@@ -44,6 +45,8 @@ class TopicController extends \BaseController {
         unset($query['pageSize']); // 减少分页url无用参数
         $paginator->appends($query);  // 设置分页url参数
 
+        $this->typeEnum = array('' =>'所有题型') + $this->typeEnum ;
+
 		$p = array(
             'list'       => $info['data'],
             'typeEnum'   => $this->typeEnum,
@@ -60,6 +63,13 @@ class TopicController extends \BaseController {
 		$info = array();
 		$info['typeEnum'] = $this->typeEnum;
 		$info['flag'] = $this->flag;
+
+		$info['sort1'] = Session::get('sort1') ? Session::get('sort1') : 0;
+		$info['sort2'] = Session::get('sort2') ? Session::get('sort2') : 0;
+		$info['sort3'] = Session::get('sort3') ? Session::get('sort3') : 0;
+		$info['sort4'] = Session::get('sort4') ? Session::get('sort4') : 0;
+		$info['sort5'] = Session::get('sort5') ? Session::get('sort5') : 0;
+
 		return $this->adminView('topic.topic', $info);
 	}
 
@@ -70,9 +80,28 @@ class TopicController extends \BaseController {
 		if( empty($inputs['txt']))
 			return $this->adminPrompt("操作失败", '题干必须填写', $url = "topic/add");
 
+		// 处理分类
+		$sort = 0;
+		if( !empty($inputs['sort5']) )
+			$sort = $inputs['sort5'];
+		elseif( !empty($inputs['sort4']) )
+			$sort = $inputs['sort4'];
+		elseif( !empty($inputs['sort3']) )
+			$sort = $inputs['sort3'];
+		elseif( !empty($inputs['sort2']) )
+			$sort = $inputs['sort2'];
+		elseif( !empty($inputs['sort1']) )
+			$sort = $inputs['sort1'];
+
+		if( $sort == 0)
+			return $this->adminPrompt("操作失败", '必须选择分类', $url = "topic/add");
 
 		$topic = new Topic();
 		$qid = $topic->add($inputs);
+
+		// 添加分类信息
+		$sar = new SortQuestionRelation();
+		$sar->addMap(array('sort' => $sort, 'qid' => $qid));
 
 
 		/* 处理题干附件 */
@@ -162,6 +191,26 @@ class TopicController extends \BaseController {
 		$info['typeEnum'] = $this->typeEnum;
 		$info['flag'] = $this->flag;
 
+		$sqr = new SortQuestionRelation();
+		$sqrInfo = $sqr->getMap($id);
+
+		$info['sort1'] = 0;
+		$info['sort2'] = 0;
+		$info['sort3'] = 0;
+		$info['sort4'] = 0;
+		$info['sort5'] = 0;
+
+		$sort = new Sort();
+		$sortInfo = $sort->getPath($sqrInfo['sort_id']);
+		$sortNum = count($sortInfo);
+		for ($i = $sortNum; $i > 0; $i--) 
+		{
+			$v = $sortNum - $i +1;
+			$info['sort' . $v] = $sortInfo[$i -1]['id'];
+
+			Session::put('sort'.$v, $info['sort' . $v]);
+		}
+
 		return $this->adminView('topic.topic', $info);
 	}
 
@@ -171,6 +220,23 @@ class TopicController extends \BaseController {
 		$qid = $inputs['qid'];
 		if( !is_numeric($qid) )
 			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic");
+
+
+		// 处理分类
+		$sort = 0;
+		if( !empty($inputs['sort5']) )
+			$sort = $inputs['sort5'];
+		elseif( !empty($inputs['sort4']) )
+			$sort = $inputs['sort4'];
+		elseif( !empty($inputs['sort3']) )
+			$sort = $inputs['sort3'];
+		elseif( !empty($inputs['sort2']) )
+			$sort = $inputs['sort2'];
+		elseif( !empty($inputs['sort1']) )
+			$sort = $inputs['sort1'];
+
+		if( $sort == 0)
+			return $this->adminPrompt("操作失败", '必须选择分类', $url = "topic/add");
 
 
 		$topic = new Topic();
@@ -239,6 +305,10 @@ class TopicController extends \BaseController {
 
 		$topic->edit($qid, $inputs);
 
+
+		// 跟新分类信息
+		$sar = new SortQuestionRelation();
+		$sar->updateMap(array('sort' => $sort, 'qid' => $qid));
 
 		/* 处理答案 */
 		if(isset($inputs['answers_txt']))

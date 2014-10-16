@@ -38,6 +38,26 @@ class SortQuestionRelation extends Eloquent {
     //  return $this->password;
     // }
 
+    /* 添加关系数据 */
+    public function addMap($data)
+    {
+        $this->sort_id = $data['sort'];
+        $this->question_id = $data['qid'];
+        $this->save();
+    }
 
+    /* 跟新关系数据 */
+    public function updateMap($data)
+    {
+        $this->where('question_id', '=', $data['qid'])->update(array('sort_id' => $data['sort']));
+    }
 
+    public function getMap($qid)
+    {
+        $info = $this->where('question_id', '=', $qid)->first();
+        if($info)
+            return $info->toArray();
+        else
+            return 0;
+    }
 }
