@@ -23,6 +23,8 @@
             <th>题库说明</th>
             <th>文件</th>
             <th>上传时间</th>
+            <th>联系电话</th>
+            <th>联系QQ</th>
             <th>状态</th>
             <th>操作</th>
           </tr>
@@ -36,6 +38,8 @@
             <td>{{$list->desc}}</td>
             <td><a href="{{url('/admin/uploadbank/'.$list->id)}}"><i class="glyphicon glyphicon-download"> </i> {{$list->filename}}</a></td>
             <td>{{$list->created_at}}</td>
+            <td>{{$list->tel}}</td>
+            <td>{{$list->qq}}</td>
             <td>
               @if ($list->status == 1)
               <span class="label label-default">{{$statusEnum[$list->status]}}</span>

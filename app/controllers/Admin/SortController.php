@@ -14,7 +14,7 @@ use Sort;
 
 class SortController extends \BaseController {
     public $pageSize = 30;
-    public $statusEnum = array('0' => '准备', '1' => '上线');
+    public $statusEnum = array('0' => '准备', '1' => '上线', '-1' => '下线');
 
 	/**
 	 * Display a listing of the resource.
@@ -62,12 +62,14 @@ class SortController extends \BaseController {
         {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort/create");
         }
-        if (!is_null($query['parent_id']) && $query['parent_id'] > 0) {
-            $parent = Sort::find($query['parent_id'])->parent_id;
-        } else {
+        if (!$query['parent_id']) $query['parent_id'] = 0;
+        if ($query['parent_id'] == 0) {
             $parent = 0;
+        } else {
+            $parent = Sort::find($query['parent_id'])->parent_id;
         }
-        $sort = array('' => '--所有--');
+
+        $sort = array('0' => '--所有--');
         $sorts = Sort::whereParentId($parent)->whereType(0)->select('id','name')->get();
         foreach ($sorts as $key => $value) {
             $sort[$value->id] = $value->name;
@@ -84,38 +86,37 @@ class SortController extends \BaseController {
 	public function store()
 	{
 		$query = Input::all();
+        if (!$query['parent_id']) $query['parent_id'] = 0;
+
         $validator = Validator::make($query ,
             array(
-                'name' => 'required'
+                'name' => 'required',
+                'thumbnail' => 'image',
+                'parent_id' => 'numeric',
                 )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort/create");
+            return Redirect::to('/admin/sort/create?parent_id='.$query['parent_id'])->withErrors($validator)->withInput($query);
         }
         if(Input::hasFile('thumbnail')) {
             // $originalName = Input::file('pic')->getClientOriginalName();
             $extension = Input::file('thumbnail')->getClientOriginalExtension();
             $filename = Str::random() . "." . $extension;
-            $destinationPath = Config::get('app.sort_thumbnail_dir');
+            $destinationPath = Config::get('app.thumbnail_dir');
             Input::file('thumbnail')->move($destinationPath, $filename);
             $query['filename'] = $filename;
         }
         $sort             = new Sort();
-        if ($query['parent_id'] > 0) {
-            $sort->parent_id = $query['parent_id'];
-        } else {
-            $sort->parent_id = 0;
-        }
+        $sort->parent_id                                = $query['parent_id'];
         $sort->name                                     = $query['name'];
         if ($query['desc']) $sort->desc                 = $query['desc'];
         if (isset($query['filename'])) $sort->thumbnail = $query['filename'];
         $sort->created_at                               = date("Y-m-d H:i:s");
         $sort->status                                   = 0;
-        $sort->type                                     = 0;
         if ($sort->save()) {
-            return Redirect::to('admin/sort?parent_id='.$sort->parent_id);
+            return Redirect::to('/admin/sort?parent_id='.$sort->parent_id);
         }
 	}
 
@@ -161,13 +162,14 @@ class SortController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$query = Input::only('name', 'desc', 'status');
+		$query = Input::only('name', 'desc', 'status', 'thumbnail');
 
         $validator = Validator::make($query ,
             array(
-                // 'name' => 'alpha_dash',
+                'name' => 'requiredwith:name',
                 // 'desc' => 'alpha_dash',
                 // 'online_at' => 'date',
+                'thumbnail' => 'image',
                 'status' => 'numeric'
                 )
         );
@@ -176,14 +178,17 @@ class SortController extends \BaseController {
         {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort");
         }
+        if (isset($query['name']) && $query['name'] == '') {
+            $errors = "名称不能为空";
+            return Redirect::to('/admin/sort/'.$id."/edit")->withErrors($errors)->withInput($query);
+        }
         if(Input::hasFile('thumbnail')) {
             // $originalName = Input::file('pic')->getClientOriginalName();
             $extension = Input::file('thumbnail')->getClientOriginalExtension();
             $filename = Str::random() . "." . $extension;
-            $destinationPath = Config::get('app.sort_thumbnail_dir');
+            $destinationPath = Config::get('app.thumbnail_dir');
             Input::file('thumbnail')->move($destinationPath, $filename);
             $query['filename'] = $filename;
-            // dd($filename);
         }
         $sort = Sort::find($id);
 
@@ -192,9 +197,9 @@ class SortController extends \BaseController {
         if (isset($query['status'])) $sort->status       = $query['status'];
         if (isset($query['filename'])) $sort->thumbnail       = $query['filename'];
 
-        $sort->save();
-
-        return Redirect::to('admin/sort?parent_id='.$sort->parent_id);
+        if ($sort->save()) {
+            return Redirect::to('/admin/sort?parent_id='.$sort->parent_id);
+        }
 	}
 
 
@@ -209,10 +214,10 @@ class SortController extends \BaseController {
 		$sort = Sort::find($id);
         $child_count = $sort->child->count();
         if ($child_count > 0) {
-            return $this->adminPrompt("操作失败", '此科目有子科目,不能删除', $url = "sort?parent_id=".$sort->parent_id);
+            return $this->adminPrompt("操作失败", '此分类有子分类,不能删除', $url = "sort?parent_id=".$sort->parent_id);
         }
         $sort->delete();
-        return Redirect::to('admin/sort?parent_id='.$sort->parent_id);
+        return Redirect::to('/admin/sort?parent_id='.$sort->parent_id);
 	}
 
 

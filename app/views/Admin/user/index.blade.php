@@ -1,5 +1,5 @@
 @extends('Admin.master_column')
-@section('title')浏览用户@stop
+@section('title')用户管理@stop
 
 @section('nav')
   @include('Admin.user.nav')
@@ -23,7 +23,7 @@
         {{ Form::text('tel', $query['tel'], array('class' => 'form-control', 'id' => 'inputTel', 'placeholder' => '手机号')) }}
       </div>
       <div class="form-group">
-        {{ Form::label('inputStatus', '类型', array('class' => 'sr-only')) }}
+        {{ Form::label('inputType', '类型', array('class' => 'sr-only')) }}
         {{ Form::select('type', $typeEnum, $query['type'], array('class' => 'form-control', 'id' => 'inputType')) }}
       </div>
       <div class="form-group">
@@ -32,10 +32,6 @@
       </div>
       {{ Form::button('查找', array('class' => 'btn btn-info', 'type' =>'submit')) }}
     {{ Form::close() }}
-  </div>
-
-  <div class="row text-right">
-      {{$paginator->links()}}
   </div>
   <div class="row">
       <table class="table table-hover">
@@ -52,46 +48,46 @@
           </tr>
         </thead>
         <tbody>
-          @foreach ($list as $user)
+          @foreach ($lists as $list)
           <tr>
-            <td>{{$user['id']}}</td>
-            <td>{{$user['name']}}</td>
-            <td>{{$user['tel']}}</td>
-            <td>{{$typeEnum[$user['type']]}}</td>
+            <td>{{$list->id}}</td>
+            <td>{{$list->name}}</td>
+            <td>{{$list->tel}}</td>
+            <td>{{$typeEnum[$list->type]}}</td>
             <td>
-              @if ($user['status'] == 1)
-              <span class="label label-success">{{$statusEnum[$user['status']]}}</span>
-              @elseif ($user['status'] == 0)
-              <span class="label label-warning">{{$statusEnum[$user['status']]}}</span>
+              @if ($list->status == 1)
+              <span class="label label-success">{{$statusEnum[$list->status]}}</span>
+              @elseif ($list->status == 0)
+              <span class="label label-warning">{{$statusEnum[$list->status]}}</span>
               @else
-              <span class="label label-default">{{$statusEnum[$user['status']]}}</span>
+              <span class="label label-default">{{$statusEnum[$list->status]}}</span>
               @endif
             </td>
-            <td>{{$user['created_at']}}</td>
-            <td>{{$user['updated_at']}}</td>
+            <td>{{$list->created_at}}</td>
+            <td>{{$list->updated_at}}</td>
             <td>
               <div class="btn-group btn-xs">
-                  <a class="btn btn-default btn-xs" href="{{url('/admin/user/'. $user['id'] .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
+                  <a class="btn btn-default btn-xs" href="{{url('/admin/user/'. $list->id .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
                   <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                   <ul class="dropdown-menu">
-                      @if($user['status'] === 1)
+                      @if($list->status === 1)
                       <li><a style='color:#999;'><i class="icon-ok"></i> 有效</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$user['id']}}" data-val="{{$user['name']}}" data-status="0"><i class="icon-remove"></i> 无效</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$user['id']}}" data-val="{{$user['name']}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
-                      @elseif($user['status'] === 0)
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$user['id']}}" data-val="{{$user['name']}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="0"><i class="icon-remove"></i> 无效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
+                      @elseif($list->status === 0)
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
                       <li><a style='color:#999;'><i class="icon-remove"></i> 无效</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$user['id']}}" data-val="{{$user['name']}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
                       @else
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$user['id']}}" data-val="{{$user['name']}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$user['id']}}" data-val="{{$user['name']}}" data-status="0"><i class="icon-remove"></i> 无效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="0"><i class="icon-remove"></i> 无效</a></li>
                       <li><a style='color:#999;'><i class="icon-remove"></i> 审核未通过</a></li>
                       @endif
                       <li class="divider"></li>
-                      @if($user['name'] === 'admin')
+                      @if($list->name === 'admin')
                       <li><a style='color:#999;'><i class="icon-trash"></i> 删除</a></li>
                       @else
-                      <li><a href="#" class="btn_delete" data-toggle="modal" data-id="{{$user['id']}}" data-val="{{$user['name']}}" data-status="1"><i class="icon-trash"></i> 删除</a></li>
+                      <li><a href="#" class="btn_delete" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-trash"></i> 删除</a></li>
                       @endif
 
                   </ul>
@@ -103,7 +99,7 @@
       </table>
   </div>
   <div class="row text-right">
-      {{$paginator->links()}}
+      {{$lists->appends($query)->links()}}
   </div>
 
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

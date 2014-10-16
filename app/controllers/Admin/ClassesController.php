@@ -145,14 +145,14 @@ class ClassesController extends \BaseController {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
         }
         $class = Classes::find($id);
-        if ($query['name']) $class->name = $query['name'];
-        if ($query['status']) $class->status = $query['status'];
-        if ($query['teacherid']) $class->teacherid = $query['teacherid'];
-        if ($query['memo']) $class->memo = $query['memo'];
+        if (isset($query['name'])) $class->name           = $query['name'];
+        if (isset($query['status'])) $class->status       = $query['status'];
+        if (isset($query['teacherid'])) $class->teacherid = $query['teacherid'];
+        if (isset($query['memo'])) $class->memo           = $query['memo'];
 
-        $class->save();
-
-        return $this->adminPrompt("保存成功", $validator->messages()->first(), $url = "classes");
+        if ($class->save()) {
+            return Redirect::to('/admin/classes');
+        }
     }
 
 

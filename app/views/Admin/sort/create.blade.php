@@ -13,10 +13,10 @@
     </ol>
   </div>
   <div class="row">
-      {{ HTML::ul($errors->all()) }}
+      {{ HTML::ul($errors->all(), array('class' => 'bg-warning')) }}
       {{ Form::open(array('url' => '/admin/sort/', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal', 'files' => true)) }}
         <div class="form-group">
-          {{ Form::label('sort_name', '名称', array('class' => 'col-md-2 control-label')) }}
+          {{ Form::label('sort_name', '分类名称', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
             {{ Form::text('name', '', array('class' => 'form-control', 'id' => 'sort_name')) }}
           </div>
@@ -25,11 +25,11 @@
           {{ Form::label('sort_thumbnail', '图片', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
             {{ Form::file('thumbnail', '', array('id' => 'sort_thumbnail')) }}
-            <p class="help-block">请选择展示图片</p>
+            <p class="help-block">如果有展示图片,请选择.</p>
           </div>
         </div>
         <div class="form-group">
-          {{ Form::label('sort_desc', '描述', array('class' => 'col-md-2 control-label')) }}
+          {{ Form::label('sort_desc', '分类描述', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
             {{ Form::textarea('desc', '', array('class' => 'form-control', 'id' => 'sort_desc', 'rows' => 3)) }}
           </div>

@@ -13,7 +13,7 @@
     </ol>
   </div>
   <div class="row">
-      {{ HTML::ul($errors->all()) }}
+      {{ HTML::ul($errors->all(), array('class' => 'bg-warning')) }}
       {{ Form::open(array('url' => '/admin/column/', 'method' => 'post', 'role' => 'form', 'class' => 'form-horizontal', 'files' => true)) }}
         <div class="form-group">
           {{ Form::label('column_name', '科目名称', array('class' => 'col-md-2 control-label')) }}
@@ -25,7 +25,7 @@
           {{ Form::label('column_thumbnail', '图片', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
             {{ Form::file('thumbnail', '', array('id' => 'column_thumbnail')) }}
-            <p class="help-block">请选择展示图片</p>
+            <p class="help-block">如果有展示图片,请选择.</p>
           </div>
         </div>
         <div class="form-group">
@@ -38,6 +38,12 @@
           {{ Form::label('column_parent', '父级科目', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
             {{ Form::select('parent_id', $column, $query['parent_id']?$query['parent_id']:0, array('class' => 'form-control', 'id' => 'column_parent')) }}
+          </div>
+        </div>
+        <div class="form-group">
+          {{ Form::label('column_type', '素材类型', array('class' => 'col-md-2 control-label')) }}
+          <div class="col-md-6">
+            {{ Form::select('type', $typeEnum, 0, array('class' => 'form-control', 'id' => 'column_type')) }}
           </div>
         </div>
         <div class="form-group">

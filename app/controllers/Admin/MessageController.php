@@ -27,6 +27,7 @@ class MessageController extends \BaseController {
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
+
         $lists = Message::whereReceiverId(Session::get('uid'))->where(function($q)
             {
                 if (!is_null(Input::get('status'))) {
@@ -68,7 +69,7 @@ class MessageController extends \BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        if ($query['name']) {
+        if (strlen($query['name']) > 0) {
             $user = User::whereName($query['name'])->first();
             if (!$user) {
                 return $this->adminPrompt("未找到收件人", '', $url = "message/create");
@@ -86,7 +87,7 @@ class MessageController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("提交失败", $validator->messages()->first(), $url = "message");
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "message");
         }
         $message = new Message();
         $message->sender_id = Session::get('uid');
@@ -95,7 +96,7 @@ class MessageController extends \BaseController {
         $message->created_at = date("Y-m-d H:i:s");
         $message->type = $query['type'];
         $message->save();
-        return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "message");
+        return Redirect::to('admin/message');
     }
 
 
@@ -125,7 +126,6 @@ class MessageController extends \BaseController {
     public function edit($id)
     {
         //
-        echo "hahah";
     }
 
 
