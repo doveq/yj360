@@ -226,12 +226,12 @@ li.index-list-more a {
 }
 #topic-btn-11{
 	float: left;
-	background-position:-538px -439px;
+	background-position:-418px -484px;
 	width: 110px;
 	height: 40px;
 }
 #topic-btn-11:hover{
-	background-position:-538px -439px;
+	background-position:-418px -439px;
 }
 #topic-btn-checkbox {
 	color:#fff;
@@ -323,7 +323,7 @@ li.index-list-more a {
 }
 #save_button{
 	position:absolute; 
-	bottom:80px;
-	left:35%;
+	top:-100%;
+	left:-100%;
 	z-index:-999;
 }

@@ -33,8 +33,24 @@ class TopicController extends BaseController {
 	}
 
 	/* 记入答题情况 */
-	public function correcting()
+	public function post()
 	{
+		$inputs = Input::all();
+		$uid = Session:get('uid');
+		$qid = $inputs['id'];
+
+		// 保存wav录音文件
+		if( !empty($inputs['wavBase64']) )
+		{
+			$file = str_replace('data:audio/wav;base64,', '',  $inputs['wavBase64']); 
+			$tmpname = tempnam("/tmp", 'wav');
+			file_put_contents($tmpname, base64_decode($file));
+
+			$saved = $att->addRecorder($tmpname, $uid, $qid);
+		}
+
+		// 保存答题数据
+		
 		
 	}
 }

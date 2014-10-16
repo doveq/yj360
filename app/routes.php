@@ -103,6 +103,7 @@ Route::group(array('before' => 'indexLogin'), function(){
 
     // 答题页面
     Route::get('/topic', 'topicController@index');
+    Route::post('/topic/post', 'topicController@post');
 });
 
 

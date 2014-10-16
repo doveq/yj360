@@ -99,11 +99,11 @@
         </div>
         
         {{-- 录音相关 --}}
-        <span id="save_button">
+        <div id="save_button">
             <span id="flashcontent">
               <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
             </span>
-        </span>
+        </div>
         <div style="display:none;">
             <div id="recorder-audio" class="control_panel idle">
                 <button class="record_button" onclick="FWRecorder.record('audio', 'audio.wav');" title="Record">
@@ -137,8 +137,10 @@
               <div>Upload status: <span id="upload_status"></span></div>
             </div>
 
+            
+
             <form id="uploadForm" name="uploadForm" action="/recorder/upload">
-              <input name="authenticity_token" value="{{$session_id}}" type="hidden">
+              <input name="authenticity_token" value="" type="hidden">
               <input name="format" value="json" type="hidden">
             </form>
         </div>
@@ -165,11 +167,11 @@
             @if( $q['type'] == 6 )
             <!--
             <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="#"></a>
-            -->
             <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="soundPlay();"></a>
-            <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart()"></a>
-            <a class="topic-btn" id="topic-btn-11" hint="停止录音"  href="javascript:;" onclick="$('.record_button').click();"></a>
-            <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick=""></a>
+            -->
+            <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
+            <a class="topic-btn" id="topic-btn-11" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
+            <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="recorderPlay();" style="display:none;"></a>
             @endif
             <a class="topic-btn" id="topic-btn-6" hint="答题卡" href="#"></a>
             <div class="clear"></div>
@@ -187,7 +189,13 @@
         <audio id="q-hint" src="{{$q['hint_url'] or ''}}">
     </div>
 
-    
+    {{-- 答题数据提交 --}}
+    <form id="topicForm" name="topicForm" action="/topic/post">
+      <input type="hidden" name="id" value="{{$q['id']}}">
+      <input type="hidden" id="wavBase64" name="wavBase64" value="" >
+      <input type="hidden" id="result" name="result" value="" >
+      <input type="hidden" id="isTrue" name="isTrue" value="0" >
+    </form>
 
     <script>
 
@@ -234,11 +242,14 @@
         function correcting()
         {
             var err = new Array();
+            var result = '';
             $('input[name=daan]').each(function(){
                 is_right = $(this).attr('is-right');
 
                 if( $(this).is(':checked') )
                 {
+                    result += $(this).val() +',';
+
                     if(is_right == 0)
                     {
                         err.push( $(this).val() );
@@ -260,11 +271,23 @@
             });
 
 
+            $('#result').val(result);
 
             if(err.length > 0)
+            {
                 console.log(err);
+                $('#isTrue').val('2');
+            }
             else
+            {
                 console.log('all right!');
+                $('#isTrue').val('1');
+            }
+        }
+
+        function topicSubmit()
+        {
+            $('#topicForm').submit();
         }
 
         function disabuse()
@@ -286,14 +309,23 @@
 
         function recorderStart()
         {
-            $('.record_button').click();
             $('#topic-btn-10').hide();
             $('#topic-btn-11').show();
+            $('#topic-btn-8').hide();
+            FWRecorder.record('audio', 'audio.wav');
         }
 
         function recorderStop()
         {
+            $('#topic-btn-10').show();
+            $('#topic-btn-11').hide();
+            $('#topic-btn-8').show();
+            FWRecorder.stopRecording('audio');
+        }
 
+        function recorderPlay()
+        {
+            FWRecorder.playBack('audio');
         }
     </script>
 

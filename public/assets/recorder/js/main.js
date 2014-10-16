@@ -73,6 +73,8 @@ $(function () {
         FWRecorder.show();
         setControlsClass($controls, CLASS_PLAYBACK_READY);
         $('#duration').text(duration.toFixed(4) + " seconds");
+
+        $('#wavBase64').val(FWRecorder.getBase64() );
         break;
 
       case "microphone_level":
