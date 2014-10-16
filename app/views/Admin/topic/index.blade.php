@@ -1,9 +1,9 @@
-@extends('Admin.master')
+@extends('Admin.master_column')
 @section('title')真题题库@stop
 
 
 @section('content')
-<div class="container theme-showcase" role="main">
+<div class="row">
   <div class="row text-right">
     {{ Form::open(array('role' => 'form', 'class' => 'form-inline', 'method' => 'get')) }}
       <div class="form-group">
@@ -26,9 +26,9 @@
     {{ Form::close() }}
   </div>
 
-  <div class="row text-right">
+<!--   <div class="row text-right">
       {{$paginator->links()}}
-  </div>
+  </div> -->
   <div class="row">
       <table class="table table-hover">
         <thead>
@@ -44,7 +44,7 @@
         <tbody>
           @foreach ($list as $info)
           <tr>
-            <td>{{$info['id']}}</td>
+            <td><label>{{ Form::checkbox('question_id[]', $info['id']) }} {{ $info['id'] }}</label></td>
             <td>{{$info['txt']}}</td>
             <td>{{$info['source']}}</td>
             <td>{{$statusEnum[$info['status']]}}</td>
@@ -80,6 +80,35 @@
   <div class="row text-right">
       {{$paginator->links()}}
   </div>
+  <div class="row">
+    <div class="col-md-4">
+      <label>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }} 全选</label>
+    </div>
+    <div class="col-md-4 alertInfo">
+    </div>
+    <div class="col-md-4">
+      {{ Form::button('批量下架', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion')) }}
+      {{ Form::button('批量上线', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion')) }}
+    </div>
+  </div>
+  <div class="row" id="sort">
+    批量转移到分类:
+    {{Form::select('sort1', array(), '', array('class' => 'sort1'))}}
+    {{Form::select('sort2', array(), '', array('class' => 'sort2'))}}
+    {{Form::select('sort3', array(), '', array('class' => 'sort3'))}}
+    {{Form::select('sort4', array(), '', array('class' => 'sort4'))}}
+    {{Form::select('sort5', array(), '', array('class' => 'sort5'))}}
+    {{ Form::button('批量转移', array('class' => 'btn btn-primary btn-xs', 'id' => 'addSort')) }}
+  </div>
+  <div class="row" id="column">
+    批量加入到科目:
+    {{Form::select('column1', array(), '', array('class' => 'column1'))}}
+    {{Form::select('column2', array(), '', array('class' => 'column2'))}}
+    {{Form::select('column3', array(), '', array('class' => 'column3'))}}
+    {{Form::select('column4', array(), '', array('class' => 'column4'))}}
+    {{Form::select('column5', array(), '', array('class' => 'column5'))}}
+    {{ Form::button('批量转移', array('class' => 'btn btn-primary btn-xs', 'id' => 'addColumn')) }}
+  </div>
 
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     {{ Form::open(array('role' => 'form', 'class' => 'form-horizontal', 'id' => 'myModalForm', 'method' => 'post')) }}
@@ -107,9 +136,145 @@
 @stop
 
 @section('js')
+{{ HTML::script('/assets/jquery.cxselect.min.js') }}
 <script type="text/javascript">
-
 $(function(){
+  // http://code.ciaoca.com/jquery/cxselect/
+  $.cxSelect.defaults.url = '/admin/column.json';
+  $('#column').cxSelect({
+      url:'/admin/column.json',
+      // required: 'true',
+      firstTitle: '-请选择-科目-',
+      selects: ['column1', 'column2', 'column3', 'column4', 'column5'],
+      nodata: 'none'
+  });
+  $('#sort').cxSelect({
+      url:'/admin/sort.json',
+      firstTitle: '-请选择-分类-',
+      selects: ['sort1', 'sort2', 'sort3', 'sort4', 'sort5'],
+      nodata: 'none'
+  });
+
+  $("#checkAll").click(function() {
+      $('input[name="question_id[]"]').prop("checked",this.checked);
+  });
+  var $subBox = $("input[name='question_id[]']");
+  $subBox.click(function(){
+      $("#checkAll").prop("checked",$subBox.length == $("input[name='question_id[]']:checked").length ? true : false);
+  });
+
+  //批量转移分类
+  $("#addSort").bind("click", function(){
+      $this = $(this);
+      var $item = $('input[name="question_id[]"]:checked');
+      // alert($item);
+      if ($item.length <= 0) {
+        alert('请选择题目');
+        return;
+      }
+      var $sort = $this.prevAll('select:visible').val();
+      if ($sort == 0) {
+        alert('请选择分类');
+        return;
+      }
+
+      var $question_ids = new Array();
+      $item.each(function(){
+        $question_ids.push($(this).val());
+      });
+
+      $.post("/admin/relation/sort",
+        {
+          question_id: $question_ids,
+          sort_id: $sort
+
+        },
+        function(data) {
+            $('<span class="label label-success">'+data.info+'</span>').appendTo('.alertInfo').fadeOut(5000);
+        },
+        "json"
+      )
+      .fail(function(){
+          $('<span class="label label-danger">操作失败</span>').appendTo('.alertInfo').fadeOut(5000);
+      });
+      return false;
+  });
+
+  //批量转移分类
+  $("#addColumn").bind("click", function(){
+      $this = $(this);
+      var $item = $('input[name="question_id[]"]:checked');
+      // alert($item);
+      if ($item.length <= 0) {
+        alert('请选择题目');
+        return;
+      }
+      var $column = $this.prevAll('select:visible').val();
+      if ($column == 0) {
+        alert('请选择科目');
+        return;
+      }
+
+      var $question_ids = new Array();
+      $item.each(function(){
+        $question_ids.push($(this).val());
+      });
+
+      $.post("/admin/relation/column",
+        {
+          question_id: $question_ids,
+          column_id: $column
+
+        },
+        function(data) {
+            $('<span class="label label-success">'+data.info+'</span>').appendTo('.alertInfo').fadeOut(5000);
+        },
+        "json"
+      )
+      .fail(function(){
+          $('<span class="label label-danger">操作失败</span>').appendTo('.alertInfo').fadeOut(5000);
+      });
+      return false;
+  });
+
+  $(".doQuestion").bind("click", function(){
+    $this = $(this);
+    var $item = $('input[name="question_id[]"]:checked');
+    // alert($item);
+    if ($item.length <= 0) {
+      alert('请选择题目');
+      return;
+    }
+    var $question_ids = new Array();
+    $item.each(function(){
+      $question_ids.push($(this).val());
+    });
+    var $status;
+    // alert($this.attr('id'));
+    if ($this.attr('id') == 'downQuestion') {
+      $status = '-1';
+    }
+    if ($this.attr('id') == 'upQuestion') {
+      $status = '1';
+    }
+    if(confirm('您确定要批量修改吗？')){
+      $.post("/admin/relation/do_question",
+        {
+          question_id: $question_ids,
+          status: $status
+
+        },
+        function(data) {
+            $('<span class="label label-success">'+data.info+'</span>').appendTo('.alertInfo').fadeOut(5000);
+        },
+        "json"
+      )
+      .fail(function(){
+          $('<span class="label label-danger">操作失败</span>').appendTo('.alertInfo').fadeOut(5000);
+      });
+    }
+    return false;
+  });
 
   //发布,下线
   $(".btn_publish").bind("click", function(){

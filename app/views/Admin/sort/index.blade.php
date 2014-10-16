@@ -33,7 +33,7 @@
             <td>{{$list->name}}</td>
             <td>
               @if ($list->thumbnail)
-              <img src="{{Config::get('app.column_thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.column_thumbnail_width')}}" height="{{Config::get('app.column_thumbnail_height')}}" class="thumbnail"/>
+              <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
               @endif
             </td>
             <td>{{$list->desc}}</td>

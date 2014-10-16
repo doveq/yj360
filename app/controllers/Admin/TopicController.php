@@ -20,7 +20,7 @@ class TopicController extends \BaseController {
 	{
 		$this->att = new Attachments();
 	}
-	
+
 
 	/* 显示列表 */
 	public function index()
@@ -43,7 +43,7 @@ class TopicController extends \BaseController {
         $paginator = Paginator::make($info['data'], $info['total'], $pageSize);
         unset($query['pageSize']); // 减少分页url无用参数
         $paginator->appends($query);  // 设置分页url参数
-        
+
 		$p = array(
             'list'       => $info['data'],
             'typeEnum'   => $this->typeEnum,
@@ -51,7 +51,7 @@ class TopicController extends \BaseController {
             'query'      => $query,
             'paginator'  => $paginator
             );
-		
+
 		return $this->adminView('topic.index', $p);
 	}
 
@@ -78,7 +78,7 @@ class TopicController extends \BaseController {
 		/* 处理题干附件 */
 		// 题干图片
 		$questionAtt = array();
-		if($_FILES['file_img']['error'] == UPLOAD_ERR_OK &&  
+		if($_FILES['file_img']['error'] == UPLOAD_ERR_OK &&
 			$attid = $this->setImg( $qid, $_FILES['file_img']['tmp_name']) )
 		{
 			$questionAtt['img'] = $attid;
@@ -93,7 +93,7 @@ class TopicController extends \BaseController {
 				if( $attid = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type) )
 					$questionAtt['hint'] = $attid;
 			}
-			
+
 		}
 
 		// 提干音
@@ -105,7 +105,7 @@ class TopicController extends \BaseController {
 				if( $attid = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type) )
 					$questionAtt['sound'] = $attid;
 			}
-			
+
 		}
 
 		// 跟新题目数据
@@ -122,7 +122,7 @@ class TopicController extends \BaseController {
 			if( !empty($inputs['answers_right']) && in_array($k, $inputs['answers_right']) )
 				$answers['is_right'] = 1;
 
-			if($_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK &&  
+			if($_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK &&
 				$attid = $this->setImg( $qid, $_FILES['answers_img']['tmp_name'][$k]) )
 			{
 				$answers['img'] = $attid;
@@ -183,7 +183,7 @@ class TopicController extends \BaseController {
 		{
 			if(isset($inputs['file_img_id']) && is_numeric($inputs['file_img_id']))
 				$this->att->del($inputs['file_img_id']);
-			
+
 
 			$inputs['img'] = $this->setImg( $qid, $_FILES['file_img']['tmp_name']);
 		}
@@ -191,7 +191,7 @@ class TopicController extends \BaseController {
 		if(isset($inputs['del_img']) && is_numeric($inputs['del_img']))
 		{
 			$this->att->del($inputs['del_img']);
-			$inputs['img'] = 0; 
+			$inputs['img'] = 0;
 		}
 
 		// 提示音
@@ -203,17 +203,17 @@ class TopicController extends \BaseController {
 			{
 				if(isset($inputs['file_hint_id']) && is_numeric($inputs['file_hint_id']))
 					$this->att->del($inputs['file_hint_id']);
-				
+
 
 				$inputs['hint'] = $this->setAudio( $qid, $_FILES['file_hint']['tmp_name'], $type);
 			}
-			
+
 		}
 
 		if(isset($inputs['del_hint']) && is_numeric($inputs['del_hint']))
 		{
 			$this->att->del($inputs['del_hint']);
-			$inputs['hint'] = 0; 
+			$inputs['hint'] = 0;
 		}
 
 		// 提干音
@@ -225,7 +225,7 @@ class TopicController extends \BaseController {
 			{
 				if(isset($inputs['file_sound_id']) && is_numeric($inputs['file_sound_id']))
 					$this->att->del($inputs['file_sound_id']);
-				
+
 
 				$inputs['sound'] = $this->setAudio( $qid, $_FILES['file_sound']['tmp_name'], $type);
 			}
@@ -234,7 +234,7 @@ class TopicController extends \BaseController {
 		if(isset($inputs['del_sound']) && is_numeric($inputs['del_sound']))
 		{
 			$this->att->del($inputs['del_sound']);
-			$inputs['sound'] = 0; 
+			$inputs['sound'] = 0;
 		}
 
 		$topic->edit($qid, $inputs);
@@ -290,7 +290,7 @@ class TopicController extends \BaseController {
 				if(isset($inputs['del_answers_sound']) && in_array($asoundid, $inputs['del_answers_sound']) )
 				{
 					$this->att->del($asoundid);
-					$answers['sound'] = 0; 
+					$answers['sound'] = 0;
 				}
 
 				// 插入数据

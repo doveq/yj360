@@ -32,22 +32,19 @@ class ClassmateController extends \BaseController {
 
         $validator = Validator::make($query,
             array(
-                'class_id'      => 'numeric',
+                'class_id'      => 'numeric|required',
             )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "classmat?class_id=".$query['class_id']);
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
         }
         $classes = Classes::find($query['class_id']);
-        $lists = $classes->students;
-        $teacher = $classes->teacher;
+        $lists      = $classes->students;
+        $teacher    = $classes->teacher;
         $statusEnum = $this->statusEnum;
         $genderEnum = $this->genderEnum;
-
-        // $paginator = Paginator::make($lists->toArray(), $lists->count(), $this->pageSize);
-        // $paginator->appends($query);  // 设置分页url参数
 
         return $this->adminView('classmate.index', compact('query', 'statusEnum', 'genderEnum', 'lists', 'classes', 'teacher'));
     }
@@ -78,25 +75,24 @@ class ClassmateController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "classmate/create?class_id=".$query['class_id']);
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classmate/create?class_id=".$query['class_id']);
         }
-        $classes = Classes::find($query['class_id']);
-        $teacher = $classes->teacher;
+        $classes        = Classes::find($query['class_id']);
+        $teacher        = $classes->teacher;
         $class_students = $classes->students;
         $tmp = array();
         foreach ($class_students as $key => $item) {
             $tmp[] = $item->id;
         }
-        // $students = User::whereType(0)->whereStatus(1)->orderBy('id', 'DESC')->paginate($this->pageSize);
-        $students = User::whereType(0)->whereStatus(1)->where(function($query) {
+        $students = User::whereType(0)->whereStatus(1)->where(function($q) {
             if (Input::get('tel')) {
-                $query->whereTel(Input::get('tel'));
+                $q->whereTel(Input::get('tel'));
             }
             if (!is_null(Input::get('status'))) {
-                $query->whereStatus(Input::get('status'));
+                $q->whereStatus(Input::get('status'));
             }
             if (Input::get('name')) {
-                $query->where('name', 'LIKE', '%'.Input::get('name').'%');
+                $q->where('name', 'LIKE', '%'.Input::get('name').'%');
             }
         })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
@@ -122,7 +118,18 @@ class ClassmateController extends \BaseController {
      */
     public function store()
     {
-        $query = Input::all();
+        $query = Input::only('class_id', 'student_id');
+        $validator = Validator::make($query,
+            array(
+                'class_id'   => 'numeric|required',
+                'student_id' => 'array|required',
+            )
+        );
+
+        if($validator->fails())
+        {
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
+        }
 
         $cur_ids = array();
         $classes = Classes::find($query['class_id']);
@@ -135,8 +142,8 @@ class ClassmateController extends \BaseController {
         if (!empty($b)) $classes->students()->detach($b);
         //add new IDs
         if (!empty($a)) $classes->students()->attach($a,array('status' => 1));
-        // echo "ok";
-        return $this->adminPrompt("编辑成功", '', $url = "classmate?class_id=" . $query['class_id']);
+
+        return Redirect::to('/admin/classmate?class_id=' . $query['class_id']);
     }
 
 
@@ -191,7 +198,7 @@ class ClassmateController extends \BaseController {
 
         $classmate->save();
 
-        return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "classmate?class_id=".$classmate->class_id);
+        return Redirect::to('/admin/classmate?class_id=' . $classmate->class_id);
     }
 
 

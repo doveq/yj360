@@ -23,6 +23,7 @@
             <th>描述</th>
             <th>创建时间</th>
             <th>状态</th>
+            <th>素材类型</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -33,7 +34,7 @@
             <td>{{$list->name}}</td>
             <td>
               @if ($list->thumbnail)
-              <img src="{{Config::get('app.column_thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.column_thumbnail_width')}}" height="{{Config::get('app.column_thumbnail_height')}}" class="thumbnail"/>
+              <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
               @endif
             </td>
             <td>{{$list->desc}}</td>
@@ -47,6 +48,7 @@
               <span class="label label-default">{{$statusEnum[$list->status]}}</span>
               @endif
             </td>
+            <td>{{$typeEnum[$list->type]}}</td>
             <td>
               <div class="btn-group btn-xs">
                 <a class="btn btn-default btn-xs" href="{{url('/admin/column/'. $list->id .'/edit') }}"><i class="icon-edit"></i> 编辑</a>

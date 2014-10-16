@@ -37,6 +37,7 @@
                   <li><a href="/admin/classes">班级管理</a></li>
                   <li class="divider"></li>
                   <li><a href="/admin/message">我的消息</a></li>
+                  <li><a href="/admin/favrite">我的收藏</a></li>
                 </ul>
               </li>
               <li class="dropdown">
@@ -51,7 +52,7 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">题库管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
-                  <li><a href="/admin/topic">真题题库</a></li>
+                  <li><a href="/admin/topic">原始题库</a></li>
                   <li><a href="/admin/topic/add">添加题目</a></li>
                   <li class="divider"></li>
                   <li><a href="/admin/sort">题库分类</a></li>

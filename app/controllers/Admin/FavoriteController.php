@@ -8,7 +8,6 @@ use Redirect;
 use DB;
 
 use Favorite;
-use User;
 
 class FavoriteController extends \BaseController {
 
@@ -53,40 +52,7 @@ class FavoriteController extends \BaseController {
      */
     public function store()
     {
-        // $query = Input::only('receiver_id', 'content', 'name', 'type', 'page');
 
-        // // 当前页数
-        // if( !is_numeric($query['page']) || $query['page'] < 1 )
-        //     $query['page'] = 1;
-
-        // if ($query['name']) {
-        //     $user = User::whereName($query['name'])->first();
-        //     if (!$user) {
-        //         return $this->adminPrompt("未找到收件人", '', $url = "message/create");
-        //     } else {
-        //         $query['receiver_id'] = $user->id;
-        //     }
-        // }
-        // $validator = Validator::make($query,
-        //     array(
-        //         'receiver_id'      => 'numeric|required',
-        //         'content' => 'alpha_dash|required',
-        //         'name' => 'alpha_dash',
-        //     )
-        // );
-
-        // if($validator->fails())
-        // {
-        //     return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "message");
-        // }
-        // $message = new Message();
-        // $message->sender_id = Session::get('uid');
-        // $message->receiver_id = $query['receiver_id'];
-        // $message->content = $query['content'];
-        // $message->created_at = date("Y-m-d H:i:s");
-        // $message->type = $query['type'];
-        // $message->save();
-        // return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "message");
     }
 
 
@@ -98,11 +64,6 @@ class FavoriteController extends \BaseController {
      */
     public function show($id)
     {
-        // $message = Message::find($id);
-        // //更新状态
-        // $message->status = 1;
-        // $message->save();
-        // return $this->adminView('message.show', compact('message'));
 
     }
 
@@ -115,8 +76,7 @@ class FavoriteController extends \BaseController {
      */
     public function edit($id)
     {
-        //
-        echo "hahah";
+
     }
 
 
@@ -128,24 +88,7 @@ class FavoriteController extends \BaseController {
      */
     public function update($id)
     {
-        //
-        // $query = Input::only('id','status');
-        // // dd($data);
-        // $validator = Validator::make($query,
-        //     array(
-        //         'id'      => 'numeric|required',
-        //         'status'  => 'numeric',
-        //     )
-        // );
-        // if($validator->fails())
-        // {
-        //     return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "message");
-        // }
-        // $message = Message::find($id);
-        // if ($query['status']) $message->status = $query['status'];
 
-        // $message->save();
-        // return Redirect::to('admin/message');
     }
 
 

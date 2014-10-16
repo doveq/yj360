@@ -14,7 +14,9 @@ use Column;
 
 class ColumnController extends \BaseController {
     public $pageSize = 30;
-    public $statusEnum = array('0' => '准备', '1' => '上线');
+    public $statusEnum = array('0' => '准备', '1' => '上线', '-1' => '下线');
+    public $typeEnum = array('0' => '默认', '1' => '题目', '2' => '试卷', '3' => '教材', '4' => '视频', '5' => '游戏');
+    // 显示类型,0:无显示,1:分类 2:题目 3:试卷 4:视频 5: 游戏
 
 	/**
 	 * Display a listing of the resource.
@@ -38,9 +40,11 @@ class ColumnController extends \BaseController {
             } else {
                 $q->whereParentId(0);
             }
-        })->whereType(0)->orderBy("id", "ASC")->paginate($this->pageSize);
+        })->orderBy("id", "ASC")->paginate($this->pageSize);
+
         $statusEnum = $this->statusEnum;
-        return $this->adminView('column.index', compact('lists', 'query', 'statusEnum'));
+        $typeEnum   = $this->typeEnum;
+        return $this->adminView('column.index', compact('lists', 'query', 'statusEnum', 'typeEnum'));
 	}
 
 
@@ -62,17 +66,20 @@ class ColumnController extends \BaseController {
         {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column/create");
         }
-        if (!is_null($query['parent_id']) && $query['parent_id'] > 0) {
-            $parent = Column::find($query['parent_id'])->parent_id;
-        } else {
+
+        if (!$query['parent_id']) $query['parent_id'] = 0;
+        if ($query['parent_id'] == 0) {
             $parent = 0;
+        } else {
+            $parent = Column::find($query['parent_id'])->parent_id;
         }
-        $column = array('' => '--所有--');
+        $column = array('0' => '--所有--');
         $columns = Column::whereParentId($parent)->whereType(0)->select('id','name')->get();
         foreach ($columns as $key => $value) {
             $column[$value->id] = $value->name;
         }
-        return $this->adminView('column.create', compact('query', 'column'));
+        $typeEnum = $this->typeEnum;
+        return $this->adminView('column.create', compact('query', 'column', 'typeEnum'));
 	}
 
 
@@ -84,38 +91,40 @@ class ColumnController extends \BaseController {
 	public function store()
 	{
 		$query = Input::all();
+        if (!$query['parent_id']) $query['parent_id'] = 0;
+
         $validator = Validator::make($query ,
             array(
-                'name' => 'required'
+                'name'      => 'required',
+                'thumbnail' => 'image',
+                'parent_id' => 'numeric',
+                'type'      => 'numeric',
                 )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column/create");
+            // return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column/create");
+            return Redirect::to('/admin/column/create?parent_id='.$query['parent_id'])->withErrors($validator)->withInput($query);
         }
         if(Input::hasFile('thumbnail')) {
             // $originalName = Input::file('pic')->getClientOriginalName();
             $extension = Input::file('thumbnail')->getClientOriginalExtension();
             $filename = Str::random() . "." . $extension;
-            $destinationPath = Config::get('app.column_thumbnail_dir');
+            $destinationPath = Config::get('app.thumbnail_dir');
             Input::file('thumbnail')->move($destinationPath, $filename);
             $query['filename'] = $filename;
         }
         $column             = new Column();
-        if ($query['parent_id'] > 0) {
-            $column->parent_id = $query['parent_id'];
-        } else {
-            $column->parent_id = 0;
-        }
+        $column->parent_id                                = $query['parent_id'];
         $column->name                                     = $query['name'];
         if ($query['desc']) $column->desc                 = $query['desc'];
         if (isset($query['filename'])) $column->thumbnail = $query['filename'];
         $column->created_at                               = date("Y-m-d H:i:s");
         $column->status                                   = 0;
-        $column->type                                     = 0;
+        $column->type                                     = $query['type'];
         if ($column->save()) {
-            return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "column?parent_id=".$query['parent_id']);
+            return Redirect::to('admin/column?parent_id='.$column->parent_id);
         }
 	}
 
@@ -149,7 +158,8 @@ class ColumnController extends \BaseController {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column");
         }
 		$column = Column::find($id);
-        return $this->adminView('column.edit', compact("column"));
+        $typeEnum = $this->typeEnum;
+        return $this->adminView('column.edit', compact("column", 'typeEnum'));
 	}
 
 
@@ -161,14 +171,14 @@ class ColumnController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$query = Input::only('name', 'desc', 'status');
+		$query = Input::only('name', 'desc', 'status', 'thumbnail', 'type');
 
         $validator = Validator::make($query ,
             array(
-                // 'name' => 'alpha_dash',
-                // 'desc' => 'alpha_dash',
-                // 'online_at' => 'date',
-                'status' => 'numeric'
+                'name'      => 'requiredwith:name',
+                'thumbnail' => 'image',
+                'status'    => 'numeric',
+                'type'      => 'numeric',
                 )
         );
 
@@ -176,25 +186,29 @@ class ColumnController extends \BaseController {
         {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "column");
         }
+        if (isset($query['name']) && $query['name'] == '') {
+            $errors = "名称不能为空";
+            return Redirect::to('/admin/column/'.$id."/edit")->withErrors($errors)->withInput($query);
+        }
         if(Input::hasFile('thumbnail')) {
             // $originalName = Input::file('pic')->getClientOriginalName();
             $extension = Input::file('thumbnail')->getClientOriginalExtension();
             $filename = Str::random() . "." . $extension;
-            $destinationPath = Config::get('app.column_thumbnail_dir');
+            $destinationPath = Config::get('app.thumbnail_dir');
             Input::file('thumbnail')->move($destinationPath, $filename);
             $query['filename'] = $filename;
-            // dd($filename);
         }
         $column = Column::find($id);
 
-        if (isset($query['name'])) $column->name           = $query['name'];
-        if (isset($query['desc'])) $column->desc           = $query['desc'];
-        if (isset($query['status'])) $column->status       = $query['status'];
-        if (isset($query['filename'])) $column->thumbnail       = $query['filename'];
+        if (isset($query['name'])) $column->name          = $query['name'];
+        if (isset($query['desc'])) $column->desc          = $query['desc'];
+        if (isset($query['status'])) $column->status      = $query['status'];
+        if (isset($query['filename'])) $column->thumbnail = $query['filename'];
+        if (isset($query['type'])) $column->type          = $query['type'];
 
-        $column->save();
-
-        return $this->adminPrompt("操作成功", $validator->messages()->first(), $url = "column?parent_id=" . $column->parent_id);
+        if ($column->save() ) {
+            return Redirect::to('/admin/column?parent_id='.$column->parent_id);
+        }
 	}
 
 
@@ -212,7 +226,7 @@ class ColumnController extends \BaseController {
             return $this->adminPrompt("操作失败", '此科目有子科目,不能删除', $url = "column?parent_id=".$column->parent_id);
         }
         $column->delete();
-        return Redirect::to('admin/column?parent_id='.$column->parent_id);
+        return Redirect::to('/admin/column?parent_id='.$column->parent_id);
 	}
 
 

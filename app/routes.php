@@ -85,6 +85,13 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('column', 'Admin\ColumnController');
     Route::resource('sort', 'Admin\SortController');
 
+    Route::get('/{column}.json', '\Admin\JsonController@index');
+
+    Route::get('/select', '\Admin\SelectController@index');
+    Route::post('/relation/sort', '\Admin\RelationController@postSort');
+    Route::post('/relation/column', '\Admin\RelationController@postColumn');
+    Route::post('/relation/do_question', '\Admin\RelationController@postDoQuestion');
+
 
 });
 

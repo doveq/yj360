@@ -31,15 +31,13 @@ class LoginlogController extends \BaseController {
             if (Input::get('name')) {
                 $user = User::whereName(Input::get('name'))->first();
                 if (!$user) {
-                    // return $this->adminPrompt("未找到用户", '', $url = "classes");
                     return Redirect::to('admin/prompt')->with('prompt', array('title' => '未找到用户', 'info' => '未找到用户', 'url' => 'loginlog', 'auto' => true));
-                    // return Redirect::to('admin/prompt');
-                    // dd("未找到用户");
                 } else {
                     $q->whereUserId($user->id);
                 }
             }
         })->orderBy("created_at", "DESC")->paginate($this->pageSize);
+
         foreach ($lists as $key => $list) {
             if ($list->ip) {
                 $ip_info = json_decode(file_get_contents("http://ip.taobao.com/service/getIpInfo.php?ip=" . $list->ip));
