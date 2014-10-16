@@ -1,14 +1,13 @@
 <?php
 
-class Classmate extends Eloquent {
+class TrainingResult extends Eloquent {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'classmate';
-    protected $guarded = array('id');
+    protected $table = 'training_result';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -37,6 +36,5 @@ class Classmate extends Eloquent {
     // {
     //  return $this->password;
     // }
-
 
 }

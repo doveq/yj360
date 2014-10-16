@@ -9,7 +9,13 @@
   <div class="row">
     <ol class="breadcrumb">
       <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
+      @if ($query['parent_id'] > 0)
+      <li>{{link_to_route('admin.column.index', $parent->name, array('parent_id' => $parent->id))}}</li>
+      @endif
       <li class="active">浏览科目</li>
+      @if ($query['parent_id'] > 0)
+      <a href="{{url('/admin/column?parent_id='.$parent->parent_id)}}"><span class='pull-right  icon-arrow-up'> 返回上级</span></a>
+      @endif
     </ol>
   </div>
 
@@ -31,7 +37,7 @@
           @foreach ($lists as $list)
           <tr>
             <td>{{$list->id}}</td>
-            <td>{{$list->name}}</td>
+            <td><a href="{{url('/admin/column?parent_id='. $list->id) }}">{{$list->name}}</a></td>
             <td>
               @if ($list->thumbnail)
               <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>

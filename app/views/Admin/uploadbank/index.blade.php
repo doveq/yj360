@@ -1,5 +1,5 @@
 @extends('Admin.master_column')
-@section('title')站点消息@stop
+@section('title')上传题库@stop
 
 @section('nav')
   @include('Admin.uploadbank.nav')

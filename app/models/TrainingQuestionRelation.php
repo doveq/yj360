@@ -1,13 +1,13 @@
 <?php
 
-class Classmate extends Eloquent {
+class TrainingQuestionRelation extends Eloquent {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'classmate';
+    protected $table = 'training_question_relation';
     protected $guarded = array('id');
 
     /**
@@ -37,6 +37,7 @@ class Classmate extends Eloquent {
     // {
     //  return $this->password;
     // }
+
 
 
 }

@@ -97,7 +97,7 @@ class LoginController extends BaseController
 		}
 		else
 		{
-			return Redirect::to('register')->withErrors($validator);
+			return Redirect::to('register')->withErrors($validator)->withInput($data);
 		}
 	}
 

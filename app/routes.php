@@ -81,6 +81,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('feedback', 'Admin\FeedbackController');
     Route::resource('favorite', 'Admin\FavoriteController');
     Route::resource('uploadbank', 'Admin\UploadbankController');
+    Route::resource('training', 'Admin\TrainingController');
 
     Route::resource('column', 'Admin\ColumnController');
     Route::resource('sort', 'Admin\SortController');
@@ -107,6 +108,13 @@ Route::group(array('before' => 'indexLogin'), function(){
 	// flash录音
 	Route::get('/recorder', 'RecorderController@index');
 	Route::post('/recorder/upload', 'RecorderController@upload');
+
+    //我的班级
+    Route::resource('classes', 'ClassesController');
+    //训练集
+    Route::resource('training', 'TrainingController');
+    //班级同学对应
+    Route::resource('classmate', 'ClassmateController');
 
     // 答题页面
     Route::get('/topic', 'topicController@index');

@@ -8,10 +8,10 @@ use Redirect;
 use DB;
 use Request;
 
-use Classes;
+use Training;
 use User;
 
-class ClassesController extends \BaseController {
+class TrainingController extends \BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '准备', '1' => '上线', '-1' => '下线');
     public $pageSize = 30;
@@ -22,7 +22,7 @@ class ClassesController extends \BaseController {
      */
     public function index()
     {
-        $query = Input::only('id', 'name', 'teacher_name', 'status', 'page');
+        $query = Input::only('name', 'teacher_name', 'status', 'page');
 
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
@@ -39,12 +39,9 @@ class ClassesController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "classes");
+            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "training");
         }
-        $lists = Classes::where(function($query) {
-            if (Input::get('id')) {
-                $query->whereId(Input::get('id'));
-            }
+        $lists = Training::where(function($query) {
             if (strlen(Input::get('status')) > 0) {
                 $query->whereStatus(Input::get('status'));
             }
@@ -53,13 +50,13 @@ class ClassesController extends \BaseController {
             }
             if (Input::get('teacher_name')) {
                 $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->select('id')->get()->toArray();
-                $query->whereIn('teacherid', array_flatten($teachers));
+                $query->whereIn('user_id', array_flatten($teachers));
 
             }
-        })->orderBy('id', 'DESC')->paginate($this->pageSize);
+        })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
         $statusEnum = $this->statusEnum;
-        return $this->adminView('classes.index', compact('query', 'statusEnum', 'lists'));
+        return $this->adminView('training.index', compact('query', 'statusEnum', 'lists'));
     }
 
 
@@ -108,7 +105,7 @@ class ClassesController extends \BaseController {
     {
         //
         // echo "hahah";
-        $class = Classes::find($id);
+        $training = Training::find($id);
         $statusEnum = $this->statusEnum;
         $reses = User::where('type', 1)->select('id','name')->get()->toArray();
         // $teachers = DB::table('users')->select('id','name')->get();
@@ -117,7 +114,7 @@ class ClassesController extends \BaseController {
             $teachers[$teacher['id']] = $teacher['name'];
         }
         // dd($teachers);
-        return $this->adminView('classes.edit', compact("class", "statusEnum", "teachers"));
+        return $this->adminView('training.edit', compact("training", "statusEnum", "teachers"));
     }
 
 
@@ -130,28 +127,31 @@ class ClassesController extends \BaseController {
     public function update($id)
     {
         //
-        $query = Input::only('id','name','status', 'teacherid', 'memo');
+        $query = Input::only('id','name','status', 'user_id', 'memo');
         // dd($data);
         $validator = Validator::make($query,
             array(
                 'id'      => 'numeric|required',
                 // 'name'  => 'alpha_dash',
                 'status'  => 'numeric',
-                'teacherid' => 'numeric',
+                'user_id' => 'numeric',
             )
         );
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "training");
         }
-        $class = Classes::find($id);
+        if (isset($query['name']) && $query['name'] == '') {
+            $errors = "名称不能为空";
+            return Redirect::to('/admin/training/'.$id."/edit")->withErrors($errors)->withInput($query);
+        }
+        $class = Training::find($id);
         if (isset($query['name'])) $class->name           = $query['name'];
+        if (isset($query['user_id'])) $class->user_id = $query['user_id'];
         if (isset($query['status'])) $class->status       = $query['status'];
-        if (isset($query['teacherid'])) $class->teacherid = $query['teacherid'];
-        if (isset($query['memo'])) $class->memo           = $query['memo'];
 
         if ($class->save()) {
-            return Redirect::to('/admin/classes');
+            return Redirect::to('/admin/training');
         }
     }
 
@@ -165,8 +165,8 @@ class ClassesController extends \BaseController {
     public function destroy($id)
     {
         //
-        Classes::destroy($id);
-        return Redirect::to('admin/classes');
+        Training::destroy($id);
+        return Redirect::to('admin/training');
     }
 
 

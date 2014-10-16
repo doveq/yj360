@@ -38,6 +38,9 @@
                   <li class="divider"></li>
                   <li><a href="/admin/message">我的消息</a></li>
                   <li><a href="/admin/favrite">我的收藏</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/uploadbank">上传题库</a></li>
+                  <li><a href="/admin/training">教室训练集</a></li>
                 </ul>
               </li>
               <li class="dropdown">
@@ -56,8 +59,6 @@
                   <li><a href="/admin/topic/add">添加题目</a></li>
                   <li class="divider"></li>
                   <li><a href="/admin/sort">题库分类</a></li>
-                  <li class="divider"></li>
-                  <li><a href="/admin/uploadbank">上传题库</a></li>
                 </ul>
               </li>
 

@@ -29,18 +29,26 @@ class SortController extends \BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
+        if (!$query['parent_id']) $query['parent_id'] = 0;
+
+        if ($query['parent_id'] > 0) {
+            $parent = Sort::find($query['parent_id']);
+        }
+
         $lists = Sort::where(function($q){
             if (Input::get('name')) {
                 $q->whereName(Input::get('name'));
             }
-            if (!is_null(Input::get('parent_id'))) {
+            if (strlen(Input::get('parent_id')) > 0) {
                 $q->whereParentId(Input::get('parent_id'));
             } else {
                 $q->whereParentId(0);
             }
         })->whereType(0)->orderBy("id", "ASC")->paginate($this->pageSize);
         $statusEnum = $this->statusEnum;
-        return $this->adminView('sort.index', compact('lists', 'query', 'statusEnum'));
+        // $paths = Sort::parent($query['parent_id']);
+
+        return $this->adminView('sort.index', compact('lists', 'query', 'statusEnum', 'parent'));
 	}
 
 

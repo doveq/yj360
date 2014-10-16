@@ -1,5 +1,5 @@
 @extends('Admin.master_column')
-@section('title')科目管理@stop
+@section('title')题库分类@stop
 
 @section('nav')
   @include('Admin.sort.nav')
@@ -8,9 +8,16 @@
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
-      <li>{{link_to_route('admin.sort.index', '题目分类管理')}}</li>
+      <li>{{link_to_route('admin.sort.index', '题库分类管理')}}</li>
+      @if ($query['parent_id'] > 0)
+      <li>{{link_to_route('admin.sort.index', $parent->name, array('parent_id' => $parent->id))}}</li>
+      @endif
       <li class="active">浏览分类</li>
+      @if ($query['parent_id'] > 0)
+      <a href="{{url('/admin/sort?parent_id='.$parent->parent_id)}}"><span class='pull-right  icon-arrow-up'> 返回上级</span></a>
+      @endif
     </ol>
+
   </div>
 
   <div class="row">
@@ -30,7 +37,7 @@
           @foreach ($lists as $list)
           <tr>
             <td>{{$list->id}}</td>
-            <td>{{$list->name}}</td>
+            <td><a href="{{url('/admin/sort?parent_id='. $list->id) }}">{{$list->name}}</a></td>
             <td>
               @if ($list->thumbnail)
               <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>

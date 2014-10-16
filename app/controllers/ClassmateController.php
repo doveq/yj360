@@ -1,17 +1,6 @@
-<?php namespace Admin;
-use View;
-use Session;
-use Validator;
-use Input;
-use Paginator;
-use Redirect;
-use DB;
+<?php
 
-use Classmate;
-use Classes;
-use User;
-
-class ClassmateController extends \BaseController {
+class ClassmateController extends BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '申请', '1' => '审核通过', '-1' => '无效');
     public $userstatusEnum = array('' => '所有状态', '0' => '无效', '1' => '有效', '-1' => '审核拒绝');
@@ -24,29 +13,7 @@ class ClassmateController extends \BaseController {
      */
     public function index()
     {
-        $query = Input::only('class_id', 'page');
 
-        // 当前页数
-        if( !is_numeric($query['page']) || $query['page'] < 1 )
-            $query['page'] = 1;
-
-        $validator = Validator::make($query,
-            array(
-                'class_id'      => 'numeric|required',
-            )
-        );
-
-        if($validator->fails())
-        {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
-        }
-        $classes = Classes::find($query['class_id']);
-        $lists      = $classes->students;
-        $teacher    = $classes->teacher;
-        $statusEnum = $this->statusEnum;
-        $genderEnum = $this->genderEnum;
-
-        return $this->adminView('classmate.index', compact('query', 'statusEnum', 'genderEnum', 'lists', 'classes', 'teacher'));
     }
 
 
@@ -57,7 +24,7 @@ class ClassmateController extends \BaseController {
      */
     public function create()
     {
-        $query = Input::only('class_id','name', 'tel', 'status', 'page');
+        $query = Input::only('class_id', 'page', 'name', 'tel', 'status');
         $query['pageSize'] = $this->pageSize;
 
         // 当前页数
@@ -66,48 +33,43 @@ class ClassmateController extends \BaseController {
 
         $validator = Validator::make($query,
             array(
-                // 'name'   => 'alpha_dash',
-                'tel'    => 'numeric',
-                'class_id'   => 'numeric',
-                'status' => 'numeric'
+                'class_id'   => 'numeric|required',
             )
         );
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classmate/create?class_id=".$query['class_id']);
+            return Redirect::to('/classes');
         }
         $classes        = Classes::find($query['class_id']);
-        $teacher        = $classes->teacher;
         $class_students = $classes->students;
-        $tmp = array();
+        $tmp = array(0);
         foreach ($class_students as $key => $item) {
             $tmp[] = $item->id;
         }
-        $students = User::whereType(0)->whereStatus(1)->where(function($q) {
+// dd($tmp);
+        $students = User::whereType(0)->whereStatus(1)->whereNotIn('id', $tmp)->where(function($q) {
             if (Input::get('tel')) {
                 $q->whereTel(Input::get('tel'));
             }
-            if (strlen(Input::get('status')) > 0) {
-                $q->whereStatus(Input::get('status'));
-            }
+
             if (Input::get('name')) {
                 $q->where('name', 'LIKE', '%'.Input::get('name').'%');
             }
         })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
-        foreach ($students as $key => $student) {
-            if (in_array($student->id, $tmp)) {
-                $student->checked = 1;
-            } else {
-                $student->checked = 0;
-            }
-            $students[$key] = $student;
-        }
+        // foreach ($students as $key => $student) {
+        //     if (in_array($student->id, $tmp)) {
+        //         $student->checked = 1;
+        //     } else {
+        //         $student->checked = 0;
+        //     }
+        //     $students[$key] = $student;
+        // }
 
         $statusEnum = $this->userstatusEnum;
         $genderEnum = $this->genderEnum;
-        return $this->adminView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum'));
+        return $this->indexView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum'));
     }
 
 
@@ -128,22 +90,13 @@ class ClassmateController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
+            return Redirect::to('/classes/create?class_id='.$query['class_id'])->withErrors($validator)->withInput($query);
         }
 
-        $cur_ids = array();
-        $classes = Classes::find($query['class_id']);
-        foreach($classes->students as $list){
-          $cur_ids[] = $list->id;
+        foreach ($query['student_id'] as $key => $student) {
+            Classmate::create(array('user_id' => $student, 'class_id' => $query['class_id'], 'created_at' => date("Y-m-d H:i:s"), 'status' => 1));
         }
-        $a = array_diff($query['student_id'], $cur_ids);
-        $b = array_diff($cur_ids, $query['student_id']);
-        //detach IDs
-        if (!empty($b)) $classes->students()->detach($b);
-        //add new IDs
-        if (!empty($a)) $classes->students()->attach($a,array('status' => 1));
-
-        return Redirect::to('/admin/classmate?class_id=' . $query['class_id']);
+        return Redirect::to('/classes/' . $query['class_id']);
     }
 
 

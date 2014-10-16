@@ -30,10 +30,10 @@ class MessageController extends \BaseController {
 
         $lists = Message::whereReceiverId(Session::get('uid'))->where(function($q)
             {
-                if (!is_null(Input::get('status'))) {
+                if (strlen(Input::get('status')) > 0) {
                     $q->whereStatus(Input::get('status'));
                 }
-                if (!is_null(Input::get('type'))) {
+                if (strlen(Input::get('type')) > 0) {
                     $q->whereStatus(Input::get('type'));
                 }
 

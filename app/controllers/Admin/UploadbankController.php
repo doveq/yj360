@@ -31,10 +31,10 @@ class UploadbankController extends \BaseController {
 
         $lists = Uploadbank::where(function($q)
             {
-                if (!is_null(Input::get('status'))) {
-                    $q->whereStatus(Input::get('status'));
-                }
-            })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            if (strlen(Input::get('status')) > 0) {
+                $q->whereStatus(Input::get('status'));
+            }
+        })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
         $statusEnum = $this->statusEnum;
         return $this->adminView('uploadbank.index', compact('query', 'lists', 'statusEnum'));

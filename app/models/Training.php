@@ -1,14 +1,13 @@
 <?php
 
-class Classmate extends Eloquent {
+class Training extends Eloquent {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'classmate';
-    protected $guarded = array('id');
+    protected $table = 'training';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -39,4 +38,13 @@ class Classmate extends Eloquent {
     // }
 
 
+    public function questions()
+    {
+        return $this->belongsToMany('Question', 'sort_question_relation', 'sort_id', 'question_id');
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo('User', 'user_id');
+    }
 }

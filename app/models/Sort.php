@@ -37,14 +37,17 @@ class Sort extends Eloquent {
     //  return $this->password;
     // }
 
-    public function child() {
+    public function child()
+    {
         return $this->hasMany('Sort', 'parent_id');
     }
 
-    public function questions() {
+    public function questions()
+    {
         return $this->belongsToMany('Question', 'sort_question_relation', 'sort_id', 'question_id');
     }
 
+<<<<<<< Updated upstream
     /* 根据子分类id获取父分类路径 */
     public function getPath($sortId, &$data = array())
     {
@@ -58,4 +61,27 @@ class Sort extends Eloquent {
         return $data;
     }
 
+=======
+    public function paths()
+    {
+
+    }
+
+    static public function parent($id)
+    {
+        $sort = parent::find($id);
+        $data = array();
+        if ($sort->parent_id <= 0) {
+            return $data;
+        }
+        $parent = parent::find($sort->parent_id);
+        $data[] = array(
+            'id' => $parent->id,
+            'name' => $parent->name,
+            'parent' => self::parent($parent->id)
+        );
+        return $data;
+
+    }
+>>>>>>> Stashed changes
 }
