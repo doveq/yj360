@@ -308,4 +308,12 @@ class Topic  {
 		return 1;
 	}
 
+
+	/* 记录答题信息 */
+	public function addResultLog($info)
+	{
+		$info['created_at'] = date('Y-m-d H:i:s');
+		$id = DB::table("result_log")->insertGetId($info);
+		return $id;
+	}
 }

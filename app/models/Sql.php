@@ -86,6 +86,20 @@ class Sql
 		";
 		DB::statement($table);
 
+
+		DB::statement('drop table if exists `result_log`');
+		$table = "
+			CREATE TABLE IF NOT EXISTS `result_log` (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `uid` int(11) unsigned NOT NULL COMMENT '用户id',
+			  `qid` int(11) unsigned NOT NULL COMMENT '题目id',
+			  `is_true` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0:回答错误, 1:回答正确',
+			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
+			  PRIMARY KEY (`id`),
+			  KEY `qid` (`uid`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+		";
+		DB::statement($table);
 	}
 
 

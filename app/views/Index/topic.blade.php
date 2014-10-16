@@ -149,8 +149,8 @@
             @if( $q['type'] == 2)
             <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
             @endif
-            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;"></a>
-            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" ></a>
+            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit();"></a>
+            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit();"></a>
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;"></a>
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
                 <a class="topic-btn" id="topic-btn-11" hint="显示答案"  href="javascript:;"></a>
@@ -170,7 +170,7 @@
             <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="soundPlay();"></a>
             -->
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
-            <a class="topic-btn" id="topic-btn-11" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
+            <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
             <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="recorderPlay();" style="display:none;"></a>
             @endif
             <a class="topic-btn" id="topic-btn-6" hint="答题卡" href="#"></a>
@@ -190,10 +190,9 @@
     </div>
 
     {{-- 答题数据提交 --}}
-    <form id="topicForm" name="topicForm" action="/topic/post">
+    <form id="topicForm" name="topicForm" action="/topic/post" method="post">
       <input type="hidden" name="id" value="{{$q['id']}}">
       <input type="hidden" id="wavBase64" name="wavBase64" value="" >
-      <input type="hidden" id="result" name="result" value="" >
       <input type="hidden" id="isTrue" name="isTrue" value="0" >
     </form>
 
@@ -276,7 +275,7 @@
             if(err.length > 0)
             {
                 console.log(err);
-                $('#isTrue').val('2');
+                $('#isTrue').val('0');
             }
             else
             {
@@ -287,6 +286,7 @@
 
         function topicSubmit()
         {
+            correcting();
             $('#topicForm').submit();
         }
 
@@ -310,7 +310,7 @@
         function recorderStart()
         {
             $('#topic-btn-10').hide();
-            $('#topic-btn-11').show();
+            $('#topic-btn-12').show();
             $('#topic-btn-8').hide();
             FWRecorder.record('audio', 'audio.wav');
         }
@@ -318,7 +318,7 @@
         function recorderStop()
         {
             $('#topic-btn-10').show();
-            $('#topic-btn-11').hide();
+            $('#topic-btn-12').hide();
             $('#topic-btn-8').show();
             FWRecorder.stopRecording('audio');
         }

@@ -36,21 +36,29 @@ class TopicController extends BaseController {
 	public function post()
 	{
 		$inputs = Input::all();
-		$uid = Session:get('uid');
+		$uid = Session::get('uid');
 		$qid = $inputs['id'];
 
 		// 保存wav录音文件
 		if( !empty($inputs['wavBase64']) )
 		{
-			$file = str_replace('data:audio/wav;base64,', '',  $inputs['wavBase64']); 
+			$fileBase6 = str_replace('data:audio/wav;base64,', '',  $inputs['wavBase64']); 
 			$tmpname = tempnam("/tmp", 'wav');
-			file_put_contents($tmpname, base64_decode($file));
+			file_put_contents($tmpname, base64_decode($fileBase6));
 
+			$att = new Attachments();
 			$saved = $att->addRecorder($tmpname, $uid, $qid);
 		}
 
-		// 保存答题数据
-		
-		
+		// 保存答题信息
+		$topic = new Topic();
+
+		$info = array();
+		$info['uid'] = $uid;
+		$info['qid'] = $qid;
+		$info['is_true'] = $inputs['isTrue'];
+		$topic->addResultLog($info);
+
+		echo "ok";
 	}
 }
