@@ -152,7 +152,7 @@
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit();"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit();"></a>
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;"></a>
-            @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
+            @if( $q['type'] == 4 || $q['type'] == 5 )
                 <a class="topic-btn" id="topic-btn-11" hint="显示答案"  href="javascript:;"></a>
             @endif
 
