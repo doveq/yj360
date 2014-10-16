@@ -47,12 +47,12 @@ class Sort extends Eloquent {
         return $this->belongsToMany('Question', 'sort_question_relation', 'sort_id', 'question_id');
     }
 
-<<<<<<< Updated upstream
+
     /* 根据子分类id获取父分类路径 */
     public function getPath($sortId, &$data = array())
     {
         $info = $this->where('id', '=', $sortId)->first();
-        
+
         $data[] = $info->toArray();
 
         if($info->parent_id != 0)
@@ -61,7 +61,6 @@ class Sort extends Eloquent {
         return $data;
     }
 
-=======
     public function paths()
     {
 
@@ -83,5 +82,4 @@ class Sort extends Eloquent {
         return $data;
 
     }
->>>>>>> Stashed changes
 }
