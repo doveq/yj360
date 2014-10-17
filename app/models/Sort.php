@@ -53,11 +53,14 @@ class Sort extends Eloquent {
     {
         $info = $this->where('id', '=', $sortId)->first();
 
-        $data[] = $info->toArray();
+        if($info)
+        {
+            $data[] = $info->toArray();
 
-        if($info->parent_id != 0)
-            $this->getPath($info->parent_id, $data);
-
+            if($info->parent_id != 0)
+                $this->getPath($info->parent_id, $data);
+        }
+        
         return $data;
     }
 

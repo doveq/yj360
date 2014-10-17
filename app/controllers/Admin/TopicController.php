@@ -183,10 +183,14 @@ class TopicController extends \BaseController {
 	{
 		$id = Input::get('id');
 		if( !is_numeric($id) )
-			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic/list");
+			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic");
 
 		$topic = new Topic();
 		$info = $topic->get($id);
+		
+		if( empty($info) )
+			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic");
+
 		$info['is_edit'] = 1;
 		$info['typeEnum'] = $this->typeEnum;
 		$info['flag'] = $this->flag;
@@ -210,6 +214,7 @@ class TopicController extends \BaseController {
 
 			Session::put('sort'.$v, $info['sort' . $v]);
 		}
+
 
 		return $this->adminView('topic.topic', $info);
 	}

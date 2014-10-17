@@ -177,6 +177,12 @@
             <div class="clear"></div>
         </div>
 
+        <div class="qlist">
+            @foreach($qlist as $v)
+                <a href='tipic?column={{$column}}&id={{$v}}' class="" >{{$v}}</a>
+            @endforeach
+        </div>
+
     </div> <!-- /container -->
 
     {{-- 播放音频相关 --}}

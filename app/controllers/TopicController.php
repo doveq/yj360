@@ -7,10 +7,29 @@ class TopicController extends BaseController {
 	public function index()
 	{
 		$id = Input::get('id');
-		if( !is_numeric($id) || $id < 1 )
+		$column = Input::get('column');
+
+		if( !is_numeric($column) )
 		{
 			exit('没有这道题目');
 		}
+
+		$cqr = new ColumnQuestionRelation();
+		$list = $cqr->getList($column);
+
+		$qlist = array();
+		foreach ($list as $key => $value)
+		{
+			$qlist[] = $value['question_id'];
+		}
+
+		if( !$qlist )
+			exit('没有这道题目');
+
+		// 题目id不对则设为第一题
+		if( !is_numeric($id) || !in_array($id, $qlist) )
+			$id = $qlist[0];
+
 
 		$topic = new Topic();
 		
@@ -18,7 +37,7 @@ class TopicController extends BaseController {
 		$info = $topic->get($id);
 		if(!$info || $info['q']['status'] != 1)
 		{
-			exit('没有这道题目');
+			exit('没有这道题目!!!');
 		}
 
 		$info['flag'] = $this->flag;
@@ -28,6 +47,9 @@ class TopicController extends BaseController {
 			// 随机答案顺序
 			shuffle($info['a']);
 		}
+
+		$info['qlist'] = $qlist;
+		$info['column'] = $column;
 
 		return $this->indexView('topic', $info);
 	}
