@@ -6,7 +6,7 @@
 {{ HTML::ul($errors->all()) }}
 {{ Form::open(array('url' => '/message', 'method' => 'post')) }}
 {{ Form::label('inputName', '发送给:', array('class' => '')) }}
-{{ Form::text('name', $user->name, array('class' => '', 'id' => 'inputName', 'disabled' => 1)) }}
+{{ Form::label('name', $user->name, array('class' => '')) }}
 {{ Form::label('inputContent', '内容:', array('class' => '')) }}
 {{ Form::textarea('content', '', array('class' => '', 'id' => 'inputContent')) }}
 

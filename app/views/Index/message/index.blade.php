@@ -21,7 +21,7 @@
         @foreach ($lists as $list)
         <tr>
           <td>{{$list->id}}</td>
-          <td>{{$list->content}}</td>
+          <td>{{str_limit($list->content, 10, '...')}}</td>
           <td>{{$list->created_at}}</td>
           <td>{{$list->sender->name}}</td>
           <td><a href="/message/{{$list->id}}">查看</a></td>

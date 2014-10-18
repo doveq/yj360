@@ -60,4 +60,9 @@ class SortQuestionRelation extends Eloquent {
         else
             return 0;
     }
+
+    public function question()
+    {
+        return $this->belongsTo('Question');
+    }
 }

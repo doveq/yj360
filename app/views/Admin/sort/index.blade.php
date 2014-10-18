@@ -32,6 +32,7 @@
             <th>描述</th>
             <th>创建时间</th>
             <th>状态</th>
+            <th>查看题目</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -56,6 +57,7 @@
               <span class="label label-default">{{$statusEnum[$list->status]}}</span>
               @endif
             </td>
+            <td><a href="/admin/questions?type=sort&id={{$list->id}}" target="_blank">查看</a></td>
             <td>
               <div class="btn-group btn-xs">
                 <a class="btn btn-default btn-xs" href="{{url('/admin/sort/'. $list->id .'/edit') }}"><i class="icon-edit"></i> 编辑</a>

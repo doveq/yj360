@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container">
-  <div><a href="/classes/create">创建班级</a> <a href="/training/create">新建重点训练</a> 消息({{Session::get('newmassage_count')}})</div>
+  <div><a href="/classes/create">创建班级</a> <a href="/training/create">新建重点训练</a> <a href="/message">消息({{Session::get('newmassage_count')}})</a></div>
   <div>
     <table>
       <thead>
