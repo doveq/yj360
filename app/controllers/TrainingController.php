@@ -114,19 +114,28 @@ class TrainingController extends BaseController {
         // dd($data);
         $validator = Validator::make($query,
             array(
-                'id'      => 'numeric|required',
+                'id'      => 'numeric',
                 // 'name'  => 'alpha_dash',
                 'status'  => 'numeric',
                 'user_id' => 'numeric',
             )
         );
+        // dd($query['status']);
         if($validator->fails())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "training");
+            if (Request::ajax()) {
+                return Response::json('error');
+            } else {
+                return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "training");
+            }
         }
         if (isset($query['name']) && $query['name'] == '') {
             $errors = "名称不能为空";
-            return Redirect::to('/admin/training/'.$id."/edit")->withErrors($errors)->withInput($query);
+            if (Request::ajax()) {
+                return Response::json('error');
+            } else {
+                return Redirect::to('/admin/training/'.$id."/edit")->withErrors($errors)->withInput($query);
+            }
         }
         $class = Training::find($id);
         if (isset($query['name'])) $class->name           = $query['name'];
@@ -134,7 +143,11 @@ class TrainingController extends BaseController {
         if (isset($query['status'])) $class->status       = $query['status'];
 
         if ($class->save()) {
-            return Redirect::to('/admin/training');
+            if (Request::ajax()) {
+                return Response::json('ok');
+            } else {
+                return Redirect::to('/admin/training');
+            }
         }
     }
 

@@ -33,6 +33,7 @@ class SortController extends \BaseController {
 
         if ($query['parent_id'] > 0) {
             $parent = Sort::find($query['parent_id']);
+            $paths = array_reverse($parent->getPath($parent->id));
         }
 
         $lists = Sort::where(function($q){
@@ -48,7 +49,7 @@ class SortController extends \BaseController {
         $statusEnum = $this->statusEnum;
         // $paths = Sort::parent($query['parent_id']);
 
-        return $this->adminView('sort.index', compact('lists', 'query', 'statusEnum', 'parent'));
+        return $this->adminView('sort.index', compact('lists', 'query', 'statusEnum', 'parent', 'paths'));
 	}
 
 
@@ -72,17 +73,19 @@ class SortController extends \BaseController {
         }
         if (!$query['parent_id']) $query['parent_id'] = 0;
         if ($query['parent_id'] == 0) {
-            $parent = 0;
+            $parent_id = 0;
         } else {
-            $parent = Sort::find($query['parent_id'])->parent_id;
+            $parent = Sort::find($query['parent_id']);
+            $parent_id = $parent->parent_id;
+            $paths = array_reverse($parent->getPath($parent->id));
         }
 
         $sort = array('0' => '--所有--');
-        $sorts = Sort::whereParentId($parent)->whereType(0)->select('id','name')->get();
+        $sorts = Sort::whereParentId($parent_id)->whereType(0)->select('id','name')->get();
         foreach ($sorts as $key => $value) {
             $sort[$value->id] = $value->name;
         }
-        return $this->adminView('sort.create', compact('query', 'sort'));
+        return $this->adminView('sort.create', compact('query', 'sort', 'paths'));
 	}
 
 
@@ -158,7 +161,8 @@ class SortController extends \BaseController {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort");
         }
 		$sort = Sort::find($id);
-        return $this->adminView('sort.edit', compact("sort"));
+        $paths = array_reverse($column->getPath($id));
+        return $this->adminView('sort.edit', compact("sort", 'paths'));
 	}
 
 

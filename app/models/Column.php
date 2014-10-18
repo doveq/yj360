@@ -44,4 +44,17 @@ class Column extends Eloquent {
     public function questions() {
         return $this->belongsToMany('Question', 'column_question_relation', 'column_id', 'question_id');
     }
+
+    /* 根据子分类id获取父分类路径 */
+    public function getPath($sortId, &$data = array())
+    {
+        $info = $this->where('id', '=', $sortId)->first();
+
+        $data[] = $info->toArray();
+
+        if($info->parent_id != 0)
+            $this->getPath($info->parent_id, $data);
+
+        return $data;
+    }
 }

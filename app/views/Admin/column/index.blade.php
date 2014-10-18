@@ -10,7 +10,9 @@
     <ol class="breadcrumb">
       <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
       @if ($query['parent_id'] > 0)
-      <li>{{link_to_route('admin.column.index', $parent->name, array('parent_id' => $parent->id))}}</li>
+        @foreach ($paths as $key => $path)
+        <li>{{link_to_route('admin.column.index', $path['name'], array('parent_id' => $path['id']))}}</li>
+        @endforeach
       @endif
       <li class="active">浏览科目</li>
       @if ($query['parent_id'] > 0)

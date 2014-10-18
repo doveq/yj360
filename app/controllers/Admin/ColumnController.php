@@ -35,6 +35,7 @@ class ColumnController extends \BaseController {
 
         if ($query['parent_id'] > 0) {
             $parent = Column::find($query['parent_id']);
+            $paths = array_reverse($parent->getPath($parent->id));
         }
 
         $lists = Column::where(function($q){
@@ -50,7 +51,7 @@ class ColumnController extends \BaseController {
 
         $statusEnum = $this->statusEnum;
         $typeEnum   = $this->typeEnum;
-        return $this->adminView('column.index', compact('lists', 'query', 'statusEnum', 'typeEnum', 'parent'));
+        return $this->adminView('column.index', compact('lists', 'query', 'statusEnum', 'typeEnum', 'parent', 'paths'));
 	}
 
 
@@ -75,17 +76,19 @@ class ColumnController extends \BaseController {
 
         if (!$query['parent_id']) $query['parent_id'] = 0;
         if ($query['parent_id'] == 0) {
-            $parent = 0;
+            $parent_id = 0;
         } else {
-            $parent = Column::find($query['parent_id'])->parent_id;
+            $parent = Column::find($query['parent_id']);
+            $parent_id = $parent->parent_id;
+            $paths = array_reverse($parent->getPath($parent->id));
         }
         $column = array('0' => '--所有--');
-        $columns = Column::whereParentId($parent)->whereType(0)->select('id','name')->get();
+        $columns = Column::whereParentId($parent_id)->whereType(0)->select('id','name')->get();
         foreach ($columns as $key => $value) {
             $column[$value->id] = $value->name;
         }
         $typeEnum = $this->typeEnum;
-        return $this->adminView('column.create', compact('query', 'column', 'typeEnum'));
+        return $this->adminView('column.create', compact('query', 'column', 'typeEnum', 'paths'));
 	}
 
 
@@ -165,7 +168,9 @@ class ColumnController extends \BaseController {
         }
 		$column = Column::find($id);
         $typeEnum = $this->typeEnum;
-        return $this->adminView('column.edit', compact("column", 'typeEnum'));
+
+        $paths = array_reverse($column->getPath($id));
+        return $this->adminView('column.edit', compact("column", 'typeEnum', 'paths'));
 	}
 
 
