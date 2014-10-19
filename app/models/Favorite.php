@@ -49,5 +49,23 @@ class Favorite extends Eloquent {
         return $this->belongsTo('Question');
     }
 
+    public function add($info)
+    {
+        $count = $this->where('user_id', '=', $info['uid'])->where('question_id', '=', $info['qid'])->count();
 
+        if(!$count)
+        {
+            $this->user_id = $info['uid'];
+            $this->question_id = $info['qid'];
+            $this->save();
+        }
+
+        return 1;
+    }
+
+    public function del($info)
+    {
+        $this->where('user_id', '=', $info['uid'])->where('question_id', '=', $info['qid'])->delete();
+        return 1;
+    }
 }

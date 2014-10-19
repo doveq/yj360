@@ -19,6 +19,8 @@
       		<form class="form-horizontal" role="form" action="/admin/topic/doAdd" method="post" enctype="multipart/form-data">
       		@endif
 
+      		<input type="hidden" id="type" name="type" value="{{$type}}" />
+
       		 <div class="form-group">
       		 	<label class="col-sm-2 control-label">分类</label>
       		 	<div class="col-sm-10" id="sort">
@@ -37,16 +39,6 @@
 			    </div>
 			  </div>
 
-      		  <div class="form-group">
-			    <label class="col-sm-2 control-label">类型</label>
-			    <div class="col-sm-10">
-			      <select class="form-control" name="type" id="sel-type">
-			      	@foreach($typeEnum as $k => $v)
-					  <option value="{{$k}}" @if(isset($q['type']) && $k == $q['type']) selected="selected" @endif >{{$v}}</option>
-					@endforeach
-				  </select>
-			    </div>
-			  </div>
 
 			  <div class="form-group">
 			    <label class="col-sm-2 control-label">题干</label>
@@ -56,7 +48,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">题干图片</label>
+			    <label class="col-sm-2 control-label">题干图片(TP)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['img_url']))
 		      	  <div>
@@ -74,7 +66,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">提干音</label>
+			    <label class="col-sm-2 control-label">提干音(TM)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['sound_url']))
 			      <div>
@@ -92,7 +84,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">提示音</label>
+			    <label class="col-sm-2 control-label">提干提示音(TS)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['hint_url']))
 			      <div>
@@ -114,7 +106,7 @@
 			  ?>
 
 			  @for ($i = 0; $i < 4; $i++)
-			  <div class="form-group answers answers-{{$i}}">
+			  <div class="form-group">
 			    <label class="col-sm-2 control-label">答案{{$flag[$i]}}</label>
 			    <div class="col-sm-10">
 			      @if(isset($a[$i]['id']))
@@ -145,18 +137,18 @@
 				    </label>
 				  </div>
 			      @endif
-			      <input type="file" title="上传图片"  name="answers_img[]" />
-			      <input type="file" title="上传声音" name="answers_sound[]" />
+			      <input type="file" title="上传图片({{$flag[$i]}}P)"  name="answers_img[]" />
+			      <input type="file" title="上传声音({{$flag[$i]}}M)" name="answers_sound[]" />
 
 			      <?php
 
-			      	$v = isset($a[$i]["id"]) ? $a[$i]["id"] : 0;
-			  		$answersBox .= '<span style="padding:0 10px;width:auto;" class="abox '. "abox-$i" .'"><label>';
+			      	$v = isset($a[$i]["id"]) ? $a[$i]["id"] : $i;
+			  		$answersBox .= '<span style="padding:0 10px;width:auto;"><label>';
 
 					if(isset($a[$i]['is_right']) && $a[$i]['is_right'])
-						$answersBox .= "<input type='checkbox' name='answers_right[]' checked='checked' value='$v' /> $flag[$i]";
+						$answersBox .= "<input class='abox' type='checkbox' name='answers_right[]' checked='checked' value='$v' /> $flag[$i]";
 					else
-					   	$answersBox .= "<input type='checkbox' name='answers_right[]' value='$v' /> $flag[$i]";
+					   	$answersBox .= "<input class='abox' type='checkbox' name='answers_right[]' value='$v' /> $flag[$i]";
 
 					    
 					$answersBox .= '</label></span>';
@@ -166,7 +158,7 @@
 			  </div>
 			  @endfor
 
-			  <div class="form-group abox-group">
+			  <div class="form-group">
 			    <label class="col-sm-2 control-label">正确答案</label>
 			    <div class="col-sm-10" id="answers-box">
 			    	<?php echo $answersBox; ?>
@@ -201,43 +193,18 @@
     {{ HTML::script('/assets/jquery.cxselect.min.js') }}
 
 	<script>
-		function selType()
-		{
-			var v = $('#sel-type').val();
-			if(v == 3)
-			{
-				$('.answers').hide();
-				$('.answers-0').show();
-				$('.answers-1').show();
-
-				$('.abox').hide();
-				$('.abox-0').show();
-				$('.abox-1').show();
-
-				$('.abox-0').find("input[name=answers_txt]").val('对');
-				$('.abox-1').find("input[name=answers_txt]").val('错');
-			}
-			else if(v == 4 || v == 5)
-			{
-				$('.answers').hide();
-				$('.abox').hide();
-				$('.abox-group').hide();
-			}
-			else
-			{
-				$('.answers').show();
-				$('.abox').show();
-				$('.abox-group').show();
-			}
-		}
-
+		
 		$(document).ready(function(){
 			$('input[type=file]').bootstrapFileInput();
 			$('audio,video').mediaelementplayer();
 
-			$('#sel-type').change(function(){
-				selType();
-			});
+			if($('#type').val() == 1)
+			{
+				$('.abox').click(function(){
+					$('.abox').prop("checked", false);
+					$(this).prop("checked", true);
+				});
+			}
 
 			$.cxSelect.defaults.url = '/admin/column.json';
 			$('#sort').cxSelect({
@@ -247,7 +214,6 @@
 			      nodata: 'none'
 			  });
 
-			selType();
 			UE.getEditor('disabuse');
 		});
 	</script>

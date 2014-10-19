@@ -13,7 +13,7 @@ class Attachments
 	public $typeEnum = array('recorder' => 1, 'topic' => 2);
 
 	// 文件类型
-	public $fileTypeEnum = array('wav' => 1, 'mp3' => 2, 'flv' => 3, 'jpg' => 4);
+	public $fileTypeEnum = array('wav' => 1, 'mp3' => 2, 'flv' => 3, 'jpg' => 4, 'swf' => 5);
 
 
 	/* 根据id获取附件信息 */

@@ -23,6 +23,7 @@ class TopicController extends \BaseController {
 	}
 
 
+
 	/* 显示列表 */
 	public function index()
 	{
@@ -58,10 +59,22 @@ class TopicController extends \BaseController {
 		return $this->adminView('topic.index', $p);
 	}
 
-	public function showAdd()
+	public function showType()
 	{
 		$info = array();
 		$info['typeEnum'] = $this->typeEnum;
+		return $this->adminView('topic.topic_type', $info);
+	}
+
+	public function showAdd()
+	{
+		$type = Input::get('type');
+		if( !array_key_exists($type, $this->typeEnum) )
+			$type = 1;
+
+		$info = array();
+		$info['typeEnum'] = $this->typeEnum;
+		$info['type'] = $type;
 		$info['flag'] = $this->flag;
 
 		$info['sort1'] = Session::get('sort1') ? Session::get('sort1') : 0;
@@ -70,7 +83,20 @@ class TopicController extends \BaseController {
 		$info['sort4'] = Session::get('sort4') ? Session::get('sort4') : 0;
 		$info['sort5'] = Session::get('sort5') ? Session::get('sort5') : 0;
 
-		return $this->adminView('topic.topic', $info);
+		if($type == 1 || $type == 2)
+			return $this->adminView('topic.topic_1', $info);
+		else if($type == 3)
+			return $this->adminView('topic.topic_3', $info);
+		else if($type == 4 || $type == 5)
+			return $this->adminView('topic.topic_4', $info);
+		else if($type == 6)
+			return $this->adminView('topic.topic_6', $info);
+		else if($type == 7)
+			return $this->adminView('topic.topic_7', $info);
+		else if($type == 8)
+			return $this->adminView('topic.topic_8', $info);
+		else if($type == 9 || $type == 10)
+			return $this->adminView('topic.topic_9', $info);
 	}
 
 	public function doAdd()
@@ -79,6 +105,7 @@ class TopicController extends \BaseController {
 
 		if( empty($inputs['txt']))
 			return $this->adminPrompt("操作失败", '题干必须填写', $url = "topic/add");
+
 
 		// 处理分类
 		$sort = 0;
@@ -107,14 +134,14 @@ class TopicController extends \BaseController {
 		/* 处理题干附件 */
 		// 题干图片
 		$questionAtt = array();
-		if($_FILES['file_img']['error'] == UPLOAD_ERR_OK &&
+		if(isset($_FILES['file_img']['error']) && $_FILES['file_img']['error'] == UPLOAD_ERR_OK &&
 			$attid = $this->setImg( $qid, $_FILES['file_img']['tmp_name']) )
 		{
 			$questionAtt['img'] = $attid;
 		}
 
 		// 提示音
-		if($_FILES['file_hint']['error'] == UPLOAD_ERR_OK)
+		if(isset($_FILES['file_hint']['error']) && $_FILES['file_hint']['error'] == UPLOAD_ERR_OK)
 		{
 			$type = $this->att->getExt($_FILES['file_hint']['name']);
 			if($type == 'mp3' || $type == 'wav')
@@ -126,7 +153,7 @@ class TopicController extends \BaseController {
 		}
 
 		// 提干音
-		if($_FILES['file_sound']['error'] == UPLOAD_ERR_OK)
+		if(isset($_FILES['file_sound']['error']) && $_FILES['file_sound']['error'] == UPLOAD_ERR_OK)
 		{
 			$type = $this->att->getExt($_FILES['file_sound']['name']);
 			if($type == 'mp3' || $type == 'wav')
@@ -137,41 +164,56 @@ class TopicController extends \BaseController {
 
 		}
 
+		// flash
+		if(isset($_FILES['file_flash']['error']) && $_FILES['file_flash']['error'] == UPLOAD_ERR_OK)
+		{
+			$type = $this->att->getExt($_FILES['file_flash']['name']);
+			if($type == 'swf' || $type == 'flv')
+			{
+				if( $attid = $this->setFlash( $qid, $_FILES['file_flash']['tmp_name'], $type) )
+					$questionAtt['flash'] = $attid;
+			}
+
+		}
+
 		// 跟新题目数据
 		$topic->edit($qid, $questionAtt);
 
 
 		/* 处理答案 */
-		foreach($inputs['answers_txt'] as $k => $atxt)
+		if(isset($inputs['answers_txt']))
 		{
-			$answers = array();
-			if($atxt)
-				$answers['txt'] = $atxt;
-
-			if( !empty($inputs['answers_right']) && in_array($k, $inputs['answers_right']) )
-				$answers['is_right'] = 1;
-
-			if($_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK &&
-				$attid = $this->setImg( $qid, $_FILES['answers_img']['tmp_name'][$k]) )
+			foreach($inputs['answers_txt'] as $k => $atxt)
 			{
-				$answers['img'] = $attid;
-			}
+				$answers = array();
+				if($atxt)
+					$answers['txt'] = $atxt;
 
+				if( !empty($inputs['answers_right']) && in_array($k, $inputs['answers_right']) )
+					$answers['is_right'] = 1;
 
-			if($_FILES['answers_sound']['error'][$k] == UPLOAD_ERR_OK)
-			{
-				$type = $this->att->getExt($_FILES['answers_sound']['name'][$k]);
-				if($type == 'mp3' || $type == 'wav')
+				if(isset($_FILES['answers_img']['error'][$k]) && $_FILES['answers_img']['error'][$k] == UPLOAD_ERR_OK &&
+					$attid = $this->setImg( $qid, $_FILES['answers_img']['tmp_name'][$k]) )
 				{
-					if( $attid = $this->setAudio( $qid, $_FILES['answers_sound']['tmp_name'][$k], $type) )
-						$answers['sound'] = $attid;
+					$answers['img'] = $attid;
 				}
-			}
 
-			// 插入数据
-			if($answers)
-			{
-				$topic->addAnswers($qid, $answers);
+
+				if(isset($_FILES['answers_sound']['error'][$k]) && $_FILES['answers_sound']['error'][$k] == UPLOAD_ERR_OK)
+				{
+					$type = $this->att->getExt($_FILES['answers_sound']['name'][$k]);
+					if($type == 'mp3' || $type == 'wav')
+					{
+						if( $attid = $this->setAudio( $qid, $_FILES['answers_sound']['tmp_name'][$k], $type) )
+							$answers['sound'] = $attid;
+					}
+				}
+
+				// 插入数据
+				if($answers)
+				{
+					$topic->addAnswers($qid, $answers);
+				}
 			}
 		}
 
@@ -191,9 +233,11 @@ class TopicController extends \BaseController {
 		if( empty($info) )
 			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic");
 
+		$type = $info['q']['type'];
 		$info['is_edit'] = 1;
 		$info['typeEnum'] = $this->typeEnum;
 		$info['flag'] = $this->flag;
+		$info['type'] = $type;
 
 		$sqr = new SortQuestionRelation();
 		$sqrInfo = $sqr->getMap($id);
@@ -216,7 +260,20 @@ class TopicController extends \BaseController {
 		}
 
 
-		return $this->adminView('topic.topic', $info);
+		if($type == 1 || $type == 2)
+			return $this->adminView('topic.topic_1', $info);
+		else if($type == 3)
+			return $this->adminView('topic.topic_3', $info);
+		else if($type == 4 || $type == 5)
+			return $this->adminView('topic.topic_4', $info);
+		else if($type == 6)
+			return $this->adminView('topic.topic_6', $info);
+		else if($type == 7)
+			return $this->adminView('topic.topic_7', $info);
+		else if($type == 8)
+			return $this->adminView('topic.topic_8', $info);
+		else if($type == 9 || $type == 10)
+			return $this->adminView('topic.topic_9', $info);
 	}
 
 	public function doEdit()
@@ -228,7 +285,6 @@ class TopicController extends \BaseController {
 
 
 		// 处理分类
-		$sort = 0;
 		if( !empty($inputs['sort5']) )
 			$sort = $inputs['sort5'];
 		elseif( !empty($inputs['sort4']) )
@@ -239,9 +295,6 @@ class TopicController extends \BaseController {
 			$sort = $inputs['sort2'];
 		elseif( !empty($inputs['sort1']) )
 			$sort = $inputs['sort1'];
-
-		if( $sort == 0)
-			return $this->adminPrompt("操作失败", '必须选择分类', $url = "topic/add");
 
 
 		$topic = new Topic();
@@ -312,8 +365,11 @@ class TopicController extends \BaseController {
 
 
 		// 跟新分类信息
-		$sar = new SortQuestionRelation();
-		$sar->updateMap(array('sort' => $sort, 'qid' => $qid));
+		if(isset($sort))
+		{
+			$sar = new SortQuestionRelation();
+			$sar->updateMap(array('sort' => $sort, 'qid' => $qid));
+		}
 
 		/* 处理答案 */
 		if(isset($inputs['answers_txt']))
@@ -405,6 +461,12 @@ class TopicController extends \BaseController {
 	}
 
 	public function setAudio($qid, $file, $type)
+	{
+	    $attid = $this->att->addTopicAudio($qid, $file, $type);
+	    return $attid;
+	}
+
+	public function setFlash($qid, $file, $type)
 	{
 	    $attid = $this->att->addTopicAudio($qid, $file, $type);
 	    return $attid;

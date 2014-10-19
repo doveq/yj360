@@ -9,13 +9,14 @@ $(function () {
   var CLASS_PLAYBACK_READY = "playback_ready";
   var CLASS_PLAYING = "playing";
   var CLASS_PLAYBACK_PAUSED = "playback_paused";
+  var TIMEOUT_RECORDING = 30;
 
 //  Embedding flash object ---------------------------------------------------------------------------------------------
 
   //setUpFormOptions();
   var appWidth = 24;
   var appHeight = 24;
-  var flashvars = {'upload_image': '/assets/recorder/images/upload.png'};
+  var flashvars = {'upload_image': '/assets/recorder/images/upload_blank.jpg'};
   var params = {};
   var attributes = {'id': "recorderApp", 'name': "recorderApp"};
   swfobject.embedSWF("/assets/recorder/recorder.swf", "flashcontent", appWidth, appHeight, "11.0.0", "", flashvars, params, attributes);
@@ -64,6 +65,18 @@ $(function () {
         $controls = controlsEl(name);
         FWRecorder.hide();
         setControlsClass($controls, CLASS_RECORDING);
+
+        $('#topic-btn-10').hide();
+        $('#topic-btn-12').show();
+        $('#topic-btn-8').hide();
+
+        setTimeout(function(){
+            $('#topic-btn-10').show();
+            $('#topic-btn-12').hide();
+            $('#topic-btn-8').show();
+            FWRecorder.stopRecording('audio');
+        }, TIMEOUT_RECORDING * 1000);
+
         break;
 
       case "recording_stopped":

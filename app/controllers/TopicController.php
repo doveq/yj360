@@ -9,6 +9,8 @@ class TopicController extends BaseController {
 		$id = Input::get('id');
 		$column = Input::get('column');
 
+		$qlist = array();
+		/*
 		if( !is_numeric($column) )
 		{
 			exit('没有这道题目');
@@ -29,7 +31,7 @@ class TopicController extends BaseController {
 		// 题目id不对则设为第一题
 		if( !is_numeric($id) || !in_array($id, $qlist) )
 			$id = $qlist[0];
-
+		*/
 
 		$topic = new Topic();
 		
@@ -37,7 +39,7 @@ class TopicController extends BaseController {
 		$info = $topic->get($id);
 		if(!$info || $info['q']['status'] != 1)
 		{
-			exit('没有这道题目!!!');
+			//exit('没有这道题目!!!');
 		}
 
 		$info['flag'] = $this->flag;
@@ -81,6 +83,16 @@ class TopicController extends BaseController {
 		$info['is_true'] = $inputs['isTrue'];
 		$topic->addResultLog($info);
 
-		echo "ok";
+		// 上一题
+		if($inputs['act'] == 'prve')
+		{
+
+		}
+		// 下一题
+		else
+		{
+
+		}
+		
 	}
 }

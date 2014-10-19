@@ -101,6 +101,15 @@ class Topic  {
 			$info['q']['sound_name'] =  $item['file_name'];
 		}
 
+		if($info['q']['flash'])
+		{
+			$item = $att->get($info['q']['flash']);
+			$route = $att->getTopicRoute($qid, $item['file_name']);
+			$info['q']['flash_url'] =  $route['url'];
+			$info['q']['flash_att_id'] = $item['id'];
+			$info['q']['flash_name'] =  $item['file_name'];
+		}
+
 		$answers = DB::table('answers')->where('qid', $id)->get();
 		foreach ($answers as $data) 
 		{
@@ -149,8 +158,8 @@ class Topic  {
 		if(isset($data['img']) && is_numeric($data['img']))
 			$info['img'] = $data['img'];
 
-		if(isset($data['video']) && is_numeric($data['video']))
-			$info['video'] = $data['video'];
+		if(isset($data['flash']) && is_numeric($data['flash']))
+			$info['flash'] = $data['flash'];
 
 		if(isset($data['disabuse']) && !empty($data['disabuse']))
 			$info['disabuse'] = $data['disabuse'];
@@ -187,8 +196,8 @@ class Topic  {
 		if(isset($data['img']) && is_numeric($data['img']))
 			$info['img'] = $data['img'];
 
-		if(isset($data['video']) && is_numeric($data['video']))
-			$info['video'] = $data['video'];
+		if(isset($data['flash']) && is_numeric($data['flash']))
+			$info['flash'] = $data['flash'];
 
 		if(isset($data['disabuse']) && !empty($data['disabuse']))
 			$info['disabuse'] = $data['disabuse'];
@@ -218,8 +227,8 @@ class Topic  {
 		if(isset($data['img']) && is_numeric($data['img']))
 			$info['img'] = $data['img'];
 
-		if(isset($data['video']) && is_numeric($data['video']))
-			$info['video'] = $data['video'];
+		if(isset($data['flash']) && is_numeric($data['flash']))
+			$info['flash'] = $data['flash'];
 
 		
 		$id = 0;
@@ -250,8 +259,8 @@ class Topic  {
 		if(isset($data['img']) && is_numeric($data['img']))
 			$info['img'] = $data['img'];
 
-		if(isset($data['video']) && is_numeric($data['video']))
-			$info['video'] = $data['video'];
+		if(isset($data['flash']) && is_numeric($data['flash']))
+			$info['flash'] = $data['flash'];
 
 		if(isset($data['is_right']) && is_numeric($data['is_right']))
 				$info['is_right'] = $data['is_right'];
@@ -283,8 +292,8 @@ class Topic  {
 		if($q['img'] > 0)
 			$att->del($q['img']);
 
-		if($q['video'] > 0)
-			$att->del($q['video']);
+		if($q['flash'] > 0)
+			$att->del($q['flash']);
 
 		DB::table('questions')->where('id', $id)->delete();
 
@@ -299,8 +308,8 @@ class Topic  {
 			if($data['sound'] > 0)
 				$att->del($data['sound']);
 
-			if($data['video'] > 0)
-				$att->del($data['video']);
+			if($data['flash'] > 0)
+				$att->del($data['flash']);
 
 			DB::table('answers')->where('id', $data['id'])->delete();
 		}

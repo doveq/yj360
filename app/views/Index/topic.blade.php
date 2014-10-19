@@ -20,7 +20,6 @@
             </div>
 
             <div id="answers">
-                @if( !empty($a) )
                     {{-- 单选，多选，判断 --}}
                     @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
                         <table class="answers-list">
@@ -34,7 +33,9 @@
                                             <input type="checkbox" name="daan" value="{{$item['id']}}" is-right="{{$item['is_right']}}" />
                                         @endif
 
+                                        @if($q['type'] != 3)
                                         <b>{{$flag[$k]}}.</b>
+                                        @endif
 
                                         <div class="flag-true"></div>
                                         <div class="flag-false"></div>
@@ -57,16 +58,10 @@
                         </table>
                     {{-- 填空，写作 --}}
                     @elseif($q['type'] == 4 || $q['type'] == 5 )
-                    <div >
-                        @foreach($a as $k => $item)
-                            @if( !empty($item['txt']) )
-                                <div>{{$item['txt']}}</div>
-                            @elseif( !empty($item['img_url']) )
-                                <div><img src="{{$item['img_url']}}" /></div>
-                            @elseif( !empty($item['sound_url']) )
-                                <div><audio src="$item['sound_url']"></div>
-                            @endif
-                        @endforeach
+                    <div id="type-45" style="display:none;">
+                        @if( !empty($q['disabuse']) )
+                            {{$q['disabuse']}}
+                        @endif
                     </div>
                     {{-- 模唱 --}}
                     @elseif( $q['type'] == 6 )
@@ -74,14 +69,15 @@
                     @elseif( $q['type'] == 7 ) 
                         @foreach($a as $k => $item)
                             @if( !empty($item['img_url']) )
-                                <img src="{{$item['img_url']}}" />
+                                <div><img src="{{$item['img_url']}}" /></div>
                             @endif
                         @endforeach
+                    @elseif( $q['type'] == 8)
+                         {{$a[0]['txt']}}
+                    @elseif( $q['type'] == 9 || $q['type'] == 10 )
+                        <embed src="{{$q['flash_url'] or ''}}" allowFullScreen="true" quality="high" width="100%" height="100%" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
                     @endif 
 
-                    
-
-                @endif 
             </div>
 
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )        
@@ -137,23 +133,24 @@
               <div>Upload status: <span id="upload_status"></span></div>
             </div>
 
-            
-
             <form id="uploadForm" name="uploadForm" action="/recorder/upload">
               <input name="authenticity_token" value="" type="hidden">
               <input name="format" value="json" type="hidden">
             </form>
         </div>
 
+        @if( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
         <div id="topic-tools">
             @if( $q['type'] == 2)
             <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
             @endif
-            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit();"></a>
-            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit();"></a>
-            <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;"></a>
+            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
+            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
+            <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}});"></a>
+            <a class="topic-btn" id="topic-btn-13" hint="取消收藏"  href="javascript:;" onclick="delFavorite({{$q['id']}});" style="display:none;"></a>
             @if( $q['type'] == 4 || $q['type'] == 5 )
-                <a class="topic-btn" id="topic-btn-11" hint="显示答案"  href="javascript:;"></a>
+                <a class="topic-btn" id="topic-btn-11" hint="显示答案"  href="javascript:;" onclick="showDaan();"></a>
+                <a class="topic-btn" id="topic-btn-14" hint="隐藏答案"  href="javascript:;" onclick="hideDaan();" style="display:none;"></a>
             @endif
 
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
@@ -164,23 +161,23 @@
                 <input type="checkbox" name="sex" id="checkbox-2" /> <label for="checkbox-2">答对后自动跳转到下一题</label>
             </div>
             @endif
-            @if( $q['type'] == 6 )
-            <!--
-            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="#"></a>
-            <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="soundPlay();"></a>
-            -->
+            @if( $q['type'] == 6 || $q['type'] == 7)
+            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="soundPlay();"></a>
+            <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="ckyPlay();"></a>
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
             <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
             <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="recorderPlay();" style="display:none;"></a>
             @endif
-            <a class="topic-btn" id="topic-btn-6" hint="答题卡" href="#"></a>
+            <a class="topic-btn" id="topic-btn-6" hint="显示答题卡" href="javascript:;" onclick="showList();"></a>
             <div class="clear"></div>
         </div>
+        @endif
 
-        <div class="qlist">
-            @foreach($qlist as $v)
-                <a href='tipic?column={{$column}}&id={{$v}}' class="" >{{$v}}</a>
+        <div id="qlist" style="display:none;">
+            @foreach($qlist as $k => $v)
+                <a href='tipic?column={{$column}}&id={{$v}}' class="" >{{$k +1}}</a>
             @endforeach
+            <div class="clear"></div>
         </div>
 
     </div> <!-- /container -->
@@ -193,6 +190,8 @@
         <audio id="q-sound" src="{{$q['sound_url'] or ''}}">
         <!-- 提示音 -->
         <audio id="q-hint" src="{{$q['hint_url'] or ''}}">
+
+        <audio id="q-cky" src="{{$a[0]['sound_url'] or ''}}">
     </div>
 
     {{-- 答题数据提交 --}}
@@ -200,6 +199,7 @@
       <input type="hidden" name="id" value="{{$q['id']}}">
       <input type="hidden" id="wavBase64" name="wavBase64" value="" >
       <input type="hidden" id="isTrue" name="isTrue" value="0" >
+      <input type="hidden" id="act" name="act" value="next">
     </form>
 
     <script>
@@ -220,10 +220,22 @@
         // 播放题干音和提示音
         function initPlay()
         {
+            /*
             new MediaElementPlayer('#q-hint', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function(e) {
                         soundPlay();
+                    }, false);
+                     
+                    mediaElement.play();
+                }
+            });
+            */
+
+            new MediaElementPlayer('#q-sound', {
+                success: function (mediaElement, domObject) {
+                    mediaElement.addEventListener('ended', function(e) {
+                        hintPlay();
                     }, false);
                      
                     mediaElement.play();
@@ -240,6 +252,12 @@
         function soundPlay()
         {
             player = new MediaElementPlayer('#q-sound');
+            player.play();
+        }
+
+        function ckyPlay()
+        {
+            player = new MediaElementPlayer('#q-cky');
             player.play();
         }
 
@@ -290,9 +308,10 @@
             }
         }
 
-        function topicSubmit()
+        function topicSubmit(act)
         {
             correcting();
+            $('#act').val(act);
             $('#topicForm').submit();
         }
 
@@ -315,9 +334,6 @@
 
         function recorderStart()
         {
-            $('#topic-btn-10').hide();
-            $('#topic-btn-12').show();
-            $('#topic-btn-8').hide();
             FWRecorder.record('audio', 'audio.wav');
         }
 
@@ -329,10 +345,59 @@
             FWRecorder.stopRecording('audio');
         }
 
+        function autoRecorderStop()
+        {
+            $('#topic-btn-10').show();
+            $('#topic-btn-12').hide();
+            $('#topic-btn-8').show();
+        }
+
         function recorderPlay()
         {
             FWRecorder.playBack('audio');
         }
+
+        function showList()
+        {
+            $('#qlist').toggle();
+        }
+
+        function addFavorite(qid)
+        {
+            $.getJSON("/favorite/ajax", {'act':'add','qid':qid}, function(data){
+                 if(data.state == 1)
+                 {
+                    $('#topic-btn-4').hide();
+                    $('#topic-btn-13').show();
+                 }
+            });
+        }
+
+        function delFavorite(qid)
+        {
+            $.getJSON("/favorite/ajax", {'act':'del','qid':qid}, function(data){
+                if(data.state == 1)
+                {
+                    $('#topic-btn-4').show();
+                    $('#topic-btn-13').hide();
+
+                }
+            });
+        }
+
+        function showDaan()
+        {
+            $('#type-45').show();
+            $('#topic-btn-11').hide();
+            $('#topic-btn-14').show();
+        }
+        function hideDaan()
+        {
+            $('#type-45').hide();
+            $('#topic-btn-11').show();
+            $('#topic-btn-14').hide();
+        }
+
     </script>
 
 @stop

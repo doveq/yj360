@@ -58,7 +58,7 @@ class Sql
 			  `hint` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '提示音',
 			  `sound` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干音',
 			  `img` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干图片',
-			  `video` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干视频',
+			  `flash` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '题干flash',
 			  `disabuse` text NOT NULL DEFAULT '' COMMENT '题目详解',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '题目类型',
@@ -78,7 +78,7 @@ class Sql
 			  `txt` varchar(255) NOT NULL DEFAULT '' COMMENT '答案文字',
 			  `sound` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答案配音',
 			  `img` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答案图片',
-			  `video` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答案视频',
+			  `flash` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '答案视频',
 			  `is_right` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0:错误答案, 1:正确答案',
 			  PRIMARY KEY (`id`),
 			  KEY `qid` (`qid`)
@@ -100,8 +100,20 @@ class Sql
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 		";
 		DB::statement($table);
-	}
 
+		DB::statement('drop table if exists `favorite`');
+		$table = "
+			CREATE TABLE IF NOT EXISTS `favorite` (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `uid` int(11) unsigned NOT NULL COMMENT '用户id',
+			  `qid` int(11) unsigned NOT NULL COMMENT '题目id',
+			  PRIMARY KEY (`id`),
+			  KEY `qid` (`uid`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+		";
+		DB::statement($table);
+	}
+	
 
 	function Down()
 	{
