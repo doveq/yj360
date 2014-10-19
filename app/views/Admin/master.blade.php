@@ -56,9 +56,18 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">题库管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="/admin/topic">原始题库</a></li>
-                  <li><a href="/admin/topic/add">添加题目</a></li>
-                  <li class="divider"></li>
                   <li><a href="/admin/sort">题库分类</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/topic/add?type=1">添加单选择题</a></li>
+                  <li><a href="/admin/topic/add?type=2">添加多选择题</a></li>
+                  <li><a href="/admin/topic/add?type=3">添加判断题</a></li>
+                  <li><a href="/admin/topic/add?type=4">添加填空题</a></li>
+                  <li><a href="/admin/topic/add?type=5">添加写作题</a></li>
+                  <li><a href="/admin/topic/add?type=6">添加模唱</a></li>
+                  <li><a href="/admin/topic/add?type=7">添加视唱</a></li>
+                  <li><a href="/admin/topic/add?type=8">添加视频</a></li>
+                  <li><a href="/admin/topic/add?type=9">添加教材</a></li>
+                  <li><a href="/admin/topic/add?type=10">添加游戏</a></li>
                 </ul>
               </li>
 
