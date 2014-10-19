@@ -11,19 +11,19 @@ class ClassesController extends BaseController {
      */
     public function index()
     {
-        $query = Input::only('page');
-
-        // 当前页数
-        if( !is_numeric($query['page']) || $query['page'] < 1 )
-            $query['page'] = 1;
+        $query = Input::only('column_id');
 
         $user_id = Session::get('uid');
         $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-
+        //左边菜单,需要知道是在初级,中级,高级,中小学音乐科目下,如果没有,默认为初级
+        if (!isset($query['column_id'])) {
+            $query['column_id'] = 3;
+        }
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
-        return $this->indexView('classes.index', compact('statusEnum', 'classes', 'trainings', 'query'));
+        return $this->indexView('classes.index', compact('statusEnum', 'classes', 'trainings', 'query', 'columns'));
     }
 
 

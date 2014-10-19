@@ -2,14 +2,14 @@
 @section('title')我的班级 @stop
 
 @section('content')
-<div class="container-column wrap">
-  <div class="wrap-left">
+<div class="container-fluid">
+  <div class="col-md-2">
       <div class="sort">
           <div class="sort-tit">全部分类</div>
           <div class="sort-bb"></div>
           <ul class="sort-list">
             @foreach($columns as $k => $column)
-            <li><a href="/column?id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
+            <li><a href="/column?column_id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
             @endforeach
           </ul>
           <div class="sort-bb"></div>
@@ -21,7 +21,7 @@
       </div>
   </div>
 
-  <div class="wrap-right">
+  <div class="col-md-9">
       <div class="tabtool">
           <a href="/classes/create"><img src="/assets/img/addclasses.jpg" /></a>
           <a href="/training/create"><img src="/assets/img/addzdxl.jpg" /></a>
