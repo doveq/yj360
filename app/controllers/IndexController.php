@@ -7,6 +7,11 @@ class IndexController extends BaseController {
 		return $this->indexView('index');
 	}
 
+	public function column()
+	{
+		return $this->indexView('column');
+	}
+
 
 	/* 访问方法不存在时调用 */
 	public function missingMethod($parameters = array())

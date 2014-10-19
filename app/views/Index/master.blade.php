@@ -25,15 +25,23 @@
                 <li><a href="/">APP下载</a></li>
                 <li><a href="/">产品商店</a></li>
               </ul>
-              <ul id="site-nav">
 
-                @if(Auth::check())
-                <li><a href="/profile">{{Auth::user()->name}}</a></li>
-                <li><a href="/logout">退出</a></li>
-                @else
-                <li><a href="/login">登陆</a></li>
-                @endif
-            </ul>
+              <div id="site-right">
+                <div id="site-right-info">
+                  @if(Auth::check())
+                    <a href="/profile" id="site-ubg">{{Auth::user()->name}}</a>
+                    <span class="sp">|</span>
+                    <a href="/logout">退出</a>
+                  @else
+                    <a href="/register">注册</a>
+                    <span class="sp">|</span>
+                    <a href="/login">登录</a>
+                  @endif
+                </div>
+                <div id="bzfk">
+                    <a href="#"><img src="/assets/img/bzfk.jpg" /></a>
+                </div>
+              </div>
           </div>
       </div>
 
@@ -43,7 +51,14 @@
       @yield('js')
 
       <div id="footer" class="wrap">
-        关于我们
+        <a class="footer-link" href="#">关于我们</a>
+        <span class="footer-sp">|</span>
+        <a class="footer-link" href="#">联系我们</a>
+        <span class="footer-sp">|</span>
+        <a class="footer-link" href="#">意见反馈</a>
+        <span class="footer-sp">|</span>
+        <a class="footer-link" href="#">关注我们</a>
+      </div>
       </div>
   </body>
 </html>
