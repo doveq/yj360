@@ -7,7 +7,6 @@
     <title>@yield('title', '首页')</title>
 
     <link href="/assets/css/index.css" rel="stylesheet">
-    <link href="/assets/css/grid.css" rel="stylesheet">
     @yield('css')
 
     <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>

@@ -1,5 +1,5 @@
 @extends('Index.master')
-@section('title')首页@stop
+@section('title')首页 @stop
 
 @section('content')
     <div class="container wrap">
@@ -22,7 +22,7 @@
             <a class="column-bk" href="#" style="background-color:#f49543;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#abd663;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#b18ac1;">初级乐理</a>
-            
+
             <a class="column-bk" href="#" style="background-color:#2fc8d0;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#efc825;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#5fc1e8;">初级乐理</a>
@@ -80,7 +80,7 @@
             <a class="column-bk" href="#" style="background-color:#f49543;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#abd663;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#b18ac1;">初级乐理</a>
-            
+
             <a class="column-bk" href="#" style="background-color:#2fc8d0;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#efc825;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#5fc1e8;">初级乐理</a>
@@ -138,7 +138,7 @@
             <a class="column-bk" href="#" style="background-color:#f49543;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#abd663;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#b18ac1;">初级乐理</a>
-            
+
             <a class="column-bk" href="#" style="background-color:#2fc8d0;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#efc825;">初级乐理</a>
             <a class="column-bk" href="#" style="background-color:#5fc1e8;">初级乐理</a>

@@ -104,7 +104,7 @@ Route::get('/login', 'LoginController@index');
 Route::post('/doLogin', 'LoginController@doLogin');
 Route::get('/logout', 'LoginController@logout');
 Route::get('/', 'IndexController@index');
-Route::get('/column', 'IndexController@column');
+Route::get('/indexColumn', 'IndexController@column');
 
 Route::group(array('before' => 'indexLogin'), function(){
 	// flash录音
