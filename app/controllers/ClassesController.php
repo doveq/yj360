@@ -21,9 +21,13 @@ class ClassesController extends BaseController {
         $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-
+        //左边菜单,需要知道是在初级,中级,高级,中小学音乐科目下,如果没有,默认为初级
+        if (!isset($query['column_id'])) {
+            $query['column_id'] = 3;
+        }
+        $columns = Column::find($query['column_id'])->child()->get();
         $statusEnum = $this->statusEnum;
-        return $this->indexView('classes.index', compact('statusEnum', 'classes', 'trainings', 'query'));
+        return $this->indexView('classes.index', compact('statusEnum', 'classes', 'trainings', 'query', 'columns'));
     }
 
 

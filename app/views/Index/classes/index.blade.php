@@ -8,13 +8,9 @@
           <div class="sort-tit">全部分类</div>
           <div class="sort-bb"></div>
           <ul class="sort-list">
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li class="sort-act"><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+            @foreach($columns as $k => $column)
+            <li><a href="/column?column_id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
+            @endforeach
           </ul>
           <div class="sort-bb"></div>
           <div class="sort-item sort-wbj sort-wbj-act"><a href="#">我的班级</a><div class="sort-sj"></div></div>
@@ -27,8 +23,8 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/classes/create"><img src="/assets/img/addclasses.jpg" /></a> 
-          <a href="/training/create"><img src="/assets/img/addzdxl.jpg" /></a> 
+          <a href="/classes/create"><img src="/assets/img/addclasses.jpg" /></a>
+          <a href="/training/create"><img src="/assets/img/addzdxl.jpg" /></a>
           <a href="/message" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
           <div class="clear"></div>
       </div>
@@ -52,7 +48,7 @@
           <div class="clear"></div>
       </div>
 
-      
+
       <!--
       <div>
         <table class="stable" border="0" cellpadding="0" cellspacing="0">

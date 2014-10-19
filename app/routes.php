@@ -122,10 +122,12 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::resource('message', 'MessageController');
 
     // 答题页面
-    Route::get('/topic', 'topicController@index');
+    Route::get('/topic', 'TopicController@index');
     Route::post('/topic/post', 'topicController@post');
 
     Route::get('/favorite/ajax', 'FavoriteController@ajax');
+    //初级
+    Route::get('/beginner', 'BeginnerController@index');
 });
 
 
