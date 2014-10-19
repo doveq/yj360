@@ -2,18 +2,26 @@
 @section('title')账号登录@stop
 
 @section('content')
-    <div class="container">
+    <div class="container wrap">
+        <div class="loginbox">
+          <form role="form" action="doLogin" method="post">
 
-      <form class="form-signin" role="form" action="doLogin" method="post">
-        @if($message)
-        <div class="alert alert-danger" role="alert">{{$message}}</div>
-        @endif
-        <h2 class="form-signin-heading">账号登录</h2>
-        <p><input type="text" name="name" value="" placeholder="用户名" ></p>
-        <p><input type="password" name="password" value="" class="form-control" placeholder="密码" ></p>
-        
-        <button type="submit">登录</button>
-      </form>
-
+            <div class="login-con">
+                @if($message)
+                <div class="alert alert-danger">{{$message}}</div>
+                @endif
+                <div class="row"><img src="/assets/img/regtit.jpg" /></div>
+                <div class="row"><input type="text" class="text" name="name" value="" placeholder="用户名" ></div>
+                <div class="row"><input type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
+                <div class="row">
+                    <input type="checkbox" name="" id="checkbox-1" class="labelinput" /> <label for="checkbox-1">记住我</label>
+                    <a href="#" class="forget">忘记密码</a>
+                </div>
+                <br>
+                <div class="row"><button type="submit" class="loginbntn"></button></div>
+                <div class="row"><a href="register"><img src="/assets/img/loginbntn2.jpg" /></a></div>
+            </div>
+          </form>
+        </div>
     </div> <!-- /container -->
 @stop

@@ -376,3 +376,75 @@ li.index-list-more a {
 	background-color: #1db5a9;
 	color: #999;
 }
+.regtable{
+	padding-left:300px;
+}
+.regtable td{
+	padding-top:20px;
+}
+.regtable .lable{
+	text-align: right;
+	padding-right:30px;
+	font-size: 16px;
+}
+.regtable .text{
+	padding:10px;
+	border: 1px solid #ddd;
+	width: 300px;
+}
+.regtable .must{
+	color:red;
+	padding:5px;
+	position:relative;
+	top:4px;
+}
+.regbnt{
+	width: 200px;
+	height: 40px;
+	background: url("/assets/img/regbnt.jpg") no-repeat 0 0;
+	border: none;
+}
+.fileup{position:relative;}
+.regtable .selbtn{ 
+	background: url("/assets/img/selbtn.jpg") no-repeat 0 0;
+	border:none;
+	height:32px; width:80px;}
+.regtable .file{ position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:400px; } 
+
+.loginbox{
+	background: url("/assets/img/regbg.jpg") no-repeat 0 0;
+	width: 100%;
+	height: 400px;
+	position:relative;
+}
+
+.login-con {
+	position:relative;
+	left:500px;
+	top:30px;
+}
+.login-con .row{
+	padding-top:10px;
+	position:relative;
+	width: 280px;
+}
+.loginbox .text{
+	padding:10px;
+	border: 1px solid #ddd;
+	width: 255px;
+}
+
+.loginbntn{
+	width: 280px;
+	height: 40px;
+	background: url("/assets/img/loginbntn.jpg") no-repeat 0 0;
+	border: none;
+}
+.login-con .forget{
+	color: #1eb5ac;
+	float: right;
+}
+.labelinput{
+	position:relative;
+	top:3px;
+}
