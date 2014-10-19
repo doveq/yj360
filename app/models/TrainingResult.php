@@ -36,5 +36,8 @@ class TrainingResult extends Eloquent {
     // {
     //  return $this->password;
     // }
-
+    public function student()
+    {
+        return $this->belongsTo('User', 'user_id', 'id');
+    }
 }

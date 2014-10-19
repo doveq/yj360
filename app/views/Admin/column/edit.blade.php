@@ -9,6 +9,9 @@
   <div class="row">
     <ol class="breadcrumb">
       <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
+      @foreach ($paths as $key => $path)
+      <li>{{link_to_route('admin.column.index', $path['name'], array('parent_id' => $path['id']))}}</li>
+      @endforeach
       <li class="active">编辑科目</li>
     </ol>
   </div>

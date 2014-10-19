@@ -48,4 +48,9 @@ class ColumnQuestionRelation extends Eloquent {
             return 0;
     }
 
+    public function question()
+    {
+        return $this->belongsTo('Question');
+    }
+
 }

@@ -1,6 +1,6 @@
 <?php
 
-class ClassmateController extends BaseController {
+class TrainingQuestionController extends BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '申请', '1' => '审核通过', '-1' => '无效');
     public $userstatusEnum = array('' => '所有状态', '0' => '无效', '1' => '有效', '-1' => '审核拒绝');

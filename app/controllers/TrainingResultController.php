@@ -1,10 +1,7 @@
 <?php
 
-class ClassmateController extends BaseController {
+class TrainingResultController extends BaseController {
 
-    public $statusEnum = array('' => '所有状态', '0' => '申请', '1' => '审核通过', '-1' => '无效');
-    public $userstatusEnum = array('' => '所有状态', '0' => '无效', '1' => '有效', '-1' => '审核拒绝');
-    public $genderEnum = array('f' => '女', 'm' => '男');
     public $pageSize = 30;
     /**
      * Display a listing of the resource.
@@ -13,7 +10,44 @@ class ClassmateController extends BaseController {
      */
     public function index()
     {
+        $query = Input::only('training_id');
+        $validator = Validator::make($query,
+            array(
+                'training_id'   => 'numeric|required',
+            )
+        );
 
+        if($validator->fails())
+        {
+            return Redirect::to('/training');
+        }
+        $trainings = Training::find($query['training_id']);
+        // dd($trainings->student->count());
+        $lists = array();
+        $training_res = TrainingResult::whereTrainingId($query['training_id'])->get();
+        foreach ($training_res as $key => $res) {
+            // array('1' => array('0' => array(1,4,5),
+            //                     '1' => array(2,3)
+            //                     )
+            //     )
+            // $lists = array($res->user_id => array($res->res => array($res->question_id)));
+            // if (!is_array($lists[$res->user_id])) {
+
+            // }
+            // var_dump(array($res->user_id => array($res->res => array($res->question_id))));
+            if (!isset($lists[$res->user_id][$res->res])) {
+                $lists[$res->user_id][$res->res] = array($res->question_id);
+            } else {
+                array_push($lists[$res->user_id][$res->res], $res->question_id);
+            }
+            if (!isset($lists[$res->user_id]['name'])) {
+                $lists[$res->user_id]['name'] = $res->student->name;
+            }
+            // $lists = array_add($lists, array())
+            // array_push((array)$lists, array($res->user_id => array($res->res => array($res->question_id))));
+        }
+        // dd($lists);
+        return $this->indexView('training_result.index', compact('lists', 'trainings', 'query'));
     }
 
 

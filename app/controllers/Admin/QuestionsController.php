@@ -8,10 +8,12 @@ use Redirect;
 use DB;
 use Request;
 
-use Classes;
-use User;
+// use Question;
+// use Column;
+use ColumnQuestionRelation;
+use SortQuestionRelation;
 
-class ClassesController extends \BaseController {
+class QuestionsController extends \BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '准备', '1' => '上线', '-1' => '下线');
     public $pageSize = 30;
@@ -22,8 +24,19 @@ class ClassesController extends \BaseController {
      */
     public function index()
     {
-        $query = Input::only('id', 'name', 'teacher_name', 'status', 'page');
+        $query = Input::only('id', 'type', 'status', 'page');
 
+        if ($query['type'] == 'sort') {
+            return $this->sort($query);
+        } else if ($query['type'] == 'column') {
+            return $this->column($query);
+        } else {
+            dd('haha');
+        }
+    }
+
+    public function sort($query)
+    {
         $validator = Validator::make($query,
             array(
                 'id'      => 'numeric',
@@ -35,30 +48,40 @@ class ClassesController extends \BaseController {
 
         if($validator->fails())
         {
-            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "classes");
+            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "questions");
         }
-        $lists = Classes::where(function($query) {
+        $lists = SortQuestionRelation::with('question')->where(function($q){
             if (Input::get('id')) {
-                $query->whereId(Input::get('id'));
+                $q->whereSortId(Input::get('id'));
             }
-            if (strlen(Input::get('status')) > 0) {
-                $query->whereStatus(Input::get('status'));
-            }
-            if (Input::get('name')) {
-                $query->where('name', 'LIKE', '%'.Input::get('name').'%');
-            }
-            if (Input::get('teacher_name')) {
-                $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->select('id')->get()->toArray();
-                $query->whereIn('teacherid', array_flatten($teachers));
-
-            }
-        })->orderBy('id', 'DESC')->paginate($this->pageSize);
-
+        })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $statusEnum = $this->statusEnum;
-        return $this->adminView('classes.index', compact('query', 'statusEnum', 'lists'));
+        return $this->adminView('questions.index', compact('query', 'statusEnum', 'lists'));
     }
 
+    public function column($query)
+    {
+        $validator = Validator::make($query,
+            array(
+                'id'      => 'numeric',
+                // 'name' => 'alpha_dash',
+                // 'teacher_name' => 'alpha_dash',
+                'status' => 'numeric',
+            )
+        );
 
+        if($validator->fails())
+        {
+            return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "questions");
+        }
+        $lists = ColumnQuestionRelation::with('question')->where(function($q){
+            if (Input::get('id')) {
+                $q->whereColumnId(Input::get('id'));
+            }
+        })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        $statusEnum = $this->statusEnum;
+        return $this->adminView('questions.index', compact('query', 'statusEnum', 'lists'));
+    }
     /**
      * Show the form for creating a new resource.
      *

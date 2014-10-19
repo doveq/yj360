@@ -64,11 +64,6 @@ class Sort extends Eloquent {
         return $data;
     }
 
-    public function paths()
-    {
-
-    }
-
     static public function parent($id)
     {
         $sort = parent::find($id);

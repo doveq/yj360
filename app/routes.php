@@ -85,6 +85,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
 
     Route::resource('column', 'Admin\ColumnController');
     Route::resource('sort', 'Admin\SortController');
+    Route::resource('questions', 'Admin\QuestionsController');
 
     Route::get('/{column}.json', '\Admin\JsonController@index');
 
@@ -115,6 +116,10 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::resource('training', 'TrainingController');
     //班级同学对应
     Route::resource('classmate', 'ClassmateController');
+    Route::post('/classmate/postDelete', 'ClassmateController@postDelete');
+    Route::get('/training_result', 'TrainingResultController@index');
+    //消息
+    Route::resource('message', 'MessageController');
 
     // 答题页面
     Route::get('/topic', 'topicController@index');

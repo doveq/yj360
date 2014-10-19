@@ -40,11 +40,16 @@ class Training extends Eloquent {
 
     public function questions()
     {
-        return $this->belongsToMany('Question', 'sort_question_relation', 'sort_id', 'question_id');
+        return $this->belongsToMany('Question', 'training_question_relation', 'training_id', 'question_id');
     }
 
     public function teacher()
     {
         return $this->belongsTo('User', 'user_id');
+    }
+
+    public function student()
+    {
+        return $this->belongsToMany('User', 'training_result', 'training_id', 'user_id');
     }
 }

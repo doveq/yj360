@@ -34,7 +34,6 @@ class ClassesController extends BaseController {
      */
     public function create()
     {
-
         return $this->indexView('classes.create');
     }
 
@@ -115,7 +114,13 @@ class ClassesController extends BaseController {
      */
     public function destroy($id)
     {
-        //
+        Classes::destroy($id);
+        Classmate::whereClassId($id)->delete();
+        if (Request::ajax()) {
+            return Response::json('ok');
+        } else {
+            return Redirect::to('/classes/'.$class_id);
+        }
     }
 
 

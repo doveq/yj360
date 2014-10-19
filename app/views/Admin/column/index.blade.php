@@ -10,7 +10,9 @@
     <ol class="breadcrumb">
       <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
       @if ($query['parent_id'] > 0)
-      <li>{{link_to_route('admin.column.index', $parent->name, array('parent_id' => $parent->id))}}</li>
+        @foreach ($paths as $key => $path)
+        <li>{{link_to_route('admin.column.index', $path['name'], array('parent_id' => $path['id']))}}</li>
+        @endforeach
       @endif
       <li class="active">浏览科目</li>
       @if ($query['parent_id'] > 0)
@@ -30,6 +32,7 @@
             <th>创建时间</th>
             <th>状态</th>
             <th>素材类型</th>
+            <th>查看题目</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -55,6 +58,7 @@
               @endif
             </td>
             <td>{{$typeEnum[$list->type]}}</td>
+            <td><a href="/admin/questions?type=column&id={{$list->id}}" target="_blank">查看</a></td>
             <td>
               <div class="btn-group btn-xs">
                 <a class="btn btn-default btn-xs" href="{{url('/admin/column/'. $list->id .'/edit') }}"><i class="icon-edit"></i> 编辑</a>

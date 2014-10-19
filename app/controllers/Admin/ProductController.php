@@ -1,16 +1,18 @@
 <?php namespace Admin;
 use View;
 use Session;
-use Product;
-use Subject;
 use Validator;
 use Input;
 use Paginator;
 use Redirect;
 
+use Product;
+
 class ProductController extends \BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '准备发布', '1' => '已发布', '-1' => '下线');
+    public $policyEnum = array('0' => '收费', '1' => '部分免费', '2' => '免费');
+    public $pageSize = 30;
     /**
      * Display a listing of the resource.
      *
@@ -18,24 +20,11 @@ class ProductController extends \BaseController {
      */
     public function index()
     {
-        $pageSize = 20;  // 每页显示条数
-
-        // $query = Input::all();
-        $query = Input::only('name', 'status', 'page', 'subject_id');
-
-        $query['pageSize'] = $pageSize;
-        //$query = array_filter($query); // 删除空值
-
-        // 当前页数
-        if( !isset($query['page']) || !is_numeric($query['page']) || $query['page'] < 1 )
-            $query['page'] = 1;
-
-        // dd($query);
+        $query = Input::only('name', 'status', 'page', 'column_id');
         $validator = Validator::make($query,
             array(
-                // 'name'      => 'alpha_dash',
-                'subject_id'      => 'numeric',
-                'status'    => 'numeric'
+                'subject_id' => 'numeric',
+                'status'     => 'numeric'
             )
         );
 
@@ -43,24 +32,21 @@ class ProductController extends \BaseController {
         {
             return $this->adminPrompt("查找失败", $validator->messages()->first(), $url = "product");
         }
+        $lists = Product::where(function($q){
+            if (strlen(Input::get('status')) > 0) {
+                $query->whereStatus(Input::get('status'));
+            }
+            if (Input::get('name')) {
+                $query->where('name', 'LIKE', '%'.Input::get('name').'%');
+            }
+            if (Input::get('column_id')) {
+                $query->whereColumnId(Input::get('column_id'));
+            }
+        })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
-        $product = new Product();
-        $lists = $product->getList($query);
-        $products = $lists['data'];
-
-        $subjects_list = Subject::all();
-        $subjects = array('' => '所有科目');
-        foreach ($subjects_list as $key => $subject) {
-            # code...
-            $subjects[$subject->id] = $subject->name;
-        }
-
-        // 分页
-        $paginator = Paginator::make($products, $lists['total'], $pageSize);
-        unset($query['pageSize']); // 减少分页url无用参数
-        $paginator->appends($query);  // 设置分页url参数
         $statusEnum = $this->statusEnum;
-        return $this->adminView('product.index', compact('products','subjects','query', 'paginator', 'statusEnum'));
+        $policyEnum = $this->policyEnum;
+        return $this->adminView('product.index', compact('lists','query', 'statusEnum', 'policyEnum'));
     }
 
 
@@ -71,8 +57,9 @@ class ProductController extends \BaseController {
      */
     public function create()
     {
-        //
-        return $this->adminView('product.create');
+
+        $policyEnum = $this->policyEnum;
+        return $this->adminView('product.create', compact('policyEnum'));
     }
 
 
@@ -84,20 +71,37 @@ class ProductController extends \BaseController {
     public function store()
     {
         // dd(Input::all());
-        $data = Input::all();
-        $data['created_at'] = date("Y-m-d H:i:s");
-        $validator = Validator::make($data ,
-            array('name' => 'required'
+        $query = Input::all();
+        $query['created_at'] = date("Y-m-d H:i:s");
+        $validator = Validator::make($query ,
+            array(
+                'name' => 'required',
+                'price' => 'required',
                 )
         );
 
         if($validator->fails())
         {
-            return Redirect::to('admin/product/create')->withErrors($validator);
+            return Redirect::to('/admin/product/create')->withErrors($validator)->withInput($query);
         }
-        $product = new Product();
-        if ($product->add($data)) {
-            return $this->adminPrompt("添加成功", $validator->messages()->first(), $url = "product");
+        if(Input::hasFile('thumbnail')) {
+            // $originalName = Input::file('pic')->getClientOriginalName();
+            $extension = Input::file('thumbnail')->getClientOriginalExtension();
+            $filename = Str::random() . "." . $extension;
+            $destinationPath = Config::get('app.thumbnail_dir');
+            Input::file('thumbnail')->move($destinationPath, $filename);
+            $query['filename'] = $filename;
+        }
+        $product                                            = new Product();
+        $product->name                                      = $query['name'];
+        $product->price                                     = $query['price'];
+        if (isset($query['period'])) $product->valid_period = $query['period'];
+        if (isset($query['filename'])) $product->thumbnail  = $query['filename'];
+        $product->created_at                                = date("Y-m-d H:i:s");
+        $product->status                                    = 0;
+        $product->policy                                    = $query['policy'];
+        if ($product->save()) {
+            return Redirect::to('/admin/product');
         }
     }
 
@@ -122,7 +126,11 @@ class ProductController extends \BaseController {
      */
     public function edit($id)
     {
-        //
+
+        $product = Product::find($id);
+        $policyEnum = $this->policyEnum;
+        // dd($product);
+        return $this->adminView('product.edit', compact('product', 'policyEnum'));
     }
 
 
@@ -134,7 +142,45 @@ class ProductController extends \BaseController {
      */
     public function update($id)
     {
-        //
+        $query = Input::only('name', 'price', 'period', 'thumbnail', 'policy', 'status');
+
+        $validator = Validator::make($query ,
+            array(
+                'name'      => 'requiredwith:name',
+                'thumbnail' => 'image',
+                // 'status'    => 'numeric',
+                'policy'      => 'numeric',
+                )
+        );
+
+        if($validator->fails())
+        {
+            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "product");
+        }
+        if (isset($query['name']) && $query['name'] == '') {
+            $errors = "名称不能为空";
+            return Redirect::to('/admin/product/'.$id."/edit")->withErrors($errors)->withInput($query);
+        }
+        if(Input::hasFile('thumbnail')) {
+            // $originalName = Input::file('pic')->getClientOriginalName();
+            $extension = Input::file('thumbnail')->getClientOriginalExtension();
+            $filename = Str::random() . "." . $extension;
+            $destinationPath = Config::get('app.thumbnail_dir');
+            Input::file('thumbnail')->move($destinationPath, $filename);
+            $query['filename'] = $filename;
+        }
+        $product = Product::find($id);
+
+        if (isset($query['name'])) $product->name           = $query['name'];
+        if (isset($query['price'])) $product->price         = $query['price'];
+        if (isset($query['period'])) $product->valid_period = $query['period'];
+        if (isset($query['filename'])) $product->thumbnail  = $query['filename'];
+        if (isset($query['policy'])) $product->policy       = $query['policy'];
+        if (isset($query['status'])) $product->status       = $query['status'];
+
+        if ($product->save() ) {
+            return Redirect::to('/admin/product');
+        }
     }
 
 
@@ -146,7 +192,8 @@ class ProductController extends \BaseController {
      */
     public function destroy($id)
     {
-        //
+        Product::destroy($id);
+        return Redirect::to('/admin/product');
     }
 
 

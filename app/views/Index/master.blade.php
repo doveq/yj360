@@ -26,9 +26,13 @@
                 <li><a href="/">产品商店</a></li>
               </ul>
               <ul id="site-nav">
-                <li><a href="">欢迎您</a></li>
-                <li><a href="/admin/message"><span class="icon-envelope"> </span></a></li>
+
+                @if(Auth::check())
+                <li><a href="/profile">{{Auth::user()->name}}</a></li>
                 <li><a href="/logout">退出</a></li>
+                @else
+                <li><a href="/login">登陆</a></li>
+                @endif
             </ul>
           </div>
       </div>

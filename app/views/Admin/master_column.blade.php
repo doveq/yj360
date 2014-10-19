@@ -38,10 +38,10 @@
                   <li><a href="/admin/classes">班级管理</a></li>
                   <li class="divider"></li>
                   <li><a href="/admin/message">我的消息</a></li>
-                  <li><a href="/admin/favrite">我的收藏</a></li>
+                  <li><a href="/admin/favorite">我的收藏</a></li>
                   <li class="divider"></li>
                   <li><a href="/admin/uploadbank">上传题库</a></li>
-                  <li><a href="/admin/training">教室训练集</a></li>
+                  <li><a href="/admin/training">教师训练集</a></li>
 
                 </ul>
               </li>

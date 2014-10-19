@@ -46,7 +46,7 @@ class LoginController extends BaseController
     		//return Redirect::to('/');
 		}
 		else
-			return Redirect::to('login')->with('message', '登录失败');
+			return Redirect::to('login')->with('message', '登录失败')->withInput($data);
 	}
 
 	public function doAdminLogin()
