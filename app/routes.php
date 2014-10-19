@@ -128,6 +128,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/favorite/ajax', 'FavoriteController@ajax');
     //初级
     Route::get('/beginner', 'BeginnerController@index');
+    Route::get('/column', 'ColumnController@index');
 });
 
 
