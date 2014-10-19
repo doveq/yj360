@@ -2,35 +2,66 @@
 @section('title')我的班级@stop
 
 @section('content')
-<div class="container">
-  <div><a href="/classmate/create?class_id={{$classes->id}}">添加成员</a> <a href="javascript:void(0);" onClick="delete_all();">批量删除</a></div>
-  <div>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>姓名</th>
-          <th>性别</th>
-          <th>电话</th>
-          <th>操作</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($classes->students as $list)
-        <tr id="{{$list->pivot->id}}">
-          <td>{{Form::checkbox('classmate_id[]', $list->pivot->id)}}</td>
-          <td>{{$list->name}}</td>
-          <td>{{$list->gender}}</td>
-          <td>{{$list->tel}}</td>
-          <td><a href="/message/create?receiver_id={{$list->id}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
-        </tr>
-        @endforeach
-      </tbody>
-    </table>
+<div class="container-column wrap">
+  <div class="wrap-left">
+      <div class="sort">
+          <div class="sort-tit">全部分类</div>
+          <div class="sort-bb"></div>
+          <ul class="sort-list">
+              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+          </ul>
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-wbj sort-wbj-act"><a href="#">我的班级</a><div class="sort-sj"></div></div>
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-sd"><a href="#">产品商店</a><div class="sort-sj"></div></div>
+          <div class="sort-bb"></div>
+
+      </div>
+  </div>
+
+  <div class="wrap-right">
+      <div class="tabtool">
+          <a href="/classmate/create?class_id={{$classes->id}}"><img src="/assets/img/classes-tj.jpg" /></a> 
+          <a href="javascript:void(0);" onClick="delete_all();"><img src="/assets/img/classes-sc.jpg" /></a>
+          <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+
+      <div>
+        <table class="stable" border="0" cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>姓名</th>
+              <th>性别</th>
+              <th>电话</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($classes->students as $list)
+            <tr id="{{$list->pivot->id}}">
+              <td>{{Form::checkbox('classmate_id[]', $list->pivot->id)}}</td>
+              <td>{{$list->name}}</td>
+              <td>{{$list->gender}}</td>
+              <td>{{$list->tel}}</td>
+              <td><a href="/message/create?receiver_id={{$list->id}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
 
 
+      </div>
   </div>
 </div> <!-- /container -->
+<div class="clear"></div>
 @stop
 
 @section('js')
