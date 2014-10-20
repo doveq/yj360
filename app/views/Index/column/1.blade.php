@@ -5,35 +5,19 @@
 <div class="container-column wrap">
   @include('index.column.nav')
   <div class="wrap-right">
-      <div class="tabtool">
-          <div class="clear"></div>
+      <div class="tabtool" style="margin-left:-30px;margin-bottom:10px;background-color:#f1f1f1;height:27px;padding-left:30px;border-bottom:1px solid #e0e0e0">
+{{$column->name}}
       </div>
       <div class="clear"></div>
 
       <div class="classes-list">
-        @if ($column->type==1)
           @foreach ($content as $list)
-          <div class="classse-box">
-            <div>
-              <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
-            </div>
-            <div class="classes-txt">
-              <div><b>{{$list->name}}</b></div>
+          <div class="classse-box" style="height:100px;width:150px; border-top:0;background-color:{{$list->bgcolor}}">
+            <div class="classes-txt" style="background-color:{{$list->bgcolor}};vertical-align:middle;">
+              <div><h2><b>{{$list->name}}</b></h2></div>
             </div>
           </div>
           @endforeach
-        @elseif ($column->type == 5)
-          @foreach ($questions as $list)
-          <div class="classse-box">
-            <div>
-              <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
-            </div>
-            <div class="classes-txt">
-              <div><b>{{$list->name}}</b></div>
-            </div>
-          </div>
-          @endforeach
-        @endif
           <div class="clear"></div>
       </div>
   </div>

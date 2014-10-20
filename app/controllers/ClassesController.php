@@ -14,6 +14,7 @@ class ClassesController extends BaseController {
         $query = Input::only('column_id');
 
         $user_id = Session::get('uid');
+        $user_type = Session::get('utype');
         $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
@@ -23,7 +24,7 @@ class ClassesController extends BaseController {
         }
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
-        return $this->indexView('classes.index', compact('statusEnum', 'classes', 'trainings', 'query', 'columns'));
+        return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'classes', 'trainings', 'query', 'columns'));
     }
 
 

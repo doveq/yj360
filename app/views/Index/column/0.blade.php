@@ -13,7 +13,7 @@
       <div class="clear"></div>
 
       <div class="classes-list">
-        {{$column->type}}
+
           @foreach ($content as $list)
           <div class="classse-box">
             <div>

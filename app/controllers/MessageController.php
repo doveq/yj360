@@ -16,6 +16,11 @@ class MessageController extends BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
+        if (!isset($query['column_id'])) {
+            $query['column_id'] = 3;
+        }
+
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $lists = Message::whereReceiverId(Session::get('uid'))->where(function($q)
             {
                 if (strlen(Input::get('status')) > 0) {
@@ -29,7 +34,7 @@ class MessageController extends BaseController {
 
         // $statusEnum = $this->statusEnum;
         // $typeEnum = $this->typeEnum;
-        return $this->indexView('message.index', compact('query', 'lists'));
+        return $this->indexView('message.index', compact('query', 'lists', 'columns'));
     }
 
 
@@ -51,8 +56,13 @@ class MessageController extends BaseController {
         {
             return Redirect::to('message')->withErrors($validator)->withInput($query);
         }
+        if (!isset($query['column_id'])) {
+            $query['column_id'] = 3;
+        }
+
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $user = User::find($query['receiver_id']);
-        return $this->indexView('message.create', compact('user'));
+        return $this->indexView('message.create', compact('user','columns'));
     }
 
 
@@ -96,7 +106,13 @@ class MessageController extends BaseController {
     public function show($id)
     {
         $message = Message::find($id);
-        return $this->indexView('message.show', compact('message'));
+        if (!isset($query['column_id'])) {
+            $query['column_id'] = 3;
+        }
+        $message->status = 1;
+        $message->save();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        return $this->indexView('message.show', compact('message', 'columns'));
 
     }
 
@@ -184,8 +200,8 @@ class MessageController extends BaseController {
     public function destroy($id)
     {
         //
-        // Message::destroy($id);
-        // return Redirect::to('/message');
+        Message::destroy($id);
+        return Redirect::to('/message');
     }
 
 
