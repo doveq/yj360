@@ -75,7 +75,7 @@
                     @elseif( $q['type'] == 8)
                          {{$a[0]['txt']}}
                     @elseif( $q['type'] == 9 || $q['type'] == 10 )
-                        <embed src="{{$q['flash_url'] or ''}}" allowFullScreen="true" quality="high" width="100%" height="100%" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+                        <embed src="{{$q['flash_url'] or ''}}" allowFullScreen="true" quality="high" width="100%" height="500" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
                     @endif 
 
             </div>

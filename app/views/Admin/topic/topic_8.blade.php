@@ -175,6 +175,20 @@
 			  </div>
 
 			  <div class="form-group">
+			    <label class="col-sm-2 control-label">作者</label>
+			    <div class="col-sm-10">
+			      	<input type="text" class="form-control" name="author" value="{{$q['author'] or ''}}" />
+			    </div>
+			  </div>
+
+			  <div class="form-group">
+			    <label class="col-sm-2 control-label">介绍</label>
+			    <div class="col-sm-10">
+			      	<input type="text" class="form-control" name="intro" value="{{$q['intro'] or ''}}" />
+			    </div>
+			  </div>
+
+			  <div class="form-group">
 			    <label for="inputPassword" class="col-sm-3 control-label"></label>
 			    <div class="col-sm-9">
 			      	<button type="submit" class="btn btn-success">保存编辑</button>

@@ -169,6 +169,12 @@ class Topic  {
 
 		if(isset($data['status']) && is_numeric($data['status']))
 				$info['status'] = $data['status'];
+
+		if(isset($data['author']) && !empty($data['author']))
+			$info['author'] = $data['author'];
+
+		if(isset($data['intro']) && !empty($data['intro']))
+			$info['intro'] = $data['intro'];
 	
 		$info['created_at'] = date('Y-m-d H:i:s');
 		$id = DB::table("questions")->insertGetId($info);
@@ -207,6 +213,12 @@ class Topic  {
 
 		if(isset($data['status']) && is_numeric($data['status']))
 				$info['status'] = $data['status'];
+
+		if(isset($data['author']) && !empty($data['author']))
+			$info['author'] = $data['author'];
+
+		if(isset($data['intro']) && !empty($data['intro']))
+			$info['intro'] = $data['intro'];
 
 		if($info)
 			DB::table("questions")->where('id', $qid)->update($info);

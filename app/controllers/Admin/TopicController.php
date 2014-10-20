@@ -361,6 +361,25 @@ class TopicController extends \BaseController {
 			$inputs['sound'] = 0;
 		}
 
+
+		// flash
+		if(isset($_FILES['file_flash']['error']) && $_FILES['file_flash']['error'] == UPLOAD_ERR_OK)
+		{
+			$type = $this->att->getExt($_FILES['file_flash']['name']);
+			if($type == 'swf' || $type == 'flv')
+			{
+				if( $attid = $this->setFlash( $qid, $_FILES['file_flash']['tmp_name'], $type) )
+					$inputs['flash'] = $attid;
+			}
+
+		}
+
+		if(isset($inputs['del_flash']) && is_numeric($inputs['del_flash']))
+		{
+			$this->att->del($inputs['del_flash']);
+			$inputs['flash'] = 0;
+		}
+
 		$topic->edit($qid, $inputs);
 
 

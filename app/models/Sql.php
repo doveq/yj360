@@ -64,6 +64,8 @@ class Sql
 			  `type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '题目类型',
 			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '状态 0:未审核, 1:审核通过，-1:审核拒绝',
 			  `source` varchar(100) NOT NULL DEFAULT '' COMMENT '原始题目编号',
+			  `author` varchar(100) NOT NULL DEFAULT '' COMMENT '作者',
+			  `intro` varchar(255) NOT NULL DEFAULT '' COMMENT '介绍',
 			  PRIMARY KEY (`id`),
 			  KEY `type` (`type`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;

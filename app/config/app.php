@@ -208,4 +208,10 @@ return array(
 	'thumbnail_height' => 150,
 
 	'image_magick' => 'D:/ImageMagick',
+
+	/* 短信账户*/
+	'mobile_cpid' => '010001000435',
+	'mobile_md5' => '6c79e7f2359e6377c61e2ce40e0491f6',
+	'mobile_port'  => '0776',
+	'mobile_post'  => 'http://api.10690909.com/newmt',
 );
