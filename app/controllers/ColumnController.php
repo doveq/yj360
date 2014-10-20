@@ -19,7 +19,10 @@ class ColumnController extends BaseController
             $query['column_id'] = 3;
         }
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
-        return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query'));
+
+        $questions = $column->questions;
+
+        return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions'));
 	}
 
 }
