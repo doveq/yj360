@@ -85,21 +85,28 @@ class LoginController extends BaseController
 	{
 		$data = Input::all();
 		$validator = Validator::make($data , array(
-			'name' => 'required|alpha_dash|between:4,12|unique:users',
-	        'tel' => 'required|digits:13|unique:users',
+			'name' => 'required|alpha_dash|between:3,8',
+	        'tel' => 'required|digits:11|unique:users',
 	        'password' => 'required|min:6|confirmed')
 		);
 
-		if($validator->passes())
+		if( $data['code'] != Session::get('code') )
 		{
-			$user = new User;
-			$user->add($data);
-			echo "ook";
+			if($validator->passes())
+			{
+				if( isset($_FILES['teacher_img']['error']) 
+					&& $_FILES['teacher_img']['error'] == UPLOAD_ERR_OK ) 
+				{
+					
+				}
+
+				$user = new User;
+				$user->add($data);
+			}
 		}
-		else
-		{
-			return Redirect::to('register')->withErrors($validator)->withInput($data);
-		}
+
+		
+		return Redirect::to('register')->withErrors($validator)->withInput($data);
 	}
 
 
@@ -108,5 +115,37 @@ class LoginController extends BaseController
 	{
 		Auth::logout();
 		return Redirect::to('/');
+	}
+
+
+	/* 生成发送验证码 */
+	public function mkcode()
+	{
+		$mobile = Input::get('mobile');
+		
+		if( !is_numeric($mobile) || strlen($mobile) != 11)
+			return -1;
+
+		$code = rand(10000, 99999);
+		Session::put('code', $code);
+
+		$msg = "验证码：{$code}（为了保证账户安全，请勿向他人泄漏）【音教360】";
+
+		$message = new Message();
+		return $message->mobileMsg($mobile, $msg);
+	}
+
+
+	/* 处理ajax */
+	public function ajax()
+	{
+		$inputs = Input::all();
+		if($inputs['act'] == 'code')
+		{
+			$re = $this->mkcode();
+			return Response::json(array('act' => $inputs['act'], 'state' => $re));
+		}
+
+		return Response::json(array('act' => $inputs['act'], 'state' => '0'));
 	}
 }

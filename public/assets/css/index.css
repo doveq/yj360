@@ -414,7 +414,7 @@ li.index-list-more a {
 	color: #999;
 }
 .regtable{
-	padding-left:300px;
+	padding-left:150px;
 }
 .regtable td{
 	padding-top:20px;
@@ -423,6 +423,7 @@ li.index-list-more a {
 	text-align: right;
 	padding-right:30px;
 	font-size: 16px;
+	width: 200px;
 }
 .regtable .text{
 	padding:10px;
@@ -674,4 +675,20 @@ li.index-list-more a {
 	-moz-opacity:0.5;
 	-khtml-opacity: 0.5;
 	opacity: 0.5;
+}
+#reg-mcjs{
+	display: none;
+	background: url("/assets/img/regmsg2.jpg") no-repeat 0 0;
+	width: 188px;
+	height: 30px;
+	overflow: hidden;
+	text-align: center;
+	line-height: 30px;
+	color:#fff;
+	font-size: 14px;
+}
+.reg-err{
+	padding-left:10px;
+	color: red;
+	font-size: 14px;
 }

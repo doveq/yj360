@@ -102,6 +102,7 @@ Route::get('/register', 'LoginController@register');
 Route::post('/doRegister', 'LoginController@doRegister');
 Route::get('/login', 'LoginController@index');
 Route::post('/doLogin', 'LoginController@doLogin');
+Route::get('/login/ajax', 'LoginController@ajax');
 Route::get('/logout', 'LoginController@logout');
 Route::get('/', 'IndexController@index');
 Route::get('/testmsg', 'MessageController@mobileMsg');
