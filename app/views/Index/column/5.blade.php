@@ -5,35 +5,27 @@
 <div class="container-column wrap">
   @include('index.column.nav')
   <div class="wrap-right">
-      <div class="tabtool">
-          <div class="clear"></div>
+      <div class="tabtool" style="margin-left:-30px;margin-bottom:10px;background-color:#f1f1f1;height:27px;padding-left:30px;border-bottom:1px solid #e0e0e0">
+{{$column->name}}
       </div>
-      <div class="clear"></div>
-
       <div class="classes-list">
-        @if ($column->type==1)
-          @foreach ($content as $list)
-          <div class="classse-box">
-            <div>
-              <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
-            </div>
-            <div class="classes-txt">
-              <div><b>{{$list->name}}</b></div>
-            </div>
-          </div>
-          @endforeach
-        @elseif ($column->type == 5)
           @foreach ($questions as $list)
-          <div class="classse-box">
-            <div>
-              <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
+            <div style="background-color: #fff;
+            float:left;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: block;
+    line-height: 1.42857;
+    margin-bottom: 20px;
+    width:25%;
+    margin-left:10px;
+    padding: 4px;">
+              <a href="/topic?id={{$list->id}}" target="_blank"><img src="{{$list->img_url}}" width="100%" height="{{Config::get('app.thumbnail_height')}}" style="vertical-align:middle;"/></a>
+              <div class='label' style="padding:9px;">
+                <h4>{{$list->txt}}</h4>
+              </div>
             </div>
-            <div class="classes-txt">
-              <div><b>{{$list->txt}}</b></div>
-            </div>
-          </div>
           @endforeach
-        @endif
           <div class="clear"></div>
       </div>
   </div>

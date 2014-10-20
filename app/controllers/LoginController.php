@@ -33,6 +33,7 @@ class LoginController extends BaseController
 			Auth::login( $user );
 			Session::put('uid', $user->id);
 			Session::put('uname', $user->name);
+			Session::put('utype', $user->type);
 
 			//记录登陆日志
 			$loginlog = new Loginlog();
@@ -42,8 +43,8 @@ class LoginController extends BaseController
 			$loginlog->user_agent = Request::header('user-agent');
 			$loginlog->save();
 
-			echo "登录成功~";
-    		//return Redirect::to('/');
+			// echo "登录成功~";
+    		return Redirect::to('/');
 		}
 		else
 			return Redirect::to('login')->with('message', '登录失败')->withInput($data);

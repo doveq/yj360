@@ -130,6 +130,8 @@ Route::group(array('before' => 'indexLogin'), function(){
     //初级
     Route::get('/beginner', 'BeginnerController@index');
     Route::get('/column', 'ColumnController@index');
+    //flash播放
+    Route::get('/view_flv', 'ViewController@flv');
 });
 
 
