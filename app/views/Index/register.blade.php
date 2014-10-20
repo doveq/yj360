@@ -28,7 +28,7 @@
           <tr>
             <td class="lable"><span class="must">*</span>验证码</td>
             <td><input type="text" class="text" name="code" value="" placeholder="验证码" ></td>
-            <td class="reg-err" id="code-err"{{$errors->first('code')}}</td>
+            <td class="reg-err" id="code-err">{{Input::old('codeErr')}}</td>
           </tr>
 
           <tr>

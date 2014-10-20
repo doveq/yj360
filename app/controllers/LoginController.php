@@ -97,12 +97,16 @@ class LoginController extends BaseController
 				if( isset($_FILES['teacher_img']['error']) 
 					&& $_FILES['teacher_img']['error'] == UPLOAD_ERR_OK ) 
 				{
-					
+
 				}
 
 				$user = new User;
 				$user->add($data);
 			}
+		}
+		else
+		{
+			$data['codeErr'] = "验证码错误";
 		}
 
 		
