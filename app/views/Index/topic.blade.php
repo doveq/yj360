@@ -142,7 +142,7 @@
         @if( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
         <div id="topic-tools">
             @if( $q['type'] == 2)
-            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="topicSubmit('next');"></a>
             @endif
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
@@ -174,8 +174,10 @@
         @endif
 
         <div id="qlist" style="display:none;">
+            <?php $i = 1; ?>
             @foreach($qlist as $k => $v)
-                <a href='tipic?column={{$column}}&id={{$v}}' class="" >{{$k +1}}</a>
+                <a href='tipic?column={{$column}}&id={{$k}}' class="" >{{$i}}</a>
+                <?php $i++; ?>
             @endforeach
             <div class="clear"></div>
         </div>

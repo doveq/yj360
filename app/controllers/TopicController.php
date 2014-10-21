@@ -12,9 +12,8 @@ class TopicController extends BaseController {
 		$qlist = array();
 
 		// 有科目信息的情况
-		if( is_numeric($column) )
+		if( is_numeric($column) && Session::get('column') != $column )
 		{
-			
 			$columnInfo = Column::find($column)->toArray();
 			if(!$columnInfo)
 				return $this->indexPrompt("操作失败", "没有这个科目信息", $url = "/");
@@ -26,24 +25,34 @@ class TopicController extends BaseController {
 			else
 				$list = $cqr->getList($column);
 
+
 			$qlist = array();
 			foreach ($list as $key => $value)
 			{
-				$qlist[] = $value['question_id'];
+				$qlist[$value['question_id']] = 0;  // 默认0为没有作答，1为答对，-1为答错
 			}
 
 			if( !$qlist )
 				return $this->indexPrompt("操作失败", "科目下没有题目信息", $url = "/");
 
-			// 题目id不对则设为第一题
-			if( !is_numeric($id) || !in_array($id, $qlist) )
-				$id = $qlist[0];
-
 			// 题目数据保存
+			Session::put('column', $column);
+			Session::put('uniqid', uniqid());
 			Session::put('qlist', $qlist);
 		}
-
+		else
+		{
+			$qlist = Session::get('qlist');
+		}
 		
+		// 题目id不对则设为第一题
+		if( !is_numeric($id) || !array_key_exists($id, $qlist) )
+		{
+			reset($qlist);
+			$id = key($qlist);
+		}
+
+
 		$topic = new Topic();
 		
 		$data = array();
@@ -51,6 +60,8 @@ class TopicController extends BaseController {
 
 		if(!$info)
 		{
+			var_dump($id);
+			exit;
 			return $this->indexPrompt("操作失败", "没有这道题目信息", $url = "/");
 		}
 
@@ -73,7 +84,7 @@ class TopicController extends BaseController {
 		return $this->indexView('topic', $info);
 	}
 
-	/* 记入答题情况 */
+	/* 记录答题情况 */
 	public function post()
 	{
 		$inputs = Input::all();
@@ -98,12 +109,15 @@ class TopicController extends BaseController {
 		$info['uid'] = $uid;
 		$info['qid'] = $qid;
 		$info['is_true'] = $inputs['isTrue'];
+		$info['column_id'] = Session::get('column');
+		$info['uniqid'] = Session::get('uniqid');
 		$topic->addResultLog($info);
+
 
 		// 上一题
 		if($inputs['act'] == 'prve')
 		{
-
+			
 		}
 		// 下一题
 		else
