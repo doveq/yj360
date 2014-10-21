@@ -10,7 +10,7 @@ class TrainingResultController extends BaseController {
      */
     public function index()
     {
-        $query = Input::only('training_id');
+        $query = Input::only('training_id', 'column_id');
         $validator = Validator::make($query,
             array(
                 'training_id'   => 'numeric|required',
@@ -26,15 +26,6 @@ class TrainingResultController extends BaseController {
         $lists = array();
         $training_res = TrainingResult::whereTrainingId($query['training_id'])->get();
         foreach ($training_res as $key => $res) {
-            // array('1' => array('0' => array(1,4,5),
-            //                     '1' => array(2,3)
-            //                     )
-            //     )
-            // $lists = array($res->user_id => array($res->res => array($res->question_id)));
-            // if (!is_array($lists[$res->user_id])) {
-
-            // }
-            // var_dump(array($res->user_id => array($res->res => array($res->question_id))));
             if (!isset($lists[$res->user_id][$res->res])) {
                 $lists[$res->user_id][$res->res] = array($res->question_id);
             } else {
@@ -43,11 +34,10 @@ class TrainingResultController extends BaseController {
             if (!isset($lists[$res->user_id]['name'])) {
                 $lists[$res->user_id]['name'] = $res->student->name;
             }
-            // $lists = array_add($lists, array())
-            // array_push((array)$lists, array($res->user_id => array($res->res => array($res->question_id))));
         }
-        // dd($lists);
-        return $this->indexView('training_result.index', compact('lists', 'trainings', 'query'));
+
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        return $this->indexView('training_result.index', compact('lists', 'trainings', 'query', 'columns'));
     }
 
 

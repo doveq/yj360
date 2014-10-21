@@ -10,6 +10,7 @@ use Request;
 
 use Classes;
 use User;
+use Column;
 
 class ClassesController extends \BaseController {
 
@@ -22,7 +23,7 @@ class ClassesController extends \BaseController {
      */
     public function index()
     {
-        $query = Input::only('id', 'name', 'teacher_name', 'status', 'page');
+        $query = Input::only('id', 'name', 'teacher_name', 'status', 'column_id', 'page');
 
         $validator = Validator::make($query,
             array(
@@ -44,6 +45,9 @@ class ClassesController extends \BaseController {
             if (strlen(Input::get('status')) > 0) {
                 $query->whereStatus(Input::get('status'));
             }
+            if (strlen(Input::get('column_id')) > 0) {
+                $query->whereColumnId(Input::get('column_id'));
+            }
             if (Input::get('name')) {
                 $query->where('name', 'LIKE', '%'.Input::get('name').'%');
             }
@@ -54,8 +58,14 @@ class ClassesController extends \BaseController {
             }
         })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
+        $cs = Column::whereParentId(0)->select('id', 'name')->get()->toArray();
+        // dd($columns);
+        $columns = array('' => '所有科目');
+        foreach ($cs as $key => $c) {
+            $columns[$c['id']] = $c['name'];
+        }
         $statusEnum = $this->statusEnum;
-        return $this->adminView('classes.index', compact('query', 'statusEnum', 'lists'));
+        return $this->adminView('classes.index', compact('query', 'statusEnum', 'lists', 'columns'));
     }
 
 
@@ -113,7 +123,12 @@ class ClassesController extends \BaseController {
             $teachers[$teacher['id']] = $teacher['name'];
         }
         // dd($teachers);
-        return $this->adminView('classes.edit', compact("class", "statusEnum", "teachers"));
+        $cs = Column::whereParentId(0)->select('id', 'name')->get()->toArray();
+        // dd($columns);
+        foreach ($cs as $key => $c) {
+            $columns[$c['id']] = $c['name'];
+        }
+        return $this->adminView('classes.edit', compact("class", "statusEnum", "teachers", "columns"));
     }
 
 
@@ -126,7 +141,7 @@ class ClassesController extends \BaseController {
     public function update($id)
     {
         //
-        $query = Input::only('id','name','status', 'teacherid', 'memo');
+        $query = Input::only('id','name','status', 'teacherid', 'column_id', 'memo');
         // dd($data);
         $validator = Validator::make($query,
             array(
@@ -134,6 +149,7 @@ class ClassesController extends \BaseController {
                 // 'name'  => 'alpha_dash',
                 'status'  => 'numeric',
                 'teacherid' => 'numeric',
+                'column_id' => 'numeric',
             )
         );
         if($validator->fails())
@@ -144,6 +160,7 @@ class ClassesController extends \BaseController {
         if (isset($query['name'])) $class->name           = $query['name'];
         if (isset($query['status'])) $class->status       = $query['status'];
         if (isset($query['teacherid'])) $class->teacherid = $query['teacherid'];
+        if (isset($query['column_id'])) $class->column_id = $query['column_id'];
         if (isset($query['memo'])) $class->memo           = $query['memo'];
 
         if ($class->save()) {

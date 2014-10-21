@@ -40,6 +40,12 @@
         </div>
       </div>
       <div class="form-group">
+        {{ Form::label('class_column', '科目', array('class' => 'col-md-2 control-label')) }}
+        <div class="col-md-6">
+          {{ Form::select('column_id', $columns, $class->column_id, array('class' => 'form-control', 'id' => 'class_column')) }}
+        </div>
+      </div>
+      <div class="form-group">
         {{ Form::label('class_memo', '备注', array('class' => 'col-md-2 control-label')) }}
         <div class="col-md-6">
           {{ Form::textarea('memo', $class['memo'], array('class' => 'form-control', 'id' => 'class_memo', 'rows' => 3)) }}

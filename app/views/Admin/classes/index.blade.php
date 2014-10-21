@@ -26,6 +26,10 @@
         {{ Form::label('inputStatus', '状态', array('class' => 'sr-only')) }}
         {{ Form::select('status', $statusEnum, $query['status'], array('class' => 'form-control', 'id' => 'inputStatus')) }}
       </div>
+      <div class="form-group">
+        {{ Form::label('inputColumn', '状态', array('class' => 'sr-only')) }}
+        {{ Form::select('column_id', $columns, $query['column_id'], array('class' => 'form-control', 'id' => 'inputColumn')) }}
+      </div>
       {{ Form::button('查找', array('class' => 'btn btn-primary', 'type' =>'submit')) }}
     {{ Form::close() }}
   </div>
@@ -43,6 +47,7 @@
             <th>学生数</th>
             <th>状态</th>
             <th>创建时间</th>
+            <th>所属科目</th>
             <th>备注</th>
             <th>操作</th>
           </tr>
@@ -64,6 +69,7 @@
               @endif
             </td>
             <td>{{$list['created_at']}}</td>
+            <td>{{$list->column->name}}</td>
             <td>{{$list['memo']}}</td>
             <td>
               <div class="btn-group btn-xs">

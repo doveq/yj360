@@ -24,9 +24,8 @@ class ClassmateController extends BaseController {
      */
     public function create()
     {
-        $query = Input::only('class_id', 'page', 'name', 'tel', 'status');
-        $query['pageSize'] = $this->pageSize;
-
+        $query = Input::only('class_id', 'page', 'name', 'tel', 'status', 'column_id');
+// dd($query);
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
@@ -39,7 +38,7 @@ class ClassmateController extends BaseController {
 
         if($validator->fails())
         {
-            return Redirect::to('/classes');
+            return Redirect::to('/classes?column_id='.$query['column_id']);
         }
         $classes        = Classes::find($query['class_id']);
         $class_students = $classes->students;
@@ -58,9 +57,10 @@ class ClassmateController extends BaseController {
             }
         })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->userstatusEnum;
         $genderEnum = $this->genderEnum;
-        return $this->indexView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum'));
+        return $this->indexView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum', 'columns'));
     }
 
 

@@ -53,4 +53,9 @@ class Classes extends Eloquent {
     {
         return $this->belongsTo('User', 'creater','id');
     }
+
+    public function column()
+    {
+        return $this->belongsTo('Column');
+    }
 }

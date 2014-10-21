@@ -2,40 +2,51 @@
 @section('title')我的班级@stop
 
 @section('content')
-<div class="container">
-  {{ Form::open(array('url' => '/classmate/create','role' => 'form', 'class' => 'form-inline', 'method' => 'get')) }}
-    <div class="form-group">
-      {{ Form::label('inputName', '用户名', array('class' => 'sr-only')) }}
-      {{ Form::text('name', $query['name'], array('class' => 'form-control', 'id' => 'inputName', 'placeholder' => '用户名')) }}
-    </div>
-    <div class="form-group">
-      {{ Form::label('inputTel', '手机号', array('class' => 'sr-only')) }}
-      {{ Form::text('tel', $query['tel'], array('class' => 'form-control', 'id' => 'inputTel', 'placeholder' => '手机号')) }}
-    </div>
-    {{ Form::hidden('class_id', $classes->id) }}
-    {{ Form::button('查找', array('class' => 'btn btn-primary', 'type' =>'submit')) }}
-  {{ Form::close() }}
-  <div>
-  {{ Form::open(array('url' => '/classmate/', 'method' => 'post')) }}
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th class="text-center">#</th>
-          <th class="text-center">ID</th>
-          <th class="text-center">名称</th>
-          <th class="text-center">性别</th>
-          <th class="text-center">电话</th>
-        </tr>
-      </thead>
-      <tbody>
-        @foreach ($students as $list)
+<div class="container-column wrap">
+  <div class="wrap-left">
+      <div class="sort">
+          <div class="sort-tit">全部分类</div>
+          <div class="sort-bb"></div>
+          <ul class="sort-list">
+            @foreach($columns as $k => $column)
+            <li><a href="/column?id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
+            @endforeach
+          </ul>
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-wbj sort-wbj-act"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-sd"><a href="#">产品商店</a><div class="sort-sj"></div></div>
+          <div class="sort-bb"></div>
+
+      </div>
+  </div>
+
+  <div class="wrap-right">
+      <div class="tabtool">
+          <a href="/classmate/create?class_id={{$classes->id}}&column_id={{$query['column_id']}}"><img src="/assets/img/classes-tj.jpg" /></a>
+          <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+
+      <div>
+          {{ Form::open(array('url' => '/classmate/', 'method' => 'post')) }}
+
+        <table class="stable" border="0" cellpadding="0" cellspacing="0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>姓名</th>
+              <th>性别</th>
+              <th>电话</th>
+              <th>操作</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            @foreach ($students as $list)
         <tr class="text-center">
           <td>
-            @if ($list->checked === 1)
-            {{ Form::checkbox('student_id[]', $list->id, true, array('id' => 'userid'.$list->id)) }}
-            @else
             {{ Form::checkbox('student_id[]', $list->id, false, array('id' => 'userid'.$list->id)) }}
-            @endif
           </td>
           <td>
             {{ Form::label('userid'.$list->id, $list->id) }}
@@ -47,21 +58,43 @@
           <td>{{ $list->tel }}</td>
         </tr>
         @endforeach
-      </tbody>
-    </table>
-    <div class="col-md-12">
-      <div class="col-md-6 text-right">
-        {{ Form::hidden('class_id', $classes->id, array('id' => 'class_id')) }}
-        {{ Form::button('邀请', array('class' => '', 'type' =>'submit')) }}
-        {{ Form::checkbox('check_all', 1, false, array('id' => 'check_all')) }}
-        {{ Form::label('check_all', '全选') }}
-      </div>
-      <div class="col-md-6 text-right">
-        {{$students->appends(Input::all())->links()}}
-      </div>
-    </div>
+        <tr>
+          <td>
+          {{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}
+          {{ Form::label('checkAll', '全选') }}
+          </td>
+          <td>
+            {{ Form::hidden('class_id', $classes->id, array('id' => 'class_id')) }}
+            {{ Form::button('邀请', array('class' => '', 'type' =>'submit')) }}
+          </td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr><td colspan='5'>{{$students->appends(Input::all())->links()}}</td></tr>
+          </tbody>
+        </table>
   {{ Form::close() }}
 
+
+      </div>
   </div>
 </div> <!-- /container -->
+<div class="clear"></div>
+@stop
+
+@section('js')
+<script type="text/javascript">
+$(function(){
+
+  $("#checkAll").click(function() {
+      $('input[name="student_id[]"]').prop("checked",this.checked);
+  });
+  var $subBox = $("input[name='student_id[]']");
+  $subBox.click(function(){
+      $("#checkAll").prop("checked",$subBox.length == $("input[name='student_id[]']:checked").length ? true : false);
+  });
+
+});
+</script>
 @stop

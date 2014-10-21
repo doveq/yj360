@@ -47,51 +47,6 @@
 
 @section('js')
 <script type="text/javascript">
-$(document).ready(function () {
-  $(".btn_publish").on('click', function() {
-    var $this = $(this);
-    var training_id = $this.data("id");
-    var training_status = $this.data("status");
-    // var aa = $this.text();
-    // alert(training_status);
-    if (training_status == 0) {
-      status_txt = '撤销发布';
-      update_status = 1;
-    } else if (training_status == 1) {
-      status_txt = '发布';
-      update_status = 0;
-    }
-    $.ajax({
-      url:'/training/'+training_id,
-      data: {status: update_status},
-      // async:false,
-      type:'put',
-    })
-    .fail(function(){
-      alert('操作失败');
-    })
-    .success(function(){
-      // alert(update_status);
-      // $this.attr('data-status', update_status);
-      // $this.text(status_txt)
-      location.reload();
-    });
-  });
-  delete_classes = function(id){
-    if(confirm('您确定要删除吗？')){
-      $.ajax({
-        url:'/classes/'+id,
-        // async:false,
-        type:'delete',
-      })
-      .fail(function(){alert('操作失败')})
-      .success(function(){
-        $('#classes_'+id).remove();
-      });
-      // alert(htmlobj.responseText);
-    }
-  }
-});
 </script>
 @stop
 

@@ -8,16 +8,12 @@
           <div class="sort-tit">全部分类</div>
           <div class="sort-bb"></div>
           <ul class="sort-list">
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
-              <li><a href="#">教材强化</a><div class="sort-sj"></div></li>
+            @foreach($columns as $k => $column)
+            <li><a href="/column?id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
+            @endforeach
           </ul>
           <div class="sort-bb"></div>
-          <div class="sort-item sort-wbj sort-wbj-act"><a href="#">我的班级</a><div class="sort-sj"></div></div>
+          <div class="sort-item sort-wbj sort-wbj-act"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
           <div class="sort-item sort-sd"><a href="#">产品商店</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
@@ -27,7 +23,7 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/classmate/create?class_id={{$classes->id}}"><img src="/assets/img/classes-tj.jpg" /></a> 
+          <a href="/classmate/create?class_id={{$classes->id}}&column_id={{$query['column_id']}}"><img src="/assets/img/classes-tj.jpg" /></a>
           <a href="javascript:void(0);" onClick="delete_all();"><img src="/assets/img/classes-sc.jpg" /></a>
           <div class="clear"></div>
       </div>
@@ -54,6 +50,12 @@
               <td><a href="/message/create?receiver_id={{$list->id}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
             </tr>
             @endforeach
+            <tr>
+              <td colspan="5">
+              {{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}
+              {{ Form::label('checkAll', '全选') }}
+              </td>
+            </tr>
           </tbody>
         </table>
 
@@ -109,6 +111,14 @@
       });
     }
   }
+
+  $("#checkAll").click(function() {
+      $('input[name="classmate_id[]"]').prop("checked",this.checked);
+  });
+  var $subBox = $("input[name='classmate_id[]']");
+  $subBox.click(function(){
+      $("#checkAll").prop("checked",$subBox.length == $("input[name='classmate_id[]']:checked").length ? true : false);
+  });
 
 </script>
 @stop

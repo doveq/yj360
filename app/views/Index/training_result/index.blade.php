@@ -1,26 +1,39 @@
 @extends('Index.master')
-@section('title')查看练习情况 @stop
+@section('title')我的班级@stop
 
 @section('content')
-<div class="container">
-  <div><a href="/training">返回</a></div>
+<div class="container-column wrap">
+  <div class="wrap-left">
+      <div class="sort">
+          <div class="sort-tit">全部分类</div>
+          <div class="sort-bb"></div>
+          <ul class="sort-list">
+            @foreach($columns as $k => $column)
+            <li><a href="/column?id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
+            @endforeach
+          </ul>
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-wbj sort-wbj-act"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-sd"><a href="#">产品商店</a><div class="sort-sj"></div></div>
+          <div class="sort-bb"></div>
 
-  <div>
-    <table>
-      <!-- <thead>
-        <tr>
-          <th>序号</th>
-          <th>训练名称</th>
-          <th>时间</th>
-          <th>状态操作</th>
-          <th>操作</th>
-        </tr>
-      </thead> -->
-      <tbody>
-        @foreach ($lists as $user_id => $list)
+      </div>
+  </div>
+
+  <div class="wrap-right">
+      <div class="tabtool">
+          <div class="clear"></div>
+      </div>
+      <div class="clear"></div>
+
+      <div>
+        <table class="stable" border="0" cellpadding="0" cellspacing="0">
+          <tbody>
+            @foreach ($lists as $user_id => $list)
         <tr>
           <td>{{$list['name']}}</td>
-          <td>私信TA</td>
+          <td><a href="/message/create?receiver_id={{$user_id}}">私信TA</a></td>
           <td>
             @if (isset($list[1]))
             正确
@@ -40,8 +53,17 @@
           </td>
         </tr>
         @endforeach
-      </tbody>
-    </table>
+          </tbody>
+        </table>
+
+
+      </div>
   </div>
 </div> <!-- /container -->
+<div class="clear"></div>
+@stop
+
+@section('js')
+<script type="text/javascript">
+</script>
 @stop
