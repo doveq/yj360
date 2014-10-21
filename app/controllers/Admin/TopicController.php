@@ -104,7 +104,7 @@ class TopicController extends \BaseController {
 		$inputs = Input::all();
 
 		if( empty($inputs['txt']))
-			return $this->adminPrompt("操作失败", '题干必须填写', $url = "topic/add");
+			return $this->adminPrompt("操作失败", '题干必须填写', $url = "topic/add?type=" . $inputs['type']);
 
 
 		// 处理分类
