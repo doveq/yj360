@@ -51,8 +51,8 @@ class RelationController extends \BaseController {
             $query['question_id'] = explode(",", $query['question_id']);
         }
         foreach ($query['question_id'] as $key => $qid) {
-            $relation = new ColumnQuestionRelation();
-            // $relation = ColumnQuestionRelation::firstOrCreate(array('question_id' => $qid));
+            // $relation = new ColumnQuestionRelation();
+            $relation = ColumnQuestionRelation::firstOrCreate(array('question_id' => $qid, 'column_id' => $query['column_id']));
             $relation->column_id = $query['column_id'];
             $relation->question_id = $qid;
             $relation->created_at = date("Y-m-d H:i:s");
@@ -62,6 +62,38 @@ class RelationController extends \BaseController {
         return $response = Response::json($tmp);
         // return Redirect::to('/admin/classmate?class_id=' . $query['class_id']);
 	}
+
+    /**
+     * 科目里批量删除题目(删除关联)
+     *
+     * @return Response
+     */
+    public function deleteColumn()
+    {
+        $query = Input::only('question_id', 'column_id');
+        $validator = Validator::make($query,
+            array(
+                'question_id'   => 'required',
+                'column_id' => 'required',
+            )
+        );
+        if($validator->fails())
+        {
+            // return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
+            $tmp = array('info' => '操作失败,请刷新重试');
+            return Response::json($tmp);
+        }
+        if (!is_array($query['question_id'])) {
+            $query['question_id'] = explode(",", $query['question_id']);
+        }
+        foreach ($query['question_id'] as $key => $qid) {
+            // $relation = new ColumnQuestionRelation();
+            ColumnQuestionRelation::whereQuestionId($qid)->whereColumnId($query['column_id'])->delete();
+        }
+        $tmp = array('info' => '操作成功');
+        return $response = Response::json($tmp);
+        // return Redirect::to('/admin/classmate?class_id=' . $query['class_id']);
+    }
 
 
 	/**

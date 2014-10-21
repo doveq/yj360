@@ -93,6 +93,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/relation/sort', '\Admin\RelationController@postSort');
     Route::post('/relation/column', '\Admin\RelationController@postColumn');
     Route::post('/relation/do_question', '\Admin\RelationController@postDoQuestion');
+    Route::post('/relation/del_question', '\Admin\RelationController@deleteColumn');
 
 
 });
