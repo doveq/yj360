@@ -114,7 +114,7 @@ class LoginController extends BaseController
 					$data['type'] = 2;
 				}
 
-				return Redirect::to('/login');
+				return $this->indexPrompt("操作成功", "用户注册成功，请登录", $url = "/login", $auto = true);
 			}
 		}
 		else

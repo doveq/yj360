@@ -36,4 +36,16 @@ class BaseController extends Controller
 	{
 		return Redirect::to('admin/prompt')->with('prompt', array('title' => $title, 'info' => $info, 'url' => $url, 'auto' => $auto));
 	}
+
+
+	/* 页面提示跳转 
+		title 标题
+		info 详细内容
+		url 跳转地址
+		auto url不为空，并且该值为true则自动跳转
+	*/
+	public function indexPrompt($title, $info, $url = "", $auto = true)
+	{
+		return Redirect::to('prompt')->with('prompt', array('title' => $title, 'info' => $info, 'url' => $url, 'auto' => $auto));
+	}
 }

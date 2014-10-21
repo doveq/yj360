@@ -10,36 +10,53 @@ class TopicController extends BaseController {
 		$column = Input::get('column');
 
 		$qlist = array();
-		/*
-		if( !is_numeric($column) )
+
+		// 有科目信息的情况
+		if( is_numeric($column) )
 		{
-			exit('没有这道题目');
+			
+			$columnInfo = Column::find($column)->toArray();
+			if(!$columnInfo)
+				return $this->indexPrompt("操作失败", "没有这个科目信息", $url = "/");
+
+			$cqr = new ColumnQuestionRelation();
+
+			if($columnInfo['type'] == 1)
+				$list = $cqr->getRandList($column, 40);
+			else
+				$list = $cqr->getList($column);
+
+			$qlist = array();
+			foreach ($list as $key => $value)
+			{
+				$qlist[] = $value['question_id'];
+			}
+
+			if( !$qlist )
+				return $this->indexPrompt("操作失败", "科目下没有题目信息", $url = "/");
+
+			// 题目id不对则设为第一题
+			if( !is_numeric($id) || !in_array($id, $qlist) )
+				$id = $qlist[0];
+
+			// 题目数据保存
+			Session::put('qlist', $qlist);
 		}
 
-		$cqr = new ColumnQuestionRelation();
-		$list = $cqr->getList($column);
-
-		$qlist = array();
-		foreach ($list as $key => $value)
-		{
-			$qlist[] = $value['question_id'];
-		}
-
-		if( !$qlist )
-			exit('没有这道题目');
-
-		// 题目id不对则设为第一题
-		if( !is_numeric($id) || !in_array($id, $qlist) )
-			$id = $qlist[0];
-		*/
-
+		
 		$topic = new Topic();
 		
 		$data = array();
 		$info = $topic->get($id);
-		if(!$info || $info['q']['status'] != 1)
+
+		if(!$info)
 		{
-			//exit('没有这道题目!!!');
+			return $this->indexPrompt("操作失败", "没有这道题目信息", $url = "/");
+		}
+
+		if($info['q']['status'] != 1)
+		{
+			return $this->indexPrompt("操作失败", "题目没有通过审核", $url = "/");
 		}
 
 		$info['flag'] = $this->flag;

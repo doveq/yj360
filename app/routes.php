@@ -106,6 +106,8 @@ Route::get('/login/ajax', 'LoginController@ajax');
 Route::get('/logout', 'LoginController@logout');
 Route::get('/', 'IndexController@index');
 Route::get('/testmsg', 'MessageController@mobileMsg');
+Route::get('/prompt', 'PromptController@index');
+Route::get('/prompt/test', 'TestController@test');
 
 Route::group(array('before' => 'indexLogin'), function(){
 	// flash录音

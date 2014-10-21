@@ -38,10 +38,21 @@ class ColumnQuestionRelation extends Eloquent {
     //  return $this->password;
     // }
 
+
     /* 获取对应的题目列表 */
     public function getList($column_id)
     {
         $info = $this->where('column_id', '=', $column_id)->get();
+        if($info)
+            return $info->toArray();
+        else
+            return 0;
+    }
+
+    /* 获取随机列表 */
+    public function getRandList($column_id, $num)
+    {
+        $info = $this->where('column_id', '=', $column_id)->orderByRaw("RAND()")->get();
         if($info)
             return $info->toArray();
         else
