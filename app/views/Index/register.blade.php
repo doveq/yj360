@@ -4,7 +4,7 @@
 @section('content')
 <div class="container wrap regbox">
 
-    <form id="regform" role="form" action="doRegister" method="post">
+    <form id="regform" role="form" action="doRegister" method="post" enctype="multipart/form-data" >
       {{Form::token()}}
       <h2 class="form-signin-heading">注册账号</h2>
    

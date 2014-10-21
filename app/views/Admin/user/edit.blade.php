@@ -45,6 +45,15 @@
           {{ Form::submit('提交', array('class' => 'btn btn-default')) }}
          </div>
       </div>
+
+      @if( !empty($user['route']) )
+      <div class="form-group">
+        <div class="col-md-6">
+          <img src="{{$user['route']['url']}}" />
+        </div>
+      </div>
+      @endif
+
     {{ Form::close() }}
   </div>
 @stop

@@ -66,6 +66,9 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 				'name' =>  $data['name'],
     			'tel' => $data['tel'],
     			'password' => $this->encPasswd($data['password']),
+    			'is_certificate' => $data['is_certificate'],
+    			'type' => $data['type'],
+    			'created_at' => date('Y-m-d H:is'),
     		));
 
     	return $id;

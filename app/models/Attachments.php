@@ -224,4 +224,41 @@ class Attachments
 	{
 		return strtolower( pathinfo($name, PATHINFO_EXTENSION) );
 	}
+
+
+	/* 教师证附件路径 */
+	public function getTeacherRoute($uid)
+	{
+		$name = $uid;
+		$folder = Config::get('app.teacher_dir');
+
+		$path = $folder .'/'. $name;
+		$url = Config::get('app.teacher_url') .'/' . $name;
+
+		return array(
+			'folder' => $folder,
+			'path' => $path,
+			'url' => $url,
+			'name' => $name,
+		);
+	}
+
+	public function addTeacherImg($uid, $file)
+	{
+		if( !$this->validImgFile($file) )
+			return 0;
+
+		$route = $this->getTeacherRoute($uid);
+
+		if(!is_dir($route['folder']))
+            mkdir($route['folder'], 0777, true);
+
+        if( rename($file, $route['path']) )
+		{
+			return 1;
+		}
+
+		return 0;
+	}
+
 }

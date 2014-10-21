@@ -6,6 +6,7 @@ use Validator;
 use Input;
 use Paginator;
 use Redirect;
+use Attachments;
 
 class UserController extends \BaseController {
 
@@ -106,6 +107,14 @@ class UserController extends \BaseController {
         $user = User::find($id);
         $typeEnum = $this->typeEnum;
         $statusEnum = $this->statusEnum;
+
+        if($user['is_certificate'])
+        {
+            $att = new Attachments();
+            $route = $att->getTeacherRoute($id);
+            $user['route'] = $route;
+        }
+
         return $this->adminView('user.edit', compact('user', 'typeEnum', 'statusEnum'));
     }
 

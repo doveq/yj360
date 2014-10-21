@@ -90,6 +90,9 @@ class LoginController extends BaseController
 	        'password' => 'required|min:6|confirmed')
 		);
 
+		$data['is_certificate'] = 0;
+		$data['type'] = 1;
+
 		if( $data['code'] == Session::get('code') )
 		{
 			if($validator->passes())
@@ -97,12 +100,21 @@ class LoginController extends BaseController
 				if( isset($_FILES['teacher_img']['error']) 
 					&& $_FILES['teacher_img']['error'] == UPLOAD_ERR_OK ) 
 				{
-					
+					$data['is_certificate'] = 1;
 				}
 
 				$user = new User;
-				$user->add($data);
-				exit("注册成功");
+				$uid = $user->add($data);
+
+				if($data['is_certificate'] == 1)
+				{
+					$att = new Attachments();
+					$att->addTeacherImg($uid, $_FILES['teacher_img']['tmp_name']);
+
+					$data['type'] = 2;
+				}
+
+				return Redirect::to('/login');
 			}
 		}
 		else
@@ -111,7 +123,7 @@ class LoginController extends BaseController
 		}
 
 		
-		return Redirect::to('register')->withErrors($validator)->withInput($data);
+		return Redirect::to('register')->withErrors($validator)->withInput(Input::except('teacher_img'));
 	}
 
 
