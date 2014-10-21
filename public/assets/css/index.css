@@ -4,7 +4,10 @@ blockquote, body, button, dd, dl, dt, fieldset, form, h1, h2, h3, h4, h5, h6, hr
 }
 
 body, button, input, select, textarea {
-    font: 12px/1.5 tahoma,arial,"Hiragino Sans GB",宋体,sans-serif;
+    font: 14px/1.75 tahoma,arial,"Hiragino Sans GB",宋体,sans-serif;
+    /*font-family: "Helvetica Neue", Helvetica, Arial, 宋体,sans-serif;*/
+	/*font-size: 14px;*/
+	line-height: 1.42857143;
 }
 body {
     color: #3c3c3c;
@@ -29,10 +32,12 @@ a img {
 .tyinput{
 	border: 1px solid #ddd;
     padding: 10px;
+    margin: 10px;
 }
 .tylabel {
 	font-size: 16px;
 	padding:10px;
+	margin: 10px;
 }
 #site-head {
     background: none repeat scroll 0 0 #499528;
@@ -357,7 +362,7 @@ li.index-list-more a {
 	padding:10px;
 }
 #disabuse{
-	position: absolute; 
+	position: absolute;
 	top:0;
 	height: 100%;
 	width: 250px;
@@ -372,17 +377,17 @@ li.index-list-more a {
 .disabuse-close #disabuse-flag{
 	width: 26px;
 	height: 50px;
-	position:absolute; 
+	position:absolute;
 	top:48%;
 	left:0;
-	cursor:pointer; 
+	cursor:pointer;
 	background-image: url("/assets/img/topic-btn.png");
 	background-position:-1234px -378px;
 }
 .disabuse-open #disabuse-flag{
 	width: 26px;
 	height: 50px;
-	position:absolute; 
+	position:absolute;
 	top:48%;
 	left:0;
 	cursor:pointer;
@@ -390,7 +395,7 @@ li.index-list-more a {
 	background-position:-1234px -456px;
 }
 #save_button{
-	position:relative; 
+	position:relative;
 	left:42%;
 }
 #qlist{
@@ -450,11 +455,11 @@ li.index-list-more a {
 	border: none;
 }
 .fileup{position:relative;}
-.regtable .selbtn{ 
+.regtable .selbtn{
 	background: url("/assets/img/selbtn.jpg") no-repeat 0 0;
 	border:none;
 	height:32px; width:80px;}
-.regtable .file{ position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:400px; } 
+.regtable .file{ position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:400px; }
 
 .loginbox{
 	background: url("/assets/img/regbg.jpg") no-repeat 0 0;
@@ -582,9 +587,15 @@ li.index-list-more a {
 	text-align: center;
 }
 .stable td a{
-	color: red;
+	color: #F95237;
 }
-.tabtool{padding:10px 0;}
+.tabtool{
+	background-color: #f1f1f1;
+	margin-left: -30px;
+    padding: 10px 30px;
+    font-size: 16px;
+    height: 27px;
+}
 .tabtool a {
 	float: left;
 	margin-right:20px;
@@ -698,4 +709,13 @@ li.index-list-more a {
 	padding-left:10px;
 	color: red;
 	font-size: 14px;
+}
+
+.submitbtn{
+	width: 145px;
+	height: 40px;
+	background: url("/assets/img/submit.png") no-repeat 0 0;
+	border: none;
+	margin: 10px;
+	cursor: pointer;
 }

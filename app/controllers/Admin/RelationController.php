@@ -51,9 +51,11 @@ class RelationController extends \BaseController {
             $query['question_id'] = explode(",", $query['question_id']);
         }
         foreach ($query['question_id'] as $key => $qid) {
-            $relation = ColumnQuestionRelation::firstOrCreate(array('question_id' => $qid));
+            $relation = new ColumnQuestionRelation();
+            // $relation = ColumnQuestionRelation::firstOrCreate(array('question_id' => $qid));
             $relation->column_id = $query['column_id'];
             $relation->question_id = $qid;
+            $relation->created_at = date("Y-m-d H:i:s");
             $relation->save();
         }
         $tmp = array('info' => '操作成功');

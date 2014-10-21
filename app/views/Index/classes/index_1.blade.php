@@ -24,7 +24,7 @@
   <div class="wrap-right">
       <div class="tabtool">
           <a href="/classes/create?column_id={{$query['column_id']}}"><img src="/assets/img/addclasses.jpg" /></a>
-          <a href="/training/create"><img src="/assets/img/addzdxl.jpg" /></a>
+          <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
           <a href="/message" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
           <div class="clear"></div>
       </div>
@@ -38,7 +38,7 @@
               <div>创建人：{{$list->teacher->name}}</div>
               <div>成员：{{$list->students->count()}}</div>
             </div>
-            <div class="classse-btn">
+            <div class="classse-btn" style="display:none;margin-top:-30px;">
                 <a href="/classes/{{$list->id}}">班级成员</a>
                 <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">删除班级</a>
                 <div class="clear"></div>
@@ -72,8 +72,6 @@
             @endforeach
           </tbody>
         </table>
-
-      </div>
   </div>
   <div class="clear"></div>
 </div> <!-- /container -->
@@ -124,7 +122,13 @@ $(document).ready(function () {
       });
       // alert(htmlobj.responseText);
     }
-  }
+  };
+
+  $(".classse-box").hover(function(){
+    $(this).children(".classse-btn").css('display','block');
+  }, function(){
+    $(this).children(".classse-btn").css('display','none');
+  });
 });
 </script>
 @stop

@@ -11,17 +11,14 @@ class TrainingController extends BaseController {
      */
     public function index()
     {
-        $query = Input::only('page');
-
-        // 当前页数
-        if( !is_numeric($query['page']) || $query['page'] < 1 )
-            $query['page'] = 1;
+        $query = Input::only('page', 'column_id' );
 
         $user_id = Session::get('uid');
         $lists = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
-        return $this->indexView('training.index', compact('statusEnum', 'lists', 'query'));
+        return $this->indexView('training.index', compact('statusEnum', 'lists', 'query', 'columns'));
     }
 
 
@@ -32,8 +29,12 @@ class TrainingController extends BaseController {
      */
     public function create()
     {
-
-        return $this->indexView('training.create');
+        $user_id = Session::get('uid');
+        $classes_num = Classes::whereTeacherid($user_id)->get()->count();
+        $trainings_num = Training::whereUserId($user_id)->get()->count();
+        $query = Input::only('column_id');
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        return $this->indexView('training.create', compact('columns', 'query', 'classes_num', 'trainings_num'));
     }
 
 
@@ -44,7 +45,7 @@ class TrainingController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('name');
+        $query = Input::only('name', 'column_id');
         $validator = Validator::make($query,
             array(
                 'name' => 'alpha_dash',
@@ -53,7 +54,7 @@ class TrainingController extends BaseController {
 
         if($validator->fails())
         {
-            return Redirect::to('training/create')->withErrors($validator)->withInput($query);
+            return Redirect::to('training/create?column_id='.$query['column_id'])->withErrors($validator)->withInput($query);
         }
         $user_id = Session::get('uid');
         $training = new Training();
@@ -61,7 +62,7 @@ class TrainingController extends BaseController {
         $training->name = $query['name'];
         $training->created_at = date("Y-m-d H:i:s");
         if ($training->save()) {
-            return Redirect::to('training');
+            return Redirect::to('training?column_id='. $query['column_id']);
         }
     }
 

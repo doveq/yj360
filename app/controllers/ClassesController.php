@@ -13,15 +13,16 @@ class ClassesController extends BaseController {
     {
         $query = Input::only('column_id');
 
+        //左边菜单,需要知道是在初级,中级,高级,中小学音乐科目下,如果没有,默认为初级
+        if (!isset($query['column_id'])) {
+            $query['column_id'] = 3;
+        }
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
         $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-        //左边菜单,需要知道是在初级,中级,高级,中小学音乐科目下,如果没有,默认为初级
-        if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
-        }
+
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
         return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'classes', 'trainings', 'query', 'columns'));
@@ -35,9 +36,13 @@ class ClassesController extends BaseController {
      */
     public function create()
     {
+        //班级数
+        $user_id = Session::get('uid');
+        $classes_num = Classes::whereTeacherid($user_id)->get()->count();
+        $trainings_num = Training::whereUserId($user_id)->get()->count();
         $query = Input::only('column_id');
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
-        return $this->indexView('classes.create', compact('columns', 'query'));
+        return $this->indexView('classes.create', compact('columns', 'query', 'classes_num', 'trainings_num'));
     }
 
 

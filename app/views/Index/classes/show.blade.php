@@ -33,7 +33,7 @@
         <table class="stable" border="0" cellpadding="0" cellspacing="0">
           <thead>
             <tr>
-              <th>#</th>
+              <th>{{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}</th>
               <th>姓名</th>
               <th>性别</th>
               <th>电话</th>
@@ -50,12 +50,6 @@
               <td><a href="/message/create?receiver_id={{$list->id}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
             </tr>
             @endforeach
-            <tr>
-              <td colspan="5">
-              {{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}
-              {{ Form::label('checkAll', '全选') }}
-              </td>
-            </tr>
           </tbody>
         </table>
 

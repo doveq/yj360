@@ -34,11 +34,11 @@
         <table class="stable" border="0" cellpadding="0" cellspacing="0">
           <thead>
             <tr>
-              <th>#</th>
+              <th>{{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}</th>
+              <th>ID</th>
               <th>姓名</th>
               <th>性别</th>
               <th>电话</th>
-              <th>操作</th>
             </tr>
           </thead>
           <tbody>
@@ -49,10 +49,10 @@
             {{ Form::checkbox('student_id[]', $list->id, false, array('id' => 'userid'.$list->id)) }}
           </td>
           <td>
-            {{ Form::label('userid'.$list->id, $list->id) }}
+            {{ Form::label('userid'.$list->id, $list->id, array('class' => '')) }}
           </td>
           <td>
-            {{ Form::label('userid'.$list->id, $list->name) }}
+            {{ Form::label('userid'.$list->id, $list->name, array('class' => '')) }}
           </td>
           <td>{{ $genderEnum[$list->gender] }}</td>
           <td>{{ $list->tel }}</td>
@@ -60,12 +60,10 @@
         @endforeach
         <tr>
           <td>
-          {{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}
-          {{ Form::label('checkAll', '全选') }}
           </td>
           <td>
             {{ Form::hidden('class_id', $classes->id, array('id' => 'class_id')) }}
-            {{ Form::button('邀请', array('class' => '', 'type' =>'submit')) }}
+            {{ Form::button('', array('class' => 'submitbtn', 'type' =>'submit')) }}
           </td>
           <td></td>
           <td></td>
