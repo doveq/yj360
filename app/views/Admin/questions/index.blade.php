@@ -14,6 +14,7 @@
         {{ Form::label('inputStatus', '状态', array('class' => 'sr-only')) }}
         {{ Form::select('status', $statusEnum, $query['status'], array('class' => 'form-control', 'id' => 'inputStatus')) }}
       </div>
+      {{ Form::hidden('id', $query['id'], array('id' => 'column_id')) }}
       {{ Form::button('查找', array('class' => 'btn btn-info', 'type' =>'submit')) }}
     {{ Form::close() }}
   </div>
@@ -22,7 +23,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>#</th>
+            <th>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }}</th>
             <th>题干</th>
             <th>原始编号</th>
             <th>状态</th>
@@ -71,13 +72,14 @@
   </div>
   <div class="row">
     <div class="col-md-4">
-      <label>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }} 全选</label>
+
     </div>
     <div class="col-md-4 alertInfo">
     </div>
     <div class="col-md-4">
-      {{ Form::button('批量下架', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion')) }}
-      {{ Form::button('批量上线', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion')) }}
+      {{ Form::button('批量下架', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion', 'style' => 'margin:10px')) }}
+      {{ Form::button('批量上线', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion', 'style' => 'margin:10px')) }}
+      {{ Form::button('批量从科目移除', array('class' => 'btn btn-primary btn-xs pull-right delQuestion', 'id' => 'delQuestion', 'style' => 'margin:10px')) }}
     </div>
   </div>
   <div class="row" id="sort">
@@ -255,6 +257,38 @@ $(function(){
         },
         function(data) {
             $('<span class="label label-success">'+data.info+'</span>').appendTo('.alertInfo').fadeOut(5000);
+        },
+        "json"
+      )
+      .fail(function(){
+          $('<span class="label label-danger">操作失败</span>').appendTo('.alertInfo').fadeOut(5000);
+      });
+    }
+    return false;
+  });
+
+  $("#delQuestion").bind("click", function(){
+    $this = $(this);
+    var $item = $('input[name="question_id[]"]:checked');
+    var $column_id = $('#column_id').val();
+    // alert($column_id);
+    if ($item.length <= 0) {
+      alert('请选择题目');
+      return;
+    }
+    var $question_ids = new Array();
+    $item.each(function(){
+      $question_ids.push($(this).val());
+    });
+    if(confirm('您确定要批量移除吗？')){
+      $.post("/admin/relation/del_question",
+        {
+          question_id: $question_ids,
+          column_id: $column_id
+        },
+        function(data) {
+            $('<span class="label label-success">'+data.info+'</span>').appendTo('.alertInfo').fadeOut(5000);
+            location.reload();
         },
         "json"
       )
