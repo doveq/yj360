@@ -90,18 +90,19 @@ class LoginController extends BaseController
 	        'password' => 'required|min:6|confirmed')
 		);
 
-		if( $data['code'] != Session::get('code') )
+		if( $data['code'] == Session::get('code') )
 		{
 			if($validator->passes())
 			{
 				if( isset($_FILES['teacher_img']['error']) 
 					&& $_FILES['teacher_img']['error'] == UPLOAD_ERR_OK ) 
 				{
-
+					
 				}
 
 				$user = new User;
 				$user->add($data);
+				exit("注册成功");
 			}
 		}
 		else
@@ -130,7 +131,7 @@ class LoginController extends BaseController
 		if( !is_numeric($mobile) || strlen($mobile) != 11)
 			return -1;
 
-		$code = rand(10000, 99999);
+		$code = rand(100000, 999999);
 		Session::put('code', $code);
 
 		$msg = "验证码：{$code}（为了保证账户安全，请勿向他人泄漏）【音教360】";
