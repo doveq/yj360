@@ -719,3 +719,17 @@ li.index-list-more a {
 	margin: 10px;
 	cursor: pointer;
 }
+#topic-rt{
+	width: 980px;
+	padding-left:20px;
+	height: 62px;
+	background: url("/assets/img/trt.jpg") no-repeat 0 0;
+	overflow: hidden;
+	color: #fff;
+	font-size: 20px;
+	line-height: 60px;
+}
+#topic-rc{
+	background-color: #fff8e6;
+	padding:20px;
+}

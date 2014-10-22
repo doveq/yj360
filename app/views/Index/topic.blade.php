@@ -303,7 +303,7 @@
             if(err.length > 0)
             {
                 console.log(err);
-                $('#isTrue').val('0');
+                $('#isTrue').val('-1');
             }
             else
             {

@@ -36,9 +36,9 @@ class TopicController extends BaseController {
 				return $this->indexPrompt("操作失败", "科目下没有题目信息", $url = "/");
 
 			// 题目数据保存
+			Session::put('qlist', $qlist);
 			Session::put('column', $column);
 			Session::put('uniqid', uniqid());
-			Session::put('qlist', $qlist);
 		}
 		else
 		{
@@ -79,6 +79,7 @@ class TopicController extends BaseController {
 		$info['qlist'] = $qlist;
 		$info['column'] = $column;
 
+
 		return $this->indexView('topic', $info);
 	}
 
@@ -86,8 +87,9 @@ class TopicController extends BaseController {
 	public function post()
 	{
 		$inputs = Input::all();
-		$uid = Session::get('uid');
 		$qid = $inputs['id'];
+		$uid = Session::get('uid');
+		$qlist = Session::get('qlist');
 
 		// 保存wav录音文件
 		if( !empty($inputs['wavBase64']) )
@@ -100,21 +102,14 @@ class TopicController extends BaseController {
 			$saved = $att->addRecorder($tmpname, $uid, $qid);
 		}
 
-		// 保存答题信息
-		$topic = new Topic();
-
-		$info = array();
-		$info['uid'] = $uid;
-		$info['qid'] = $qid;
-		$info['is_true'] = $inputs['isTrue'];
-		$info['column_id'] = Session::get('column') ? Session::get('column') : 0;
-		$info['uniqid'] = Session::get('uniqid') ? Session::get('uniqid') : uniqid();
-		$topic->addResultLog($info);
-
-		$qlist = Session::get('qlist');
 
 		if($qlist)
 		{
+			$qlist[$qid] = $inputs['isTrue'];
+			$column = Session::get('column');
+			Session::set('qlist', $qlist);
+			Session::save();
+
 		    $qk = array_keys($qlist);
 		    $tol = count($qk);
 		    for($i = 0; $i < $tol; $i++)
@@ -125,14 +120,14 @@ class TopicController extends BaseController {
 					// 如果已经是第一题
 	        		if($qid == $qk[0])
 	        		{
-	        			header("Location: /topic?column={$info['column_id']}&id={$qid}");
+	        			header("Location: /topic?column={$column}&id={$qid}");
 		           		exit;
 	        		}
 	        		elseif($qid == $qk[$i])
 	        		{
 	        			$qid = $qk[$i -1];
 
-	        			header("Location: /topic?column={$info['column_id']}&id={$qid}");
+	        			header("Location: /topic?column={$column}&id={$qid}");
 		           		exit;
 	        		}
 	        	}
@@ -141,13 +136,30 @@ class TopicController extends BaseController {
 	        		// 如果已经是最后一题
 	        		if($qid == $qk[$tol -1])
 	        		{
-	        			return $this->indexPrompt("操作成功", "答题完成", $url = "/");
+	        			$uniqid = Session::get('uniqid');
+						// 保存答题信息
+						$topic = new Topic();
+						$info = array();
+						$info['uid'] = $uid;
+						$info['column'] = Session::get('column');
+						$info['uniqid'] = $uniqid;
+						$info['qlist'] = $qlist;
+
+
+						$topic->addResultLog($info);
+
+						Session::forget('column');
+						Session::forget('uniqid');
+						Session::forget('qlist');
+
+	        			//return $this->indexPrompt("操作成功", "答题完成", $url = "/");
+	        			header("Location: /topic/result?uniqid={$uniqid}&column={$column}");
 		           		exit;
 	        		}
 	        		elseif($qid == $qk[$i])
 	        		{
 	        			$qid = $qk[$i +1];
-	        			header("Location: /topic?column={$info['column_id']}&id={$qid}");
+	        			header("Location: /topic?column={$column}&id={$qid}");
 		           		exit;
 	        		}
 	        	}
@@ -160,4 +172,14 @@ class TopicController extends BaseController {
 
 		
 	}
+
+
+	/* 答题完成 */
+	public function result()
+	{
+		$uniqid = Input::get('uniqid');
+		$info = array();
+		return $this->indexView('topic_result', $info);
+	}
+
 }

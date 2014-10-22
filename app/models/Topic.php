@@ -330,24 +330,29 @@ class Topic  {
 	}
 
 
-	/* 记录答题信息 */
+	
+	/* 保存答题题目信息 */
 	public function addResultLog($info)
 	{
-		$data = DB::table("result_log")
-			->where('uniqid', $info['uniqid'])
-			->where('uid', $info['uid'])
-			->where('qid', $info['qid'])
-			->where('column_id', $info['column_id'])->get();
+		$now = date('Y-m-d H:i:s');
+		foreach ($info['qlist'] as $key => $value) 
+		{
+			$data = array();
+			$data['created_at'] = $now;
+			$data['uniqid'] = $info['uniqid'];
+			$data['column_id'] = $info['column'];
+			$data['uid'] = $info['uid'];
+			$data['qid'] = $key;
+			$data['is_true'] = $value;
+			DB::table("result_log")->insert($data);
+		}
+	}
 
-		if(!$data)
-		{
-			$info['created_at'] = date('Y-m-d H:i:s');
-			$id = DB::table("result_log")->insertGetId($info);
-			return $id;
-		}
-		else
-		{
-			return $data[0]->id;
-		}
-	}	
+	/* 获取答题统计 */
+	public function getResultStats($uniqid)
+	{
+		$info = DB::table('result_log')->where('uniqid', $uniqid)->get();
+
+	}
+
 }

@@ -96,7 +96,7 @@ class Sql
 			  `uid` int(11) unsigned NOT NULL COMMENT '用户id',
 			  `qid` int(11) unsigned NOT NULL COMMENT '题目id',
 			  `column_id` int(11) unsigned NOT NULL COMMENT '科目id',
-			  `is_true` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0:回答错误, 1:回答正确',
+			  `is_true` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0:没有回答, 1:回答正确, -1:回答错误',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `uniqid` varchar(255) NOT NULL DEFAULT '' COMMENT '唯一id,区分每次用户做题',
 			  PRIMARY KEY (`id`),

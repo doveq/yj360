@@ -131,6 +131,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     // 答题页面
     Route::get('/topic', 'TopicController@index');
     Route::post('/topic/post', 'topicController@post');
+    Route::get('/topic/result', 'topicController@result');
 
     Route::get('/favorite/ajax', 'FavoriteController@ajax');
     //初级
