@@ -111,6 +111,8 @@ Route::get('/prompt', 'PromptController@index');
 Route::get('/prompt/test', 'TestController@test');
 
 Route::group(array('before' => 'indexLogin'), function(){
+    //
+    Route::get('/indexColumn', 'IndexController@column');
 	// flash录音
 	Route::get('/recorder', 'RecorderController@index');
 	Route::post('/recorder/upload', 'RecorderController@upload');
