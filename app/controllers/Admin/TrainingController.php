@@ -145,12 +145,18 @@ class TrainingController extends \BaseController {
             $errors = "名称不能为空";
             return Redirect::to('/admin/training/'.$id."/edit")->withErrors($errors)->withInput($query);
         }
-        $class = Training::find($id);
-        if (isset($query['name'])) $class->name           = $query['name'];
-        if (isset($query['user_id'])) $class->user_id = $query['user_id'];
-        if (isset($query['status'])) $class->status       = $query['status'];
-
-        if ($class->save()) {
+        $training = Training::find($id);
+        if (isset($query['name'])) $training->name           = $query['name'];
+        if (isset($query['user_id'])) $training->user_id = $query['user_id'];
+        if (isset($query['status'])) {
+            $training->status       = $query['status'];
+            if ($query['status'] == 1) {
+                $training->online_at = date("Y-m-d H:i:s");
+            } else {
+                $training->online_at = NULL;
+            }
+        }
+        if ($training->save()) {
             return Redirect::to('/admin/training');
         }
     }
@@ -165,7 +171,9 @@ class TrainingController extends \BaseController {
     public function destroy($id)
     {
         //
-        Training::destroy($id);
+        $training = Training::find($id);
+        $training->questions()->detach();
+        $training->delete();
         return Redirect::to('admin/training');
     }
 

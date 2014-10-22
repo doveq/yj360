@@ -32,7 +32,7 @@
 
       <div class="classes-list">
           @foreach ($classes as $list)
-          <div class="classse-box">
+          <div class="classse-box" id="classes_{{$list->id}}">
             <div class="classes-txt">
               <div><a style="color:#ffffff" href="/classes/{{$list->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
               <div>创建人：{{$list->teacher->name}}</div>

@@ -29,7 +29,7 @@
             <th>名称</th>
             <th>图片</th>
             <th>描述</th>
-            <th>创建时间</th>
+            <th>上线时间</th>
             <th>状态</th>
             <th>素材类型</th>
             <th>查看题目</th>
@@ -47,7 +47,7 @@
               @endif
             </td>
             <td>{{$list->desc}}</td>
-            <td>{{$list->created_at}}</td>
+            <td>{{$list->online_at}}</td>
             <td>
               @if ($list->status == 1)
               <span class="label label-info">{{$statusEnum[$list->status]}}</span>

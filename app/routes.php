@@ -125,6 +125,8 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/training_result', 'TrainingResultController@index');
     //消息
     Route::resource('message', 'MessageController');
+    //老师上传题库
+    Route::resource('uploadbank', 'UploadBankController');
 
     // 答题页面
     Route::get('/topic', 'TopicController@index');

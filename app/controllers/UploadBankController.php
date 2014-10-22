@@ -1,6 +1,6 @@
 <?php
 
-class TrainingController extends BaseController {
+class UploadBankController extends BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '发布', '1' => '撤销发布');
     public $pageSize = 30;
@@ -14,11 +14,11 @@ class TrainingController extends BaseController {
         $query = Input::only('page', 'column_id' );
 
         $user_id = Session::get('uid');
-        $lists = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        $lists = Uploadbank::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
-        return $this->indexView('training.index', compact('statusEnum', 'lists', 'query', 'columns'));
+        return $this->indexView('uploadbank.index', compact('statusEnum', 'lists', 'query', 'columns'));
     }
 
 
@@ -29,12 +29,12 @@ class TrainingController extends BaseController {
      */
     public function create()
     {
-        $user_id = Session::get('uid');
-        $classes_num = Classes::whereTeacherid($user_id)->get()->count();
-        $trainings_num = Training::whereUserId($user_id)->get()->count();
+        // $user_id = Session::get('uid');
+        // $classes_num = Classes::whereTeacherid($user_id)->get()->count();
+        // $trainings_num = Training::whereUserId($user_id)->get()->count();
         $query = Input::only('column_id');
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
-        return $this->indexView('training.create', compact('columns', 'query', 'classes_num', 'trainings_num'));
+        return $this->indexView('uploadbank.create', compact('columns', 'query'));
     }
 
 
@@ -54,15 +54,15 @@ class TrainingController extends BaseController {
 
         if($validator->fails())
         {
-            return Redirect::to('training/create?column_id='.$query['column_id'])->withErrors($validator)->withInput($query);
+            return Redirect::to('uploadbank/create?column_id='.$query['column_id'])->withErrors($validator)->withInput($query);
         }
         $user_id = Session::get('uid');
-        $training = new Training();
-        $training->user_id = Session::get('uid');
-        $training->name = $query['name'];
-        $training->created_at = date("Y-m-d H:i:s");
-        if ($training->save()) {
-            return Redirect::to('training?column_id='. $query['column_id']);
+        $uploadbank = new Uploadbank();
+        $uploadbank->user_id = Session::get('uid');
+        $uploadbank->name = $query['name'];
+        $uploadbank->created_at = date("Y-m-d H:i:s");
+        if ($uploadbank->save()) {
+            return Redirect::to('uploadbank?column_id='. $query['column_id']);
         }
     }
 
@@ -138,19 +138,12 @@ class TrainingController extends BaseController {
                 return Redirect::to('/admin/training/'.$id."/edit")->withErrors($errors)->withInput($query);
             }
         }
-        $training = Training::find($id);
-        if (isset($query['name'])) $training->name           = $query['name'];
-        if (isset($query['user_id'])) $training->user_id = $query['user_id'];
-        if (isset($query['status'])) {
-            $training->status       = $query['status'];
-            if ($query['status'] == 1) {
-                $training->online_at = date("Y-m-d H:i:s");
-            } else {
-                $training->online_at = NULL;
-            }
-        }
+        $class = Training::find($id);
+        if (isset($query['name'])) $class->name           = $query['name'];
+        if (isset($query['user_id'])) $class->user_id = $query['user_id'];
+        if (isset($query['status'])) $class->status       = $query['status'];
 
-        if ($training->save()) {
+        if ($class->save()) {
             if (Request::ajax()) {
                 return Response::json('ok');
             } else {
@@ -169,10 +162,8 @@ class TrainingController extends BaseController {
     public function destroy($id)
     {
         //
-        $training = Training::find($id);
-        $training->questions()->detach();
-        $training->delete();
-        return Redirect::to('training');
+        Uploadbank::destroy($id);
+        return Redirect::to('admin/training');
     }
 
 

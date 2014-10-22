@@ -91,20 +91,6 @@ $(document).ready(function () {
       location.reload();
     });
   });
-  delete_classes = function(id){
-    if(confirm('您确定要删除吗？')){
-      $.ajax({
-        url:'/classes/'+id,
-        // async:false,
-        type:'delete',
-      })
-      .fail(function(){alert('操作失败')})
-      .success(function(){
-        $('#classes_'+id).remove();
-      });
-      // alert(htmlobj.responseText);
-    }
-  }
 
 });
 </script>

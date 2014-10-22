@@ -213,7 +213,14 @@ class ColumnController extends \BaseController {
 
         if (isset($query['name'])) $column->name          = $query['name'];
         if (isset($query['desc'])) $column->desc          = $query['desc'];
-        if (isset($query['status'])) $column->status      = $query['status'];
+        if (isset($query['status'])) {
+            $column->status      = $query['status'];
+            if ($query['status'] == 1) {
+                $column->online_at = date("Y-m-d H:i:s");
+            } else {
+                $column->online_at = NULL;
+            }
+        }
         if (isset($query['filename'])) $column->thumbnail = $query['filename'];
         if (isset($query['type'])) $column->type          = $query['type'];
 
