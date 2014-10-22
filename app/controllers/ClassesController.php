@@ -19,12 +19,14 @@ class ClassesController extends BaseController {
         }
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
+        if (!$user_type) $user_type = 1;
         $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
+        // dd($user_type);
         return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'classes', 'trainings', 'query', 'columns'));
     }
 
