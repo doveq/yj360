@@ -83,10 +83,11 @@ class ColumnController extends \BaseController {
             $paths = array_reverse($parent->getPath($parent->id));
         }
         $column = array('0' => '--所有--');
-        $columns = Column::whereParentId($parent_id)->whereType(0)->select('id','name')->get();
+        $columns = Column::whereParentId($parent_id)->select('id','name')->get();
         foreach ($columns as $key => $value) {
             $column[$value->id] = $value->name;
         }
+        // dd($column);
         $typeEnum = $this->typeEnum;
         return $this->adminView('column.create', compact('query', 'column', 'typeEnum', 'paths'));
 	}

@@ -1,5 +1,5 @@
 @extends('Index.master')
-@section('title')首页@stop
+@section('title')首页 @stop
 
 @section('content')
     <div class="container wrap">
