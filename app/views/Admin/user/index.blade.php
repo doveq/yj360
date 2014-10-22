@@ -72,15 +72,15 @@
                   <ul class="dropdown-menu">
                       @if($list->status === 1)
                       <li><a style='color:#999;'><i class="icon-ok"></i> 有效</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="0"><i class="icon-remove"></i> 无效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="0"><i class="icon-user-md"></i> 未审核</a></li>
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
                       @elseif($list->status === 0)
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
-                      <li><a style='color:#999;'><i class="icon-remove"></i> 无效</a></li>
+                      <li><a style='color:#999;'><i class="icon-user-md"></i> 未审核</a></li>
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
                       @else
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="0"><i class="icon-remove"></i> 无效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="0"><i class="icon-user-md"></i> 未审核</a></li>
                       <li><a style='color:#999;'><i class="icon-remove"></i> 审核未通过</a></li>
                       @endif
                       <li class="divider"></li>

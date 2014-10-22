@@ -111,6 +111,8 @@ Route::get('/prompt', 'PromptController@index');
 Route::get('/prompt/test', 'TestController@test');
 
 Route::group(array('before' => 'indexLogin'), function(){
+    //
+    Route::get('/indexColumn', 'IndexController@column');
 	// flash录音
 	Route::get('/recorder', 'RecorderController@index');
 	Route::post('/recorder/upload', 'RecorderController@upload');
@@ -139,6 +141,16 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/column', 'ColumnController@index');
     //flash播放
     Route::get('/view_flv', 'ViewController@flv');
+
+    Route::get('/indexSchool', 'IndexController@indexschool');
+    Route::get('/about', 'IndexController@about');
+    Route::get('/feedback', 'IndexController@feedback');
+    Route::get('/help', 'IndexController@help');
+    Route::get('/app', 'IndexController@app');
+    Route::get('/interestTest', 'IndexController@interestTest');
+    Route::get('/link', 'IndexController@link');
+    Route::get('/follow', 'IndexController@follow');
+
 });
 
 

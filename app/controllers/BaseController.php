@@ -1,8 +1,8 @@
 <?php
 
-class BaseController extends Controller 
+class BaseController extends Controller
 {
-    
+
 	/**
 	 * Setup the layout used by the controller.
 	 *
@@ -16,6 +16,7 @@ class BaseController extends Controller
 		}
 	}
 
+
 	protected function adminView($layout, $data = array())
 	{
 		return View::make('Admin.' . $layout, $data);
@@ -26,7 +27,7 @@ class BaseController extends Controller
 		return View::make('Index.' . $layout, $data);
 	}
 
-	/* 页面提示跳转 
+	/* 页面提示跳转
 		title 标题
 		info 详细内容
 		url 跳转地址
@@ -38,7 +39,7 @@ class BaseController extends Controller
 	}
 
 
-	/* 页面提示跳转 
+	/* 页面提示跳转
 		title 标题
 		info 详细内容
 		url 跳转地址
