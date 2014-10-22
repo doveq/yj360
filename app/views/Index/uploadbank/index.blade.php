@@ -27,10 +27,11 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        你已经上传了{{$lists->count()}}个题库
+        <a href="/uploadbank/create?column_id={{$query['column_id']}}"><img src="/assets/img/uploadbankbtn.png" /></a>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
+        <div style="margin:10px;">你已经上传了{{$lists->count()}}个题库</div>
         <table  class="stable" border="0" cellpadding="0" cellspacing="0">
           <thead>
             <tr>
@@ -48,7 +49,7 @@
               <td>{{$list->name}}</td>
               <td>{{$list->created_at}}</td>
               <td>{{$list->user->name}}</td>
-              <td>查看 <a href="javascript:;" onClick="delete_uploadbank('{{$list->id}}');">删除</a></td>
+              <td><a href="javascript:void(0);" onClick="delete_uploadbank('{{$list->id}}');">删除</a></td>
             </tr>
             @endforeach
           </tbody>

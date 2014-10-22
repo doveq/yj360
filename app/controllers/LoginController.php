@@ -34,6 +34,7 @@ class LoginController extends BaseController
 			Session::put('uid', $user->id);
 			Session::put('uname', $user->name);
 			Session::put('utype', $user->type);
+			Session::put('utel', $user->tel);
 
 			//记录登陆日志
 			$loginlog = new Loginlog();
@@ -97,8 +98,8 @@ class LoginController extends BaseController
 		{
 			if($validator->passes())
 			{
-				if( isset($_FILES['teacher_img']['error']) 
-					&& $_FILES['teacher_img']['error'] == UPLOAD_ERR_OK ) 
+				if( isset($_FILES['teacher_img']['error'])
+					&& $_FILES['teacher_img']['error'] == UPLOAD_ERR_OK )
 				{
 					$data['is_certificate'] = 1;
 				}
@@ -122,7 +123,7 @@ class LoginController extends BaseController
 			$data['codeErr'] = "验证码错误";
 		}
 
-		
+
 		return Redirect::to('register')->withErrors($validator)->withInput(Input::except('teacher_img'));
 	}
 
@@ -140,7 +141,7 @@ class LoginController extends BaseController
 	public function mkcode()
 	{
 		$mobile = Input::get('mobile');
-		
+
 		if( !is_numeric($mobile) || strlen($mobile) != 11)
 			return -1;
 

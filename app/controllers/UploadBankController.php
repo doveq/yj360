@@ -29,12 +29,12 @@ class UploadBankController extends BaseController {
      */
     public function create()
     {
-        // $user_id = Session::get('uid');
-        // $classes_num = Classes::whereTeacherid($user_id)->get()->count();
-        // $trainings_num = Training::whereUserId($user_id)->get()->count();
+        $user_id = Session::get('uid');
         $query = Input::only('column_id');
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
-        return $this->indexView('uploadbank.create', compact('columns', 'query'));
+
+        $lists = Uploadbank::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        return $this->indexView('uploadbank.create', compact('columns', 'query', 'lists'));
     }
 
 
@@ -45,10 +45,12 @@ class UploadBankController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('name', 'column_id');
+        $query = Input::all();
         $validator = Validator::make($query,
             array(
-                'name' => 'alpha_dash',
+                'name' => 'required',
+                'qq' => 'numeric',
+                'filename' => 'required',
             )
         );
 
@@ -56,11 +58,23 @@ class UploadBankController extends BaseController {
         {
             return Redirect::to('uploadbank/create?column_id='.$query['column_id'])->withErrors($validator)->withInput($query);
         }
-        $user_id = Session::get('uid');
+        if(Input::hasFile('filename')) {
+            // $originalName = Input::file('pic')->getClientOriginalName();
+            $extension = Input::file('filename')->getClientOriginalExtension();
+            $filename = Session::get('uid') . "_" . Str::random() . "." . $extension;
+            $destinationPath = Config::get('app.uploadbank_dir');
+            Input::file('filename')->move($destinationPath, $filename);
+            $query['filename'] = $filename;
+        }
         $uploadbank = new Uploadbank();
         $uploadbank->user_id = Session::get('uid');
         $uploadbank->name = $query['name'];
         $uploadbank->created_at = date("Y-m-d H:i:s");
+        if (isset($query['desc'])) $uploadbank->desc         = $query['desc'];
+        if (isset($query['tel'])) $uploadbank->tel           = $query['tel'];
+        if (isset($query['qq'])) $uploadbank->qq             = $query['qq'];
+        if (isset($query['filename'])) $uploadbank->filename = $query['filename'];
+
         if ($uploadbank->save()) {
             return Redirect::to('uploadbank?column_id='. $query['column_id']);
         }
@@ -87,18 +101,7 @@ class UploadBankController extends BaseController {
      */
     public function edit($id)
     {
-        //
-        // echo "hahah";
-        $training = Training::find($id);
-        $statusEnum = $this->statusEnum;
-        $reses = User::where('type', 1)->select('id','name')->get()->toArray();
-        // $teachers = DB::table('users')->select('id','name')->get();
-        $teachers = array();
-        foreach ($reses as $key => $teacher) {
-            $teachers[$teacher['id']] = $teacher['name'];
-        }
-        // dd($teachers);
-        return $this->adminView('training.edit', compact("training", "statusEnum", "teachers"));
+
     }
 
 
@@ -110,46 +113,7 @@ class UploadBankController extends BaseController {
      */
     public function update($id)
     {
-        //
-        $query = Input::only('id','name','status', 'user_id', 'memo');
-        // dd($data);
-        $validator = Validator::make($query,
-            array(
-                'id'      => 'numeric',
-                // 'name'  => 'alpha_dash',
-                'status'  => 'numeric',
-                'user_id' => 'numeric',
-            )
-        );
-        // dd($query['status']);
-        if($validator->fails())
-        {
-            if (Request::ajax()) {
-                return Response::json('error');
-            } else {
-                return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "training");
-            }
-        }
-        if (isset($query['name']) && $query['name'] == '') {
-            $errors = "名称不能为空";
-            if (Request::ajax()) {
-                return Response::json('error');
-            } else {
-                return Redirect::to('/admin/training/'.$id."/edit")->withErrors($errors)->withInput($query);
-            }
-        }
-        $class = Training::find($id);
-        if (isset($query['name'])) $class->name           = $query['name'];
-        if (isset($query['user_id'])) $class->user_id = $query['user_id'];
-        if (isset($query['status'])) $class->status       = $query['status'];
 
-        if ($class->save()) {
-            if (Request::ajax()) {
-                return Response::json('ok');
-            } else {
-                return Redirect::to('/admin/training');
-            }
-        }
     }
 
 
@@ -163,7 +127,11 @@ class UploadBankController extends BaseController {
     {
         //
         Uploadbank::destroy($id);
-        return Redirect::to('admin/training');
+        if (Request::ajax()) {
+            return Response::json('ok');
+        } else {
+            return Redirect::to('uploadbank');
+        }
     }
 
 

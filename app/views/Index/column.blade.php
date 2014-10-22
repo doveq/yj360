@@ -26,20 +26,14 @@
             <div class="column-dbc"></div>
             <h2>难点解答</h2>
             @foreach ($ndjd as $list)
-            <a class="column-nd" href="#">
+            <a class="column-nd" href="/topic?column={{$list->id}}">
                 <img src="/assets/img/column-test.jpg" width="200" height="150" />
                 <div class="column-dinan">
                     <p>{{$list->name}}</p>
-                    <p>作者</p>
+                    <p>{{$list->author}}</p>
                 </div>
             </a>
             @endforeach
-            <a class="column-nd" href="#">
-                <img src="/assets/img/column-test.jpg" width="200" height="150" />
-            </a>
-            <a class="column-nd" href="#">
-                <img src="/assets/img/column-test.jpg" width="200" height="150" />
-            </a>
         </div>
         <br><br>
 
