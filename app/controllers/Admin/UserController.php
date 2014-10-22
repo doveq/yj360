@@ -11,7 +11,7 @@ use Attachments;
 class UserController extends \BaseController {
 
     public $typeEnum = array('' => '所有类型', '-1' => '管理员', '0' => '学生', '1' => '老师');
-    public $statusEnum = array('' => '所有状态', '0' => '无效', '1' => '有效', '-1' => '审核拒绝');
+    public $statusEnum = array('' => '所有状态', '0' => '未审核', '1' => '有效', '-1' => '审核拒绝');
     public $pageSize = 30;
     /**
      * Display a listing of the resource.
