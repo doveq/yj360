@@ -60,8 +60,6 @@ class TopicController extends BaseController {
 
 		if(!$info)
 		{
-			var_dump($id);
-			exit;
 			return $this->indexPrompt("操作失败", "没有这道题目信息", $url = "/");
 		}
 
@@ -109,21 +107,57 @@ class TopicController extends BaseController {
 		$info['uid'] = $uid;
 		$info['qid'] = $qid;
 		$info['is_true'] = $inputs['isTrue'];
-		$info['column_id'] = Session::get('column');
-		$info['uniqid'] = Session::get('uniqid');
+		$info['column_id'] = Session::get('column') ? Session::get('column') : 0;
+		$info['uniqid'] = Session::get('uniqid') ? Session::get('uniqid') : uniqid();
 		$topic->addResultLog($info);
 
+		$qlist = Session::get('qlist');
 
-		// 上一题
-		if($inputs['act'] == 'prve')
+		if($qlist)
 		{
-			
+		    $qk = array_keys($qlist);
+		    $tol = count($qk);
+		    for($i = 0; $i < $tol; $i++)
+		    {
+		    	// 上一题
+				if($inputs['act'] == 'prev')
+				{
+					// 如果已经是第一题
+	        		if($qid == $qk[0])
+	        		{
+	        			header("Location: /topic?column={$info['column_id']}&id={$qid}");
+		           		exit;
+	        		}
+	        		elseif($qid == $qk[$i])
+	        		{
+	        			$qid = $qk[$i -1];
+
+	        			header("Location: /topic?column={$info['column_id']}&id={$qid}");
+		           		exit;
+	        		}
+	        	}
+	        	else
+	        	{
+	        		// 如果已经是最后一题
+	        		if($qid == $qk[$tol -1])
+	        		{
+	        			return $this->indexPrompt("操作成功", "答题完成", $url = "/");
+		           		exit;
+	        		}
+	        		elseif($qid == $qk[$i])
+	        		{
+	        			$qid = $qk[$i +1];
+	        			header("Location: /topic?column={$info['column_id']}&id={$qid}");
+		           		exit;
+	        		}
+	        	}
+		    }
 		}
-		// 下一题
 		else
 		{
-			
+			return $this->indexPrompt("操作成功", "答题完成", $url = "/");
 		}
+
 		
 	}
 }

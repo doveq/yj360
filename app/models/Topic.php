@@ -333,8 +333,21 @@ class Topic  {
 	/* 记录答题信息 */
 	public function addResultLog($info)
 	{
-		$info['created_at'] = date('Y-m-d H:i:s');
-		$id = DB::table("result_log")->insertGetId($info);
-		return $id;
-	}
+		$data = DB::table("result_log")
+			->where('uniqid', $info['uniqid'])
+			->where('uid', $info['uid'])
+			->where('qid', $info['qid'])
+			->where('column_id', $info['column_id'])->get();
+
+		if(!$data)
+		{
+			$info['created_at'] = date('Y-m-d H:i:s');
+			$id = DB::table("result_log")->insertGetId($info);
+			return $id;
+		}
+		else
+		{
+			return $data[0]->id;
+		}
+	}	
 }

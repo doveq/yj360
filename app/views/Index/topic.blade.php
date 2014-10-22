@@ -23,6 +23,7 @@
                     {{-- 单选，多选，判断 --}}
                     @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
                         <table class="answers-list">
+                        @if(!empty($a))
                         @foreach($a as $k => $item)
                             <tr>
                                 <td class="flag">
@@ -55,6 +56,7 @@
                                 </td>
                             </tr>
                         @endforeach
+                        @endif
                         </table>
                     {{-- 填空，写作 --}}
                     @elseif($q['type'] == 4 || $q['type'] == 5 )
