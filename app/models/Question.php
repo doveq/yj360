@@ -16,4 +16,8 @@ class Question extends Eloquent {
     public function column() {
         return $this->belongsToMany('Column', 'column_question_relation', 'question_id', 'column_id');
     }
+
+    public function product() {
+        return $this->belongsToMany('Product', 'product_question_relation', 'question_id', 'product_id');
+    }
 }

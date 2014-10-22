@@ -1,12 +1,14 @@
 <?php
 
-class Product extends Eloquent {
+class ProductQuestionRelation extends Eloquent {
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'product';
+    protected $table = 'product_question_relation';
+    protected $guarded = array('id');
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -36,15 +38,6 @@ class Product extends Eloquent {
     //  return $this->password;
     // }
 
-    public function column()
-    {
-        return $this->belongsTo('Column');
-    }
 
-    //产品下免费的题目
-    public function questions()
-    {
-        return $this->belongsToMany('Question', 'product_question_relation', 'product_id', 'question_id');
-    }
 
 }

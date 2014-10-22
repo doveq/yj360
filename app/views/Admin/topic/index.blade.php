@@ -33,7 +33,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>#</th>
+            <th>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }}</th>
             <th>题干</th>
             <th>原始编号</th>
             <th>状态</th>
@@ -82,16 +82,15 @@
   </div>
   <div class="row">
     <div class="col-md-4">
-      <label>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }} 全选</label>
     </div>
     <div class="col-md-4 alertInfo">
     </div>
     <div class="col-md-4">
-      {{ Form::button('批量下架', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion')) }}
-      {{ Form::button('批量上线', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion')) }}
+      {{ Form::button('批量下架', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion', 'style' => 'margin:10px')) }}
+      {{ Form::button('批量上线', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion', 'style' => 'margin:10px')) }}
     </div>
   </div>
-  <div class="row" id="sort">
+  <div class="row" id="sort" style="margin:10px;">
     批量转移到分类:
     {{Form::select('sort1', array(), '', array('class' => 'sort1'))}}
     {{Form::select('sort2', array(), '', array('class' => 'sort2'))}}
@@ -100,7 +99,7 @@
     {{Form::select('sort5', array(), '', array('class' => 'sort5'))}}
     {{ Form::button('批量转移', array('class' => 'btn btn-primary btn-xs', 'id' => 'addSort')) }}
   </div>
-  <div class="row" id="column">
+  <div class="row" id="column" style="margin:10px;">
     批量加入到科目:
     {{Form::select('column1', array(), '', array('class' => 'column1'))}}
     {{Form::select('column2', array(), '', array('class' => 'column2'))}}

@@ -32,11 +32,12 @@
         <tr>
           <th>#</th>
           <th>产品名称</th>
-          <th>产品图片</th>
+          <!-- <th>产品图片</th> -->
           <th>价格</th>
           <th>有效期</th>
           <th>策略</th>
           <th>上线时间</th>
+          <th>科目</th>
           <th>状态</th>
           <th>操作</th>
         </tr>
@@ -46,17 +47,11 @@
         <tr>
           <td>{{$list->id}}</td>
           <td>{{$list->name}}</td>
-          <td>
-            @if ($list->thumbnail)
-            {{$list->thumbnail}}
-            @else
-            无
-            @endif
-          </td>
           <td>{{$list->price}}</td>
           <td>{{$list->valid_period}}</td>
           <td>{{$policyEnum[$list->policy]}}</td>
-          <td>{{$list->created_at}}</td>
+          <td> @if ($list->online_at) {{$list->online_at}} @endif</td>
+          <td>{{$list->column->name}}</td>
           <td>
             @if ($list->status == 1)
             <span class="label label-success">{{$statusEnum[$list->status]}}</span>
@@ -71,8 +66,6 @@
                 <a class="btn btn-default btn-xs" href="{{url('/admin/product/'. $list->id .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
                 <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="">内容管理</a>
-                    <li class="divider"></li>
                     @if($list->status === 1)
                     <li><a style='color:#999;'><i class="icon-ok"></i> 发布</a></li>
                     <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-trash"></i> 下线</a></li>

@@ -44,6 +44,9 @@ class Column extends Eloquent {
     public function questions() {
         return $this->belongsToMany('Question', 'column_question_relation', 'column_id', 'question_id');
     }
+    public function products() {
+        return $this->hasMany('Product');
+    }
 
     /* 根据子分类id获取父分类路径 */
     public function getPath($sortId, &$data = array())

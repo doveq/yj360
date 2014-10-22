@@ -82,7 +82,7 @@
       {{ Form::button('批量从科目移除', array('class' => 'btn btn-primary btn-xs pull-right delQuestion', 'id' => 'delQuestion', 'style' => 'margin:10px')) }}
     </div>
   </div>
-  <div class="row" id="sort">
+  <div class="row" id="sort" style="margin:10px;">
     批量转移到分类:
     {{Form::select('sort1', array(), '', array('class' => 'sort1'))}}
     {{Form::select('sort2', array(), '', array('class' => 'sort2'))}}
@@ -91,7 +91,7 @@
     {{Form::select('sort5', array(), '', array('class' => 'sort5'))}}
     {{ Form::button('批量转移', array('class' => 'btn btn-primary btn-xs', 'id' => 'addSort')) }}
   </div>
-  <div class="row" id="column">
+  <div class="row" id="column" style="margin:10px;">
     批量加入到科目:
     {{Form::select('column1', array(), '', array('class' => 'column1'))}}
     {{Form::select('column2', array(), '', array('class' => 'column2'))}}

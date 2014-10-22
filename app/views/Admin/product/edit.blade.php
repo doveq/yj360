@@ -23,22 +23,6 @@
           </div>
         </div>
         <div class="form-group">
-          {{ Form::label('oldpic', '图片', array('class' => 'col-md-2 control-label')) }}
-          <div class="col-md-6">
-            @if ($product->thumbnail)
-            <img src="{{Config::get('app.thumbnail_url')}}/{{$product->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
-            @else
-            无
-            @endif
-          </div>
-        </div>
-        <div class="form-group">
-          {{ Form::label('inputPic', '重新选择', array('class' => 'col-md-2 control-label')) }}
-          <div class="col-md-6">
-            {{ Form::file('thumbnail', '', array('id' => 'inputPic')) }}
-          </div>
-        </div>
-        <div class="form-group">
           {{ Form::label('inputPrice', '价格', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
             {{ Form::text('price', $product->price, array('class' => 'form-control', 'id' => 'inputPrice')) }}
@@ -53,11 +37,37 @@
         <div class="form-group">
           {{ Form::label('inputPolicy', '策略', array('class' => 'col-md-2 control-label')) }}
           <div class="col-md-6">
-            {{ Form::select('policy', $policyEnum, $product->policy, array('class' => 'form-control', 'id' => 'inputPolicy')) }}
+<!--             {{ Form::select('policy', $policyEnum, $product->policy, array('class' => 'form-control', 'id' => 'inputPolicy')) }}
+ -->
+            {{ Form::label('inputPolicy', $policyEnum[$product->policy], array('class' => 'control-label')) }}
           </div>
         </div>
         <div class="form-group">
+          {{ Form::label('inputColumn', '科目', array('class' => 'col-md-2 control-label')) }}
+          <div class="col-md-6">
+            {{ Form::label('inputColumn', $product->column->name, array('class' => 'control-label')) }}
+          </div>
+        </div>
+        @if ($product->policy == 1)
+        <div class="form-group choose_question">
+          {{ Form::label('inputFree', '选择免费题目', array('class' => 'col-md-2 control-label')) }}
+          <div class="col-md-6">
+            <ul class="list-group">
+              @foreach($questions as $list)
+              <li class="list-group-item">
+                <div class="checkbox">
+                  <label>{{ Form::checkbox('question[]', $list->id, in_array($list->id, $free_questions)?1:0) }} {{$list->txt}}</label>
+                </div>
+              </li>
+              @endforeach
+            </ul>
+          </div>
+        </div>
+        @endif
+        <div class="form-group">
           <div class="col-md-offset-2 col-md-6">
+            {{ Form::hidden('column_id', $product->column->id) }}
+            {{ Form::hidden('policy', $product->policy) }}
             {{ Form::submit('提交', array('class' => 'btn btn-default')) }}
            </div>
         </div>

@@ -66,6 +66,7 @@
                 <ul class="dropdown-menu">
                     <li><a href="{{url('/admin/column?parent_id='. $list->id) }}"><i class="icon-magic"></i> 内容管理</a></li>
                     <li><a href="{{url('/admin/column/create?parent_id='. $list->id) }}"><i class="icon-plus-sign"></i> 新建子科目</a></li>
+                    <li><a href="{{url('/admin/product/create?column_id='. $list->id) }}"><i class="icon-star-empty"></i> 打包成产品</a></li>
                     <li class="divider"></li>
                     @if($list->status === 1)
                     <li class="disabled"><a href="#"><i class="icon-ok"></i> 发布</a></li>
