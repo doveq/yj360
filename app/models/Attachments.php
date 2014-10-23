@@ -165,8 +165,8 @@ class Attachments
 		$name = md5( $qid . uniqid() ) . '.jpg';
 
 		$route = $this->getTopicRoute($qid, $name);
-		print_r($route);
-		exit;
+		// print_r($route);
+		// exit;
 		if(!is_dir($route['folder']))
             mkdir($route['folder'], 0777, true);
 
