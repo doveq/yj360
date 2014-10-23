@@ -22,7 +22,7 @@ class ColumnController extends BaseController
         }
 
         if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
+            $query['column_id'] = 5;
         }
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();

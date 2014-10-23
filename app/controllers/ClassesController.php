@@ -15,7 +15,7 @@ class ClassesController extends BaseController {
 
         //左边菜单,需要知道是在初级,中级,高级,中小学音乐科目下,如果没有,默认为初级
         if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
+            $query['column_id'] = 5;
         }
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');

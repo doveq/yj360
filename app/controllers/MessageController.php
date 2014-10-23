@@ -17,7 +17,7 @@ class MessageController extends BaseController {
             $query['page'] = 1;
 
         if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
+            $query['column_id'] = 5;
         }
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
@@ -57,7 +57,7 @@ class MessageController extends BaseController {
             return Redirect::to('message')->withErrors($validator)->withInput($query);
         }
         if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
+            $query['column_id'] = 5;
         }
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
@@ -105,9 +105,10 @@ class MessageController extends BaseController {
      */
     public function show($id)
     {
+        $query = Input::all();
         $message = Message::find($id);
         if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
+            $query['column_id'] = 5;
         }
         $message->status = 1;
         $message->save();

@@ -1,5 +1,5 @@
 @extends('Index.master')
-@section('title')重点训练 @stop
+@section('title')原创题库 @stop
 
 @section('content')
 <div class="container-column wrap">
