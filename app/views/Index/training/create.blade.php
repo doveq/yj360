@@ -41,6 +41,12 @@
               <td>{{ Form::text('name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'width:200px'))}}</td>
             </tr>
             <tr>
+              <td style="width:20%;text-align:right;">{{ Form::label('inputClassid', '* 对应班级', array('class' => 'tylabel')) }}</td>
+              <td>
+                {{ Form::select('class_id', $classeses, '', array('class' => 'tyinput', 'id' => 'inputClassid','style' => 'width:200px')) }}
+              </td>
+            </tr>
+            <tr>
               <td></td>
               <td>
                 {{ Form::hidden('column_id', $query['column_id'], array('class' => '')) }}

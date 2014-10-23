@@ -13,7 +13,7 @@ class ClassmateController extends BaseController {
      */
     public function index()
     {
-
+echo "haha";
     }
 
 
@@ -211,5 +211,31 @@ class ClassmateController extends BaseController {
         }
     }
 
+    public function addClass()
+    {
+        $query = Input::all();
+        // dd(Session::get('uid'));
+        // $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        $user = User::find(Session::get('uid'));
+        if (isset($query['teacher_name']) && $query['teacher_name']!= '') {
+            if (strlen(Input::get('teacher_name'))>0) {
+                $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->select('id')->get()->toArray();
+                // $q->whereIn('teacherid', array_flatten($teachers));
+            }
+            if (!empty($teachers)) {
+                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->get();
+            }
+            // $classes = Classes::where(function($q){
+
+            //     if (strlen(Input::get('class_type'))>0) {
+
+            //     }
+            // })->get();
+        }
+
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns'));
+
+    }
 
 }

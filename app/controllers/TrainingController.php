@@ -30,11 +30,17 @@ class TrainingController extends BaseController {
     public function create()
     {
         $user_id = Session::get('uid');
-        $classes_num = Classes::whereTeacherid($user_id)->get()->count();
+        $classes = Classes::whereTeacherid($user_id)->select('id', 'name')->get();
+        $classeses = array();
+        foreach ($classes as $key => $c) {
+            $classeses[$c->id] = $c->name;
+        }
+
+        $classes_num = $classes->count();
         $trainings_num = Training::whereUserId($user_id)->get()->count();
         $query = Input::only('column_id');
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
-        return $this->indexView('training.create', compact('columns', 'query', 'classes_num', 'trainings_num'));
+        return $this->indexView('training.create', compact('columns', 'query', 'classeses', 'classes_num', 'trainings_num'));
     }
 
 
@@ -45,7 +51,7 @@ class TrainingController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('name', 'column_id');
+        $query = Input::only('name', 'column_id', 'class_id');
         $validator = Validator::make($query,
             array(
                 'name' => 'alpha_dash',
@@ -60,6 +66,7 @@ class TrainingController extends BaseController {
         $training = new Training();
         $training->user_id = Session::get('uid');
         $training->name = $query['name'];
+        $training->class_id = $query['class_id'];
         $training->created_at = date("Y-m-d H:i:s");
         if ($training->save()) {
             return Redirect::to('training?column_id='. $query['column_id']);

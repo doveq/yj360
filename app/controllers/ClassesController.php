@@ -20,10 +20,10 @@ class ClassesController extends BaseController {
         }
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
-        if (!$user_type) $user_type = 1;
+        // dd($user_type);
+        if (strlen($user_type)==0) $user_type = 1;
         $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
@@ -42,7 +42,8 @@ class ClassesController extends BaseController {
     {
         //班级数
         $user_id = Session::get('uid');
-        $classes_num = Classes::whereTeacherid($user_id)->get()->count();
+        $classes = Classes::whereTeacherid($user_id)->select('id', 'name')->get();
+        $classes_num = $classes->count();
         $trainings_num = Training::whereUserId($user_id)->get()->count();
         $query = Input::only('column_id');
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();

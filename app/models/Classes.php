@@ -58,4 +58,9 @@ class Classes extends Eloquent {
     {
         return $this->belongsTo('Column');
     }
+
+    public function trainings()
+    {
+        return $this->hasMany('Training');
+    }
 }

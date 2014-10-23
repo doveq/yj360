@@ -124,6 +124,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     //班级同学对应
     Route::resource('classmate', 'ClassmateController');
     Route::post('/classmate/postDelete', 'ClassmateController@postDelete');
+    Route::any('/classm/add_class', 'ClassmateController@addClass');
     Route::get('/training_result', 'TrainingResultController@index');
     //消息
     Route::resource('message', 'MessageController');

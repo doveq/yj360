@@ -67,7 +67,7 @@
               <td>
                 <button class="btn_publish" data-id="{{$list->id}}" data-status="{{$list->status}}">{{$statusEnum[$list->status]}}</button>
               </td>
-              <td>选题 <a href="/training_result?training_id={{$list->id}}&column_id={{$query['column_id']}}">查看练习情况</a></td>
+              <td><a href="javascript:void(0);" class="choose_question">选题</a> <a href="/training_result?training_id={{$list->id}}&column_id={{$query['column_id']}}">查看练习情况</a></td>
             </tr>
             @endforeach
           </tbody>
@@ -78,8 +78,20 @@
 @stop
 
 @section('js')
+<script type="text/javascript" src="/assets/layer/layer.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function () {
+  $(".choose_question").on('click', function(){
+    $.layer({
+        type: 1,
+        title: false, //不显示默认标题栏
+        shade: [0], //不显示遮罩
+        area: ['400px', '300px'],
+        page: {html: '请选择题库:<br/>原创题库 我的收藏'}
+    });
+  });
+
   $(".btn_publish").on('click', function() {
     var $this = $(this);
     var training_id = $this.data("id");
