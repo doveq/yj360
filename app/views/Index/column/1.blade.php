@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container-column wrap">
-
+  @include('index.column.nav')
   <div class="wrap-right">
       <div class="tabtool" style="margin-left:-30px;margin-bottom:10px;background-color:#f1f1f1;height:27px;padding-left:30px;border-bottom:1px solid #e0e0e0">
 {{$column->name}}
