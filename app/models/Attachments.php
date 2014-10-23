@@ -4,11 +4,11 @@
 	附件集中处理
 */
 
-class Attachments  
+class Attachments
 {
 
 	protected $table = 'attachments';
-	
+
 	// 附件类型
 	public $typeEnum = array('recorder' => 1, 'topic' => 2);
 
@@ -61,7 +61,7 @@ class Attachments
 			else
 			{
 				$id = DB::table($this->table)->insertGetid(array(
-					   'uid' =>  $uid, 
+					   'uid' =>  $uid,
 	    			   'qid' => $qid,
 	    			   'type' => $_type,
 	    			   'created_at' => date('Y-m-d H:i:s'),
@@ -75,7 +75,7 @@ class Attachments
 		else
 		{
 			$id = DB::table($this->table)->insertGetid(array(
-					   'uid' =>  $uid, 
+					   'uid' =>  $uid,
 	    			   'qid' => $qid,
 	    			   'type' => $_type,
 	    			   'created_at' => date('Y-m-d H:i:s'),
@@ -103,7 +103,7 @@ class Attachments
 	{
 		$route = $this->getRecorderRoute($uid, $qid, $type);
 
-		if( !file_exists($route['folder']) ) 
+		if( !file_exists($route['folder']) )
 		{
 		  if( !mkdir($route['folder'], 0777, true) )
 		  	  return -1;
@@ -119,8 +119,8 @@ class Attachments
 		return $attid;
 	}
 
-	/*  获取录音路径 
-		return  
+	/*  获取录音路径
+		return
 			folder: 保存目录绝对路径
 			name: 生成的文件名
 			path: 文件绝对路径
@@ -163,9 +163,10 @@ class Attachments
 
 		// 生成文件名
 		$name = md5( $qid . uniqid() ) . '.jpg';
-		
-		$route = $this->getTopicRoute($qid, $name);
 
+		$route = $this->getTopicRoute($qid, $name);
+		print_r($route);
+		exit;
 		if(!is_dir($route['folder']))
             mkdir($route['folder'], 0777, true);
 
@@ -182,7 +183,7 @@ class Attachments
 	{
 		// 生成文件名
 		$name = md5( $qid . uniqid() ) . '.' . $type;
-		
+
 		$route = $this->getTopicRoute($qid, $name);
 
 		if(!is_dir($route['folder']))
@@ -197,8 +198,8 @@ class Attachments
 		return $attid;
 	}
 
-	/*  获取问题附件路径 
-		return  
+	/*  获取问题附件路径
+		return
 			folder: 保存目录绝对路径
 			path: 文件绝对路径
 			url: url访问路径
