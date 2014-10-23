@@ -139,6 +139,9 @@ Route::group(array('before' => 'indexLogin'), function(){
     //初级
     Route::get('/beginner', 'BeginnerController@index');
     Route::get('/column', 'ColumnController@index');
+    //产品商店
+    Route::get('/products', 'ProductsController@index');
+
     //flash播放
     Route::get('/view_flv', 'ViewController@flv');
 

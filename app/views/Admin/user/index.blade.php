@@ -53,7 +53,12 @@
             <td>{{$list->id}}</td>
             <td>{{$list->name}}</td>
             <td>{{$list->tel}}</td>
-            <td>{{$typeEnum[$list->type]}}</td>
+            <td>
+              {{$typeEnum[$list->type]}}
+              @if ($list->is_certificate == 1)
+              <a href="{{Config::get('app.teacher_url').'/'.$list->id}}" target="_blank"><span class="icon-credit-card"></span></a>
+              @endif
+            </td>
             <td>
               @if ($list->status == 1)
               <span class="label label-success">{{$statusEnum[$list->status]}}</span>

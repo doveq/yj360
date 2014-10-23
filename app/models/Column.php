@@ -60,4 +60,21 @@ class Column extends Eloquent {
 
         return $data;
     }
+
+    //返回所有子科目id
+    public function allchild($columnid, &$data = array())
+    {
+
+        $info = $this->whereParentId($columnid)->whereStatus(1)->select('id')->get();
+        if ($info) {
+            $i = array_flatten($info->toArray());
+            $data = array_merge($data, $i);
+            foreach ($i as $key => $value) {
+                $this->allchild($value, $data);
+            }
+        }
+        return $data;
+
+
+    }
 }

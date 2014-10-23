@@ -737,3 +737,25 @@ li.index-list-more a {
 	padding:5px;
 	color:#FC9641;
 }
+.product-list {
+	padding-top: 30px;
+}
+.product-box {
+	height:150px;
+	width:200px;
+	border: 5px solid #FF7C92;
+	padding:5px;
+	background:url("/assets/img/bg-product.png") repeat 0 0;
+}
+
+.product-txt {
+	padding: 15px;
+	color:#ffffff;
+	text-align: center;
+}
+
+.product-buy {
+	background-color: #fff;
+    margin: 0 10px 10px 0;
+    padding: 5px;
+}

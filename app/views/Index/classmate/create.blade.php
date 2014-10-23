@@ -29,7 +29,7 @@
       <div class="clear"></div>
 
       <div>
-          {{ Form::open(array('url' => '/classmate/', 'method' => 'post')) }}
+          {{ Form::open(array('url' => '/classmate?column_id='.$query['column_id'], 'method' => 'post')) }}
 
         <table class="stable" border="0" cellpadding="0" cellspacing="0">
           <thead>

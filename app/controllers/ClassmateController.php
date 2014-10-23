@@ -71,7 +71,7 @@ class ClassmateController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('class_id', 'student_id');
+        $query = Input::only('class_id', 'student_id', 'column_id');
         $validator = Validator::make($query,
             array(
                 'class_id'   => 'numeric|required',
@@ -106,7 +106,7 @@ class ClassmateController extends BaseController {
                 )
             );
         }
-        return Redirect::to('/classes/' . $query['class_id']);
+        return Redirect::to('/classes/' . $query['class_id']."?column_id=".$query['column_id']);
     }
 
 
@@ -142,7 +142,7 @@ class ClassmateController extends BaseController {
      */
     public function update($id)
     {
-        $query = Input::only('status');
+        $query = Input::only('status', 'column_id');
 
         $validator = Validator::make($query ,
             array(
@@ -161,7 +161,7 @@ class ClassmateController extends BaseController {
 
         $classmate->save();
 
-        return Redirect::to('/admin/classmate?class_id=' . $classmate->class_id);
+        return Redirect::to('/admin/classmate?class_id=' . $classmate->class_id."&column_id=".$query['column_id']);
     }
 
 
