@@ -55,6 +55,16 @@ class UserController extends \BaseController {
             }
         })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
+        $att = new Attachments();
+        foreach ($lists as $key => &$value) 
+        {
+            if($value->type == 1 && $value->is_certificate == 1)
+            {
+                $route = $att->getTeacherRoute($value['id']);
+                $value->certificate = $route['url'];
+            }
+        }
+
         $statusEnum = $this->statusEnum;
         $typeEnum = $this->typeEnum;
         return $this->adminView('user.index', compact('query', 'lists', 'statusEnum', 'typeEnum'));

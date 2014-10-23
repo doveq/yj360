@@ -5,6 +5,10 @@
   @include('Admin.user.nav')
 @stop
 
+@section('css')
+  <link href="/assets/lightbox/css/lightbox.css" rel="stylesheet" />
+@stop
+
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
@@ -53,7 +57,12 @@
             <td>{{$list->id}}</td>
             <td>{{$list->name}}</td>
             <td>{{$list->tel}}</td>
-            <td>{{$typeEnum[$list->type]}}</td>
+            <td>
+                {{$typeEnum[$list->type]}}
+                @if($list->type == 1 && $list->is_certificate == 1)
+                  <a href="{{$list->certificate}}" data-lightbox="image-{{$list->id}}" data-title="{{$list->name}}教师证">[教师证]</a>
+                @endif
+            </td>
             <td>
               @if ($list->status == 1)
               <span class="label label-success">{{$statusEnum[$list->status]}}</span>
@@ -128,6 +137,7 @@
 @stop
 
 @section('js')
+<script src="/assets/lightbox/js/lightbox.min.js"></script>
 <script type="text/javascript">
 
 $(function(){
