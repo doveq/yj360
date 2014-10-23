@@ -45,9 +45,9 @@
             <tr id="{{$list->pivot->id}}">
               <td>{{Form::checkbox('classmate_id[]', $list->pivot->id)}}</td>
               <td>{{$list->name}}</td>
-              <td>{{$list->gender}}</td>
+              <td>{{$genderEnum[$list->gender]}}</td>
               <td>{{$list->tel}}</td>
-              <td><a href="/message/create?receiver_id={{$list->id}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
+              <td><a href="/message/create?receiver_id={{$list->id}}&column_id={{$query['column_id']}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
             </tr>
             @endforeach
           </tbody>

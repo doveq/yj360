@@ -3,6 +3,7 @@
 class ClassesController extends BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '发布', '1' => '撤销发布');
+    public $genderEnum = array('f' => '女', 'm' => '男');
     public $pageSize = 30;
     /**
      * Display a listing of the resource.
@@ -26,8 +27,9 @@ class ClassesController extends BaseController {
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
+        $genderEnum = $this->genderEnum;
         // dd($user_type);
-        return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'classes', 'trainings', 'query', 'columns'));
+        return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'genderEnum', 'classes', 'trainings', 'query', 'columns'));
     }
 
 
@@ -90,11 +92,14 @@ class ClassesController extends BaseController {
     {
         $query = Input::all();
         $classes = Classes::whereId($id)->whereTeacherid(Session::get('uid'))->first();
+        // dd($classes->column_id);
         if (!isset($query['column_id'])) {
             $query['column_id'] = $classes->column_id;
         }
         $columns = Column::find($classes->column_id)->child()->whereStatus(1)->get();
-        return $this->indexView('classes.show', compact("classes", 'columns', 'query'));
+
+        $genderEnum = $this->genderEnum;
+        return $this->indexView('classes.show', compact("classes", 'columns', 'query', 'genderEnum'));
     }
 
 

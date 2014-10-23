@@ -58,10 +58,12 @@
             <td>{{$list->name}}</td>
             <td>{{$list->tel}}</td>
             <td>
+            
                 {{$typeEnum[$list->type]}}
                 @if($list->type == 1 && $list->is_certificate == 1)
-                  <a href="{{$list->certificate}}" data-lightbox="image-{{$list->id}}" data-title="{{$list->name}}教师证">[教师证]</a>
+                  <a href="{{$list->certificate}}" data-lightbox="image-{{$list->id}}" data-title="{{$list->name}}教师证"><span class="icon-credit-card"></span></a>
                 @endif
+
             </td>
             <td>
               @if ($list->status == 1)
