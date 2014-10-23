@@ -1,5 +1,5 @@
 @extends('Index.master')
-@section('title')我的班级 @stop
+@section('title')我的题库 @stop
 
 @section('content')
 <div class="container-column wrap">
@@ -12,8 +12,12 @@
             <li><a href="/column?id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
             @endforeach
           </ul>
+          @if (Session::get('utype') == 1)
           <div class="sort-bb"></div>
-          <div class="sort-item sort-wbj sort-wbj-act"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
+          <div class="sort-item sort-wbj sort-wbj-act"><a href="/uploadbank?column_id={{$query['column_id']}}">原创题库</a><div class="sort-sj"></div></div>
+          @endif
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-wbj"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
           <div class="sort-item sort-sd"><a href="#">产品商店</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
