@@ -39,14 +39,15 @@ class TopicController extends BaseController {
 			Session::put('qlist', $qlist);
 			Session::put('column', $column);
 			Session::put('uniqid', uniqid());
+			Session::save();
 		}
 		else
 		{
-			$qlist = Session::get('qlist');
+			$qlist = Session::get('qlist') ? Session::get('qlist') : array();
 		}
 		
 		// 题目id不对则设为第一题
-		if( !is_numeric($id) || !array_key_exists($id, $qlist) )
+		if( !empty($qlist) && (!is_numeric($id) || !array_key_exists($id, $qlist)) )
 		{
 			reset($qlist);
 			$id = key($qlist);
@@ -142,7 +143,7 @@ class TopicController extends BaseController {
 						$info = array();
 						$info['uid'] = $uid;
 						$info['column'] = Session::get('column');
-						$info['uniqid'] = $uniqid;
+						$info['uniqid'] = $uniqid ? $uniqid : uniqid();
 						$info['qlist'] = $qlist;
 
 
@@ -151,6 +152,7 @@ class TopicController extends BaseController {
 						Session::forget('column');
 						Session::forget('uniqid');
 						Session::forget('qlist');
+						Session::save();
 
 	        			//return $this->indexPrompt("操作成功", "答题完成", $url = "/");
 	        			header("Location: /topic/result?uniqid={$uniqid}&column={$column}");
@@ -178,8 +180,25 @@ class TopicController extends BaseController {
 	public function result()
 	{
 		$uniqid = Input::get('uniqid');
-		$info = array();
-		return $this->indexView('topic_result', $info);
+		
+		$data = array();
+		$topic = new Topic();
+		$list = $topic->getResult($uniqid);
+
+		$data['rightNum'] = 0;
+		$data['errorNum'] = 0;
+		foreach ($list as $key => $value) 
+		{
+			 if($value['is_true'] == 1)
+			 	$data['rightNum']++;
+			 else
+			 	$data['errorNum']++;
+		}
+		
+		$data['list'] = $list;
+		$data['scores'] =  (100 / count($list)) * $data['rightNum'];
+
+		return $this->indexView('topic_result',  $data);
 	}
 
 }

@@ -9,6 +9,7 @@
     <script type="text/javascript" src="/assets/recorder/js/swfobject.js"></script>
     <script type="text/javascript" src="/assets/recorder/js/recorder.js"></script>
     <script type="text/javascript" src="/assets/recorder/js/main.js"></script>
+    <script src="/assets/jquery/jquery.cookie.js"></script>
 @stop
 
 @section('content')
@@ -144,7 +145,7 @@
         @if( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
         <div id="topic-tools">
             @if( $q['type'] == 2)
-            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="topicSubmit('next');"></a>
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
             @endif
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
@@ -158,9 +159,9 @@
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
             <a class="topic-btn" id="topic-btn-5" hint="详解" href="javascript:;" onclick="disabuse();"></a>
             <div class="topic-btn" id="topic-btn-checkbox">
-                <input type="checkbox" name="sex" id="checkbox-1" /> <label for="checkbox-1">答错后自动查看详解</label>
+                <input type="checkbox" name="ashow" id="checkbox-1" onchange="topauto();" /> <label for="checkbox-1">答错后自动查看详解</label>
                 <br>
-                <input type="checkbox" name="sex" id="checkbox-2" /> <label for="checkbox-2">答对后自动跳转到下一题</label>
+                <input type="checkbox" name="ato" id="checkbox-2" onchange="topauto();" /> <label for="checkbox-2">答对后自动跳转到下一题</label>
             </div>
             @endif
             @if( $q['type'] == 6 || $q['type'] == 7)
@@ -219,7 +220,26 @@
 
             initPlay();
 
+            if( $.cookie('ashow') ==1)
+                $("input[name=ashow]").prop("checked", true);
+
+            if( $.cookie('ato') ==1)
+                $("input[name=ato]").prop("checked", true);
+
         });
+
+        function topauto()
+        {
+             if( $("input[name=ashow]").is(':checked') )
+                $.cookie('ashow', '1', { expires: 365, path: '/' });
+            else
+                $.cookie('ashow', '0', { expires: 365, path: '/' });
+
+            if( $("input[name=ato]").is(':checked') )
+                $.cookie('ato', '1', { expires: 365, path: '/' });
+            else
+                $.cookie('ato', '0', { expires: 365, path: '/' });
+        }
 
         // 播放题干音和提示音
         function initPlay()
@@ -304,11 +324,22 @@
             {
                 console.log(err);
                 $('#isTrue').val('-1');
+
+                if( $("input[name=ashow]").is(':checked') )
+                {
+                    disabuse();
+                }
             }
             else
             {
                 console.log('all right!');
                 $('#isTrue').val('1');
+
+                if( $("input[name=ato]").is(':checked') )
+                {
+                    $('#act').val('next');
+                    $('#topicForm').submit();
+                }
             }
         }
 

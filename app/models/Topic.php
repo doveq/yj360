@@ -349,10 +349,15 @@ class Topic  {
 	}
 
 	/* 获取答题统计 */
-	public function getResultStats($uniqid)
+	public function getResult($uniqid)
 	{
-		$info = DB::table('result_log')->where('uniqid', $uniqid)->get();
+		$info = DB::table('result_log')->where('uniqid', $uniqid)->orderBy('id', 'ASC')->get();
+		foreach($info as &$item)
+		{
+			$item = (array)$item;
+		}
 
+		return (array)$info;
 	}
 
 }
