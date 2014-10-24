@@ -201,4 +201,6 @@ class TopicController extends BaseController {
 		return $this->indexView('topic_result',  $data);
 	}
 
+
+
 }

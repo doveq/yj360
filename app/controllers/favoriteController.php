@@ -10,12 +10,25 @@ class FavoriteController extends BaseController
     	
     }
 
-	/* 显示测试页面 */
 	public function index()
 	{
-		//return $this->indexView('recorder');
+		$info = array();
+		$f = new Favorite();
+		$list = $f->getList( array('uid' => Session::get('uid'), 'limit' => 15 ) );
+		return $this->indexView('profile.favorite', array('list' => $list) );
 	}
 
+	public function doDel()
+	{
+		$id = Input::get('id');
+		if(!is_numeric($id))
+			return $this->indexPrompt("", "错误的ID号", $url = "/favorite");
+
+		$f = new Favorite();
+		$f->del( array('uid' => Session::get('uid'), 'id' => $id ) );
+
+		return $this->indexPrompt("", "删除收藏成功", $url = "/favorite");
+	}
 
 	public function ajax()
 	{

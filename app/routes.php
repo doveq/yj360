@@ -136,7 +136,11 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::post('/topic/post', 'topicController@post');
     Route::get('/topic/result', 'topicController@result');
 
+    // 收藏页面
+    Route::get('/favorite', 'FavoriteController@index');
+    Route::get('/favorite/del', 'FavoriteController@doDel');
     Route::get('/favorite/ajax', 'FavoriteController@ajax');
+
     //初级
     Route::get('/beginner', 'BeginnerController@index');
     Route::get('/column', 'ColumnController@index');
@@ -155,6 +159,14 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/link', 'IndexController@link');
     Route::get('/follow', 'IndexController@follow');
 
+    // 个人中心
+    Route::get('/profile', 'ProfileController@index');
+    Route::post('/doProfile', 'ProfileController@doProfile');
+
+    // 错题记录
+    Route::get('/result', 'resultController@index');
+    Route::get('/result/del', 'ResultController@doDel');
+    
 });
 
 

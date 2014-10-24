@@ -1,13 +1,13 @@
 <?php
 
-class Favorite extends Eloquent {
+class Result extends Eloquent {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'favorite';
+    protected $table = 'result_log';
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -47,33 +47,20 @@ class Favorite extends Eloquent {
     
     public function question()
     {
-        return $this->belongsTo('Question');
-    }
-
-    public function add($info)
-    {
-        $count = $this->where('user_id', '=', $info['uid'])->where('question_id', '=', $info['qid'])->count();
-
-        if(!$count)
-        {
-            $this->user_id = $info['uid'];
-            $this->question_id = $info['qid'];
-            $this->save();
-        }
-
-        return 1;
+        return $this->belongsTo('Question', 'qid');
     }
 
     public function del($info)
     {
-        $this->where('user_id', '=', $info['uid'])->where('id', '=', $info['id'])->delete();
+        $this->where('uid', '=', $info['uid'])->where('id', '=', $info['id'])->delete();
         return 1;
     }
 
 
     public function getList($info)
     {
-        $list = $this->where('user_id', '=', $info['uid'])->take($info['limit'])->get();
+        $list = $this->where('uid', '=', $info['uid'])->where('is_true', '<>', 1)->take($info['limit'])->get();
         return $list;
     }
+
 }

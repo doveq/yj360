@@ -60,6 +60,10 @@ echo "haha";
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->userstatusEnum;
         $genderEnum = $this->genderEnum;
+
+        // print_r(compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum', 'columns'));
+        // exit;
+
         return $this->indexView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum', 'columns'));
     }
 

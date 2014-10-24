@@ -759,3 +759,46 @@ li.index-list-more a {
     margin: 0 10px 10px 0;
     padding: 5px;
 }
+.avatar-box {
+	text-align: center;
+}
+.table-2{
+	width: 100%;
+}
+.table-2 th{
+	text-align: left;
+	background-color: #f1f1f1;
+	padding:15px;
+}
+.table-2 .lable{
+	width: 150px;
+	text-align: right;
+	padding:20px;
+}
+.table-2 .selbtn{
+	background: url("/assets/img/selbtn.jpg") no-repeat 0 0;
+	border:none;
+	height:32px; width:80px;}
+.table-2 .file{ position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:400px; }
+.table-2-del {
+	width: 50px;
+}
+.table-2-sp{
+	border: 1px dashed #e1e1e1;
+}
+.tytd{
+	padding:10px 15px;
+}
+.tytd a {
+	color: #000;
+}
+a.tyadel {
+	color: #bb2413;
+}
+
+.pfbnt{
+	width: 146px;
+	height: 44px;
+	background: url("/assets/img/pfbtn.png") no-repeat 0 0;
+	border: none;
+}
