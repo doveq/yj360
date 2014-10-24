@@ -21,8 +21,10 @@
 
       		<input type="hidden" id="type" name="type" value="{{$type}}" />
 
+      		@include('Admin.topic.topic_type')
+
       		 <div class="form-group">
-      		 	<label class="col-sm-2 control-label">分类</label>
+      		 	<label class="col-sm-2 control-label">题库</label>
       		 	<div class="col-sm-10" id="sort">
 			    {{Form::select('sort1', array(), '', array('class' => 'sort1', 'data-value' => $sort1))}}
 			    {{Form::select('sort2', array(), '', array('class' => 'sort2', 'data-value' => $sort2))}}
@@ -48,7 +50,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">题干图片(TP)</label>
+			    <label class="col-sm-2 control-label">提干提示音(TS)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['img_url']))
 		      	  <div>
@@ -66,7 +68,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">提干音(TM)</label>
+			    <label class="col-sm-2 control-label">题干图片(TP)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['sound_url']))
 			      <div>
@@ -84,7 +86,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">提干提示音(TS)</label>
+			    <label class="col-sm-2 control-label">提干音(TM)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['hint_url']))
 			      <div>
@@ -114,7 +116,9 @@
 			      @endif
 
 			      <input type="text" class="form-control" name="answers_txt[]" value="{{$a[$i]['txt'] or ''}}" />
-			      
+			      答案解释
+			      <input type="text" class="form-control" name="answers_explain[]" value="{{$a[$i]['explain'] or ''}}" />
+			      <div class="clearfix"></div>
 			      @if(isset($a[$i]['img_url']))
 			      <div>
 			      	<input type="hidden" name="answers_img_id[]" value="{{$a[$i]['img_att_id']}}" />
@@ -175,7 +179,7 @@
 			  <div class="form-group">
 			    <label for="inputPassword" class="col-sm-3 control-label"></label>
 			    <div class="col-sm-9">
-			      	<button type="submit" class="btn btn-success">保存编辑</button>
+			      	<button type="submit" class="btn btn-success">提交保存</button>
 			    </div>
 			  </div>
 			</form>
@@ -215,6 +219,16 @@
 			  });
 
 			UE.getEditor('disabuse');
+
+			$(".form-horizontal").submit(function(){
+				if($('input[name=txt]').val() == "" || $('select[name=sort1]').val() == 0)
+				{
+					alert("题库和题干必须选择和填写");
+					return false;
+				}
+				else
+					return true;
+			});
 		});
 	</script>
 @stop

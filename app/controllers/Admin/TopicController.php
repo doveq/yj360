@@ -121,7 +121,7 @@ class TopicController extends \BaseController {
 			$sort = $inputs['sort1'];
 
 		if( $sort == 0)
-			return $this->adminPrompt("操作失败", '必须选择分类', $url = "topic/add");
+			return $this->adminPrompt("操作失败", '必须选择分类', $url = "topic/add?type=1");
 
 		$topic = new Topic();
 		$qid = $topic->add($inputs);
@@ -188,6 +188,9 @@ class TopicController extends \BaseController {
 				$answers = array();
 				if($atxt)
 					$answers['txt'] = $atxt;
+
+				if( !empty($inputs['answers_explain'][$k]) )
+					$answers['explain'] = $inputs['answers_explain'][$k];
 
 				if( !empty($inputs['answers_right']) && in_array($k, $inputs['answers_right']) )
 					$answers['is_right'] = 1;
@@ -259,6 +262,8 @@ class TopicController extends \BaseController {
 			Session::put('sort'.$v, $info['sort' . $v]);
 		}
 
+		// 页面使用
+		$_GET['type'] = $type;
 
 		if($type == 1 || $type == 2)
 			return $this->adminView('topic.topic_1', $info);
@@ -403,6 +408,9 @@ class TopicController extends \BaseController {
 				if($atxt)
 					$answers['txt'] = $atxt;
 
+				if( !empty($inputs['answers_explain'][$k]) )
+					$answers['explain'] = $inputs['answers_explain'][$k];
+				
 				if( !empty($inputs['answers_right']) && in_array($aid, $inputs['answers_right']) )
 					$answers['is_right'] = 1;
 				else

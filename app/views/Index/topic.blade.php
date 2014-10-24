@@ -22,6 +22,7 @@
 
             <div id="answers">
                     {{-- 单选，多选，判断 --}}
+                    <?php $explain =""; ?>
                     @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
                         <table class="answers-list">
                         @if(!empty($a))
@@ -37,6 +38,10 @@
 
                                         @if($q['type'] != 3)
                                         <b>{{$flag[$k]}}.</b>
+                                        <?php
+                                            if(!empty($item['explain'])) 
+                                                $explain .= $flag[$k] . '. ' . $item['explain'] . '<br/>';  
+                                        ?>
                                         @endif
 
                                         <div class="flag-true"></div>
@@ -89,6 +94,7 @@
                     <div id="disabuse-tit">答案详解</div>
                     <div id="disabuse-con">
                         {{$q['disabuse']}}
+                        <?php echo $explain; ?>
                     </div>
                 </div>
                 <div id="disabuse-flag" onclick="disabuse();"></div>

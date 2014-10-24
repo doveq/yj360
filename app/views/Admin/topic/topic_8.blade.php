@@ -20,9 +20,9 @@
       		@endif
 
       		<input type="hidden" id="type" name="type" value="{{$type}}" />
-
+      		 @include('Admin.topic.topic_type')
       		 <div class="form-group">
-      		 	<label class="col-sm-2 control-label">分类</label>
+      		 	<label class="col-sm-2 control-label">题库</label>
       		 	<div class="col-sm-10" id="sort">
 			    {{Form::select('sort1', array(), '', array('class' => 'sort1', 'data-value' => $sort1))}}
 			    {{Form::select('sort2', array(), '', array('class' => 'sort2', 'data-value' => $sort2))}}
@@ -191,7 +191,7 @@
 			  <div class="form-group">
 			    <label for="inputPassword" class="col-sm-3 control-label"></label>
 			    <div class="col-sm-9">
-			      	<button type="submit" class="btn btn-success">保存编辑</button>
+			      	<button type="submit" class="btn btn-success">提交保存</button>
 			    </div>
 			  </div>
 			</form>
@@ -231,6 +231,16 @@
 			  });
 
 			UE.getEditor('disabuse');
+
+			$(".form-horizontal").submit(function(){
+				if($('input[name=txt]').val() == "" || $('select[name=sort1]').val() == 0)
+				{
+					alert("题库和题干必须选择和填写");
+					return false;
+				}
+				else
+					return true;
+			});
 		});
 	</script>
 @stop

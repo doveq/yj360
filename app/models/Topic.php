@@ -193,6 +193,9 @@ class Topic  {
 		if(isset($data['txt']) && !empty($data['txt']))
 			$info['txt'] = $data['txt'];
 
+		if(isset($data['explain']) && !empty($data['explain']))
+			$info['explain'] = $data['explain'];
+
 		if(isset($data['hint']) && is_numeric($data['hint']))
 			$info['hint'] = $data['hint'];
 
@@ -264,6 +267,9 @@ class Topic  {
 		
 		if(isset($data['txt']) && !empty($data['txt']))
 			$info['txt'] = $data['txt'];
+
+		if(isset($data['explain']) && !empty($data['explain']))
+			$info['explain'] = $data['explain'];
 
 		if(isset($data['sound']) && is_numeric($data['sound']))
 			$info['sound'] = $data['sound'];
