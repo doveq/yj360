@@ -91,7 +91,7 @@
                     @elseif( $q['type'] == 8)
                          {{$a[0]['txt']}}
                     @elseif( $q['type'] == 9 || $q['type'] == 10 )
-                        <embed src="{{$q['flash_url'] or ''}}" allowFullScreen="true" quality="high" width="100%" height="500" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+                        <embed src="{{$q['flash_url'] or ''}}" allowFullScreen="true" quality="high" width="500" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
                     @endif 
 
             </div>
@@ -187,7 +187,7 @@
             @endif
 
             @if( !empty($_GET['vetting']) )
-                <a class="topic-btn" href="javascript:;" onclick="vetting();">审核</a>
+                <a class="topic-btn" id="topic-btn-15" href="javascript:;" onclick="vetting();">审核</a>
             @endif
 
             <a class="topic-btn" id="topic-btn-6" hint="显示答题卡" href="javascript:;" onclick="showList();"></a>
