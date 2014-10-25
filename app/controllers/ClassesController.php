@@ -21,7 +21,7 @@ class ClassesController extends BaseController {
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
         // dd($user_type);
-        if (strlen($user_type)==0) $user_type = 1;
+        //if (strlen($user_type)==0) $user_type = 1;
         $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
@@ -77,6 +77,7 @@ class ClassesController extends BaseController {
         $training->name = $query['name'];
         $training->column_id = $query['column_id'];
         $training->created_at = date("Y-m-d H:i:s");
+        $training->status = 1; // 默认上线
         if ($training->save()) {
             return Redirect::to('classes?column_id='. $query['column_id']);
         }

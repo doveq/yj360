@@ -32,7 +32,8 @@
       <table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #f1f1f1; width:100%;">
         <tr><td style="background-color:#00bbac;padding:10px;">搜索加入</td></tr>
         <tr>
-          <td style="width:20%;text-align:right;">班级类别 {{ Form::select('class_type', array('3' => '初级','4' => '中级'), '', array('class' => 'tyinput', 'id' => 'inputClassid','style' => 'width:200px')) }}
+          <td style="width:20%;text-align:right;">
+          班级类别 {{ Form::select('class_type', array('3' => '初级'), '', array('class' => 'tyinput', 'id' => 'inputClassid','style' => 'width:200px')) }}
           {{ Form::text('teacher_name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'width:200px'))}}
 
             {{ Form::hidden('column_id', $query['column_id'], array('class' => '')) }}
