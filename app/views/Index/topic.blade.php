@@ -250,7 +250,6 @@
         // 播放题干音和提示音
         function initPlay()
         {
-            /*
             new MediaElementPlayer('#q-hint', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function(e) {
@@ -260,8 +259,8 @@
                     mediaElement.play();
                 }
             });
-            */
-
+            
+            /*
             new MediaElementPlayer('#q-sound', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function(e) {
@@ -271,6 +270,7 @@
                     mediaElement.play();
                 }
             });
+            */
         }
 
         function hintPlay()
@@ -325,6 +325,11 @@
 
 
             $('#result').val(result);
+
+            $('input[name=daan]').each(function(){
+                console.log("disabled");
+                $(this).attr("disabled", "disabled");
+            });
 
             if(err.length > 0)
             {

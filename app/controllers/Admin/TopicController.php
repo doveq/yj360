@@ -13,7 +13,7 @@ use Sort;
 /* 原始题库功能 */
 class TopicController extends \BaseController {
 
-	public $statusEnum = array('' => '所有状态', '0' => '无效', '1' => '审核通过', '-1' => '审核拒绝');
+	public $statusEnum = array('' => '所有状态', '0' => '未审核', '1' => '审核通过', '-1' => '审核未通过');
 	public $typeEnum = array('1' => '单选择题', '2' => '多选择题',  '3' => '判断题', '4' => '填空题', '5' => '写作题', '6' => '模唱', '7' => '视唱', '8' => '视频', '9' => '教材', '10' => '游戏');
 	public $flag = array(0 => 'A', 1 => 'B', 2 => 'C', 3 => 'D');
 
@@ -29,7 +29,7 @@ class TopicController extends \BaseController {
 	{
 		$pageSize = 30;  // 每页显示条数
 
-        $query = Input::only('txt', 'source', 'type', 'status', 'page');
+        $query = Input::only('txt', 'source', 'type', 'status', 'page', 'sort1', 'sort2', 'sort3', 'sort4', 'sort5');
         $query['pageSize'] = $pageSize;
         //$query = array_filter($query); // 删除空值
 
@@ -37,6 +37,18 @@ class TopicController extends \BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
+        // 处理分类
+		$query['sort'] = 0;
+		if( !empty($query['sort5']) )
+			$query['sort'] = $query['sort5'];
+		elseif( !empty($query['sort4']) )
+			$query['sort'] = $query['sort4'];
+		elseif( !empty($query['sort3']) )
+			$query['sort'] = $query['sort3'];
+		elseif( !empty($query['sort2']) )
+			$query['sort'] = $query['sort2'];
+		elseif( !empty($query['sort1']) )
+			$query['sort'] = $query['sort1'];
 
         $topic = new Topic();
         $info = $topic->getList($query);
@@ -464,7 +476,8 @@ class TopicController extends \BaseController {
 			}
 		}
 
-		return $this->adminPrompt("操作成功", '题目编辑成功。', $url = "topic/edit?id=" . $qid);
+		//return $this->adminPrompt("操作成功", '题目编辑成功。', $url = "topic/edit?id=" . $qid);
+		return $this->adminPrompt("操作成功", '题目编辑成功。', $url = "topic");
 	}
 
 	/* 删除题目 */
@@ -472,14 +485,23 @@ class TopicController extends \BaseController {
 	{
 		$inputs = Input::all();
 		$qid = $inputs['qid'];
+
 		if(!is_numeric($qid))
-			return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic");
+		{
+			if(isset($inputs['ajax']))
+				exit("0");
+			else
+				return $this->adminPrompt("操作失败", '错误的ID，请返回重试。', $url = "topic");
+		}
 
 
 		$topic = new Topic();
 		$topic->del($qid);
 
-		return $this->adminPrompt("操作成功", '题目删除成功。', $url = "topic");
+		if(isset($inputs['ajax']))
+			exit("1");	
+		else
+			return $this->adminPrompt("操作成功", '题目删除成功。', $url = "topic");
 	}
 
 

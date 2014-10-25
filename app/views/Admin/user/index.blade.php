@@ -82,17 +82,17 @@
                   <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                   <ul class="dropdown-menu">
                       @if($list->status === 1)
-                      <li><a style='color:#999;'><i class="icon-ok"></i> 有效</a></li>
+                      <li><a style='color:#999;'><i class="icon-ok"></i> 审核通过</a></li>
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="0"><i class="icon-user-md"></i> 未审核</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-remove"></i> 锁定</a></li>
                       @elseif($list->status === 0)
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-ok"></i> 审核通过</a></li>
                       <li><a style='color:#999;'><i class="icon-user-md"></i> 未审核</a></li>
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="-1"><i class="icon-remove"></i> 锁定</a></li>
                       @else
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="1"><i class="icon-ok"></i> 审核通过</a></li>
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$list->id}}" data-val="{{$list->name}}" data-status="0"><i class="icon-user-md"></i> 未审核</a></li>
-                      <li><a style='color:#999;'><i class="icon-remove"></i> 审核未通过</a></li>
+                      <li><a style='color:#999;'><i class="icon-remove"></i> 锁定</a></li>
                       @endif
                       <li class="divider"></li>
                       @if($list->name === 'admin')
@@ -155,11 +155,11 @@ $(function(){
           return false;
       }
       if (user_status == '1') {
-        status_txt = '有效';
+        status_txt = '审核通过';
       } else if (user_status == '0') {
-        status_txt = '无效';
+        status_txt = '未审核';
       } else {
-        status_txt = '审核未通过';
+        status_txt = '锁定';
       }
       $("#myModalLabel").html('提示:');
       $("#myModalBody").html('你确定要把'+user_val+'设置成' + status_txt + '吗?');

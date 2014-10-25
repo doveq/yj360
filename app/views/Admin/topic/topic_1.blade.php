@@ -115,9 +115,12 @@
 			      	<input type="hidden" name="aid[]" value="{{$a[$i]['id']}}" />
 			      @endif
 
-			      <input type="text" class="form-control" name="answers_txt[]" value="{{$a[$i]['txt'] or ''}}" />
-			      答案解释
-			      <input type="text" class="form-control" name="answers_explain[]" value="{{$a[$i]['explain'] or ''}}" />
+			      <div class="form-inline" >
+			      	<input type="text" class="form-control" style="width:400px;" name="answers_txt[]" value="{{$a[$i]['txt'] or ''}}" />
+				   	&nbsp;&nbsp;&nbsp;&nbsp;答案解释
+				   	<input type="text" class="form-control" style="width:400px;" name="answers_explain[]" value="{{$a[$i]['explain'] or ''}}" />
+				  </div>
+
 			      <div class="clearfix"></div>
 			      @if(isset($a[$i]['img_url']))
 			      <div>

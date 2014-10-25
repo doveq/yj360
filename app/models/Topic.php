@@ -8,6 +8,8 @@ class Topic  {
 	{
 		$whereArr = array();
 		$valueArr = array();
+
+
 		if( $data['txt'] )
 		{
 			$whereArr[] = " `txt` like ? ";
@@ -39,13 +41,31 @@ class Topic  {
 			$limit = " limit {$num},{$data['pageSize']} ";
 		}
 
+		// 如果设置了分类则需要查询分类对应表
+		if( !empty($data['sort']) )
+		{
+			$cqr = new ColumnQuestionRelation();
+			$clist = $cqr->getList($data['sort']);
+
+			$arr = array();
+			foreach ($clist as $key => $value) {
+				$arr[] = $value['question_id'];
+			}
+
+			if($arr)
+				$whereArr[] = " id in(" . implode(",", $arr) .")";
+			else
+				$whereArr[] = " id in(0)";
+		}
+
 		$where = '';
 		if($whereArr)
-			$where = ' where ' . implode(' and ', $whereArr);
+			$where = ' where ' . implode(' and ', $whereArr);		
+		
 
 		$sql = "select * from questions {$where} order by id desc {$limit} ";
 		$results = DB::select($sql, $valueArr);
-		#print_r(DB::getQueryLog());
+		//print_r(DB::getQueryLog());
 
 		// 获取总数分页使用
 		$sql = "select count(*) as num from questions {$where}";
@@ -299,6 +319,7 @@ class Topic  {
 		$att = new Attachments();
 
 		$q = (array)$questions[0];
+
 
 		// 删除题目
 		if($q['hint'] > 0)

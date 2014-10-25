@@ -6,6 +6,15 @@
 <div class="row">
   <div class="row text-right">
     {{ Form::open(array('role' => 'form', 'class' => 'form-inline', 'method' => 'get')) }}
+      <div class="form-group" id="sort2" style="padding-right:60px;">
+          {{Form::select('sort1', array(), '', array('class' => 'sort1 form-control', 'data-value' => $query['sort1'] ))}}
+          {{Form::select('sort2', array(), '', array('class' => 'sort2 form-control', 'data-value' => $query['sort2'] ))}}
+          {{Form::select('sort3', array(), '', array('class' => 'sort3 form-control', 'data-value' => $query['sort3'] ))}}
+          {{Form::select('sort4', array(), '', array('class' => 'sort4 form-control', 'data-value' => $query['sort4'] ))}}
+          {{Form::select('sort5', array(), '', array('class' => 'sort5 form-control', 'data-value' => $query['sort5'] ))}}
+      </div>
+      <div class="clearfix"></div>
+
       <div class="form-group">
         {{ Form::label('inputType', '类型', array('class' => 'sr-only')) }}
         {{ Form::select('type', $typeEnum, $query['type'], array('class' => 'form-control', 'id' => 'inputType')) }}
@@ -160,6 +169,13 @@ $(function(){
       nodata: 'none'
   });
 
+  $('#sort2').cxSelect({
+      url:'/admin/sort.json',
+      firstTitle: '-请选择-分类-',
+      selects: ['sort1', 'sort2', 'sort3', 'sort4', 'sort5'],
+      nodata: 'none'
+  });
+
   $("#checkAll").click(function() {
       $('input[name="question_id[]"]').prop("checked",this.checked);
   });
@@ -285,7 +301,9 @@ $(function(){
 
   //发布,下线
   $(".btn_publish").bind("click", function(){
+
       var $this = $(this);
+      /*
       var user_id = $this.data("id");
       var user_val = $this.data("val");
       var user_status = $this.data("status");
@@ -307,9 +325,34 @@ $(function(){
       $("#myModalForm").attr('action', '{{ url('/admin/topic/doEdit') }}');
       $("#form_method").attr('value', 'post');
       $('#myModal').modal('show');
+      */
+
+      var $question_ids = new Array();
+      $question_ids.push( $this.data("id") );
+
+      var $status = $this.data("status");
+      
+      $.post("/admin/relation/do_question",
+        {
+          question_id: $question_ids,
+          status: $status
+
+        },
+        function(data) {
+            location.reload();
+        },
+        "json"
+      )
+      .fail(function(){
+          console.log(data);
+          $('<span class="label label-danger">操作失败</span>').appendTo('.alertInfo').fadeOut(5000);
+      });
+
+      return false;
   });
   //删除
   $(".btn_delete").bind("click", function(){
+      /*
       var $this = $(this);
       var user_id = $this.data("id");
       var user_val = $this.data("val");
@@ -322,7 +365,27 @@ $(function(){
       $("#myModalForm").attr('action', '/admin/topic/doDel?qid='+ user_id);
       $("#form_method").attr('value', 'get');
       $('#myModal').modal('show');
+      */
+
+      $.get('/admin/topic/doDel?ajax=1&qid='+ $(this).data("id"), function(data){
+          console.log(data);
+          if(data == 1)
+          {
+              location.reload();
+              alert("删除成功");
+          }
+          else
+          {
+              alert("删除失败");
+          }
+      }).fail(function(){
+          alert("删除失败");
+      });
+
+      return false;
   });
+
+
 });
 </script>
 @stop

@@ -33,7 +33,7 @@
             <th>状态</th>
             <th>素材类型</th>
             <th>查看题目</th>
-            <th>操作</th>
+            <th>操作 {{ link_to_route('admin.column.create', ' 建同级目录', array('parent_id' => $query['parent_id']), array('class' => 'btn btn-primary')) }}</th>
           </tr>
         </thead>
         <tbody>
