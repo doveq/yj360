@@ -55,16 +55,22 @@
                   <a class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" href="#"><span class="icon-caret-down"></span></a>
                   <ul class="dropdown-menu">
                       @if($info['status'] === 1)
-                      <li><a style='color:#999;'><i class="icon-ok"></i> 有效</a></li>
+                      <li><a style='color:#999;'><i class="icon-ok"></i> 审核通过</a></li>
+                      <!--
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$info['id']}}" data-val="{{$info['id']}}" data-status="0"><i class="icon-remove"></i> 无效</a></li>
+                      -->
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$info['id']}}" data-val="{{$info['id']}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
                       @elseif($info['status'] === 0)
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$info['id']}}" data-val="{{$info['id']}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$info['id']}}" data-val="{{$info['id']}}" data-status="1"><i class="icon-ok"></i> 审核通过</a></li>
+                      <!--
                       <li><a style='color:#999;'><i class="icon-remove"></i> 无效</a></li>
+                      -->
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$info['id']}}" data-val="{{$info['id']}}" data-status="-1"><i class="icon-remove"></i> 审核未通过</a></li>
                       @else
-                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$info['id']}}" data-val="{{$info['id']}}" data-status="1"><i class="icon-ok"></i> 有效</a></li>
+                      <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$info['id']}}" data-val="{{$info['id']}}" data-status="1"><i class="icon-ok"></i> 审核通过</a></li>
+                      <!--
                       <li><a href="#" class="btn_publish" data-toggle="modal" data-id="{{$info['id']}}" data-val="{{$info['id']}}" data-status="0"><i class="icon-remove"></i> 无效</a></li>
+                      -->
                       <li><a style='color:#999;'><i class="icon-remove"></i> 审核未通过</a></li>
                       @endif
                       <li class="divider"></li>
@@ -86,8 +92,8 @@
     <div class="col-md-4 alertInfo">
     </div>
     <div class="col-md-4">
-      {{ Form::button('批量下架', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion', 'style' => 'margin:10px')) }}
-      {{ Form::button('批量上线', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion', 'style' => 'margin:10px')) }}
+      {{ Form::button('批量审核通过', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion', 'style' => 'margin:10px')) }}
+      {{ Form::button('批量审核未通过', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion', 'style' => 'margin:10px')) }}
     </div>
   </div>
   <div class="row" id="sort" style="margin:10px;">
@@ -265,10 +271,12 @@ $(function(){
         },
         function(data) {
             $('<span class="label label-success">'+data.info+'</span>').appendTo('.alertInfo').fadeOut(5000);
+            location.reload();
         },
         "json"
       )
       .fail(function(){
+          console.log(data);
           $('<span class="label label-danger">操作失败</span>').appendTo('.alertInfo').fadeOut(5000);
       });
     }
@@ -286,7 +294,7 @@ $(function(){
           return false;
       }
       if (user_status == '1') {
-        status_txt = '有效';
+        status_txt = '审核通过';
       } else if (user_status == '0') {
         status_txt = '无效';
       } else {

@@ -64,7 +64,7 @@ class TopicController extends BaseController {
 			return $this->indexPrompt("操作失败", "没有这道题目信息", $url = "/");
 		}
 
-		if($info['q']['status'] != 1)
+		if($info['q']['status'] != 1 && Session::get('utype') != -1)
 		{
 			return $this->indexPrompt("操作失败", "题目没有通过审核", $url = "/");
 		}

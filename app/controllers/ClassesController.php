@@ -101,6 +101,7 @@ class ClassesController extends BaseController {
         $columns = Column::find($classes->column_id)->child()->whereStatus(1)->get();
 
         $genderEnum = $this->genderEnum;
+        
         return $this->indexView('classes.show', compact("classes", 'columns', 'query', 'genderEnum'));
     }
 

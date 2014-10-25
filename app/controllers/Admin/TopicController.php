@@ -121,7 +121,7 @@ class TopicController extends \BaseController {
 			$sort = $inputs['sort1'];
 
 		if( $sort == 0)
-			return $this->adminPrompt("操作失败", '必须选择分类', $url = "topic/add?type=1");
+			return $this->adminPrompt("操作失败", '必须选择分类', $url = "topic/add?type=" . $inputs['type']);
 
 		$topic = new Topic();
 		$qid = $topic->add($inputs);
@@ -220,7 +220,9 @@ class TopicController extends \BaseController {
 			}
 		}
 
-		return $this->adminPrompt("操作成功", '题目添加成功。', $url = "topic/edit?id=".$qid);
+		//return $this->adminPrompt("操作成功", '题目添加成功。', $url = "topic/add?type=" . $inputs['type']);
+
+		return Redirect::to("/admin/topic/add?type=" . $inputs['type']);
 	}
 
 

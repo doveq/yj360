@@ -185,6 +185,15 @@
       	</div>
    	</div>
 
+
+   	<div id="myModa" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-sm">
+	    <div class="modal-content" style="padding:10px 20px;">
+	       正在提交保存数据，请稍等...
+	    </div>
+	  </div>
+	</div>
+
 @stop
 
 @section('js')
@@ -225,7 +234,10 @@
 					return false;
 				}
 				else
+				{
+					$('#myModa').modal({backdrop:'static'});
 					return true;
+				}
 			});
 		});
 	</script>

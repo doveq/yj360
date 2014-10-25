@@ -47,6 +47,19 @@ echo "haha";
             $tmp[] = $item->id;
         }
 
+        $sql = User::whereType(0)->whereStatus(1)->whereNotIn('id', $tmp)->where(function($q) {
+            if (Input::get('tel')) {
+                $q->whereTel(Input::get('tel'));
+            }
+
+            if (Input::get('name')) {
+                $q->where('name', 'LIKE', '%'.Input::get('name').'%');
+            }
+        })->orderBy('id', 'DESC')->paginate($this->pageSize)->toSql();
+
+        print_r($sql);
+        exit;
+
         $students = User::whereType(0)->whereStatus(1)->whereNotIn('id', $tmp)->where(function($q) {
             if (Input::get('tel')) {
                 $q->whereTel(Input::get('tel'));
@@ -61,8 +74,9 @@ echo "haha";
         $statusEnum = $this->userstatusEnum;
         $genderEnum = $this->genderEnum;
 
-        // print_r(compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum', 'columns'));
-        // exit;
+
+        //print_r(compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum', 'columns'));
+        //exit;
 
         return $this->indexView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum', 'columns'));
     }
