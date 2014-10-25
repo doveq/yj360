@@ -187,11 +187,7 @@
             @endif
 
             @if( !empty($_GET['vetting']) )
-                <a class="topic-btn" href="#">审核</a>
-
-                <div class="">
-                    
-                </div>
+                <a class="topic-btn" href="javascript:;" onclick="vetting();">审核</a>
             @endif
 
             <a class="topic-btn" id="topic-btn-6" hint="显示答题卡" href="javascript:;" onclick="showList();"></a>
@@ -229,6 +225,26 @@
       <input type="hidden" id="isTrue" name="isTrue" value="0" >
       <input type="hidden" id="act" name="act" value="next">
     </form>
+
+    {{-- 审核表单 --}}
+    <input type="hidden" name="vetting-qid" value="{{$q['id']}}" />
+    <input type="hidden" id="vetting-status" name="vetting-status" value="" />
+    <input type="hidden" id="cause" name="cause" value="" />
+    <div id="vetting-mode" style="display:none;">
+        <div>
+            <select class="tyinput" name="xstatus" style="width:400px;" onchange="document.getElementById('vetting-status').value=this.value;">
+                <option value="1">审核通过</option>
+                <option value="-1">审核未通过</option>
+            </select>
+        </div>
+        <div id="vetting-cause">
+            <div style="padding: 10px 0 0 10px;">未通过原因</div>
+            <input type="text" class="tyinput" style="width:400px;" name="xcause" value=""  onchange="document.getElementById('vetting-cause').value=this.value;" />
+        </div>
+        <div style="text-align:center;">
+            <button class="tyinput" onclick="doVetting();">提交审核</button>
+        </div>
+    </div>
 
     <script>
 
@@ -462,6 +478,74 @@
             $('#topic-btn-14').hide();
         }
 
+        function vetting()
+        {
+            var i = $.layer({
+                type : 1,
+                title : false,
+                shadeClose: true,
+                offset:['100px' , ''],
+                shade: [0],
+                area : ['auto','auto'],
+                page : {
+                    html: $("#vetting-mode").html()
+                }
+            });
+        }
+
+        function doVetting()
+        {
+            $.post("/admin/relation/do_question",
+            {
+              question_id: $("input[name=vetting-qid]").val(),
+              status: $("#vetting-status").val(),
+              cause: $("#vetting-cause").val()
+            },
+            function(data) {
+                layer.closeAll();
+
+                if(data.status == 1)
+                {
+                    var i = $.layer({
+                        type : 0,
+                        title : " ",
+                        shadeClose: true,
+                        shade: [0],
+                        dialog: {
+                            type: -1,
+                            msg: '审核成功'
+                        }
+                    });
+                }
+                else
+                {
+                    var i = $.layer({
+                        type : 0,
+                        title : " ",
+                        shadeClose: true,
+                        shade: [0],
+                        dialog: {
+                            type: -1,
+                            msg: '审核失败'
+                        }
+                    });
+                }
+            },
+            "json"
+          )
+          .fail(function(){
+              var i = $.layer({
+                        type : 0,
+                        title : " ",
+                        shadeClose: true,
+                        shade: [0],
+                        dialog: {
+                            type: -1,
+                            msg: '审核失败'
+                        }
+                    });
+          });
+        }
     </script>
 
 @stop

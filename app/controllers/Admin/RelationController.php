@@ -137,7 +137,10 @@ class RelationController extends \BaseController {
      */
     public function postDoQuestion()
     {
-        $query = Input::only('question_id', 'status');
+        $query = Input::only('question_id', 'status', 'cause');
+
+        $cause = empty($query['cause']) ? "" : $query['cause'];
+
         $validator = Validator::make($query,
             array(
                 'question_id'   => 'required',
@@ -147,14 +150,14 @@ class RelationController extends \BaseController {
         if($validator->fails())
         {
             // return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
-            $tmp = array('error' => '操作失败,请刷新重试');
+            $tmp = array('error' => '操作失败,请刷新重试', 'status' => 0);
             return Response::json($tmp);
         }
         if (!is_array($query['question_id'])) {
             $query['question_id'] = explode(",", $query['question_id']);
         }
-        Question::whereIn('id', $query['question_id'])->update(array('status' => $query['status']));
-        $tmp = array('info' => '操作成功');
+        Question::whereIn('id', $query['question_id'])->update(array('status' => $query['status'], 'cause' => $cause));
+        $tmp = array('info' => '操作成功', 'status' => 1);
         return $response = Response::json($tmp);
     }
 

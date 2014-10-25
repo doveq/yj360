@@ -262,4 +262,63 @@ class Attachments
 		return 0;
 	}
 
+	// 用户头像路由
+	public function getAvatarRoute($uid)
+	{
+		$dir = $uid - ($uid % 1000);
+		$folder = Config::get('app.avatar_dir') .'/'. $dir;
+		$name = $uid . '.jpg';
+		$path = $folder .'/'. $name;
+		$url = Config::get('app.avatar_url') .'/'. $dir .'/'. $name;
+
+		return array(
+			'name' => $name,
+			'folder' => $folder,
+			'path' => $path,
+			'url' => $url,
+		);
+	}
+
+	/* 获取用户头像 */
+	public function getAvatar($uid)
+	{
+		$route = $this->getAvatarRoute($uid);
+		$img = $route['path'];
+
+		if(file_exists($img))
+			return $route['url'];
+		else
+			return Config::get('app.default_avatar');
+	}
+
+	public function addAvatar($uid, $file)
+	{
+		if( !$this->validImgFile($file) )
+			return 0;
+
+		$route = $this->getAvatarRoute($uid);
+
+		if(!is_dir($route['folder']))
+            mkdir($route['folder'], 0777, true);
+
+		$this->MakeSquareThumb($file, $route['path'], Config::get('app.avatar_length'));
+
+		return 1;
+	}
+
+	/* 切成正方形 */
+	function MakeSquareThumb($source, $target, $length, $imageSize = array())
+	{
+	    if(!$imageSize)
+	        $imageSize = @getimagesize($source);
+	   
+	    list($img_w, $img_h) = $imageSize;
+	    
+	    if($img_w > $img_h)
+	        $cmd = Config::get('app.image_magick') . "/convert \"$source\" -thumbnail x{$length} -gravity Center -crop {$length}x{$length}+0+0 $target";
+	    else
+	        $cmd = Config::get('app.image_magick') . "/convert \"$source\" -thumbnail {$length}x -gravity Center -crop {$length}x{$length}+0+0 $target";
+	    
+	    exec($cmd);
+	}
 }

@@ -56,7 +56,14 @@
             <td><label>{{ Form::checkbox('question_id[]', $info['id']) }} {{ $info['id'] }}</label></td>
             <td><a href="/topic?vetting=1&id={{ $info['id'] }}" target="_blank">{{$info['txt']}}</a></td>
             <td>{{$info['source']}}</td>
-            <td>{{$statusEnum[$info['status']]}}</td>
+            <td>
+              {{$statusEnum[$info['status']]}}
+              @if($info['status'] == -1 && !empty($info['cause']))
+                  <a class="cause" href="javascript:;" data-container="body" data-toggle="tooltip" data-placement="top" title="{{$info['cause']}}">
+                  [原因]
+                  </a>
+              @endif
+            </td>
             <td>{{$info['created_at']}}</td>
             <td>
               <div class="btn-group btn-xs">
@@ -385,7 +392,7 @@ $(function(){
       return false;
   });
 
-
+    $('.cause').tooltip();
 });
 </script>
 @stop

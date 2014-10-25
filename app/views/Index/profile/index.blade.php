@@ -33,7 +33,7 @@
                 <input class="tyinput" type="text"  name="name" value="{{$type_str}}" disabled />
             </td>
         </tr>
-
+        <!--
         <tr>
             <td class="lable">设置新密码</td>
             <td>
@@ -47,7 +47,7 @@
                 <input class="tyinput" type="password" name="password_confirmation" value=""  />
             </td>
         </tr>
-
+        -->
         <tr>
             <td class="lable">跟换头像</td>
             <td>

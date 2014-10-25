@@ -1,7 +1,7 @@
   <div class="wrap-left">
       <div class="sort">
           <div class="avatar-box">
-              <img src="/assets/img/avatar.png" width="140" height="140" />
+              <img src="{{$avatar}}" width="140" height="140" />
           </div>
           <div class="sort-bb"></div>
           <div class="sort-item sort-wbj"><a href="/favorite">我的收藏</a><div class="sort-sj"></div></div>

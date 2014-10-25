@@ -19,6 +19,9 @@ class ProfileController extends BaseController {
 			$info['type_str'] = '学生';
 		}
 
+		$att = new Attachments();
+		$info['avatar'] = $att->getAvatar(Session::get('uid'));
+
 		return $this->indexView('profile.index', $info);
 	}
 
@@ -33,6 +36,14 @@ class ProfileController extends BaseController {
 		if( !empty($inputs['password']) && $inputs['password'] === $inputs['password_confirmation'] )
 		{
 			$update['password'] = $user->encPasswd( $inputs['password'] );
+		}
+
+		if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK )
+		{
+			$att = new Attachments();
+			$re = $att->addAvatar(Session::get('uid'), $_FILES['avatar']['tmp_name']);
+			if($re)
+				$update['is_avatar'] = 1;
 		}
 
 		if($update)

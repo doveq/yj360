@@ -207,7 +207,13 @@ return array(
 	'thumbnail_width' => 150,
 	'thumbnail_height' => 150,
 
-	'image_magick' => 'D:/ImageMagick',
+	// 用户头像
+	'avatar_dir' => public_path() . '/data/avatar',
+	'avatar_url' => '/data/avatar',
+	'avatar_length' => 150,
+	'default_avatar' => '/assets/img/avatar.png',
+
+	'image_magick' => '/usr/bin',
 
 	/* 教师证保存目录 */
 	'teacher_dir' => public_path().'/data/teacher',
