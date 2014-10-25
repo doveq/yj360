@@ -4,7 +4,7 @@
 @section('content')
 <div class="container-column wrap">
   <div style="padding:10px;"></div>
-  @include('index.profile.nav')
+  @include('Index.profile.nav')
 
 
   <div class="wrap-right">
