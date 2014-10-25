@@ -14,7 +14,9 @@
           @foreach ($content as $list)
           <div class="classse-box" style="height:100px;width:150px; border-top:0;background-color:{{$list->bgcolor}}">
             <div class="classes-txt" style="background-color:{{$list->bgcolor}};vertical-align:middle;">
+              <a href="/topic?column={{$list->id}}" style="color:#fff;">
               <div><h2><b>{{$list->name}}</b></h2></div>
+              </a>
             </div>
           </div>
           @endforeach

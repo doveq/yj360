@@ -31,15 +31,19 @@
       {{ Form::open(array('url' => '/classm/add_class?column_id='.$query['column_id'], 'method' => 'post')) }}
       <table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #f1f1f1; width:100%;">
         <tr><td style="background-color:#00bbac;padding:10px;">搜索加入</td></tr>
+        <!--
         <tr>
           <td style="width:20%;text-align:right;">
+          
           班级类别 {{ Form::select('class_type', array('3' => '初级'), '', array('class' => 'tyinput', 'id' => 'inputClassid','style' => 'width:200px')) }}
+         
           {{ Form::text('teacher_name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'width:200px'))}}
 
             {{ Form::hidden('column_id', $query['column_id'], array('class' => '')) }}
             {{ Form::submit('', array('class' => 'submitbtn')) }}
           </td>
         </tr>
+        -->
       </table>
       {{ Form::close() }}
       <div class="classes-list">
@@ -52,8 +56,10 @@
               <div>成员：{{$list->students->count()}}</div>
             </div>
             <div class="classse-btn" style="display:none;margin-top:-30px;">
+                <!--
                 <a href="/classes/{{$list->id}}?column_id={{$query['column_id']}}">班级成员</a>
-                <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">加入班级</a>
+                -->
+                <a class="delclass" style="width:200px;text-align:center;" href="#" >加入班级</a>
                 <div class="clear"></div>
             </div>
           </div>
