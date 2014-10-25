@@ -3,6 +3,10 @@
 
 @section('css')
     <link href="/assets/mediaelement/build/mediaelementplayer.min.css" rel="stylesheet">
+
+    @if( !empty($_GET['vetting']) )
+    <link href="/assets/layer/skin/layer.css" rel="stylesheet">
+    @endif
 @stop
 @section('headjs')
     <script src="/assets/mediaelement/build/mediaelement-and-player.min.js"></script>
@@ -10,6 +14,10 @@
     <script type="text/javascript" src="/assets/recorder/js/recorder.js"></script>
     <script type="text/javascript" src="/assets/recorder/js/main.js"></script>
     <script src="/assets/jquery/jquery.cookie.js"></script>
+
+    @if( !empty($_GET['vetting']) )
+    <script src="/assets/layer/layer.min.js"></script>
+    @endif
 @stop
 
 @section('content')
@@ -270,7 +278,7 @@
                 }
             });
             */
-            
+
             new MediaElementPlayer('#q-sound', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function(e) {
@@ -280,7 +288,7 @@
                     mediaElement.play();
                 }
             });
-            
+
         }
 
         function hintPlay()

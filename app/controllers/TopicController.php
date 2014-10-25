@@ -66,8 +66,6 @@ class TopicController extends BaseController {
 
 		if($info['q']['status'] != 1 && Session::get('utype') != -1)
 		{
-			echo '---->' . Session::get('utype');
-			exit;
 			return $this->indexPrompt("操作失败", "题目没有通过审核", $url = "/", false);
 		}
 
