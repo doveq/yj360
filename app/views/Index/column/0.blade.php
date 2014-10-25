@@ -4,7 +4,7 @@
 @section('content')
 <div class="container-column wrap">
 
-  @include('index.column.nav')
+  @include('Index.column.nav')
 
   <div class="wrap-right">
       <div class="tabtool">
