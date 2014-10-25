@@ -61,6 +61,8 @@ class LoginController extends BaseController
 			Auth::login( $user );
 			Session::put('uid', $user->id);
 			Session::put('uname', $user->name);
+			Session::put('utype', $user->type);
+			Session::put('utel', $user->tel);
 
 			//记录登陆日志
 			$loginlog = new Loginlog();

@@ -177,6 +177,15 @@
             <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
             <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="recorderPlay();" style="display:none;"></a>
             @endif
+
+            @if( !empty($_GET['vetting']) )
+                <a class="topic-btn" href="#">审核</a>
+
+                <div class="">
+                    
+                </div>
+            @endif
+
             <a class="topic-btn" id="topic-btn-6" hint="显示答题卡" href="javascript:;" onclick="showList();"></a>
             <div class="clear"></div>
         </div>
@@ -250,6 +259,7 @@
         // 播放题干音和提示音
         function initPlay()
         {
+            /*
             new MediaElementPlayer('#q-hint', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function(e) {
@@ -259,8 +269,8 @@
                     mediaElement.play();
                 }
             });
+            */
             
-            /*
             new MediaElementPlayer('#q-sound', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function(e) {
@@ -270,7 +280,7 @@
                     mediaElement.play();
                 }
             });
-            */
+            
         }
 
         function hintPlay()

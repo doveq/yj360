@@ -50,7 +50,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">提干提示音(TS)</label>
+			    <label class="col-sm-2 control-label">题干图片(TP)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['img_url']))
 		      	  <div>
@@ -68,7 +68,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">题干图片(TP)</label>
+			    <label class="col-sm-2 control-label">提干提示音(TS)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['sound_url']))
 			      <div>

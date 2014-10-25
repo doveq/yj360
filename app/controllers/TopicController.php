@@ -16,7 +16,7 @@ class TopicController extends BaseController {
 		{
 			$columnInfo = Column::find($column)->toArray();
 			if(!$columnInfo)
-				return $this->indexPrompt("操作失败", "没有这个科目信息", $url = "/");
+				return $this->indexPrompt("操作失败", "没有这个科目信息", $url = "/", false);
 
 			$cqr = new ColumnQuestionRelation();
 
@@ -33,7 +33,7 @@ class TopicController extends BaseController {
 			}
 
 			if( !$qlist )
-				return $this->indexPrompt("操作失败", "科目下没有题目信息", $url = "/");
+				return $this->indexPrompt("操作失败", "科目下没有题目信息", $url = "/", false);
 
 			// 题目数据保存
 			Session::put('qlist', $qlist);
@@ -61,12 +61,14 @@ class TopicController extends BaseController {
 
 		if(!$info)
 		{
-			return $this->indexPrompt("操作失败", "没有这道题目信息", $url = "/");
+			return $this->indexPrompt("操作失败", "没有这道题目信息", $url = "/", false);
 		}
 
 		if($info['q']['status'] != 1 && Session::get('utype') != -1)
 		{
-			return $this->indexPrompt("操作失败", "题目没有通过审核", $url = "/");
+			echo '---->' . Session::get('utype');
+			exit;
+			return $this->indexPrompt("操作失败", "题目没有通过审核", $url = "/", false);
 		}
 
 		$info['flag'] = $this->flag;

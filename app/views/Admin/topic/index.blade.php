@@ -54,7 +54,7 @@
           @foreach ($list as $info)
           <tr>
             <td><label>{{ Form::checkbox('question_id[]', $info['id']) }} {{ $info['id'] }}</label></td>
-            <td><a href="/topic?id={{ $info['id'] }}" target="_blank">{{$info['txt']}}</a></td>
+            <td><a href="/topic?vetting=1&id={{ $info['id'] }}" target="_blank">{{$info['txt']}}</a></td>
             <td>{{$info['source']}}</td>
             <td>{{$statusEnum[$info['status']]}}</td>
             <td>{{$info['created_at']}}</td>
@@ -101,8 +101,8 @@
     <div class="col-md-4 alertInfo">
     </div>
     <div class="col-md-4">
-      {{ Form::button('批量审核通过', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion', 'style' => 'margin:10px')) }}
-      {{ Form::button('批量审核未通过', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion', 'style' => 'margin:10px')) }}
+      {{ Form::button('批量审核未通过', array('class' => 'btn btn-danger btn-xs pull-right doQuestion', 'id' => 'downQuestion', 'style' => 'margin:10px')) }}
+      {{ Form::button('批量审核通过', array('class' => 'btn btn-primary btn-xs pull-right doQuestion', 'id' => 'upQuestion', 'style' => 'margin:10px')) }}
     </div>
   </div>
   <div class="row" id="sort" style="margin:10px;">
