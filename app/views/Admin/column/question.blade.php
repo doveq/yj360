@@ -105,8 +105,10 @@ $(function(){
         },
         function(data) {
             if(data.status == 1)
+            {
                 alert(data.info);
                 location.reload();
+            }
             else
                 alert(data.info);
         },
