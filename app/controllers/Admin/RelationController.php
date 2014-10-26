@@ -80,7 +80,7 @@ class RelationController extends \BaseController {
         if($validator->fails())
         {
             // return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "classes");
-            $tmp = array('info' => '操作失败,请刷新重试');
+            $tmp = array('info' => '操作失败,请刷新重试', 'status' => 0);
             return Response::json($tmp);
         }
         if (!is_array($query['question_id'])) {
@@ -90,7 +90,7 @@ class RelationController extends \BaseController {
             // $relation = new ColumnQuestionRelation();
             ColumnQuestionRelation::whereQuestionId($qid)->whereColumnId($query['column_id'])->delete();
         }
-        $tmp = array('info' => '操作成功');
+        $tmp = array('info' => '操作成功', 'status' => 1);
         return $response = Response::json($tmp);
         // return Redirect::to('/admin/classmate?class_id=' . $query['class_id']);
     }

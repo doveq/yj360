@@ -9,7 +9,7 @@ use DB;
 use Request;
 use Str;
 use Config;
-
+use ColumnQuestionRelation;
 use Column;
 
 class ColumnController extends \BaseController {
@@ -27,6 +27,8 @@ class ColumnController extends \BaseController {
 	{
         $query = Input::only('name', 'parent_id', 'page');
 
+        
+
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
@@ -34,6 +36,14 @@ class ColumnController extends \BaseController {
         if (!$query['parent_id']) $query['parent_id'] = 0;
 
         if ($query['parent_id'] > 0) {
+
+            // 如果当前分类下添加了题目，则显示题目列表
+            $qcount = ColumnQuestionRelation::whereColumnId($query['parent_id'])->count();
+            if($qcount > 0)
+            {
+                return Redirect::to('/admin/column/question?id=' . $query['parent_id']);
+            }
+
             $parent = Column::find($query['parent_id']);
             $paths = array_reverse($parent->getPath($parent->id));
         }
@@ -248,5 +258,35 @@ class ColumnController extends \BaseController {
         return Redirect::to('/admin/column?parent_id='.$column->parent_id);
 	}
 
+
+    /* 显示分类题目列表 */
+    public function questionList()
+    {
+        $id = Input::get('id');
+
+        $query['id'] = $id;
+        $query['parent_id'] = $id;
+        if ($id > 0) {
+            $parent = Column::find($id);
+            $paths = array_reverse($parent->getPath($parent->id));
+        }
+
+        $list = ColumnQuestionRelation::with('question')->whereColumnId($id)->paginate(40);
+
+        return $this->adminView('column.question', compact('list', 'query', 'paths', 'parent'));
+    }
+
+    /* 删除分类题目列表 */
+    public function doDelQuestion()
+    {
+        $query = Input::only('id', 'column_id');
+
+        if (!is_array($query['id'])) {
+            $query['id'] = explode(",", $query['id']);
+        }
+
+
+
+    }
 
 }

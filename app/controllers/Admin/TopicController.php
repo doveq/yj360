@@ -9,6 +9,7 @@ use Topic;
 use Attachments;
 use SortQuestionRelation;
 use Sort;
+use Column;
 
 /* 原始题库功能 */
 class TopicController extends \BaseController {
@@ -69,6 +70,65 @@ class TopicController extends \BaseController {
             );
 
 		return $this->adminView('topic.index', $p);
+	}
+
+
+	// 显示科目添加题目页面
+	public function showColumn()
+	{
+		$pageSize = 30;  // 每页显示条数
+
+        $query = Input::only('txt', 'source', 'type', 'status', 'page', 'sort1', 'sort2', 'sort3', 'sort4', 'sort5', 'id');
+        $query['pageSize'] = $pageSize;
+        $query['status'] = 1;  // 只显示已通过的
+        $query['column'] = $query['id'];
+
+        // 当前页数
+        if( !is_numeric($query['page']) || $query['page'] < 1 )
+            $query['page'] = 1;
+
+        // 处理分类
+		$query['sort'] = 0;
+		if( !empty($query['sort5']) )
+			$query['sort'] = $query['sort5'];
+		elseif( !empty($query['sort4']) )
+			$query['sort'] = $query['sort4'];
+		elseif( !empty($query['sort3']) )
+			$query['sort'] = $query['sort3'];
+		elseif( !empty($query['sort2']) )
+			$query['sort'] = $query['sort2'];
+		elseif( !empty($query['sort1']) )
+			$query['sort'] = $query['sort1'];
+
+        $topic = new Topic();
+        $info = $topic->getList($query);
+
+        // 分页
+        $paginator = Paginator::make($info['data'], $info['total'], $pageSize);
+        unset($query['pageSize']); // 减少分页url无用参数
+        $paginator->appends($query);  // 设置分页url参数
+
+        $this->typeEnum = array('' =>'所有题型') + $this->typeEnum ;
+
+        $id = $query['id'];
+
+        $query['parent_id'] = $id;
+        if ($id > 0) {
+            $parent = Column::find($id);
+            $paths = array_reverse($parent->getPath($parent->id));
+        }
+
+		$p = array(
+            'list'       => $info['data'],
+            'typeEnum'   => $this->typeEnum,
+            'statusEnum' => $this->statusEnum,
+            'query'      => $query,
+            'paginator'  => $paginator,
+            'parent'	=> $parent,
+            'paths'	=> $paths,
+            );
+
+		return $this->adminView('topic.column', $p);
 	}
 
 	public function showType()

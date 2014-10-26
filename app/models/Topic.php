@@ -41,36 +41,50 @@ class Topic  {
 			$limit = " limit {$num},{$data['pageSize']} ";
 		}
 
+
 		// 如果设置了分类则需要查询分类对应表
 		if( !empty($data['sort']) )
 		{
-			$cqr = new ColumnQuestionRelation();
-			$clist = $cqr->getList($data['sort']);
-
-			$arr = array();
-			foreach ($clist as $key => $value) {
-				$arr[] = $value['question_id'];
+			// 如果是添加科目显示，则去掉已经选择过的题目
+			if(!empty($data['column']))
+			{
+				$where = " where a.id not in( select question_id from column_question_relation where column_id = '{$data['column']}' ) and b.sort_id = '{$data['sort']}' and b.question_id = a.id ";
 			}
-
-			if($arr)
-				$whereArr[] = " id in(" . implode(",", $arr) .")";
 			else
-				$whereArr[] = " id in(0)";
+				$where = " where b.sort_id = '{$data['sort']}' and b.question_id = a.id ";
+
+			if($whereArr)
+				$where = $where . ' and ' . implode(' and ', $whereArr);
+
+			$sql = "select a.* from questions as a, sort_question_relation as b {$where} order by id desc {$limit} ";
+			$results = DB::select($sql, $valueArr);
+
+			// 获取总数分页使用
+			$sql = "select count(*) as num from questions as a, sort_question_relation as b {$where}";
+			$re2 = DB::select($sql, $valueArr);
+			$count = $re2[0]->num;
 		}
+		else
+		{
+			if(!empty($data['column']))
+			{
+				$where = " where id not in( select question_id from column_question_relation where column_id = '{$data['column']}' ) ";
+			}
+			else
+				$where = ' where 1=1 ';
 
-		$where = '';
-		if($whereArr)
-			$where = ' where ' . implode(' and ', $whereArr);		
-		
+			if($whereArr)
+				$where = $where . ' and ' . implode(' and ', $whereArr);
 
-		$sql = "select * from questions {$where} order by id desc {$limit} ";
-		$results = DB::select($sql, $valueArr);
-		//print_r(DB::getQueryLog());
+			$sql = "select * from questions {$where} order by id desc {$limit} ";
+			$results = DB::select($sql, $valueArr);
+			//print_r(DB::getQueryLog());
 
-		// 获取总数分页使用
-		$sql = "select count(*) as num from questions {$where}";
-		$re2 = DB::select($sql, $valueArr);
-		$count = $re2[0]->num;
+			// 获取总数分页使用
+			$sql = "select count(*) as num from questions {$where}";
+			$re2 = DB::select($sql, $valueArr);
+			$count = $re2[0]->num;
+		}
 
 		foreach($results as &$item)
 		{
@@ -79,6 +93,8 @@ class Topic  {
 		
 		return array('data' => $results, 'total' => $count);
 	}
+
+
 
 	/* 获取题目信息 */
 	public function get($id)

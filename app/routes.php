@@ -58,6 +58,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::get('/topic/edit', '\Admin\TopicController@showEdit');
     Route::post('/topic/doEdit', '\Admin\TopicController@doEdit');
     Route::get('/topic/doDel', '\Admin\TopicController@doDel');
+    Route::get('/topic/column', '\Admin\TopicController@showColumn');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
@@ -83,6 +84,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::resource('uploadbank', 'Admin\UploadbankController');
     Route::resource('training', 'Admin\TrainingController');
 
+    Route::get('/column/question', 'Admin\ColumnController@questionList');
     Route::resource('column', 'Admin\ColumnController');
     Route::resource('sort', 'Admin\SortController');
     Route::resource('questions', 'Admin\QuestionsController');
@@ -94,6 +96,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/relation/column', '\Admin\RelationController@postColumn');
     Route::post('/relation/do_question', '\Admin\RelationController@postDoQuestion');
     Route::post('/relation/del_question', '\Admin\RelationController@deleteColumn');
+
 
 
 });

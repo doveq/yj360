@@ -41,9 +41,13 @@ class SortQuestionRelation extends Eloquent {
     /* 添加关系数据 */
     public function addMap($data)
     {
-        $this->sort_id = $data['sort'];
-        $this->question_id = $data['qid'];
-        $this->save();
+        $info = $this->where('sort_id', '=',  $data['sort'])->where('question_id', '=',  $data['qid'])->first();
+        if(empty($info))
+        {
+            $this->sort_id = $data['sort'];
+            $this->question_id = $data['qid'];
+            $this->save();
+        }
     }
 
     /* 跟新关系数据 */
