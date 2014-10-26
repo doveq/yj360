@@ -23,8 +23,12 @@
 
   <div class="row">
       <div class="col-md-4 col-md-offset-8 text-right">
-        {{ link_to_route('admin.column.create', ' 添加内容', array('parent_id' => $query['parent_id']), array('class' => 'btn btn-success')) }}
+        @if(count($lists) > 0)
         {{ link_to_route('admin.column.create', ' 添加同级分类', array('parent_id' => $query['parent_id']), array('class' => 'btn btn-primary')) }}
+        @else
+        <a href="/admin/topic/column?id={{$query['parent_id']}}" class="btn btn-success">添加内容</a>
+        {{ link_to_route('admin.column.create', ' 添加同级分类', array('parent_id' => $query['parent_id']), array('class' => 'btn btn-primary')) }}
+        @endif
       </div>
 
       <table class="table table-hover">
