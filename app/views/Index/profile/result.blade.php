@@ -18,7 +18,7 @@
           @foreach($list as $k => $v)
             <tr>
                 <td class="tytd">
-                  @if(empty($v->question))
+                  @if(empty($v->question->txt))
                     该题已下架
                   @else
                     <a href="/topic?id={{$v->question->id}}" target="_blank">{{$v->question->txt}}</a>
