@@ -7,7 +7,6 @@ class FavoriteController extends BaseController
 
 	public function __construct()
     {
-    	
     }
 
 	public function index()
