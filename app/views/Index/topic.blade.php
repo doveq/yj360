@@ -196,6 +196,7 @@
         @elseif( !empty($_GET['vetting']) )
         <div id="topic-tools">
             <a class="topic-btn" id="topic-btn-15" href="javascript:;" onclick="vetting();">审核</a>
+            <div class="clear"></div>
         </div>
         @endif
 
