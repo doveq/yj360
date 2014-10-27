@@ -59,7 +59,7 @@ class Result extends Eloquent {
 
     public function getList($info)
     {
-        $list = $this->where('uid', '=', $info['uid'])->where('is_true', '<>', 1)->take($info['limit'])->get();
+        $list = $this->with('Question')->where('uid', '=', $info['uid'])->where('is_true', '<>', 1)->take($info['limit'])->get();
         return $list;
     }
 
