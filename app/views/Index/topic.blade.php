@@ -193,6 +193,10 @@
             <a class="topic-btn" id="topic-btn-6" hint="显示答题卡" href="javascript:;" onclick="showList();"></a>
             <div class="clear"></div>
         </div>
+        @elseif( !empty($_GET['vetting']) )
+        <div id="topic-tools">
+            <a class="topic-btn" id="topic-btn-15" href="javascript:;" onclick="vetting();">审核</a>
+        </div>
         @endif
 
         <div id="qlist" style="display:none;">
