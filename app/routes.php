@@ -147,6 +147,8 @@ Route::group(array('before' => 'indexLogin'), function(){
     //初级
     Route::get('/beginner', 'BeginnerController@index');
     Route::get('/column', 'ColumnController@index');
+    Route::get('/column/static', 'ColumnController@tmpShow');
+
     //产品商店
     Route::get('/products', 'ProductsController@index');
 

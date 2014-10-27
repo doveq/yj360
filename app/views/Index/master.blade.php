@@ -15,15 +15,17 @@
   <body role="document">
       <div id="site-head">
           <div class="wrap">
-              <a id="site-logo" href="/"><img src="/assets/img/logo.jpg" /></a>
+              <a id="site-logo" href="/"><img src="/assets/img/logo.png" /></a>
 
               <ul id="site-nav">
+                <!--
                 <li {{ends_with(Request::url(),'.com')?"class='stite-nav-select'":''}}><a href="/">首页</a></li>
                 <li {{ends_with(Request::url(),'indexColumn')?"class='stite-nav-select'":''}}><a href="/indexColumn">音基考级</a></li>
                 <li {{ends_with(Request::url(),'indexSchool')?"class='stite-nav-select'":''}}><a href="/indexSchool">中小学音基</a></li>
                 <li {{ends_with(Request::url(),'interestTest')?"class='stite-nav-select'":''}}><a href="/interestTest">趣味测评</a></li>
                 <li {{ends_with(Request::url(),'app')?"class='stite-nav-select'":''}}><a href="/app">APP下载</a></li>
                 <li {{ends_with(Request::url(),'product')?"class='stite-nav-select'":''}}><a href="/product">产品商店</a></li>
+                -->
               </ul>
 
               <div id="site-right">
@@ -38,9 +40,11 @@
                     <a href="/login">登录</a>
                   @endif
                 </div>
+                <!--
                 <div id="bzfk">
                     <a href="/help"><img src="/assets/img/bzfk.jpg" /></a>
                 </div>
+                -->
               </div>
           </div>
       </div>

@@ -3,7 +3,9 @@
 
 @section('content')
     <div class="container wrap">
-    	<a class="index-block" href="#"><img src="/assets/img/index-1.jpg" /></a>
+    	<a class="index-block" href="#"><img src="/assets/img/index-2-1.png" /></a>
+
+        <!--
     	<a class="index-block" href="#"><img src="/assets/img/index-2.jpg" /></a>
     	<a class="index-block" href="#"><img src="/assets/img/index-3.jpg" /></a>
     	<a class="index-block" href="#"><img src="/assets/img/index-4.jpg" /></a>
@@ -11,6 +13,29 @@
     	<div id="index-block-ksrk">
 
     	</div>
+        -->
+
+        <div class="index-block" id="index-login">
+            <form role="form" action="doLogin" method="post">
+            <h1>音基360登录</h1>
+            <div class="row"><input type="text" class="text" name="name" value="" placeholder="用户名" ></div>
+            <div class="row"><input type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
+            <div class="row">
+                <a href="#" class="forget">忘记密码？</a>
+                <div class="clear"></div>
+            </div>
+            <div class="row">
+                <button type="submit" class="loginbntn"></button>
+            </div>
+
+            <div class="row-sp"></div>
+
+            <div class="row linetxt">
+                还没有音基360账号？<a href="/register">马上注册</a>
+            </div>
+
+            </form>
+        </div>
 
     	<div class="clear" style="height:50px;"></div>
 

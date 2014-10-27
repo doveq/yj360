@@ -8,11 +8,21 @@ class ColumnController extends BaseController
     	//$this->beforeFilter('csrf', array('on' => 'post'));
     }
 
-	/* 登录处理 */
 	public function index()
 	{
         $query = Input::only('id', 'column_id');
+
         $color = array("#2fc8d0","#efc825","#5fc1e8","#f28695","#f49543","#abd663","#b18ac1");
+
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+
+        if(empty($columns[0]))
+            return $this->indexPrompt("", '科目下没有信息', $url = "/column/static", false);
+
+        if (empty($query['id'])) {
+            $query['id'] = $columns[0]['id'];
+        }
+
         $column = Column::find($query['id']);
         $content = $column->child()->whereStatus(1)->get();
         foreach ($content as $key => $c) {
@@ -20,12 +30,6 @@ class ColumnController extends BaseController
             $c->bgcolor = $color[array_rand($color)];
             $content[$key] = $c;
         }
-
-        if (!isset($query['column_id'])) {
-            $query['column_id'] = 5;
-        }
-
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
 
 
         $questions = $column->questions;
@@ -41,4 +45,9 @@ class ColumnController extends BaseController
         return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions'));
 	}
 
+    /* 科目临时显示 */
+    public function tmpShow()
+    {
+        return $this->indexView('profile.column');
+    }
 }

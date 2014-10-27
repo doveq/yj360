@@ -263,7 +263,7 @@ class Attachments
 	}
 
 	// 用户头像路由
-	public function getAvatarRoute($uid)
+	public static function getAvatarRoute($uid)
 	{
 		$dir = $uid - ($uid % 1000);
 		$folder = Config::get('app.avatar_dir') .'/'. $dir;
@@ -280,9 +280,9 @@ class Attachments
 	}
 
 	/* 获取用户头像 */
-	public function getAvatar($uid)
+	public static function getAvatar($uid)
 	{
-		$route = $this->getAvatarRoute($uid);
+		$route = Attachments::getAvatarRoute($uid);
 		$img = $route['path'];
 
 		if(file_exists($img))

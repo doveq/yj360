@@ -19,8 +19,6 @@ class ProfileController extends BaseController {
 			$info['type_str'] = '学生';
 		}
 
-		$att = new Attachments();
-		$info['avatar'] = $att->getAvatar(Session::get('uid'));
 
 		return $this->indexView('profile.index', $info);
 	}

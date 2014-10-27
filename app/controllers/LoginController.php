@@ -45,7 +45,8 @@ class LoginController extends BaseController
 			$loginlog->save();
 
 			// echo "登录成功~";
-    		return Redirect::to('/');
+    		//return Redirect::to('/');
+    		return Redirect::to('/column/static');
 		}
 		else
 			return Redirect::to('login')->with('message', '登录失败')->withInput($data);
