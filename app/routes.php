@@ -169,7 +169,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::post('/doProfile', 'ProfileController@doProfile');
 
     // 错题记录
-    Route::get('/result', 'resultController@index');
+    Route::get('/result', 'ResultController@index');
     Route::get('/result/del', 'ResultController@doDel');
     
 });
