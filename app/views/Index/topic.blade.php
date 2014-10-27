@@ -228,7 +228,7 @@
 
     {{-- 审核表单 --}}
     <input type="hidden" name="vetting-qid" value="{{$q['id']}}" />
-    <input type="hidden" id="vetting-status" name="vetting-status" value="" />
+    <input type="hidden" id="vetting-status" name="vetting-status" value="1" />
     <input type="hidden" id="cause" name="cause" value="" />
     <div id="vetting-mode" style="display:none;">
         <div>
