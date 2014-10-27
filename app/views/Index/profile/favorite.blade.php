@@ -18,7 +18,7 @@
           @foreach($list as $k => $v)
             <tr>
                 <td class="tytd"><a href="/topic?id={{$v->question->id}}" target="_blank">{{$v->question->txt}}</a></td>
-                <td class="tytd table-2-del"><a href="/favorite/del?id={{$v->id}}" class="tyadel">删除</a></td>
+                <td class="tytd table-2-del"><a href="/favorite/del?qid={{$v->question_id}}" class="tyadel">删除</a></td>
             </tr>
             <tr><td colspan="2">
                 <div class="table-2-sp"></div>

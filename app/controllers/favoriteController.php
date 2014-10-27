@@ -19,12 +19,12 @@ class FavoriteController extends BaseController
 
 	public function doDel()
 	{
-		$id = Input::get('id');
+		$id = Input::get('qid');
 		if(!is_numeric($id))
 			return $this->indexPrompt("", "错误的ID号", $url = "/favorite");
 
 		$f = new Favorite();
-		$f->del( array('uid' => Session::get('uid'), 'id' => $id ) );
+		$f->del( array('uid' => Session::get('uid'), 'qid' => $id ) );
 
 		return $this->indexPrompt("", "删除收藏成功", $url = "/favorite");
 	}
