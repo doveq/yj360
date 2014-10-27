@@ -66,7 +66,7 @@ class Favorite extends Eloquent {
 
     public function del($info)
     {
-        $this->where('user_id', '=', $info['uid'])->where('id', '=', $info['id'])->delete();
+        $this->where('user_id', '=', $info['uid'])->where('question_id', '=', $info['qid'])->delete();
         return 1;
     }
 
