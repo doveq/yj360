@@ -198,7 +198,7 @@
         <div id="qlist" style="display:none;">
             <?php $i = 1; ?>
             @foreach($qlist as $k => $v)
-                <a href='tipic?column={{$column}}&id={{$k}}' class="" >{{$i}}</a>
+                <a href='topic?column={{$column}}&id={{$k}}' class="" >{{$i}}</a>
                 <?php $i++; ?>
             @endforeach
             <div class="clear"></div>
