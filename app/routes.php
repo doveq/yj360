@@ -136,8 +136,8 @@ Route::group(array('before' => 'indexLogin'), function(){
 
     // 答题页面
     Route::get('/topic', 'TopicController@index');
-    Route::post('/topic/post', 'topicController@post');
-    Route::get('/topic/result', 'topicController@result');
+    Route::post('/topic/post', 'TopicController@post');
+    Route::get('/topic/result', 'TopicController@result');
 
     // 收藏页面
     Route::get('/favorite', 'FavoriteController@index');
