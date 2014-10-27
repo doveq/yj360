@@ -138,7 +138,8 @@ class UserController extends \BaseController {
     public function update($id)
     {
         //
-        $data = Input::only('name', 'tel', 'type', 'status');
+        //$data = Input::only('name', 'tel', 'type', 'status');
+        $data = Input::all();
 
         $validator = Validator::make($data ,
             array(
@@ -160,6 +161,10 @@ class UserController extends \BaseController {
         if (isset($data['tel'])) $user->tel       = $data['tel'];
         if (isset($data['type'])) $user->type     = $data['type'];
         if (isset($data['status'])) $user->status = $data['status'];
+        if (isset($data['email'])) $user->email = $data['email'];
+        if (isset($data['qq'])) $user->qq = $data['qq'];
+        if (isset($data['company'])) $user->company = $data['company'];
+        if (isset($data['intro'])) $user->intro = $data['intro'];
 
         if ($user->save()) {
             return Redirect::to('admin/user');
