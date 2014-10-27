@@ -23,6 +23,10 @@ class ProfileController extends BaseController {
 		return $this->indexView('profile.index', $info);
 	}
 
+	public function showPasswd()
+	{
+		return $this->indexView('profile.passwd');
+	}
 
 	public function doProfile()
 	{
@@ -31,10 +35,25 @@ class ProfileController extends BaseController {
 		$user = new User();
 
 		$update = array();
-		if( !empty($inputs['password']) && $inputs['password'] === $inputs['password_confirmation'] )
+
+		
+		$validator = Validator::make($inputs , array(
+	        'email' => 'email')
+		);
+
+		if( !$validator->fails())
 		{
-			$update['password'] = $user->encPasswd( $inputs['password'] );
+			$update['email'] = $inputs['email'];
 		}
+
+		if(is_numeric($inputs['qq']))
+			$update['qq'] = $inputs['qq'];
+
+		if(!empty($inputs['company']))
+			$update['company'] = $inputs['company'];
+
+		if(!empty($inputs['intro']))
+			$update['intro'] = $inputs['intro'];
 
 		if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK )
 		{
@@ -52,4 +71,25 @@ class ProfileController extends BaseController {
 		return $this->indexPrompt("", '个人资料修改完成', $url = "/profile");
 	}
 
+
+	public function doPasswd()
+	{
+		$inputs = Input::all();
+		
+		$user = new User();
+		$info = $user->getInfoById(Session::get('uid'));
+
+		if( $info['password'] == $user->encPasswd( $inputs['password'] )  
+			&& !empty($inputs['new_password']) 
+			&& $inputs['new_password'] === $inputs['password_confirmation'] )
+		{
+			$update['password'] = $user->encPasswd( $inputs['new_password'] );
+
+			$user->setInfo(Session::get('uid'), $update);
+
+			return $this->indexPrompt("", '密码修改成功', $url = "/profile");
+		}
+
+		return $this->indexPrompt("", '密码修改失败，请返回重试', $url = "/profile/passwd", false);		
+	}
 }

@@ -121,6 +121,8 @@
     {{Form::select('sort5', array(), '', array('class' => 'sort5'))}}
     {{ Form::button('批量转移', array('class' => 'btn btn-primary btn-xs', 'id' => 'addSort')) }}
   </div>
+
+  <!--
   <div class="row" id="column" style="margin:10px;">
     批量加入到科目:
     {{Form::select('column1', array(), '', array('class' => 'column1'))}}
@@ -130,6 +132,7 @@
     {{Form::select('column5', array(), '', array('class' => 'column5'))}}
     {{ Form::button('批量转移', array('class' => 'btn btn-primary btn-xs', 'id' => 'addColumn')) }}
   </div>
+  -->
 
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     {{ Form::open(array('role' => 'form', 'class' => 'form-horizontal', 'id' => 'myModalForm', 'method' => 'post')) }}
@@ -162,6 +165,7 @@
 $(function(){
   // http://code.ciaoca.com/jquery/cxselect/
   $.cxSelect.defaults.url = '/admin/column.json';
+  /*
   $('#column').cxSelect({
       url:'/admin/column.json',
       // required: 'true',
@@ -169,6 +173,7 @@ $(function(){
       selects: ['column1', 'column2', 'column3', 'column4', 'column5'],
       nodata: 'none'
   });
+  */
   $('#sort').cxSelect({
       url:'/admin/sort.json',
       firstTitle: '-请选择-分类-',

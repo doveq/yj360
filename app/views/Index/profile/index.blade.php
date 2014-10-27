@@ -33,21 +33,27 @@
                 <input class="tyinput" type="text"  name="name" value="{{$type_str}}" disabled />
             </td>
         </tr>
-        <!--
         <tr>
-            <td class="lable">设置新密码</td>
+            <td class="lable">邮箱</td>
             <td>
-                <input class="tyinput" type="password" name="password" value=""  />
+                <input class="tyinput" type="text" name="email" value="{{$email or ''}}"  />
             </td>
         </tr>
 
         <tr>
-            <td class="lable">重复密码</td>
+            <td class="lable">QQ</td>
             <td>
-                <input class="tyinput" type="password" name="password_confirmation" value=""  />
+                <input class="tyinput" type="text" name="qq" value="{{$qq or ''}}"  />
             </td>
         </tr>
-        -->
+
+        <tr>
+            <td class="lable">单位</td>
+            <td>
+                <input class="tyinput" type="text" name="company" value="{{$company or ''}}"  />
+            </td>
+        </tr>
+
         <tr>
             <td class="lable">跟换头像</td>
             <td>
@@ -56,6 +62,15 @@
                   <input type='button' class='selbtn' value='' />
                   <input type="file" name="avatar" class="file" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" />  
                 </div>
+            </td>
+        </tr>
+
+        
+
+        <tr>
+            <td class="lable">简介</td>
+            <td>
+                <textarea class="tyinput" name="intro">{{$intro or ''}}</textarea>
             </td>
         </tr>
 

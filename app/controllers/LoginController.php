@@ -89,7 +89,7 @@ class LoginController extends BaseController
 	{
 		$data = Input::all();
 		$validator = Validator::make($data , array(
-			'name' => 'required|alpha_dash|between:3,8',
+			'name' => 'required|alpha_dash|between:3,8|unique:users',
 	        'tel' => 'required|digits:11|unique:users',
 	        'password' => 'required|min:6|confirmed')
 		);
@@ -97,7 +97,7 @@ class LoginController extends BaseController
 		$data['is_certificate'] = 0;
 		$data['type'] = 1;
 
-		if( $data['code'] == Session::get('code') )
+		if($data['code'] == Session::get('code') )
 		{
 			if($validator->passes())
 			{

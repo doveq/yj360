@@ -167,11 +167,16 @@ Route::group(array('before' => 'indexLogin'), function(){
     // 个人中心
     Route::get('/profile', 'ProfileController@index');
     Route::post('/doProfile', 'ProfileController@doProfile');
+    Route::get('/profile/passwd', 'ProfileController@showPasswd');
+    Route::post('/profile/doPasswd', 'ProfileController@doPasswd');
 
     // 错题记录
     Route::get('/result', 'ResultController@index');
     Route::get('/result/del', 'ResultController@doDel');
     
+    // 问题反馈
+    Route::get('/feedback', 'FeedbackController@index');
+    Route::post('/feedback/dopost', 'FeedbackController@doPost');
 });
 
 
