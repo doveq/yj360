@@ -8,6 +8,7 @@ class TopicController extends BaseController {
 	{
 		$id = Input::get('id');
 		$column = Input::get('column');
+		$vetting = Input::get('vetting');  // 如果是后台审核显示
 
 		$qlist = array();
 
@@ -46,8 +47,14 @@ class TopicController extends BaseController {
 			$qlist = Session::get('qlist') ? Session::get('qlist') : array();
 		}
 		
-		// 题目id不对则设为第一题
-		if( !empty($qlist) && (!is_numeric($id) || !array_key_exists($id, $qlist)) )
+		// 后台审核显示没有列表
+		if(!empty($vetting))
+		{
+			$qlist = array();
+		}
+
+		// 题目id不对则设为第一题, 
+		if(!empty($qlist) && (!is_numeric($id) || !array_key_exists($id, $qlist)) )
 		{
 			reset($qlist);
 			$id = key($qlist);
