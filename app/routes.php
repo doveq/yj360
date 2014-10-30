@@ -59,6 +59,10 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/topic/doEdit', '\Admin\TopicController@doEdit');
     Route::get('/topic/doDel', '\Admin\TopicController@doDel');
     Route::get('/topic/column', '\Admin\TopicController@showColumn');
+
+    // 试卷
+    Route::get('/examPaper', '\Admin\ExamPaperController@index');
+    Route::get('/examPaper/add', '\Admin\ExamPaperController@showAdd');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){

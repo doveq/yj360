@@ -118,6 +118,32 @@ class Sql
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 		";
 		DB::statement($table);
+
+		DB::statement('drop table if exists `favorite`');
+		$table = "
+			CREATE TABLE IF NOT EXISTS `favorite` (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `uid` int(11) unsigned NOT NULL COMMENT '用户id',
+			  `qid` int(11) unsigned NOT NULL COMMENT '题目id',
+			  PRIMARY KEY (`id`),
+			  KEY `qid` (`uid`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+		";
+		DB::statement($table);
+
+		DB::statement('drop table if exists `exam_paper`');
+		$table = "
+			CREATE TABLE IF NOT EXISTS `exam_paper` (
+			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+			  `title` varchar(255) NOT NULL COMMENT '标题',
+			  `parent_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属父id',
+			  `price` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '价格',
+			  `column_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属分类id',
+			  `desc` varchar(255) NOT NULL DEFAULT '0' COMMENT '描述简介',
+			  PRIMARY KEY (`id`)
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT '试卷表' COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+		";
+		DB::statement($table);
 	}
 	
 
