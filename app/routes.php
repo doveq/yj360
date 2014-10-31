@@ -63,6 +63,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     // 试卷
     Route::get('/examPaper', '\Admin\ExamPaperController@index');
     Route::get('/examPaper/add', '\Admin\ExamPaperController@showAdd');
+    Route::post('/examPaper/doAdd', '\Admin\ExamPaperController@doAdd');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){

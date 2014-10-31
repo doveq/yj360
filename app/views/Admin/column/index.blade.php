@@ -26,12 +26,7 @@
         @if(count($lists) > 0)
         {{ link_to_route('admin.column.create', ' 添加同级分类', array('parent_id' => $query['parent_id']), array('class' => 'btn btn-primary')) }}
         @else
-          {{--如果是试卷类型--}}
-          @if($parent['type'] == 2)
-          <a href="http://yj.local/admin/examPaper/add?column_id={{$query['parent_id']}}" class="btn btn-success">添加试卷</a>
-          @else
           <a href="/admin/topic/column?id={{$query['parent_id']}}" class="btn btn-success">添加内容</a>
-          @endif
           {{ link_to_route('admin.column.create', ' 添加同级分类', array('parent_id' => $query['parent_id']), array('class' => 'btn btn-primary')) }}
         @endif
       </div>

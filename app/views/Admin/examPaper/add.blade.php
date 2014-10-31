@@ -16,6 +16,18 @@
 
   <div class="row">
       <form method="POST" action="/admin/examPaper/doAdd" role="form" class="form-horizontal">
+        <input type="hidden" name="column_id" value="{{$columnId}}" />
+
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="sort_parent">状态</label>
+          <div class="col-md-6">
+            <select name="status"  class="form-control">
+              <option selected="selected" value="0">下架</option>
+              <option value="1">发布</option>
+            </select>
+          </div>
+        </div>
+
         <div class="form-group">
           <label for="sort_name" class="col-md-2 control-label">试卷名</label>
           <div class="col-md-6">
@@ -26,10 +38,23 @@
         <div class="form-group">
           <label for="sort_name" class="col-md-2 control-label">价格</label>
           <div class="col-md-6">
-            <input class="form-control" id="title" name="title" type="text" value="">
+            <input class="form-control" name="price" type="text" value="0">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="col-md-2 control-label" for="desc">描述</label>
+          <div class="col-md-6">
+            <textarea cols="50" name="desc" rows="3" id="desc" class="form-control"></textarea>
           </div>
         </div>
         
+        <div class="form-group">
+          <div class="col-md-offset-2 col-md-6">
+            <input type="submit" value="提交" class="btn btn-default">
+           </div>
+        </div>
+
       </form>
   </div>
 @stop

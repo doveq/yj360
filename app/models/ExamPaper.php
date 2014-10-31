@@ -18,6 +18,14 @@ class ExamPaper extends Eloquent {
     // protected $hidden = array('password', 'remember_token');
 
 
-    
+    public function add($data)
+    {
+        $this->column_id = $data['column_id'];
+        $this->title = $data['title'];
+        $this->price = $data['price'];
+        $this->status = $data['status'];
+        $this->desc = $data['desc'];
+        return $this->save();
+    }
 
 }

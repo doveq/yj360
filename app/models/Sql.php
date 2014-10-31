@@ -135,13 +135,16 @@ class Sql
 		$table = "
 			CREATE TABLE IF NOT EXISTS `exam_paper` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `title` varchar(255) NOT NULL COMMENT '标题',
+			  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT '标题',
 			  `parent_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属父id',
 			  `price` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '价格',
-			  `column_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属分类id',
-			  `desc` varchar(255) NOT NULL DEFAULT '0' COMMENT '描述简介',
+			  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0未通过，1为通过',
+			  `desc` text COLLATE utf8_unicode_ci NOT NULL COMMENT '描述',
+			  `column_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '所属科目分类id',
+			  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			  PRIMARY KEY (`id`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COMMENT '试卷表' COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+			) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='试卷表' AUTO_INCREMENT=1 ;
 		";
 		DB::statement($table);
 	}

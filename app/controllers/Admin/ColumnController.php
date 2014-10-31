@@ -45,6 +45,13 @@ class ColumnController extends \BaseController {
             }
 
             $parent = Column::find($query['parent_id']);
+
+            // 如果是试卷类型
+            if($parent['type'] == 2)
+            {
+                return Redirect::to('/admin/examPaper?column_id=' . $query['parent_id']);
+            }
+
             $paths = array_reverse($parent->getPath($parent->id));
         }
 
@@ -61,6 +68,8 @@ class ColumnController extends \BaseController {
 
         $statusEnum = $this->statusEnum;
         $typeEnum   = $this->typeEnum;
+
+
         return $this->adminView('column.index', compact('lists', 'query', 'statusEnum', 'typeEnum', 'parent', 'paths'));
 	}
 
