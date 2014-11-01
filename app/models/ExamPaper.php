@@ -22,6 +22,9 @@ class ExamPaper extends Eloquent {
     {
         $this->column_id = $data['column_id'];
         $this->title = $data['title'];
+        
+        if(isset($data['score']))
+            $this->score = $data['score'];
 
         if(isset($data['price']))
             $this->price = $data['price'];
@@ -52,6 +55,14 @@ class ExamPaper extends Eloquent {
 
         if(isset($data['status']))
             $update['status'] = $data['status'];
+
+        if(isset($data['score']))
+        {
+            $update['score'] = $data['score'];
+
+            // 自动跟新已经添加的题目列表数据
+            ExamQuestionRelation::where('exam_id', '=', $data['id'])->update( array('score' => $data['score']) );
+        }
 
         return $this->where('id', '=', $data['id'])->update($update);
     }

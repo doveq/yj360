@@ -12,6 +12,7 @@ use SortQuestionRelation;
 use ColumnQuestionRelation;
 use Question;
 use ExamQuestionRelation;
+use ExamPaper;
 
 class RelationController extends \BaseController {
 
@@ -178,10 +179,14 @@ class RelationController extends \BaseController {
         if (!is_array($query['question_id'])) {
             $query['question_id'] = explode(",", $query['question_id']);
         }
+
+        $exam = ExamPaper::find($query['id']);
+
         foreach ($query['question_id'] as $key => $qid) {
             $relation = ExamQuestionRelation::firstOrCreate(array('question_id' => $qid, 'exam_id' => $query['id']));
             $relation->exam_id = $query['id'];
             $relation->question_id = $qid;
+            $relation->score = $exam->score;
             $relation->save();
         }
         $tmp = array('info' => '操作成功');

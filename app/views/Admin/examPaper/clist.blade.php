@@ -22,6 +22,7 @@
           <tr>
             <th>#</th>
             <th>大题题干</th>
+            <th>每题分数</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -30,6 +31,7 @@
               <tr>
                 <td>{{$list->id}}</td>
                 <td><a href="/admin/examPaper/qlist?id={{$list->id}}">{{$list->title}}</a></td>
+                <td>{{$list->score}}</td>
                 <td>
                     <div class="btn-group btn-xs">
                       <a class="btn btn-default btn-xs" href="{{url('/admin/examPaper/child/edit?id='. $list->id) }}"><i class="icon-edit"></i> 编辑</a>

@@ -35,6 +35,13 @@
         </div>
         
         <div class="form-group">
+          <label for="sort_name" class="col-md-2 control-label">每题分数</label>
+          <div class="col-md-6">
+            <input class="form-control" id="score" name="score" type="text" value="{{$info->score or '1'}}">
+          </div>
+        </div>
+
+        <div class="form-group">
           <div class="col-md-offset-2 col-md-6">
             <input type="submit" value="提交" class="btn btn-default">
            </div>

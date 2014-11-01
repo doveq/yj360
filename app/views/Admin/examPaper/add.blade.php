@@ -31,14 +31,14 @@
             <input class="form-control" id="title" name="title" type="text" value="{{$info->title or ''}}">
           </div>
         </div>
-
+        <!--
         <div class="form-group">
           <label for="sort_name" class="col-md-2 control-label">价格</label>
           <div class="col-md-6">
             <input class="form-control" name="price" type="text" value="{{$info->price or '0'}}">
           </div>
         </div>
-
+        -->
         <div class="form-group">
           <label class="col-md-2 control-label" for="desc">描述</label>
           <div class="col-md-6">
