@@ -285,17 +285,4 @@ class ColumnController extends \BaseController {
         return $this->adminView('column.question', compact('list', 'query', 'paths', 'parent'));
     }
 
-    /* 删除分类题目列表 */
-    public function doDelQuestion()
-    {
-        $query = Input::only('id', 'column_id');
-
-        if (!is_array($query['id'])) {
-            $query['id'] = explode(",", $query['id']);
-        }
-
-
-
-    }
-
 }

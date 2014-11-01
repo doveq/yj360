@@ -50,6 +50,11 @@ class Topic  {
 			{
 				$where = " where a.id not in( select question_id from column_question_relation where column_id = '{$data['column']}' ) and b.sort_id = '{$data['sort']}' and b.question_id = a.id ";
 			}
+			// 如果是添加试卷显示，则去掉已经选择过的题目
+			elseif(!empty($data['exam']))
+			{
+				$where = " where a.id not in( select question_id from exam_question_relation where exam_id = '{$data['exam']}' ) and b.sort_id = '{$data['sort']}' and b.question_id = a.id ";
+			}
 			else
 				$where = " where b.sort_id = '{$data['sort']}' and b.question_id = a.id ";
 
@@ -69,6 +74,11 @@ class Topic  {
 			if(!empty($data['column']))
 			{
 				$where = " where id not in( select question_id from column_question_relation where column_id = '{$data['column']}' ) ";
+			}
+			// 如果是添加试卷显示，则去掉已经选择过的题目
+			elseif(!empty($data['exam']))
+			{
+				$where = " where id not in( select question_id from exam_question_relation where exam_id = '{$data['exam']}' ) ";
 			}
 			else
 				$where = ' where 1=1 ';

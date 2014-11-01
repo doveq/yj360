@@ -8,12 +8,10 @@ use Redirect;
 use DB;
 use Request;
 use Response;
-
-// use Sort;
-// use Question;
 use SortQuestionRelation;
 use ColumnQuestionRelation;
 use Question;
+use ExamQuestionRelation;
 
 class RelationController extends \BaseController {
 
@@ -161,5 +159,58 @@ class RelationController extends \BaseController {
         return $response = Response::json($tmp);
     }
 
+
+    /* 批量添加题目到试卷 */
+    public function doExam()
+    {
+        $query = Input::only('question_id', 'id');
+        $validator = Validator::make($query,
+            array(
+                'question_id'   => 'required',
+                'id' => 'required',
+            )
+        );
+        if($validator->fails())
+        {
+            $tmp = array('error' => '操作失败,请刷新重试');
+            return Response::json($tmp);
+        }
+        if (!is_array($query['question_id'])) {
+            $query['question_id'] = explode(",", $query['question_id']);
+        }
+        foreach ($query['question_id'] as $key => $qid) {
+            $relation = ExamQuestionRelation::firstOrCreate(array('question_id' => $qid, 'exam_id' => $query['id']));
+            $relation->exam_id = $query['id'];
+            $relation->question_id = $qid;
+            $relation->save();
+        }
+        $tmp = array('info' => '操作成功');
+        return $response = Response::json($tmp);
+    }
+
+
+    public function delExam()
+    {
+        $query = Input::only('question_id', 'id');
+        $validator = Validator::make($query,
+            array(
+                'question_id'   => 'required',
+                'id' => 'required',
+            )
+        );
+        if($validator->fails())
+        {
+            $tmp = array('info' => '操作失败,请刷新重试', 'status' => 0);
+            return Response::json($tmp);
+        }
+        if (!is_array($query['question_id'])) {
+            $query['question_id'] = explode(",", $query['question_id']);
+        }
+        foreach ($query['question_id'] as $key => $qid) {
+            ExamQuestionRelation::whereQuestionId($qid)->whereExamId($query['id'])->delete();
+        }
+        $tmp = array('info' => '操作成功', 'status' => 1);
+        return $response = Response::json($tmp);
+    }
 
 }

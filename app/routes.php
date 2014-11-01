@@ -59,11 +59,20 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/topic/doEdit', '\Admin\TopicController@doEdit');
     Route::get('/topic/doDel', '\Admin\TopicController@doDel');
     Route::get('/topic/column', '\Admin\TopicController@showColumn');
+    Route::get('/topic/exam', '\Admin\TopicController@showExam');
 
     // 试卷
     Route::get('/examPaper', '\Admin\ExamPaperController@index');
     Route::get('/examPaper/add', '\Admin\ExamPaperController@showAdd');
     Route::post('/examPaper/doAdd', '\Admin\ExamPaperController@doAdd');
+    Route::get('/examPaper/edit', '\Admin\ExamPaperController@showEdit');
+    Route::post('/examPaper/doEdit', '\Admin\ExamPaperController@doEdit');
+    Route::post('/examPaper/editStatus', '\Admin\ExamPaperController@editStatus');
+    Route::get('/examPaper/clist', '\Admin\ExamPaperController@showClist');
+    Route::get('/examPaper/child', '\Admin\ExamPaperController@showChild');
+    Route::get('/examPaper/child/edit', '\Admin\ExamPaperController@editClist');
+    Route::get('/examPaper/qlist', '\Admin\ExamPaperController@showQlist');
+    Route::post('/examPaper/del', '\Admin\ExamPaperController@doDel');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
@@ -101,8 +110,8 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/relation/column', '\Admin\RelationController@postColumn');
     Route::post('/relation/do_question', '\Admin\RelationController@postDoQuestion');
     Route::post('/relation/del_question', '\Admin\RelationController@deleteColumn');
-
-
+    Route::post('/relation/doExam', '\Admin\RelationController@doExam');
+    Route::post('/relation/delExam', '\Admin\RelationController@delExam');
 
 });
 
