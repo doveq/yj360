@@ -8,6 +8,7 @@ class TopicController extends BaseController {
 	{
 		$id = Input::get('id');
 		$column = Input::get('column');
+		$exam = Input::get('exam');
 		$vetting = Input::get('vetting');  // 如果是后台审核显示
 
 		$qlist = array();
@@ -17,7 +18,7 @@ class TopicController extends BaseController {
 		{
 			$columnInfo = Column::find($column)->toArray();
 			if(!$columnInfo)
-				return $this->indexPrompt("操作失败", "没有这个科目信息", $url = "/", false);
+				return $this->indexPrompt("", "没有这个科目信息", $url = "/", false);
 
 			$cqr = new ColumnQuestionRelation();
 
@@ -34,13 +35,19 @@ class TopicController extends BaseController {
 			}
 
 			if( !$qlist )
-				return $this->indexPrompt("操作失败", "科目下没有题目信息", $url = "/", false);
+				return $this->indexPrompt("", "科目下没有题目信息", $url = "/", false);
 
 			// 题目数据保存
 			Session::put('qlist', $qlist);
 			Session::put('column', $column);
 			Session::put('uniqid', uniqid());
 			Session::save();
+		}
+		// 如果是试卷
+		elseif(is_numeric($exam) && Session::get('exam') != $exam)
+		{
+			// 获取大题列表
+			//$clist = Exam
 		}
 		else
 		{

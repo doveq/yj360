@@ -67,10 +67,6 @@ class ExamPaper extends Eloquent {
         return $this->where('id', '=', $data['id'])->update($update);
     }
 
-    public function getList($data)
-    {
-        return $this->where('column_id', '=', $data['columnId'])->where('parent_id', '=', 0)->get();
-    }
 
     public function del($id)
     {
@@ -82,4 +78,17 @@ class ExamPaper extends Eloquent {
         }
     }
 
+
+    /* 获取试卷大题列表 */
+    public function getClist($exam_id)
+    {
+        $list = $this->where('parent_id', '=', $exam_id)->get();
+        return $list;
+    }
+
+    /* 获取试卷所有题目列表 */
+    public function getAllQlist($exam_id)
+    {
+        
+    }
 }
