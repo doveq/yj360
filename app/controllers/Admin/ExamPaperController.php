@@ -21,7 +21,7 @@ class ExamPaperController extends \BaseController {
 
         // 显示列表
         $ep = new ExamPaper();
-        $lists = $ep->getList( array('columnId' => $columnId) );
+        $lists = $ep->getExamList( $columnId );
 
         $statusEnum = $this->statusEnum;
 
@@ -61,7 +61,7 @@ class ExamPaperController extends \BaseController {
 		$ep = new ExamPaper();
 		$info = $ep->find($id);
 
-		$lists = $ep->where('parent_id', '=', $id)->get();
+		$lists = $ep->getClist($id);
 
 		$parent = Column::find($info->column_id);
         $paths = array_reverse($parent->getPath($parent->id));
