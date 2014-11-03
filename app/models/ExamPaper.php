@@ -82,13 +82,14 @@ class ExamPaper extends Eloquent {
     /* 获取试卷大题列表 */
     public function getClist($exam_id)
     {
-        $list = $this->where('parent_id', '=', $exam_id)->get();
+        $list = $this->where('parent_id', '=', $exam_id)->orderBy('id')->get();
         return $list;
     }
 
-    /* 获取试卷所有题目列表 */
-    public function getAllQlist($exam_id)
+    /* 获取试卷大题题目列表 */
+    public function getQuestions($exam_id)
     {
-        
+        $list = ExamQuestionRelation::where('exam_id', '=', $exam_id)->orderBy('id')->get();
+        return $list;
     }
 }

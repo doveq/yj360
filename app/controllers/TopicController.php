@@ -46,8 +46,17 @@ class TopicController extends BaseController {
 		// 如果是试卷
 		elseif(is_numeric($exam) && Session::get('exam') != $exam)
 		{
+			$ep = new ExamPaper();
 			// 获取大题列表
-			//$clist = Exam
+			$clist = $ep->getClist($exam);
+			foreach($clist as $key => $v) 
+			{
+				$questions = $ep->getQuestions($v->id);
+				foreach ($questions as $key => $q) {
+					$qlist[$q->question_id] = 0;
+				}
+				
+			}
 		}
 		else
 		{
