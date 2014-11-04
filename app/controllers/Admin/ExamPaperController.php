@@ -61,7 +61,7 @@ class ExamPaperController extends \BaseController {
 		$ep = new ExamPaper();
 		$info = $ep->find($id);
 
-		$lists = $ep->where('parent_id', '=', $id)->get();
+		$lists = $ep->getClist($id);
 
 		$parent = Column::find($info->column_id);
         $paths = array_reverse($parent->getPath($parent->id));

@@ -92,7 +92,7 @@ class ExamPaper extends Eloquent {
     /* 获取试卷大题列表 */
     public function getClist($exam_id)
     {
-        $list = $this->where('parent_id', '=', $exam_id)->orderBy('id')->get();
+        $list = $this->where('parent_id', '=', $exam_id)->orderBy('id', 'asc')->get();
         return $list;
     }
 

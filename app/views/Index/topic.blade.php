@@ -207,7 +207,11 @@
         <div id="qlist" style="display:none;">
             <?php $i = 1; ?>
             @foreach($qlist as $k => $v)
+                @if( !empty($column) )
                 <a href='topic?column={{$column}}&id={{$k}}' class="" >{{$i}}</a>
+                @elseif( !empty($exam) )
+                <a href='topic?exam={{$exam}}&id={{$k}}' class="" >{{$i}}</a>
+                @endif
                 <?php $i++; ?>
             @endforeach
             <div class="clear"></div>

@@ -57,6 +57,12 @@ class TopicController extends BaseController {
 				}
 				
 			}
+
+			// 题目数据保存
+			Session::put('qlist', $qlist);
+			Session::put('exam', $exam);
+			Session::put('uniqid', uniqid());
+			Session::save();
 		}
 		else
 		{
@@ -84,12 +90,12 @@ class TopicController extends BaseController {
 
 		if(!$info)
 		{
-			return $this->indexPrompt("操作失败", "没有这道题目信息", $url = "/", false);
+			return $this->indexPrompt("", "没有这道题目信息", $url = "/", false);
 		}
 
 		if($info['q']['status'] != 1 && Session::get('utype') != -1)
 		{
-			return $this->indexPrompt("操作失败", "题目没有通过审核", $url = "/", false);
+			return $this->indexPrompt("", "题目没有通过审核", $url = "/", false);
 		}
 
 		$info['flag'] = $this->flag;
@@ -102,6 +108,7 @@ class TopicController extends BaseController {
 
 		$info['qlist'] = $qlist;
 		$info['column'] = $column;
+		$info['exam'] = $exam;
 
 
 		return $this->indexView('topic', $info);
