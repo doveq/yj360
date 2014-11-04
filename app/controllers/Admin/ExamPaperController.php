@@ -21,7 +21,7 @@ class ExamPaperController extends \BaseController {
 
         // 显示列表
         $ep = new ExamPaper();
-        $lists = $ep->getList( array('columnId' => $columnId) );
+        $lists = $ep->getElist( array('column_id' => $columnId) );
 
         $statusEnum = $this->statusEnum;
 

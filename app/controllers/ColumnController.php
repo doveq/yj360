@@ -24,23 +24,38 @@ class ColumnController extends BaseController
         }
 
         $column = Column::find($query['id']);
-        $content = $column->child()->whereStatus(1)->get();
-        foreach ($content as $key => $c) {
-            // dd($color[array_rand($color)]);
-            $c->bgcolor = $color[array_rand($color)];
-            $content[$key] = $c;
+
+        // 如果是试卷类型
+        if($column->type == 2)
+        {
+            $ep = new ExamPaper();
+            $content = $ep->getElist( array('column_id' => $query['id'], 'status' => 1) );
+            
+            foreach ($content as $key => $c) {
+                $c->bgcolor = $color[array_rand($color)];
+                $content[$key] = $c;
+            }
         }
+        else
+        {
+            $content = $column->child()->whereStatus(1)->get();
+            foreach ($content as $key => $c) {
+                // dd($color[array_rand($color)]);
+                $c->bgcolor = $color[array_rand($color)];
+                $content[$key] = $c;
+            }
 
 
-        $questions = $column->questions;
-		$att = new Attachments();
-		foreach ($questions as $key => $q) {
-	        $item = $att->get($q->img);
-			$route = $att->getTopicRoute($q->id, $item['file_name']);
-			// dd($route);
-			$q->img_url = $route['url'];
-			$questions[$key] = $q;
-		}
+            $questions = $column->questions;
+    		$att = new Attachments();
+    		foreach ($questions as $key => $q) {
+    	        $item = $att->get($q->img);
+    			$route = $att->getTopicRoute($q->id, $item['file_name']);
+    			// dd($route);
+    			$q->img_url = $route['url'];
+    			$questions[$key] = $q;
+    		}
+        }
 
         return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions'));
 	}

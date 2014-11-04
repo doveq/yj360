@@ -13,12 +13,11 @@
 
       <div class="classes-list">
           @foreach ($content as $list)
-          <div class="classse-box">
-            <div>
-              <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
-            </div>
-            <div class="classes-txt">
-              <div><b>{{$list->name}}</b></div>
+          <div class="classse-box" style="height:120px;width:320px; border-top:0;background-color:{{$list->bgcolor}}">
+            <div class="classes-txt" style="background-color:{{$list->bgcolor}};vertical-align:middle;">
+              <a href="/topic?exam={{$list->id}}" style="color:#fff;">
+              <div><h2><b>{{$list->title}}</b></h2></div>
+              </a>
             </div>
           </div>
           @endforeach

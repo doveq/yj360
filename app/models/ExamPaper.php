@@ -78,6 +78,16 @@ class ExamPaper extends Eloquent {
         }
     }
 
+    /* 获取试卷列表 */
+    public function getElist($data)
+    {
+        $re = $this->where('column_id', '=', $data['column_id'])->where('parent_id', '=', 0);
+
+        if(isset($data['status']))
+            $re = $re->where('status', '=', $data['status']);
+
+        return $re->get();
+    }
 
     /* 获取试卷大题列表 */
     public function getClist($exam_id)
