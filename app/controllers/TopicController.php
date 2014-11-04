@@ -10,11 +10,17 @@ class TopicController extends BaseController {
 		$column = Input::get('column');
 		$exam = Input::get('exam');
 		$vetting = Input::get('vetting');  // 如果是后台审核显示
+		$uniqid = Input::get('uniqid');
 
 		$qlist = array();
 
+		// 有唯一码的情况
+		if(!empty($uniqid))
+		{
+			
+		}
 		// 有科目信息的情况
-		if( is_numeric($column) && Session::get('column') != $column )
+		elseif( is_numeric($column) && Session::get('column') != $column )
 		{
 			$columnInfo = Column::find($column)->toArray();
 			if(!$columnInfo)
