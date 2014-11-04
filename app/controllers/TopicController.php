@@ -12,15 +12,55 @@ class TopicController extends BaseController {
 		$vetting = Input::get('vetting');  // 如果是后台审核显示
 		$uniqid = Input::get('uniqid');
 
+		// 题目数据保存
+		$qinfo = array();
 		$qlist = array();
 
 		// 有唯一码的情况
 		if(!empty($uniqid))
 		{
-			
+			$qinfo = Session::get('qinfo');
+			if($qinfo['uniqid'] == $uniqid)
+			{
+				$column = $qinfo['column_id'];
+				$exam = !empty($qinfo['exam_id']) ? $qinfo['exam_id'] : 0;
+				$qlist = $qinfo['list'];
+			}
+			else
+				return $this->indexPrompt("", "没有题组信息，请返回重试", $url = "/", false);
 		}
-		// 有科目信息的情况
-		elseif( is_numeric($column) && Session::get('column') != $column )
+		// 如果是试卷
+		elseif(is_numeric($exam))
+		{
+			$ep = new ExamPaper();
+			// 获取大题列表
+			$clist = $ep->getClist($exam);
+
+			if( empty($clist) )
+				return $this->indexPrompt("", "没有这个试卷信息", $url = "/", false);
+
+			foreach($clist as $key => $v) 
+			{
+				$questions = $ep->getQuestions($v->id);
+				foreach ($questions as $key => $q) {
+					$qlist[] = $q->question_id;
+				}
+				
+			}
+
+			// 题目数据保存
+			$qinfo['exam_id'] = $exam;
+			$qinfo['column_id'] = $column;
+			$qinfo['uniqid'] = uniqid();
+			$qinfo['list'] = $list;  // 题目列表
+			$qinfo['answers'] = array();  // 记录用户每题的答案
+			$qinfo['trues'] = array();  // 记录答题对错
+
+			Session::put('qinfo', $qinfo);
+			Session::save();
+		}
+		// 有科目id,生成题目列表
+		elseif( is_numeric($column) )
 		{
 			$columnInfo = Column::find($column)->toArray();
 			if(!$columnInfo)
@@ -28,52 +68,30 @@ class TopicController extends BaseController {
 
 			$cqr = new ColumnQuestionRelation();
 
+			// 如果是分类是题目类型，则随机取40道题
 			if($columnInfo['type'] == 1)
 				$list = $cqr->getRandList($column, 40);
 			else
 				$list = $cqr->getList($column);
 
-
-			$qlist = array();
-			foreach ($list as $key => $value)
-			{
-				$qlist[$value['question_id']] = 0;  // 默认0为没有作答，1为答对，-1为答错
+			foreach ($list as $v) {
+				$qlist[] = $v['question_id'];
 			}
 
 			if( !$qlist )
 				return $this->indexPrompt("", "科目下没有题目信息", $url = "/", false);
 
 			// 题目数据保存
-			Session::put('qlist', $qlist);
-			Session::put('column', $column);
-			Session::put('uniqid', uniqid());
-			Session::save();
-		}
-		// 如果是试卷
-		elseif(is_numeric($exam) && Session::get('exam') != $exam)
-		{
-			$ep = new ExamPaper();
-			// 获取大题列表
-			$clist = $ep->getClist($exam);
-			foreach($clist as $key => $v) 
-			{
-				$questions = $ep->getQuestions($v->id);
-				foreach ($questions as $key => $q) {
-					$qlist[$q->question_id] = 0;
-				}
-				
-			}
+			$qinfo['column_id'] = $column;
+			$qinfo['uniqid'] = uniqid();
+			$qinfo['list'] = $qlist;  // 题目列表
+			$qinfo['answers'] = array();  // 记录用户每题的答案
+			$qinfo['trues'] = array();  // 记录答题对错
 
-			// 题目数据保存
-			Session::put('qlist', $qlist);
-			Session::put('exam', $exam);
-			Session::put('uniqid', uniqid());
+			Session::put('qinfo', $qinfo);
 			Session::save();
 		}
-		else
-		{
-			$qlist = Session::get('qlist') ? Session::get('qlist') : array();
-		}
+
 		
 		// 后台审核显示没有列表
 		if(!empty($vetting))
@@ -82,16 +100,13 @@ class TopicController extends BaseController {
 		}
 
 		// 题目id不对则设为第一题, 
-		if(!empty($qlist) && (!is_numeric($id) || !array_key_exists($id, $qlist)) )
+		if(!empty($qlist) && (!is_numeric($id) || !in_array($id, $qlist)) )
 		{
-			reset($qlist);
-			$id = key($qlist);
+			$id =  $qlist[0];
 		}
 
 
 		$topic = new Topic();
-		
-		$data = array();
 		$info = $topic->get($id);
 
 		if(!$info)
@@ -99,6 +114,7 @@ class TopicController extends BaseController {
 			return $this->indexPrompt("", "没有这道题目信息", $url = "/", false);
 		}
 
+		// 不是管理员
 		if($info['q']['status'] != 1 && Session::get('utype') != -1)
 		{
 			return $this->indexPrompt("", "题目没有通过审核", $url = "/", false);
@@ -116,6 +132,8 @@ class TopicController extends BaseController {
 		$info['column'] = $column;
 		$info['exam'] = $exam;
 
+		if(!empty($qinfo['uniqid']))
+			$info['uniqid'] = $qinfo['uniqid'];
 
 		return $this->indexView('topic', $info);
 	}
@@ -126,7 +144,6 @@ class TopicController extends BaseController {
 		$inputs = Input::all();
 		$qid = $inputs['id'];
 		$uid = Session::get('uid');
-		$qlist = Session::get('qlist');
 
 		// 保存wav录音文件
 		if( !empty($inputs['wavBase64']) )
@@ -140,14 +157,18 @@ class TopicController extends BaseController {
 		}
 
 
-		if($qlist)
+		if(!empty($inputs['uniqid']))
 		{
-			$qlist[$qid] = $inputs['isTrue'];
-			$column = Session::get('column');
-			Session::set('qlist', $qlist);
+			$qinfo = Session::get('qinfo');
+			$uniqid = $qinfo['uniqid'];
+
+			$qlist['trues'][$qid] = $inputs['isTrue'];
+			$qlist['answers'][$qid] = $inputs['answers'];
+
+			Session::set('qinfo', $qinfo);
 			Session::save();
 
-		    $qk = array_keys($qlist);
+		    $qk = $qinfo['list'];
 		    $tol = count($qk);
 		    for($i = 0; $i < $tol; $i++)
 		    {
@@ -157,14 +178,14 @@ class TopicController extends BaseController {
 					// 如果已经是第一题
 	        		if($qid == $qk[0])
 	        		{
-	        			header("Location: /topic?column={$column}&id={$qid}");
+	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}");
 		           		exit;
 	        		}
 	        		elseif($qid == $qk[$i])
 	        		{
 	        			$qid = $qk[$i -1];
 
-	        			header("Location: /topic?column={$column}&id={$qid}");
+	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}");
 		           		exit;
 	        		}
 	        	}
@@ -173,31 +194,24 @@ class TopicController extends BaseController {
 	        		// 如果已经是最后一题
 	        		if($qid == $qk[$tol -1])
 	        		{
-	        			$uniqid = Session::get('uniqid');
+	        			print_r($qinfo);
+	        			exit;
+
 						// 保存答题信息
 						$topic = new Topic();
-						$info = array();
-						$info['uid'] = $uid;
-						$info['column'] = Session::get('column');
-						$info['uniqid'] = $uniqid ? $uniqid : uniqid();
-						$info['qlist'] = $qlist;
+						$topic->addResultLog($qinfo);
 
-
-						$topic->addResultLog($info);
-
-						Session::forget('column');
-						Session::forget('uniqid');
-						Session::forget('qlist');
+						Session::forget('qinfo');
 						Session::save();
 
 	        			//return $this->indexPrompt("操作成功", "答题完成", $url = "/");
-	        			header("Location: /topic/result?uniqid={$uniqid}&column={$column}");
+	        			header("Location: /topic/result?uniqid={$uniqid}");
 		           		exit;
 	        		}
 	        		elseif($qid == $qk[$i])
 	        		{
 	        			$qid = $qk[$i +1];
-	        			header("Location: /topic?column={$column}&id={$qid}");
+	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}");
 		           		exit;
 	        		}
 	        	}
@@ -205,7 +219,7 @@ class TopicController extends BaseController {
 		}
 		else
 		{
-			return $this->indexPrompt("操作成功", "答题完成", $url = "/");
+			return $this->indexPrompt("操作成功", "答题完成", $url = "/", false);
 		}
 
 		

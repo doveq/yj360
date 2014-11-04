@@ -388,14 +388,14 @@ class Topic  {
 	public function addResultLog($info)
 	{
 		$now = date('Y-m-d H:i:s');
-		foreach ($info['qlist'] as $key => $value) 
+		foreach ($info['list'] as $key => $qid) 
 		{
 			$data = array();
 			$data['created_at'] = $now;
 			$data['uniqid'] = $info['uniqid'];
 			$data['column_id'] = $info['column'];
 			$data['uid'] = $info['uid'];
-			$data['qid'] = $key;
+			$data['question_id'] = $qid;
 			$data['is_true'] = $value;
 			DB::table("result_log")->insert($data);
 		}

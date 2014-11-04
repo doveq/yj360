@@ -39,9 +39,9 @@
                                 <td class="flag">
                                     <label>
                                         @if( $q['type'] == 1 || $q['type'] == 3)
-                                            <input type="radio" name="daan" value="{{$item['id']}}" is-right="{{$item['is_right']}}" onclick="correcting()" />
+                                            <input type="radio" name="daan" value="{{$item['id']}}" is-right="{{$item['is_right']}}" onclick="correcting()" autocomplete="off" />
                                         @else
-                                            <input type="checkbox" name="daan" value="{{$item['id']}}" is-right="{{$item['is_right']}}" />
+                                            <input type="checkbox" name="daan" value="{{$item['id']}}" is-right="{{$item['is_right']}}" autocomplete="off" />
                                         @endif
 
                                         @if($q['type'] != 3)
@@ -205,14 +205,8 @@
         @endif
 
         <div id="qlist" style="display:none;">
-            <?php $i = 1; ?>
             @foreach($qlist as $k => $v)
-                @if( !empty($column) )
-                <a href='topic?column={{$column}}&id={{$k}}' class="" >{{$i}}</a>
-                @elseif( !empty($exam) )
-                <a href='topic?exam={{$exam}}&id={{$k}}' class="" >{{$i}}</a>
-                @endif
-                <?php $i++; ?>
+                <a href='topic?uniqid={{$uniqid}}&id={{$v}}' class="" >{{$k+1}}</a>
             @endforeach
             <div class="clear"></div>
         </div>
@@ -236,7 +230,9 @@
       <input type="hidden" name="id" value="{{$q['id']}}">
       <input type="hidden" id="wavBase64" name="wavBase64" value="" >
       <input type="hidden" id="isTrue" name="isTrue" value="0" >
+      <input type="hidden" id="answers" name="answers" value="" >
       <input type="hidden" id="act" name="act" value="next">
+      <input type="hidden" id="uniqid" name="uniqid" value="{{$uniqid or ''}}">
     </form>
 
     {{-- 审核表单 --}}
@@ -371,7 +367,7 @@
             });
 
 
-            $('#result').val(result);
+            $('#answers').val(result);
 
             $('input[name=daan]').each(function(){
                 console.log("disabled");
