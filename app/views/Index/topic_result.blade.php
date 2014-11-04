@@ -13,7 +13,7 @@
             	<div style="padding:10px 0;">
             	@foreach($list as $k => $v)
             		@if($v['is_true'] != 1)
-            		<a class="topic-rcit" href="/topic?id={{$v['qid']}}" target="_blank" >第{{$k+1}}题</a>
+            		<a class="topic-rcit" href="/topic?id={{$v['question_id']}}" target="_blank" >第{{$k+1}}题</a>
             		@endif
             	@endforeach
             	</div>

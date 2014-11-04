@@ -162,8 +162,8 @@ class TopicController extends BaseController {
 			$qinfo = Session::get('qinfo');
 			$uniqid = $qinfo['uniqid'];
 
-			$qlist['trues'][$qid] = $inputs['isTrue'];
-			$qlist['answers'][$qid] = $inputs['answers'];
+			$qinfo['trues'][$qid] = $inputs['isTrue'];
+			$qinfo['answers'][$qid] = $inputs['answers'];
 
 			Session::set('qinfo', $qinfo);
 			Session::save();
@@ -194,11 +194,9 @@ class TopicController extends BaseController {
 	        		// 如果已经是最后一题
 	        		if($qid == $qk[$tol -1])
 	        		{
-	        			print_r($qinfo);
-	        			exit;
-
 						// 保存答题信息
 						$topic = new Topic();
+						$qinfo['uid'] = Session::get('uid');
 						$topic->addResultLog($qinfo);
 
 						Session::forget('qinfo');

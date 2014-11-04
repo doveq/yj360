@@ -393,10 +393,16 @@ class Topic  {
 			$data = array();
 			$data['created_at'] = $now;
 			$data['uniqid'] = $info['uniqid'];
-			$data['column_id'] = $info['column'];
+			$data['column_id'] = $info['column_id'];
 			$data['uid'] = $info['uid'];
 			$data['question_id'] = $qid;
-			$data['is_true'] = $value;
+
+			if(isset($info['trues'][$key]))
+				$data['is_true'] = $info['trues'][$key];
+
+			if(isset($info['answers'][$key]))
+				$data['answers'] = $info['answers'][$key];
+
 			DB::table("result_log")->insert($data);
 		}
 	}

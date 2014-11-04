@@ -230,7 +230,7 @@
       <input type="hidden" name="id" value="{{$q['id']}}">
       <input type="hidden" id="wavBase64" name="wavBase64" value="" >
       <input type="hidden" id="isTrue" name="isTrue" value="0" >
-      <input type="hidden" id="answers" name="answers" value="" >
+      <input type="hidden" id="result" name="answers" value="" >
       <input type="hidden" id="act" name="act" value="next">
       <input type="hidden" id="uniqid" name="uniqid" value="{{$uniqid or ''}}">
     </form>
@@ -367,7 +367,7 @@
             });
 
 
-            $('#answers').val(result);
+            $('#result').val(result);
 
             $('input[name=daan]').each(function(){
                 console.log("disabled");
