@@ -316,16 +316,18 @@
 
         }
 
+        var hp;
         function hintPlay()
         {
-            player = new MediaElementPlayer('#q-hint');
-            player.play();
+            hp = new MediaElementPlayer('#q-hint');
+            hp.play();
         }
 
+        var sp;
         function soundPlay()
         {
-            player = new MediaElementPlayer('#q-sound');
-            player.play();
+            sp = new MediaElementPlayer('#q-sound');
+            sp.play();
         }
 
         function ckyPlay()
@@ -337,6 +339,9 @@
         // js 判断答题对错
         function correcting()
         {
+            hp.stop();
+            sp.stop();
+            
             var err = new Array();
             var result = '';
             $('input[name=daan]').each(function(){

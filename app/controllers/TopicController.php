@@ -280,6 +280,7 @@ class TopicController extends BaseController {
 		
 		$data['list'] = $list;
 		$data['scores'] =  (100 / count($list)) * $data['rightNum'];
+		$data['scores'] = round($data['scores'], 1); // 四舍五入小数点后一位
 
 		return $this->indexView('topic_result',  $data);
 	}

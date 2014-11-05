@@ -16,6 +16,7 @@
       <div id="site-head">
           <div class="wrap">
               <a id="site-logo" href="/"><img src="/assets/img/logo.png" /></a>
+              @yield('columnHead')
 
               <ul id="site-nav">
                 <!--

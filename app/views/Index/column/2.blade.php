@@ -1,6 +1,10 @@
 @extends('Index.master')
 @section('title'){{$column->name}} @stop
 
+@if(!empty($columnHead))
+@section('columnHead')<div id="column-head">| {{$columnHead['name']}}</div> @stop
+@endif
+
 @section('content')
 <div class="container-column wrap">
   @include('Index.column.nav')

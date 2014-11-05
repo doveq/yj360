@@ -57,7 +57,12 @@ class ColumnController extends BaseController
     		}
         }
 
-        return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions'));
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
+
+        return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions', 'columnHead'));
 	}
 
     /* 科目临时显示 */
