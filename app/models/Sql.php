@@ -157,7 +157,7 @@ class Sql
 			  `column_id` int(11) unsigned NOT NULL COMMENT '科目id',
 			  `exam_id` int(11) unsigned NOT NULL COMMENT '试卷id',
 			  `is_true` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0:回答错误, 1:回答正确',
-			  `answers` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '用户回答的答案，多个答案逗号分隔',
+			  `answers` text COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '用户回答的答案，多个答案逗号分隔',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  `uniqid` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '' COMMENT '唯一id,区分每次用户做题',
 			  PRIMARY KEY (`id`),

@@ -33,6 +33,11 @@ class TopicController extends BaseController {
 		elseif(is_numeric($exam))
 		{
 			$ep = new ExamPaper();
+
+			$parent = $ep::find($exam);
+			if( empty($parent) )
+				return $this->indexPrompt("", "没有这个试卷信息", $url = "/", false);
+
 			// 获取大题列表
 			$clist = $ep->getClist($exam);
 
@@ -50,9 +55,9 @@ class TopicController extends BaseController {
 
 			// 题目数据保存
 			$qinfo['exam_id'] = $exam;
-			$qinfo['column_id'] = $column;
+			$qinfo['column_id'] = $parent['column_id'];
 			$qinfo['uniqid'] = uniqid();
-			$qinfo['list'] = $list;  // 题目列表
+			$qinfo['list'] = $qlist;  // 题目列表
 			$qinfo['answers'] = array();  // 记录用户每题的答案
 			$qinfo['trues'] = array();  // 记录答题对错
 
@@ -195,16 +200,37 @@ class TopicController extends BaseController {
 	        		if($qid == $qk[$tol -1])
 	        		{
 						// 保存答题信息
-						$topic = new Topic();
+						
 						$qinfo['uid'] = Session::get('uid');
-						$topic->addResultLog($qinfo);
 
-						Session::forget('qinfo');
-						Session::save();
+						// 如果是试卷
+						if( isset($qinfo['exam_id']) )
+						{
+							$erl = new ExamResultLog();
+							$erl->add($qinfo);
+
+							Session::forget('qinfo');
+							Session::save();
+
+							header("Location: /topic/result?uniqid={$uniqid}&exam=" . $qinfo['exam_id']);
+							exit;
+						}
+						else
+						{
+							// 如果是题目
+							$topic = new Topic();
+							$topic->addResultLog($qinfo);
+
+							Session::forget('qinfo');
+							Session::save();
+
+							header("Location: /topic/result?uniqid={$uniqid}");
+							exit;
+						}
 
 	        			//return $this->indexPrompt("操作成功", "答题完成", $url = "/");
-	        			header("Location: /topic/result?uniqid={$uniqid}");
-		           		exit;
+	        			// header("Location: /topic/result?uniqid={$uniqid}");
+		          		// exit;
 	        		}
 	        		elseif($qid == $qk[$i])
 	        		{
@@ -230,8 +256,17 @@ class TopicController extends BaseController {
 		$uniqid = Input::get('uniqid');
 		
 		$data = array();
-		$topic = new Topic();
-		$list = $topic->getResult($uniqid);
+
+		if( !empty(Input::get('exam')) )
+		{
+			$erl = new ExamResultLog();
+			$list = $erl->getList($uniqid);
+		}
+		else
+		{
+			$topic = new Topic();
+			$list = $topic->getResult($uniqid);
+		}
 
 		$data['rightNum'] = 0;
 		$data['errorNum'] = 0;

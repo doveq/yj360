@@ -397,11 +397,11 @@ class Topic  {
 			$data['uid'] = $info['uid'];
 			$data['question_id'] = $qid;
 
-			if(isset($info['trues'][$key]))
-				$data['is_true'] = $info['trues'][$key];
+			if(isset($info['trues'][$qid]))
+				$data['is_true'] = $info['trues'][$qid];
 
-			if(isset($info['answers'][$key]))
-				$data['answers'] = $info['answers'][$key];
+			if(isset($info['answers'][$qid]))
+				$data['answers'] = $info['answers'][$qid];
 
 			DB::table("result_log")->insert($data);
 		}
