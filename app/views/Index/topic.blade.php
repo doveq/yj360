@@ -339,9 +339,9 @@
         // js 判断答题对错
         function correcting()
         {
-            hp.stop();
-            sp.stop();
-            
+            if(hp) hp.stop();
+            if(sp) sp.stop();
+
             var err = new Array();
             var result = '';
             $('input[name=daan]').each(function(){

@@ -25,7 +25,7 @@
                   @endif
                 </td>
                 
-                <td class="tytd table-2-del"><a href="/result/del?id={{$v->id}}" class="tyadel">删除</a></td>
+                <td class="tytd table-2-del"><a href="/failTopic/del?id={{$v->id}}" class="tyadel">删除</a></td>
             </tr>
             <tr><td colspan="2">
                 <div class="table-2-sp"></div>

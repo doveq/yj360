@@ -185,8 +185,8 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::post('/profile/doPasswd', 'ProfileController@doPasswd');
 
     // 错题记录
-    Route::get('/result', 'ResultController@index');
-    Route::get('/result/del', 'ResultController@doDel');
+    Route::get('/failTopic', 'FailTopicController@index');
+    Route::get('/failTopic/del', 'FailTopicController@doDel');
     
     // 问题反馈
     Route::get('/feedback', 'FeedbackController@index');

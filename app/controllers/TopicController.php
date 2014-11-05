@@ -173,6 +173,17 @@ class TopicController extends BaseController {
 			Session::set('qinfo', $qinfo);
 			Session::save();
 
+			// 记录错题信息
+			if($inputs['isTrue'] == -1)
+			{
+				$ft = new FailTopic();
+				$ftd = array();
+				$ftd['uid'] = Session::get('uid');
+				$ftd['question_id'] = $qid;
+				$ftd['column_id'] = $qinfo['column_id'];
+				$ft->add(  $ftd );
+			}
+
 		    $qk = $qinfo['list'];
 		    $tol = count($qk);
 		    for($i = 0; $i < $tol; $i++)
