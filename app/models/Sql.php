@@ -115,22 +115,10 @@ class Sql
 			  `uid` int(11) unsigned NOT NULL COMMENT '用户id',
 			  `question_id` int(11) unsigned NOT NULL COMMENT '题目id',
 			  `column_id` int(11) unsigned NOT NULL COMMENT '科目id',
-			  PRIMARY KEY (`id`),
-			  KEY `uid` (`uid`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
-		";
-		DB::statement($table);
-
-		DB::statement('drop table if exists `favorite`');
-		$table = "
-			CREATE TABLE IF NOT EXISTS `favorite` (
-			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-			  `uid` int(11) unsigned NOT NULL COMMENT '用户id',
-			  `question_id` int(11) unsigned NOT NULL COMMENT '题目id',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  PRIMARY KEY (`id`),
 			  KEY `uid` (`uid`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='收藏夹' AUTO_INCREMENT=1 ;
+			) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
 		";
 		DB::statement($table);
 
@@ -139,7 +127,7 @@ class Sql
 			CREATE TABLE IF NOT EXISTS `fail_topic` (
 			  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
 			  `uid` int(11) unsigned NOT NULL COMMENT '用户id',
-			  `qid` int(11) unsigned NOT NULL COMMENT '题目id',
+			  `question_id` int(11) unsigned NOT NULL COMMENT '题目id',
 			  `column_id` int(11) unsigned NOT NULL COMMENT '科目id',
 			  `created_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT '添加时间',
 			  PRIMARY KEY (`id`),

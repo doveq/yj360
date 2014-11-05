@@ -2,7 +2,7 @@
 @section('title'){{$column->name}} @stop
 
 @if(!empty($columnHead))
-@section('columnTitle')<div id="">{{$columnTitle}}</div> @stop
+@section('columnHead')<div id="column-head">| {{$columnHead['name']}}</div> @stop
 @endif
 
 @section('content')

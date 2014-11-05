@@ -41,8 +41,20 @@ class FailTopic extends Eloquent {
 
     public function getList($info)
     {
-        $list = $this->with('Question')->where('uid', '=', $info['uid'])->take($info['limit'])->get();
-        return $list;
+        if(empty($info['column_id']))
+        {
+            $list = $this->with('Question')->where('uid', '=', $info['uid'])->take($info['limit'])->get();
+            return $list;
+        }
+        else
+        {
+            // 获取所有子分类id
+            $c = new Column();
+            $carr = $c->allchild($info['column_id']);
+
+            $list = $this->with('Question')->where('uid', '=', $info['uid'])->whereIn('column_id', $carr)->take($info['limit'])->get();
+            return $list;
+        }
     }
 
 }

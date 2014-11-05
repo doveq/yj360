@@ -8,6 +8,7 @@ class Favorite extends Eloquent {
      * @var string
      */
     protected $table = 'favorite';
+    public $timestamps = false; // 不自动跟新时间
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -15,34 +16,6 @@ class Favorite extends Eloquent {
      * @var array
      */
     // protected $hidden = array('password', 'remember_token');
-
-
-    /**
-     * Get the unique identifier for the user.
-     *
-     * @return mixed
-     */
-    // public function getAuthIdentifier()
-    // {
-    //  return $this->getKey();
-    // }
-
-    /**
-     * Get the password for the user.
-     *
-     * @return string
-     */
-    // public function getAuthPassword()
-    // {
-    //  return $this->password;
-    // }
-
-
-
-    // public function user()
-    // {
-    //     return $this->belongsTo('User');
-    // }
 
     
     public function question()
@@ -52,12 +25,14 @@ class Favorite extends Eloquent {
 
     public function add($info)
     {
-        $count = $this->where('user_id', '=', $info['uid'])->where('question_id', '=', $info['qid'])->count();
+        $count = $this->where('uid', '=', $info['uid'])->where('question_id', '=', $info['qid'])->where('column_id', '=', $info['column_id'])->count();
 
         if(!$count)
         {
-            $this->user_id = $info['uid'];
+            $this->uid = $info['uid'];
             $this->question_id = $info['qid'];
+            $this->column_id = $info['column_id'];
+            $this->created_at = date('Y-m-d H:i:s');
             $this->save();
         }
 
@@ -66,14 +41,28 @@ class Favorite extends Eloquent {
 
     public function del($info)
     {
-        $this->where('user_id', '=', $info['uid'])->where('question_id', '=', $info['qid'])->delete();
+        $this->where('uid', '=', $info['uid'])->where('question_id', '=', $info['qid'])->where('column_id', '=', $info['column_id'])->delete();
         return 1;
     }
 
 
     public function getList($info)
     {
-        $list = $this->where('user_id', '=', $info['uid'])->take($info['limit'])->get();
-        return $list;
+
+        if(empty($info['column_id']))
+        {
+            $list = $this->where('uid', '=', $info['uid'])->take($info['limit'])->get();
+            return $list;
+        }
+        else
+        {
+            // 获取所有子分类id
+            $c = new Column();
+            $carr = $c->allchild($info['column_id']);
+
+            $list = $this->where('uid', '=', $info['uid'])->whereIn('column_id', $carr)->take($info['limit'])->get();
+            return $list;
+        }
+        
     }
 }
