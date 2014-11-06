@@ -67,7 +67,7 @@
               <td>
                 <button class="btn_publish" data-id="{{$list->id}}" data-status="{{$list->status}}">{{$statusEnum[$list->status]}}</button>
               </td>
-              <td><a href="javascript:void(0);" class="choose_question">选题</a> <a href="/training_result?training_id={{$list->id}}&column_id={{$query['column_id']}}">查看练习情况</a></td>
+              <td><a href="javascript:void(0);" onclick="choose_question({{$list->id}})">选题</a> <a href="/training_result?training_id={{$list->id}}&column_id={{$query['column_id']}}">查看练习情况</a></td>
             </tr>
             @endforeach
           </tbody>
@@ -81,16 +81,36 @@
 <script type="text/javascript" src="/assets/layer/layer.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function () {
-  $(".choose_question").on('click', function(){
+  function choose_fav(training_id)
+  {
+    layer.closeAll();
+    $.layer({
+      type: 2,
+      border: [0],
+      title: false,
+      shadeClose: true,
+      // closeBtn: false,
+      area: ['860px', '600px'],
+      // offset: [($(window).height() - 100)/2+'px', ''], //上下垂直居中
+      iframe: {src: '/favorite/choose?training_id='+training_id}
+    });
+  }
+  function choose_question(training_id){
     $.layer({
         type: 1,
         title: false, //不显示默认标题栏
-        shade: [0], //不显示遮罩
-        area: ['400px', '300px'],
-        page: {html: '请选择题库:<br/>原创题库 我的收藏'}
+        shade: [1], //不显示遮罩
+        shadeClose: true,
+        area: ['auto', 'auto'],
+        // offset: [($(window).height() - 700)/2+'px', ''], //上下垂直居中
+        page: {
+          html: '<div style="margin:10px 20px 20px; width:400px;">请选择题库:</div><div style="margin:20px;text-align:center"><a href="javascript:void(0);" onclick="choose_fav('+training_id+');">我的收藏</a></div>'
+        }
     });
-  });
+  }
+$(document).ready(function () {
+  // $(".choose_question").on('click',
+
 
   $(".btn_publish").on('click', function() {
     var $this = $(this);

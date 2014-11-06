@@ -55,10 +55,10 @@ echo "haha";
             if (Input::get('name')) {
                 $q->where('name', 'LIKE', '%'.Input::get('name').'%');
             }
-        })->orderBy('id', 'DESC')->paginate($this->pageSize)->toSql();
+        })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
-        print_r($sql);
-        exit;
+        // print_r($sql);
+        // exit;
 
         $students = User::whereType(0)->whereStatus(1)->whereNotIn('id', $tmp)->where(function($q) {
             if (Input::get('tel')) {

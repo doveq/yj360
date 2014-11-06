@@ -11,7 +11,8 @@
              ><a href="/column?id={{$column->id}}&column_id={{$query['column_id']}}">{{$column->name}}</a><div class="sort-sj"></div></li>
             @endforeach
           </ul>
-
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-wbj"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
           <div class="sort-item sort-wbj"><a href="/favorite?column_id={{$query['column_id']}}">我的收藏</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>

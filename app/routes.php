@@ -157,6 +157,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/favorite', 'FavoriteController@index');
     Route::get('/favorite/del', 'FavoriteController@doDel');
     Route::get('/favorite/ajax', 'FavoriteController@ajax');
+    Route::get('/favorite/choose', 'FavoriteController@choose');
 
     //初级
     Route::get('/beginner', 'BeginnerController@index');
@@ -187,7 +188,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     // 错题记录
     Route::get('/failTopic', 'FailTopicController@index');
     Route::get('/failTopic/del', 'FailTopicController@doDel');
-    
+
     // 问题反馈
     Route::get('/feedback', 'FeedbackController@index');
     Route::post('/feedback/dopost', 'FeedbackController@doPost');
