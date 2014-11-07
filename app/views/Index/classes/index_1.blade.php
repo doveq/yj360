@@ -3,23 +3,11 @@
 
 @section('content')
 <div class="container-column wrap">
-  <div class="wrap-left">
-      <div class="sort">
-          <div class="sort-tit">全部分类</div>
-          <div class="sort-bb"></div>
-          <ul class="sort-list">
-            @foreach($columns as $k => $column)
-            <li><a href="/column?id={{$column->id}}&column_id={{$query['column_id']}}">{{$column->name}}</a><div class="sort-sj"></div></li>
-            @endforeach
-          </ul>
-          <div class="sort-bb"></div>
-          <div class="sort-item sort-wbj sort-wbj-act"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
-          <div class="sort-bb"></div>
-          <div class="sort-item sort-sd"><a href="/products?column_id={{$query['column_id']}}">产品商店</a><div class="sort-sj"></div></div>
-          <div class="sort-bb"></div>
-
-      </div>
-  </div>
+  @if ($query['column_id'])
+    @include('Index.column.nav')
+  @else
+    @include('Index.profile.nav')
+  @endif
 
   <div class="wrap-right">
       <div class="tabtool">
@@ -34,12 +22,12 @@
           @foreach ($classes as $list)
           <div class="classse-box" id="classes_{{$list->id}}">
             <div class="classes-txt">
-              <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$query['column_id']}}"><h2><b>{{$list->name}}</b></h2></a></div>
+              <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
               <div>创建人：{{$list->teacher->name}}</div>
               <div>成员：{{$list->students->count()}}</div>
             </div>
             <div class="classse-btn" style="display:none;margin-top:-30px;">
-                <a href="/classes/{{$list->id}}?column_id={{$query['column_id']}}">班级成员</a>
+                <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">班级成员</a>
                 <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">删除班级</a>
                 <div class="clear"></div>
             </div>

@@ -231,10 +231,10 @@ echo "haha";
 
     public function addClass()
     {
-        $query = Input::all();
+        $query = Input::only('column_id', 'teacher_name');
 
-        if(empty($query['column_id']) || !is_numeric($query['column_id']))
-            return $this->indexPrompt("", '请选择正确的科目', $url = "/");
+        // if(empty($query['column_id']) || !is_numeric($query['column_id']))
+        //     return $this->indexPrompt("", '请选择正确的科目', $url = "/");
 
         // dd(Session::get('uid'));
         // $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
@@ -256,11 +256,15 @@ echo "haha";
         }
         else
         {
-            // 显示所有分类
-            $classes = Classes::where('column_id', '=', $query['column_id'])->get();
+            if ($query['column_id']) {
+                $classes = Classes::where('column_id', '=', $query['column_id'])->get();
+            } else {
+                $classes = Classes::get();
+            }
         }
-
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        if ($query['column_id']) {
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        }
 
 
         return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns'));

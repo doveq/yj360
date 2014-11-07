@@ -3,28 +3,21 @@
 
 @section('content')
 <div class="container-column wrap">
-  <div class="wrap-left">
-      <div class="sort">
-          <div class="sort-tit">全部分类</div>
-          <div class="sort-bb"></div>
-          <ul class="sort-list">
-            @foreach($columns as $k => $column)
-            <li><a href="/column?id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
-            @endforeach
-          </ul>
-          <div class="sort-bb"></div>
-          <div class="sort-item sort-wbj sort-wbj-act"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
-          <div class="sort-bb"></div>
-          <div class="sort-item sort-sd"><a href="#">产品商店</a><div class="sort-sj"></div></div>
-          <div class="sort-bb"></div>
-
-      </div>
-  </div>
+  @if ($query['column_id'])
+    @include('Index.column.nav')
+  @else
+    @include('Index.profile.nav')
+  @endif
 
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/classes/create?column_id={{$query['column_id']}}"><img src="/assets/img/addclasses.jpg" /></a>
-          <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
+          @if ($query['column_id'])
+            <a href="/classes/create?column_id={{$query['column_id']}}"><img src="/assets/img/addclasses.jpg" /></a>
+            <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
+          @else
+            <a href="/classes/create"><img src="/assets/img/addclasses.jpg" /></a>
+            <a href="/training/create"><img src="/assets/img/addzdxl.jpg" /></a>
+          @endif
           <a href="/message" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
           <div class="clear"></div>
       </div>
@@ -40,10 +33,20 @@
               <td style="width:20%;text-align:right;">{{ Form::label('inputName', '班级名称', array('class' => 'tylabel')) }}</td>
               <td>{{ Form::text('name', '', array('class' => 'tyinput', 'id' => 'inputName','style' => 'width:200px'))}}</td>
             </tr>
+            @if (!$query['column_id'])
+            <tr>
+              <td style="width:20%;text-align:right;">{{ Form::label('inputColumn', '所属科目', array('class' => 'tylabel')) }}</td>
+              <td>
+                {{Form::select('column_id', $columnall, array(),array('class' => 'tyinput', 'style' => 'width:200px'))}}
+              </td>
+            </tr>
+            @endif
             <tr>
               <td></td>
               <td>
+                @if ($query['column_id'])
                 {{ Form::hidden('column_id', $query['column_id'], array('class' => '')) }}
+                @endif
                 {{ Form::submit('', array('class' => 'submitbtn')) }}
               </td>
             </tr>

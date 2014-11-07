@@ -16,7 +16,9 @@ class TrainingController extends BaseController {
         $user_id = Session::get('uid');
         $lists = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        if ($query['column_id']) {
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        }
         $statusEnum = $this->statusEnum;
         return $this->indexView('training.index', compact('statusEnum', 'lists', 'query', 'columns'));
     }
@@ -39,7 +41,9 @@ class TrainingController extends BaseController {
         $classes_num = $classes->count();
         $trainings_num = Training::whereUserId($user_id)->get()->count();
         $query = Input::only('column_id');
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        if ($query['column_id']) {
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        }
         return $this->indexView('training.create', compact('columns', 'query', 'classeses', 'classes_num', 'trainings_num'));
     }
 

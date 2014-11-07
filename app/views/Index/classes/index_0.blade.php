@@ -3,28 +3,20 @@
 
 @section('content')
 <div class="container-column wrap">
-  <div class="wrap-left">
-      <div class="sort">
-          <div class="sort-tit">全部分类</div>
-          <div class="sort-bb"></div>
-          <ul class="sort-list">
-            @foreach($columns as $k => $column)
-            <li><a href="/column?id={{$column->id}}">{{$column->name}}</a><div class="sort-sj"></div></li>
-            @endforeach
-          </ul>
-          <div class="sort-bb"></div>
-          <div class="sort-item sort-wbj sort-wbj-act"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
-          <div class="sort-bb"></div>
-          <div class="sort-item sort-sd"><a href="#">产品商店</a><div class="sort-sj"></div></div>
-          <div class="sort-bb"></div>
-
-      </div>
-  </div>
+  @if ($query['column_id'])
+    @include('Index.column.nav')
+  @else
+    @include('Index.profile.nav')
+  @endif
 
   <div class="wrap-right">
       <div class="tabtool">
+        @if ($query['column_id'])
           <a href="/classm/add_class?column_id={{$query['column_id']}}"><img src="/assets/img/addclass.png" /></a>
-          <a href="/message?column_id={{$query['column_id']}}&column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
+        @else
+          <a href="/classm/add_class"><img src="/assets/img/addclass.png" /></a>
+        @endif
+          <a href="/message" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
           <div class="clear"></div>
       </div>
       <div class="clear"></div>

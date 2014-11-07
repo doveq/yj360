@@ -15,17 +15,22 @@ class ClassesController extends BaseController {
         $query = Input::only('column_id');
 
         //左边菜单,需要知道是在初级,中级,高级,中小学音乐科目下,如果没有,默认为初级
-        if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
-        }
+        // if (!isset($query['column_id'])) {
+        //     $query['column_id'] = 3;
+        // }
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
         // dd($user_type);
         //if (strlen($user_type)==0) $user_type = 1;
-        $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        if (isset($query['column_id'])) {
+            $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        } else {
+            $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        }
         $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        // $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
         $genderEnum = $this->genderEnum;
         // dd($user_type);
@@ -46,8 +51,15 @@ class ClassesController extends BaseController {
         $classes_num = $classes->count();
         $trainings_num = Training::whereUserId($user_id)->get()->count();
         $query = Input::only('column_id');
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
-        return $this->indexView('classes.create', compact('columns', 'query', 'classes_num', 'trainings_num'));
+        if ($query['column_id']) {
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        } else {
+            $columns = Column::whereParentId(0)->whereStatus(1)->select('id', 'name')->get();
+            foreach ($columns as $key => $value) {
+                $columnall[$value->id] = $value->name;
+            }
+        }
+        return $this->indexView('classes.create', compact('columns', 'query', 'classes_num', 'trainings_num', 'columnall'));
     }
 
 
@@ -101,7 +113,7 @@ class ClassesController extends BaseController {
         $columns = Column::find($classes->column_id)->child()->whereStatus(1)->get();
 
         $genderEnum = $this->genderEnum;
-        
+
         return $this->indexView('classes.show', compact("classes", 'columns', 'query', 'genderEnum'));
     }
 

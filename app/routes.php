@@ -172,7 +172,7 @@ Route::group(array('before' => 'indexLogin'), function(){
 
     Route::get('/indexSchool', 'IndexController@indexschool');
     Route::get('/about', 'IndexController@about');
-    Route::get('/feedback', 'IndexController@feedback');
+    // Route::get('/feedback', 'IndexController@feedback');
     Route::get('/help', 'IndexController@help');
     Route::get('/app', 'IndexController@app');
     Route::get('/interestTest', 'IndexController@interestTest');
