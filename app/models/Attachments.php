@@ -37,7 +37,7 @@ class Attachments
 			{
 				DB::table($this->table)->where('id', $info['id'])->delete();
 				$route = $this->getTopicRoute($info['qid'], $info['file_name']);
-				unlink($route['path']);
+				@unlink($route['path']);
 			}
 		}
 	}
