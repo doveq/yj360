@@ -290,6 +290,7 @@
         }
 
         // 播放题干音和提示音
+        var ip;
         function initPlay()
         {
             /*
@@ -309,8 +310,9 @@
                     mediaElement.addEventListener('ended', function(e) {
                         hintPlay();
                     }, false);
-                     
-                    mediaElement.play();
+                    
+                    ip = mediaElement;
+                    ip.play();
                 }
             });
 
@@ -339,9 +341,10 @@
         // js 判断答题对错
         function correcting()
         {
+            if(ip) ip.stop();
             if(hp) hp.stop();
             if(sp) sp.stop();
-
+            
             var err = new Array();
             var result = '';
             $('input[name=daan]').each(function(){
