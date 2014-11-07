@@ -31,6 +31,7 @@ class FavoriteController extends BaseController
             $columnHead = $arr[0];
 
             return $this->indexView('column.favorite', compact('list', 'columns', 'columnHead', 'query') );
+            
         }
     }
 
