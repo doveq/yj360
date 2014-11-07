@@ -25,7 +25,7 @@
         <div style="position:relative;overflow:hidden;">
             <div style="padding-bottom:20px;">
                 @if( !empty($q['txt']) ) <h2>{{$q['txt']}}</h2> @endif
-                @if( !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
+                @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
             </div>
 
             <div id="answers">
@@ -85,13 +85,23 @@
                     @elseif( $q['type'] == 7 ) 
                         @foreach($a as $k => $item)
                             @if( !empty($item['img_url']) )
-                                <div><img src="{{$item['img_url']}}" /></div>
+                                <div style="text-align:center;"><img src="{{$item['img_url']}}" /></div>
                             @endif
                         @endforeach
                     @elseif( $q['type'] == 8)
+                       <div style="text-align:center;">
                          {{$a[0]['txt']}}
+                         @if( !empty($_GET['vetting']) && !empty($q['img']) )
+                         <div style="text-align:center;"><img src="{{$q['img_url']}}" /></div>
+                         @endif
+                       </div>
                     @elseif( $q['type'] == 9 || $q['type'] == 10 )
+                      <div style="text-align:center;">
                         <embed src="{{$q['flash_url'] or ''}}" allowFullScreen="true" quality="high" width="500" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+                        @if( !empty($_GET['vetting']) && !empty($q['img']) )
+                        <div><img src="{{$q['img_url']}}" /></div>
+                        @endif
+                      </div>
                     @endif 
 
             </div>
@@ -344,7 +354,7 @@
             if(ip) ip.stop();
             if(hp) hp.stop();
             if(sp) sp.stop();
-            
+
             var err = new Array();
             var result = '';
             $('input[name=daan]').each(function(){
