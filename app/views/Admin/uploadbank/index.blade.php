@@ -132,7 +132,7 @@ $(function(){
       $("#myModalLabel").html('提示:');
       $("#myModalBody").html('你确定要删除吗?');
       $("#uploadbank_id").val(uploadbank_id);
-      $("#myModalForm").attr('action', '/admin/uploadbank/'+ message_id);
+      $("#myModalForm").attr('action', '/admin/uploadbank/'+ uploadbank_id);
       $("#form_method").attr('value', 'DELETE');
       $('#myModal').modal('show');
   });

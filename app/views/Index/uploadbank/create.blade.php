@@ -66,7 +66,9 @@
 $("#inputFile").change(function(event) {
   /* Act on the event */
   // alert($(this).val());
-  $("#inputName").val($(this).val());
+  var filename = $(this).val();
+  var fn_len = $(this).val().length;
+  $("#inputName").val(filename.substring(0, fn_len-4));
 });
 </script>
 @stop

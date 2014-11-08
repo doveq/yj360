@@ -21,20 +21,20 @@ class ClassesController extends BaseController {
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
         // dd($user_type);
-        //if (strlen($user_type)==0) $user_type = 1;
+        if ($user_type < 0) $user_type = 1;
         if (isset($query['column_id'])) {
             $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
             $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         } else {
             $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         }
-        $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        // $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
         // $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
         $genderEnum = $this->genderEnum;
         // dd($user_type);
-        return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'genderEnum', 'classes', 'trainings', 'query', 'columns'));
+        return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'genderEnum', 'classes', 'query', 'columns'));
     }
 
 

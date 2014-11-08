@@ -41,9 +41,7 @@
             <th>上线时间</th>
             <th>状态</th>
             <th>素材类型</th>
-            <!--
-            <th>查看题目</th>
-            -->
+            <th>排序序号</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -69,9 +67,9 @@
               @endif
             </td>
             <td>{{$typeEnum[$list->type]}}</td>
-            <!--
-            <td><a href="/admin/questions?type=column&id={{$list->id}}" target="_blank">查看</a></td>
-            -->
+
+            <td>{{$list->ordern}}</td>
+
             <td>
               <div class="btn-group btn-xs">
                 <a class="btn btn-default btn-xs" href="{{url('/admin/column/'. $list->id .'/edit') }}"><i class="icon-edit"></i> 编辑</a>
