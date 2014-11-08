@@ -59,9 +59,9 @@ class UploadBankController extends BaseController {
             return Redirect::to('uploadbank/create?column_id='.$query['column_id'])->withErrors($validator)->withInput($query);
         }
         if(Input::hasFile('filename')) {
-            // $originalName = Input::file('pic')->getClientOriginalName();
+            $originalName = Input::file('filename')->getClientOriginalName();
             $extension = Input::file('filename')->getClientOriginalExtension();
-            $filename = Session::get('uid') . "_" . Str::random() . "." . $extension;
+            $filename = Session::get('uid') . "-" .Session::get('uname') . "-"  . $originalName . "-" . Str::random() . "." . $extension;
             $destinationPath = Config::get('app.uploadbank_dir');
             Input::file('filename')->move($destinationPath, $filename);
             $query['filename'] = $filename;

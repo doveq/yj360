@@ -11,6 +11,12 @@
              ><a href="/column?id={{$column->id}}&column_id={{$query['column_id']}}">{{$column->name}}</a><div class="sort-sj"></div></li>
             @endforeach
           </ul>
+          @if (Session::get('utype') == 1)
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-wbj"><a href="/uploadbank?column_id={{$query['column_id']}}">原创题库</a><div class="sort-sj"></div></div>
+          <div class="sort-bb"></div>
+          <div class="sort-item sort-wbj"><a href="/training?column_id={{$query['column_id']}}">我的作业</a><div class="sort-sj"></div></div>
+          @endif
           <div class="sort-bb"></div>
           <div class="sort-item sort-wbj"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
