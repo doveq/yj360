@@ -115,7 +115,7 @@ class LoginController extends BaseController
 					$att = new Attachments();
 					$att->addTeacherImg($uid, $_FILES['teacher_img']['tmp_name']);
 
-					$data['type'] = 2;
+					//$data['type'] = 2;
 				}
 
 				return $this->indexPrompt("操作成功", "用户注册成功，请登录", $url = "/login", $auto = true);
