@@ -143,12 +143,31 @@ class TopicController extends BaseController {
 		{
 			$epinfo = ExamPaper::find($exam);
 			$info['headTitle'] = $epinfo->title;
+
+			// 生成返回链接
+			$cn = new Column();
+			$path = $cn->getPath($epinfo['column_id']);
+			$cnum = count($path);
+			if($cnum > 1)
+				$info['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
 		}
 		else if( !empty($column) )
 		{
 			$cninfo = Column::find($column);
 			$info['headTitle'] = $cninfo->name;
+
+			// 生成返回链接
+			$cn = new Column();
+			$path = $cn->getPath($column);
+			$cnum = count($path);
+			if($cnum > 2)
+				$info['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
+			else if($cnum > 1)
+				$info['backurl'] = "/column?id={$path[$cnum -1]['id']}&column_id={$path[0]['id']}";
 		}
+
+		// 答题对错
+		$info['trues'] = $qinfo['trues'];
 
 		if(!empty($qinfo['uniqid']))
 			$info['uniqid'] = $qinfo['uniqid'];
@@ -178,6 +197,9 @@ class TopicController extends BaseController {
 		if(!empty($inputs['uniqid']))
 		{
 			$qinfo = Session::get('qinfo');
+			if(empty($qinfo))
+				return $this->indexPrompt("", "不能重复提交答题结果", $url = "/column/static", false);
+
 			$uniqid = $qinfo['uniqid'];
 
 			$qinfo['trues'][$qid] = $inputs['isTrue'];

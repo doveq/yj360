@@ -23,13 +23,16 @@
 @section('content')
     <div class="topic-head">
         <div class="wrap">
-            <a class="back" href="#">< 返回</a>
+            @if(!empty($backurl))
+            <a class="back" href="{{$backurl}}">< 返回</a>
+            @endif
             <b>{{$headTitle or ''}}</b>
         </div>
+        <div class="clear"></div>
     </div>
 
     <div class="container wrap">
-        <div style="position:relative;overflow:hidden;">
+        <div style="position:relative;overflow:hidden;border:1px solid #e0e0e0;padding:15px;">
             <div style="padding-bottom:20px;">
                 @if( !empty($q['txt']) ) <h2>{{$q['txt']}}</h2> @endif
                 @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
@@ -126,51 +129,69 @@
             </div>
             @endif
 
-        </div>
-        
-        {{-- 录音相关 --}}
-        <div id="save_button">
-            <span id="flashcontent">
-              <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
-            </span>
-        </div>
-        <div style="display:none;">
-            <div id="recorder-audio" class="control_panel idle">
-                <button class="record_button" onclick="FWRecorder.record('audio', 'audio.wav');" title="Record">
-                    <img src="/assets/recorder/images/record.png" alt="Record"/>
-                </button>
-                <button class="stop_recording_button" onclick="FWRecorder.stopRecording('audio');" title="Stop Recording">
-                    <img src="/assets/recorder/images/stop.png" alt="Stop Recording"/>
-                </button>
-                <button class="play_button" onclick="FWRecorder.playBack('audio');" title="Play">
-                    <img src="/assets/recorder/images/play.png" alt="Play"/>
-                </button>
-                <button class="pause_playing_button" onclick="FWRecorder.pausePlayBack('audio');" title="Pause Playing">
-                    <img src="/assets/recorder/images/pause.png" alt="Pause Playing"/>
-                </button>
-                <button class="stop_playing_button" onclick="FWRecorder.stopPlayBack();" title="Stop Playing">
-                    <img src="/assets/recorder/images/stop.png" alt="Stop Playing"/>
-                </button>
-                <div class="level"></div>
+            {{-- 录音相关 --}}
+            <div id="save_button">
+                <span id="flashcontent">
+                  <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
+                </span>
             </div>
-            <div class="details" >
-              <button class="show_level" onclick="FWRecorder.observeLevel();">Show Level</button>
-              <button class="hide_level" onclick="FWRecorder.stopObservingLevel();" style="display: none;">Hide Level</button>
-              
-              
-              <div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
-              <div id="status">
-               Recorder Status...
-              </div>
-              <div>Duration: <span id="duration"></span></div>
-              <div>Activity Level: <span id="activity_level"></span></div>
-              <div>Upload status: <span id="upload_status"></span></div>
+            <div style="display:none;">
+                <div id="recorder-audio" class="control_panel idle">
+                    <button class="record_button" onclick="FWRecorder.record('audio', 'audio.wav');" title="Record">
+                        <img src="/assets/recorder/images/record.png" alt="Record"/>
+                    </button>
+                    <button class="stop_recording_button" onclick="FWRecorder.stopRecording('audio');" title="Stop Recording">
+                        <img src="/assets/recorder/images/stop.png" alt="Stop Recording"/>
+                    </button>
+                    <button class="play_button" onclick="FWRecorder.playBack('audio');" title="Play">
+                        <img src="/assets/recorder/images/play.png" alt="Play"/>
+                    </button>
+                    <button class="pause_playing_button" onclick="FWRecorder.pausePlayBack('audio');" title="Pause Playing">
+                        <img src="/assets/recorder/images/pause.png" alt="Pause Playing"/>
+                    </button>
+                    <button class="stop_playing_button" onclick="FWRecorder.stopPlayBack();" title="Stop Playing">
+                        <img src="/assets/recorder/images/stop.png" alt="Stop Playing"/>
+                    </button>
+                    <div class="level"></div>
+                </div>
+                <div class="details" >
+                  <button class="show_level" onclick="FWRecorder.observeLevel();">Show Level</button>
+                  <button class="hide_level" onclick="FWRecorder.stopObservingLevel();" style="display: none;">Hide Level</button>
+                  
+                  
+                  <div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
+                  <div id="status">
+                   Recorder Status...
+                  </div>
+                  <div>Duration: <span id="duration"></span></div>
+                  <div>Activity Level: <span id="activity_level"></span></div>
+                  <div>Upload status: <span id="upload_status"></span></div>
+                </div>
+
+                <form id="uploadForm" name="uploadForm" action="/recorder/upload">
+                  <input name="authenticity_token" value="" type="hidden">
+                  <input name="format" value="json" type="hidden">
+                </form>
             </div>
 
-            <form id="uploadForm" name="uploadForm" action="/recorder/upload">
-              <input name="authenticity_token" value="" type="hidden">
-              <input name="format" value="json" type="hidden">
-            </form>
+        </div>
+        
+        
+        <div id="qlist" style="display:none;">
+            @foreach($qlist as $k => $v)
+                @if( ( empty($_GET['id']) && $k == 0 ) || ( !empty($_GET['id']) && $_GET['id'] == $v) )
+                    <a style="background-color:#999999;color:#fff;" href='topic?uniqid={{$uniqid}}&id={{$v}}' class="" >{{$k+1}}</a>
+                @elseif( !empty($_GET['id']) && !empty($trues[$v]) )
+                    @if( $trues[$v] == 1 )
+                        <a style="background-color:#1db5a9;color:#fff;" href='topic?uniqid={{$uniqid}}&id={{$v}}' class="" >{{$k+1}}</a>
+                    @else
+                        <a style="background-color:#ee2b27;color:#fff;" href='topic?uniqid={{$uniqid}}&id={{$v}}' class="" >{{$k+1}}</a>
+                    @endif
+                @else
+                    <a href='topic?uniqid={{$uniqid}}&id={{$v}}' class="" >{{$k+1}}</a>
+                @endif
+            @endforeach
+            <div class="clear"></div>
         </div>
 
         @if( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
@@ -224,15 +245,11 @@
         <div id="topic-tools">
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
+            <a class="topic-btn" id="topic-btn-6" hint="显示答题卡" href="javascript:;" onclick="showList();"></a>
+            <div class="clear"></div>
         </div>
         @endif
 
-        <div id="qlist" style="display:none;">
-            @foreach($qlist as $k => $v)
-                <a href='topic?uniqid={{$uniqid}}&id={{$v}}' class="" >{{$k+1}}</a>
-            @endforeach
-            <div class="clear"></div>
-        </div>
 
     </div> <!-- /container -->
 

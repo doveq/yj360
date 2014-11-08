@@ -75,6 +75,5 @@ class Column extends Eloquent {
         }
         return $data;
 
-
     }
 }
