@@ -24,11 +24,10 @@
           <div class="sort-bb"></div>
           <div class="sort-item sort-wbj"><a href="/failTopic?column_id={{$query['column_id']}}">错题记录</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
+          <div class="sort-item sort-wbj"><a href="/message?column_id={{$query['column_id']}}">我的消息</a><div class="sort-sj"></div></div>
+          <div class="sort-bb"></div>
 
           <!--
-          <div class="sort-bb"></div>
-          <div class="sort-item sort-wbj"><a href="/classes?column_id={{$query['column_id']}}">我的班级</a><div class="sort-sj"></div></div>
-          <div class="sort-bb"></div>
           <div class="sort-item sort-sd"><a href="/products?column_id={{$query['column_id']}}">产品商店</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
           -->

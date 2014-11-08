@@ -22,12 +22,10 @@
 
         <tr>
           <td style="width:20%;text-align:center;">
-          班级科目 {{Form::select('class_type', $columnall, array(),array('class' => 'tyinput', 'style' => 'padding:5px;width:200px'))}}
-
           老师 {{ Form::text('teacher_name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'padding:5px;width:100px'))}}
 
             {{ Form::hidden('column_id', $query['column_id'], array('class' => '')) }}
-            {{ Form::submit('', array('class' => 'submitbtn')) }}
+            {{ Form::submit('搜索', array('class' => 'btnsubmit')) }}
           </td>
         </tr>
 
@@ -57,6 +55,8 @@
 @stop
 
 @section('js')
+<script type="text/javascript" src="/assets/layer/layer.min.js"></script>
+
 <script type="text/javascript">
 $(function(){
   $(".classse-box").hover(function(){
@@ -65,21 +65,21 @@ $(function(){
     $(this).children(".classse-btn").css('display','none');
   });
   add_class = function(id){
-    if(confirm('您确定要加入吗？')){
-      $.ajax({
-        url:'/classm/doAddClass?class_id='+id,
-        // async:false,
-        type:'get',
-      })
-      .fail(function(){
-        alert('操作失败');
-      })
-      .success(function(data){
-        // $('#classes_'+id).remove();
-        alert(data);
-      });
-      // alert(htmlobj.responseText);
-    }
+    layer.confirm('您确定要加入吗？', function(){
+        $.ajax({
+          url:'/classm/doAddClass?class_id='+id,
+          // async:false,
+          type:'get',
+        })
+        .fail(function(){
+          layer.msg('添加失败', 2, 1);
+        })
+        .success(function(data){
+          layer.msg(data, 2, function(){
+            window.location.href='/classes?column_id={{$query['column_id']}}';
+          });
+        });
+    });
   };
 
 

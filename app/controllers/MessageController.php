@@ -10,14 +10,14 @@ class MessageController extends BaseController {
      */
     public function index()
     {
-        $query = Input::only('page','status','type');
+        $query = Input::only('page','status','type','column_id');
 
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
         if (!isset($query['column_id'])) {
-            $query['column_id'] = 5;
+            $query['column_id'] = 3;
         }
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
@@ -45,7 +45,7 @@ class MessageController extends BaseController {
      */
     public function create()
     {
-        $query = Input::only('receiver_id');
+        $query = Input::only('receiver_id', 'column_id');
         $validator = Validator::make($query,
             array(
                 'receiver_id'      => 'numeric|required',
@@ -57,12 +57,12 @@ class MessageController extends BaseController {
             return Redirect::to('message')->withErrors($validator)->withInput($query);
         }
         if (!isset($query['column_id'])) {
-            $query['column_id'] = 5;
+            $query['column_id'] = 3;
         }
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $user = User::find($query['receiver_id']);
-        return $this->indexView('message.create', compact('user','columns'));
+        return $this->indexView('message.create', compact('user','columns', 'query'));
     }
 
 
@@ -73,7 +73,7 @@ class MessageController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('receiver_id', 'content');
+        $query = Input::only('receiver_id', 'content', 'column_id');
         $validator = Validator::make($query,
             array(
                 'receiver_id'      => 'numeric|required',
@@ -84,7 +84,7 @@ class MessageController extends BaseController {
 
         if($validator->fails())
         {
-            return Redirect::to('/message/create?receiver_id='.$query['receiver_id'])->withErrors($validator)->withInput($query);
+            return Redirect::to('/message/create?receiver_id='.$query['receiver_id']."&column_id=".$query['column_id'])->withErrors($validator)->withInput($query);
         }
         $message = new Message();
         $message->sender_id = Session::get('uid');
@@ -93,7 +93,7 @@ class MessageController extends BaseController {
         $message->created_at = date("Y-m-d H:i:s");
         $message->type = 1;
         $message->save();
-        return Redirect::to('/message');
+        return Redirect::to('/message?column_id=' . $query['column_id']);
     }
 
 
@@ -108,12 +108,12 @@ class MessageController extends BaseController {
         $query = Input::all();
         $message = Message::find($id);
         if (!isset($query['column_id'])) {
-            $query['column_id'] = 5;
+            $query['column_id'] = 3;
         }
         $message->status = 1;
         $message->save();
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        return $this->indexView('message.show', compact('message', 'columns'));
+        return $this->indexView('message.show', compact('message', 'columns', 'query'));
 
     }
 
@@ -200,9 +200,13 @@ class MessageController extends BaseController {
      */
     public function destroy($id)
     {
-        //
+        $query = Input::only('column_id');
         Message::destroy($id);
-        return Redirect::to('/message');
+        if (Request::ajax()) {
+            return Response::json('ok');
+        } else {
+            return Redirect::to('/message?column_id='.$query['column_id']);
+        }
     }
 
 }

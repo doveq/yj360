@@ -126,16 +126,17 @@ class ClassesController extends BaseController {
     public function show($id)
     {
         $query = Input::all();
-        $classes = Classes::whereId($id)->whereTeacherid(Session::get('uid'))->first();
-        // dd($classes->column_id);
-        if (!isset($query['column_id'])) {
+        $classes = Classes::whereId($id)->first();
+        // if (!isset($query['column_id'])) {
             $query['column_id'] = $classes->column_id;
-        }
+        // }
         $columns = Column::find($classes->column_id)->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
         $genderEnum = $this->genderEnum;
 
-        return $this->indexView('classes.show', compact("classes", 'columns', 'query', 'genderEnum'));
+        $user_type = Session::get('utype');
+        if ($user_type < 0) $user_type = 1;
+        return $this->indexView('classes.show_'.$user_type, compact("classes", 'columns', 'query', 'genderEnum'));
     }
 
 

@@ -233,42 +233,26 @@ echo "haha";
     {
         $query = Input::only('column_id', 'teacher_name', 'class_type');
 
-        // if(empty($query['column_id']) || !is_numeric($query['column_id']))
-        //     return $this->indexPrompt("", '请选择正确的科目', $url = "/");
-
-        // dd(Session::get('uid'));
-        // $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $user = User::find(Session::get('uid'));
-        if ((isset($query['teacher_name']) && $query['teacher_name']!= '') || isset($query['class_type'])) {
+        if ((isset($query['teacher_name']) && $query['teacher_name']!= '')) {
             if (strlen(Input::get('teacher_name'))>0) {
                 $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->select('id')->get()->toArray();
                 // $q->whereIn('teacherid', array_flatten($teachers));
             }
             // $c = new Classes();
             if (!empty($teachers)) {
-                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->whereColumnId($query['class_type'])->get();
-            } else {
-                $classes = Classes::whereColumnId($query['class_type'])->get();
+                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->whereColumnId($query['column_id'])->get();
             }
         }
         else
         {
-            if ($query['column_id']) {
-                $classes = Classes::where('column_id', '=', $query['column_id'])->get();
-            } else {
-                $classes = Classes::get();
-            }
+            $classes = Classes::where('column_id', '=', $query['column_id'])->get();
         }
         if ($query['column_id']) {
             $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         }
 
-        $columnss = Column::whereParentId(0)->whereStatus(1)->orderBy('ordern', 'ASC')->select('id', 'name')->get();
-        foreach ($columnss as $key => $value) {
-            $columnall[$value->id] = $value->name;
-        }
-
-        return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns', 'columnall'));
+        return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns'));
 
     }
 
@@ -278,13 +262,18 @@ echo "haha";
         $uid = Session::get('uid');
         $thisclass = Classes::find($query['class_id']);
         $classmates = Classmate::whereUserId($uid)->get();
-        // dd($thisclass->column_id);
+        $sameclass = array();
+        $max_classes = Config::get('app.max_classes');
         foreach ($classmates as $key => $value) {
-            // dd($value->class_id);
             $everyclass = Classes::find($value->class_id);
-            // dd($everyclass->column_id);
+            if ($thisclass->id == $everyclass->id) {
+                return Response::json('你已经加入此班级');
+            }
             if ($thisclass->column_id == $everyclass->column_id) {
-                return Response::json('加入失败,一个科目下只能加入一个班级');
+                $sameclass[] = $everyclass->id;
+            }
+            if (count($sameclass) >= $max_classes) {
+                return Response::json('加入失败,一个科目下只能加入'.$max_classes.'个班级');
             }
         }
 
@@ -293,7 +282,7 @@ echo "haha";
                     'user_id' => $uid,
                     'class_id' => $query['class_id'],
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 1
+                    'status' => 2
                     )
             );
         return Response::json('加入成功');

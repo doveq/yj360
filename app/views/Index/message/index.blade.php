@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container-column wrap">
-  @include('Index.profile.nav')
+  @include('Index.column.nav')
 
   <div class="wrap-right">
       <div class="tabtool">
@@ -34,7 +34,7 @@
             <td>{{str_limit($list->content, 10, '...')}}</td>
             <td>{{$list->created_at}}</td>
             <td>{{$list->sender->name}}</td>
-            <td><a href="/message/{{$list->id}}">查看</a> <a href="javascript:;" onClick="delete_message('{{$list->id}}');">删除</a></td>
+            <td><a href="/message/{{$list->id}}?column_id={{$query['column_id']}}">查看</a> <a href="javascript:;" onClick="delete_message('{{$list->id}}');">删除</a></td>
           </tr>
           @endforeach
         </tbody>
