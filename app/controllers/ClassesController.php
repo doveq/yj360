@@ -23,10 +23,31 @@ class ClassesController extends BaseController {
         // dd($user_type);
         if ($user_type < 0) $user_type = 1;
         if (isset($query['column_id'])) {
-            $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            if ($user_type == 1) {
+                $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            } elseif ($user_type == 0) {
+                $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id')->get()->toArray();
+                if (!empty($classmates)) {
+                    $classmatess = array_flatten($classmates);
+                } else {
+                    $classmatess = array('-1');
+                }
+                $classes = Classes::whereIn('id', $classmatess)->get();
+            }
             $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         } else {
-            $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            if ($user_type == 1) {
+                $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            } elseif ($user_type == 0) {
+                $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id')->get()->toArray();
+                if (!empty($classmates)) {
+                    $classmatess = array_flatten($classmates);
+                } else {
+                    $classmatess = array('-1');
+                }
+                $classes = Classes::whereIn('id', $classmatess)->get();
+            }
+            // $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         }
         // $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
