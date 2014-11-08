@@ -18,7 +18,7 @@
         <div class="index-block" id="index-login">
             <form role="form" action="doLogin" method="post">
             <h1>音基360登录</h1>
-            <div class="row"><input type="text" class="text" name="name" value="" placeholder="用户名" ></div>
+            <div class="row"><input type="text" class="text" name="name" value="" placeholder="手机号" ></div>
             <div class="row"><input type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
             <div class="row">
                 <a href="#" class="forget">忘记密码？</a>

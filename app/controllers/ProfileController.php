@@ -46,6 +46,9 @@ class ProfileController extends BaseController {
 			$update['email'] = $inputs['email'];
 		}
 
+		if(!empty($inputs['name']))
+			$update['name'] = $inputs['name'];
+		
 		if(is_numeric($inputs['qq']))
 			$update['qq'] = $inputs['qq'];
 

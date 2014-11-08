@@ -32,7 +32,9 @@
               <div id="site-right">
                 <div id="site-right-info">
                   @if(Auth::check())
-                    <a href="/profile" id="site-ubg">{{Auth::user()->name}}</a>
+                    <a href="/feedback" id="site-fk">问题反馈</a>
+                    <span class="sp" style="color:#e6d65c;">|</span>
+                    <a href="/profile" id="site-ubg">{{Session::get('uname')}} (@if(Session::get('utype') == -1)管理员@elseif(Session::get('utype') == 1)老师@else学生@endif)</a>
                     <span class="sp">|</span>
                     <a href="/logout">退出</a>
                   @else
@@ -52,7 +54,17 @@
 
       @yield('content')
 
-
+      <script type="text/javascript">
+        $("#column-head").hover(
+          function () {
+            $("#column-head-list").show();
+          },
+          function () {
+            $("#column-head-list").hide();
+          }
+        );
+      </script>
+      
       @yield('js')
 
       <div id="footer">

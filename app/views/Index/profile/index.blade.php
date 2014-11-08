@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container-column wrap">
-  <div style="padding:10px;"></div>
   @include('Index.profile.nav')
 
   <div class="wrap-right">
@@ -23,7 +22,7 @@
         <tr>
             <td class="lable">姓名</td>
             <td>
-                <input class="tyinput" type="text" name="name" value="{{$name}}" disabled />
+                <input class="tyinput" type="text" name="name" value="{{$name}}" />
             </td>
         </tr>
 
@@ -33,10 +32,11 @@
                 <input class="tyinput" type="text"  name="name" value="{{$type_str}}" disabled />
             </td>
         </tr>
+
         <tr>
-            <td class="lable">邮箱</td>
+            <td class="lable">所在学校</td>
             <td>
-                <input class="tyinput" type="text" name="email" value="{{$email or ''}}"  />
+                <input class="tyinput" type="text" name="company" value="{{$company or ''}}"  />
             </td>
         </tr>
 
@@ -48,9 +48,9 @@
         </tr>
 
         <tr>
-            <td class="lable">单位</td>
+            <td class="lable">邮箱</td>
             <td>
-                <input class="tyinput" type="text" name="company" value="{{$company or ''}}"  />
+                <input class="tyinput" type="text" name="email" value="{{$email or ''}}"  />
             </td>
         </tr>
 
@@ -64,8 +64,6 @@
                 </div>
             </td>
         </tr>
-
-        
 
         <tr>
             <td class="lable">简介</td>

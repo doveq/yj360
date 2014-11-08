@@ -3,7 +3,6 @@
 
 @section('content')
 <div class="container-column wrap">
-  <div style="padding:10px;"></div>
   @include('Index.profile.nav')
 
 

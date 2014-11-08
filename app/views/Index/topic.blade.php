@@ -1,6 +1,8 @@
 @extends('Index.master')
 @section('title')题目@stop
 
+@extends('Index.column.columnHead')
+
 @section('css')
     <link href="/assets/mediaelement/build/mediaelementplayer.min.css" rel="stylesheet">
 

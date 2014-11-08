@@ -209,6 +209,7 @@ class TopicController extends \BaseController {
 		$info['sort4'] = Session::get('sort4') ? Session::get('sort4') : 0;
 		$info['sort5'] = Session::get('sort5') ? Session::get('sort5') : 0;
 
+
 		if($type == 1 || $type == 2)
 			return $this->adminView('topic.topic_1', $info);
 		else if($type == 3)
@@ -236,15 +237,32 @@ class TopicController extends \BaseController {
 		// 处理分类
 		$sort = 0;
 		if( !empty($inputs['sort5']) )
+		{
 			$sort = $inputs['sort5'];
-		elseif( !empty($inputs['sort4']) )
+			Session::put('sort5', $sort);
+		}
+		if( !empty($inputs['sort4']) )
+		{
 			$sort = $inputs['sort4'];
-		elseif( !empty($inputs['sort3']) )
+			Session::put('sort4', $sort);
+		}
+		if( !empty($inputs['sort3']) )
+		{
 			$sort = $inputs['sort3'];
-		elseif( !empty($inputs['sort2']) )
+			Session::put('sort3', $sort);
+		}
+		if( !empty($inputs['sort2']) )
+		{
 			$sort = $inputs['sort2'];
-		elseif( !empty($inputs['sort1']) )
+			Session::put('sort2', $sort);
+		}
+		if( !empty($inputs['sort1']) )
+		{
 			$sort = $inputs['sort1'];
+			Session::put('sort1', $sort);
+		}
+
+		
 
 		if( $sort == 0)
 			return $this->adminPrompt("操作失败", '必须选择分类', $url = "topic/add?type=" . $inputs['type']);

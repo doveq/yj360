@@ -11,7 +11,7 @@
                 <div class="alert alert-danger">{{$message}}</div>
                 @endif
                 <div class="row"><img src="/assets/img/regtit.jpg" /></div>
-                <div class="row"><input type="text" class="text" name="name" value="" placeholder="用户名" ></div>
+                <div class="row"><input type="text" class="text" name="name" value="" placeholder="手机号" ></div>
                 <div class="row"><input type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
                 <div class="row">
                     <input type="checkbox" name="" id="checkbox-1" class="labelinput" /> <label for="checkbox-1">记住我</label>

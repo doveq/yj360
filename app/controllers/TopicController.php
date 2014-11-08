@@ -150,6 +150,9 @@ class TopicController extends BaseController {
 			$cnum = count($path);
 			if($cnum > 1)
 				$info['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
+
+			// 分类头显示使用
+            $info['columnHead'] = $path[$cnum -1];
 		}
 		else if( !empty($column) )
 		{
@@ -164,10 +167,14 @@ class TopicController extends BaseController {
 				$info['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
 			else if($cnum > 1)
 				$info['backurl'] = "/column?id={$path[$cnum -1]['id']}&column_id={$path[0]['id']}";
+
+			// 分类头显示使用
+			$info['columnHead'] = $path[$cnum -1];
 		}
 
 		// 答题对错
-		$info['trues'] = $qinfo['trues'];
+		if(!empty($qinfo['trues']))
+			$info['trues'] = $qinfo['trues'];
 
 		if(!empty($qinfo['uniqid']))
 			$info['uniqid'] = $qinfo['uniqid'];
