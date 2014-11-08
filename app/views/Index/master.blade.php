@@ -55,14 +55,16 @@
 
       @yield('js')
 
-      <div id="footer" class="wrap">
-        <a class="footer-link" href="/about">关于我们</a>
-        <span class="footer-sp">|</span>
-        <a class="footer-link" href="/link">联系我们</a>
-        <span class="footer-sp">|</span>
-        <a class="footer-link" href="/feedback">意见反馈</a>
-        <span class="footer-sp">|</span>
-        <a class="footer-link" href="/follow">关注我们</a>
+      <div id="footer">
+        <div  class="wrap">
+          <a class="footer-link" href="/about">关于我们</a>
+          <span class="footer-sp">|</span>
+          <a class="footer-link" href="/link">联系我们</a>
+          <span class="footer-sp">|</span>
+          <a class="footer-link" href="/feedback">意见反馈</a>
+          <span class="footer-sp">|</span>
+          <a class="footer-link" href="/follow">关注我们</a>
+        </div>
       </div>
   </body>
 </html>

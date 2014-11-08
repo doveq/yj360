@@ -21,6 +21,13 @@
 @stop
 
 @section('content')
+    <div class="topic-head">
+        <div class="wrap">
+            <a class="back" href="#">< 返回</a>
+            <b>{{$headTitle or ''}}</b>
+        </div>
+    </div>
+
     <div class="container wrap">
         <div style="position:relative;overflow:hidden;">
             <div style="padding-bottom:20px;">
@@ -211,6 +218,12 @@
         <div id="topic-tools">
             <a class="topic-btn" id="topic-btn-15" href="javascript:;" onclick="vetting();">审核</a>
             <div class="clear"></div>
+        </div>
+        @else
+        {{-- 视频，flash有上下题选择 --}}
+        <div id="topic-tools">
+            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
+            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
         </div>
         @endif
 

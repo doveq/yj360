@@ -15,13 +15,13 @@
         </tr>
 
         <tr>
-            <td style="padding:10px 0;">
-              <textarea name="content" rows="5" style="width:100%;" placeholder="您可以将你的问题与联系方式写在这里"></textarea>
+            <td style="padding:10px 10px;">
+              <textarea name="content" rows="5" style="width:600px;" placeholder="您可以将你的问题与联系方式写在这里"></textarea>
             </td>            
         </tr>
         
         <tr>
-            <td>
+            <td style="padding:10px 10px;">
               <input type="submit" value="提交" style="padding:10px 20px;background-color:#00b1bb;border:none;color:#fff;" />
             </td>            
         </tr>

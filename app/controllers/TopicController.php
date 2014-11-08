@@ -137,6 +137,19 @@ class TopicController extends BaseController {
 		$info['column'] = $column;
 		$info['exam'] = $exam;
 
+		// 获取标题
+		$info['headTitle'] = '';
+		if( !empty($exam) )
+		{
+			$epinfo = ExamPaper::find($exam);
+			$info['headTitle'] = $epinfo->title;
+		}
+		else if( !empty($column) )
+		{
+			$cninfo = Column::find($column);
+			$info['headTitle'] = $cninfo->name;
+		}
+
 		if(!empty($qinfo['uniqid']))
 			$info['uniqid'] = $qinfo['uniqid'];
 

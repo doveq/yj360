@@ -108,7 +108,7 @@ a img {
 #footer{
 	border-top: 1px solid #d2d2d2;
 	background: none repeat scroll 0 0 #e4e4e4;
-	padding:15px 0;
+	padding:12px 0;
 	margin-top:30px;
 	position: relative;
 }
@@ -525,8 +525,10 @@ li.index-list-more a {
 }
 .wrap-right{
 	margin-left:30px;
-	width: 718px;
+	width: 716px;
 	float:left;
+	border:1px solid #e0e0e0;
+	padding-bottom: 10px;
 }
 .sort-bb{
 	border-bottom: 1px solid #e0e0e0;
@@ -858,4 +860,91 @@ a.tyadel {
 }
 #index-login .linetxt a{
 	color: #fe6700;
+}
+.topic-head{
+	background-color: #f1f1f1;
+	padding:10px 0;
+}
+.topic-head{
+	text-align: center;
+}
+.topic-head .back{
+	float:left;
+	color: #499626;
+}
+
+.sort-item-sel {background-color:#1db5a9; }
+.sort-nsj{
+	display: none;
+	background: url("/assets/img/sort-nsj.png") no-repeat 0 0;
+	position:absolute;
+	width: 10px;
+	height: 40px;
+	right: -10px;
+	top:0px;
+}
+.sort-item-sel .sort-nsj{display: block;}
+
+.sort-nkm a{
+	background: url("/assets/img/nkm.png") no-repeat 0 3px;
+	padding-left: 25px;
+}
+.sort-nkm-sel a{
+	background: url("/assets/img/nkm-sel.png") no-repeat 0 3px !important;
+	color:#fff;
+	padding-left: 25px;
+}
+.sort-nsc a{
+	background: url("/assets/img/nsc.png") no-repeat 0 3px;
+	padding-left: 25px;
+}
+.sort-nsc-sel a{
+	background: url("/assets/img/nsc-sel.png") no-repeat 0 3px !important;
+	color:#fff;
+	padding-left: 25px;
+}
+.sort-ngr a{
+	background: url("/assets/img/ngr.png") no-repeat 0 3px;
+	padding-left: 25px;
+}
+.sort-ngr-sel a{
+	background: url("/assets/img/ngr-sel.png") no-repeat 0 3px !important;
+	color:#fff;
+	padding-left: 25px;
+}
+.sort-npw a{
+	background: url("/assets/img/npw.png") no-repeat 0 3px;
+	padding-left: 25px;
+}
+.sort-npw-sel a{
+	background: url("/assets/img/npw-sel.png") no-repeat 0 3px !important;
+	color:#fff;
+	padding-left: 25px;
+}
+.sort-nwt a{
+	background: url("/assets/img/nwt.png") no-repeat 0 3px;
+	padding-left: 25px;
+}
+.sort-nwt-sel a{
+	background: url("/assets/img/nwt-sel.png") no-repeat 0 3px !important;
+	color:#fff;
+	padding-left: 25px;
+}
+.sort-nct a{
+	background: url("/assets/img/nct.png") no-repeat 0 3px;
+	padding-left: 25px;
+}
+.sort-nct-sel a{
+	background: url("/assets/img/nct-sel.png") no-repeat 0 3px !important;
+	color:#fff;
+	padding-left: 25px;
+}
+.sort-nbj a{
+	background: url("/assets/img/nbj.png") no-repeat 0 3px;
+	padding-left: 25px;
+}
+.sort-nbj-sel a{
+	background: url("/assets/img/nbj-sel.png") no-repeat 0 3px !important;
+	color:#fff;
+	padding-left: 25px;
 }
