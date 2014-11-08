@@ -20,7 +20,7 @@ class MessageController extends BaseController {
             $query['column_id'] = 5;
         }
 
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $lists = Message::whereReceiverId(Session::get('uid'))->where(function($q)
             {
                 if (strlen(Input::get('status')) > 0) {
@@ -60,7 +60,7 @@ class MessageController extends BaseController {
             $query['column_id'] = 5;
         }
 
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $user = User::find($query['receiver_id']);
         return $this->indexView('message.create', compact('user','columns'));
     }
@@ -112,7 +112,7 @@ class MessageController extends BaseController {
         }
         $message->status = 1;
         $message->save();
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         return $this->indexView('message.show', compact('message', 'columns'));
 
     }

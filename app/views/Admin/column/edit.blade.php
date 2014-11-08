@@ -54,6 +54,13 @@
           </div>
         </div>
         <div class="form-group">
+          {{ Form::label('column_ordern', '排序序号', array('class' => 'col-md-2 control-label')) }}
+          <div class="col-md-6">
+            {{ Form::text('ordern', $column->ordern, array('class' => 'form-control', 'id' => 'column_ordern')) }}
+            <p class="help-block">序号越小,排序越靠前,默认等于科目id</p>
+          </div>
+        </div>
+        <div class="form-group">
           <div class="col-md-offset-2 col-md-6">
             {{ Form::submit('提交', array('class' => 'btn btn-default')) }}
            </div>

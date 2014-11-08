@@ -19,7 +19,7 @@ class ProductsController extends BaseController {
         $user_id = Session::get('uid');
         $lists = Product::whereIn('column_id', $column_ids)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
         return $this->indexView('products.index', compact('lists', 'query', 'columns'));
     }
@@ -34,7 +34,7 @@ class ProductsController extends BaseController {
     {
         $user_id = Session::get('uid');
         $query = Input::only('column_id');
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
         $lists = Uploadbank::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         return $this->indexView('uploadbank.create', compact('columns', 'query', 'lists'));

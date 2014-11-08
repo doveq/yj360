@@ -24,7 +24,7 @@ class ClassesController extends BaseController {
         //if (strlen($user_type)==0) $user_type = 1;
         if (isset($query['column_id'])) {
             $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         } else {
             $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         }
@@ -52,9 +52,9 @@ class ClassesController extends BaseController {
         $trainings_num = Training::whereUserId($user_id)->get()->count();
         $query = Input::only('column_id');
         if ($query['column_id']) {
-            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         } else {
-            $columns = Column::whereParentId(0)->whereStatus(1)->select('id', 'name')->get();
+            $columns = Column::whereParentId(0)->whereStatus(1)->orderBy('ordern', 'ASC')->select('id', 'name')->get();
             foreach ($columns as $key => $value) {
                 $columnall[$value->id] = $value->name;
             }
@@ -110,7 +110,7 @@ class ClassesController extends BaseController {
         if (!isset($query['column_id'])) {
             $query['column_id'] = $classes->column_id;
         }
-        $columns = Column::find($classes->column_id)->child()->whereStatus(1)->get();
+        $columns = Column::find($classes->column_id)->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
         $genderEnum = $this->genderEnum;
 

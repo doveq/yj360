@@ -36,7 +36,7 @@ class TrainingResultController extends BaseController {
             }
         }
         if ($query['column_id']) {
-            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         }
         return $this->indexView('training_result.index', compact('lists', 'trainings', 'query', 'columns'));
     }
