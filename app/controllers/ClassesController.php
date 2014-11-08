@@ -28,13 +28,13 @@ class ClassesController extends BaseController {
         } else {
             $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         }
-        $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        // $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
         // $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
         $statusEnum = $this->statusEnum;
         $genderEnum = $this->genderEnum;
         // dd($user_type);
-        return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'genderEnum', 'classes', 'trainings', 'query', 'columns'));
+        return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'genderEnum', 'classes', 'query', 'columns'));
     }
 
 
