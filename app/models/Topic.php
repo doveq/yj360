@@ -280,7 +280,7 @@ class Topic  {
 		$info = array();
 		
 		if(isset($data['txt']) && !empty($data['txt']))
-			$info['txt'] = htmlspecialchars($data['txt']);
+			$info['txt'] = $data['txt'];
 
 		if(isset($data['sound']) && is_numeric($data['sound']))
 			$info['sound'] = $data['sound'];
