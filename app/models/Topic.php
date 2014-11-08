@@ -193,7 +193,7 @@ class Topic  {
 			$info['source'] = $data['source'];
 
 		if(isset($data['txt']) && !empty($data['txt']))
-			$info['txt'] = $data['txt'];
+			$info['txt'] = htmlspecialchars($data['txt']);
 
 		if(isset($data['hint']) && is_numeric($data['hint']))
 			$info['hint'] = $data['hint'];
@@ -237,7 +237,7 @@ class Topic  {
 			$info['source'] = $data['source'];
 
 		if(isset($data['txt']) && !empty($data['txt']))
-			$info['txt'] = $data['txt'];
+			$info['txt'] = htmlspecialchars($data['txt']);
 
 		if(isset($data['explain']) && !empty($data['explain']))
 			$info['explain'] = $data['explain'];
@@ -280,7 +280,7 @@ class Topic  {
 		$info = array();
 		
 		if(isset($data['txt']) && !empty($data['txt']))
-			$info['txt'] = $data['txt'];
+			$info['txt'] = htmlspecialchars($data['txt']);
 
 		if(isset($data['sound']) && is_numeric($data['sound']))
 			$info['sound'] = $data['sound'];

@@ -97,7 +97,7 @@
                        </div>
                     @elseif( $q['type'] == 9 || $q['type'] == 10 )
                       <div style="text-align:center;">
-                        <embed src="{{$q['flash_url'] or ''}}" allowFullScreen="true" quality="high" width="500" height="400" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
+                        <embed src="{{$q['flash_url'] or ''}}" allowFullScreen="true" quality="high" width="850" height="500" align="middle" allowScriptAccess="always" type="application/x-shockwave-flash"></embed>
                         @if( !empty($_GET['vetting']) && !empty($q['img']) )
                         <div><img src="{{$q['img_url']}}" /></div>
                         @endif
