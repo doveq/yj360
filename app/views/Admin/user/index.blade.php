@@ -60,7 +60,7 @@
             <td>
             
                 {{$typeEnum[$list->type]}}
-                @if($list->type == 1 && $list->is_certificate == 1)
+                @if($list->is_certificate == 1)
                   <a href="{{$list->certificate}}" data-lightbox="image-{{$list->id}}" data-title="{{$list->name}}教师证"><span class="icon-credit-card"></span></a>
                 @endif
 

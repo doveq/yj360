@@ -58,7 +58,7 @@ class UserController extends \BaseController {
         $att = new Attachments();
         foreach ($lists as $key => &$value) 
         {
-            if($value->type == 1 && $value->is_certificate == 1)
+            if($value->is_certificate == 1)
             {
                 $route = $att->getTeacherRoute($value['id']);
                 $value->certificate = $route['url'];

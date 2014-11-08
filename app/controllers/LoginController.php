@@ -95,7 +95,7 @@ class LoginController extends BaseController
 		);
 
 		$data['is_certificate'] = 0;
-		$data['type'] = 1;
+		$data['type'] = 0; // 默认为学生
 
 		if($data['code'] == Session::get('code') )
 		{
