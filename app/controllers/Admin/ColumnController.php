@@ -27,8 +27,6 @@ class ColumnController extends \BaseController {
 	{
         $query = Input::only('name', 'parent_id', 'page');
 
-        
-
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
@@ -152,7 +150,14 @@ class ColumnController extends \BaseController {
         $column->created_at                               = date("Y-m-d H:i:s");
         $column->status                                   = 0;
         $column->type                                     = $query['type'];
+        if (isset($query['ordern']) && $query['ordern'] > 0)
+            $column->ordern = $query['ordern'];
         if ($column->save()) {
+            if (!isset($query['ordern']) || $query['ordern'] == '') {
+                $insertedId = $column->id;
+                $column->ordern = $insertedId;
+                $column->save();
+            }
             return Redirect::to('admin/column?parent_id='.$column->parent_id);
         }
 	}
@@ -202,7 +207,7 @@ class ColumnController extends \BaseController {
 	 */
 	public function update($id)
 	{
-		$query = Input::only('name', 'desc', 'status', 'thumbnail', 'type');
+		$query = Input::only('name', 'desc', 'status', 'thumbnail', 'type', 'ordern');
 
         $validator = Validator::make($query ,
             array(
@@ -210,6 +215,7 @@ class ColumnController extends \BaseController {
                 'thumbnail' => 'image',
                 'status'    => 'numeric',
                 'type'      => 'numeric',
+                'ordern'      => 'numeric',
                 )
         );
 
@@ -233,6 +239,11 @@ class ColumnController extends \BaseController {
 
         if (isset($query['name'])) $column->name          = $query['name'];
         if (isset($query['desc'])) $column->desc          = $query['desc'];
+        if (isset($query['ordern']) && $query['ordern'] > 0) {
+            $column->ordern          = $query['ordern'];
+        } else {
+            $column->ordern = $column->id;
+        }
         if (isset($query['status'])) {
             $column->status      = $query['status'];
             if ($query['status'] == 1) {

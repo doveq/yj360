@@ -30,7 +30,7 @@ class ColumnController extends BaseController
         {
             $ep = new ExamPaper();
             $content = $ep->getElist( array('column_id' => $query['id'], 'status' => 1) );
-            
+
             foreach ($content as $key => $c) {
                 $c->bgcolor = $color[array_rand($color)];
                 $content[$key] = $c;
@@ -38,7 +38,7 @@ class ColumnController extends BaseController
         }
         else
         {
-            $content = $column->child()->whereStatus(1)->get();
+            $content = $column->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
             foreach ($content as $key => $c) {
                 // dd($color[array_rand($color)]);
                 $c->bgcolor = $color[array_rand($color)];

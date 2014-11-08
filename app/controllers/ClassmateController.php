@@ -70,7 +70,7 @@ echo "haha";
             }
         })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $statusEnum = $this->userstatusEnum;
         $genderEnum = $this->genderEnum;
 
@@ -263,7 +263,7 @@ echo "haha";
             }
         }
         if ($query['column_id']) {
-            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         }
 
 

@@ -2,12 +2,12 @@
 
 // 错误记录
 
-class FailTopicController extends BaseController 
+class FailTopicController extends BaseController
 {
 
 	public function __construct()
     {
-    	
+
     }
 
 	public function index()
@@ -24,7 +24,7 @@ class FailTopicController extends BaseController
 		{
 			// 分类页面显示
 
-			$columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+			$columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
 			// 获取父类名页面显示
 	        $cn = new Column();

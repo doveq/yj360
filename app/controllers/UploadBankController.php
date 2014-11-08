@@ -16,7 +16,7 @@ class UploadBankController extends BaseController {
         $user_id = Session::get('uid');
         $lists = Uploadbank::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $statusEnum = $this->statusEnum;
         return $this->indexView('uploadbank.index', compact('statusEnum', 'lists', 'query', 'columns'));
     }

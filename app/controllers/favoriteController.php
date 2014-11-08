@@ -23,7 +23,7 @@ class FavoriteController extends BaseController
         {
             // 分类页面显示
 
-            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
             // 获取父类名页面显示
             $cn = new Column();
@@ -31,7 +31,7 @@ class FavoriteController extends BaseController
             $columnHead = $arr[0];
 
             return $this->indexView('column.favorite', compact('list', 'columns', 'columnHead', 'query') );
-            
+
         }
     }
 
