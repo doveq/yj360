@@ -3,7 +3,7 @@
 
 @section('content')
 <div class="container-column wrap">
-  @include('index.profile.nav')
+  @include('Index.profile.nav')
 
   <div class="wrap-right">
       <div class="tabtool">
