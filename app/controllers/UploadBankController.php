@@ -46,6 +46,7 @@ class UploadBankController extends BaseController {
     public function store()
     {
         $query = Input::all();
+
         $validator = Validator::make($query,
             array(
                 'name' => 'required',
@@ -56,8 +57,10 @@ class UploadBankController extends BaseController {
 
         if($validator->fails())
         {
+            unset($query['filename']);
             return Redirect::to('uploadbank/create?column_id='.$query['column_id'])->withErrors($validator)->withInput($query);
         }
+        // dd (Config::get('app.uploadbank_dir'));
         if(Input::hasFile('filename')) {
             $originalName = explode(".", Input::file('filename')->getClientOriginalName());
             $extension = Input::file('filename')->getClientOriginalExtension();
@@ -70,9 +73,9 @@ class UploadBankController extends BaseController {
         $uploadbank->user_id = Session::get('uid');
         $uploadbank->name = $query['name'];
         $uploadbank->created_at = date("Y-m-d H:i:s");
-        if (isset($query['desc'])) $uploadbank->desc         = $query['desc'];
-        if (isset($query['tel'])) $uploadbank->tel           = $query['tel'];
-        if (isset($query['qq'])) $uploadbank->qq             = $query['qq'];
+        if (isset($query['desc'])   && $query['desc'] != '') $uploadbank->desc         = $query['desc'];
+        if (isset($query['tel'])  && $query['tel'] != '') $uploadbank->tel           = $query['tel'];
+        if (isset($query['qq']) && $query['qq'] > 0) $uploadbank->qq             = $query['qq'];
         if (isset($query['filename'])) $uploadbank->filename = $query['filename'];
 
         if ($uploadbank->save()) {
