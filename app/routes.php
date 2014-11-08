@@ -142,6 +142,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::resource('classmate', 'ClassmateController');
     Route::post('/classmate/postDelete', 'ClassmateController@postDelete');
     Route::any('/classm/add_class', 'ClassmateController@addClass');
+    Route::any('/classm/doAddClass', 'ClassmateController@doaddClass');
     Route::get('/training_result', 'TrainingResultController@index');
     //消息
     Route::resource('message', 'MessageController');
@@ -166,6 +167,8 @@ Route::group(array('before' => 'indexLogin'), function(){
 
     //产品商店
     Route::get('/products', 'ProductsController@index');
+    //课件
+    Route::get('/courseware', 'CoursewareController@index');
 
     //flash播放
     Route::get('/view_flv', 'ViewController@flv');

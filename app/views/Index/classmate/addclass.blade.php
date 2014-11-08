@@ -21,11 +21,10 @@
         <tr><td style="background-color:#00bbac;padding:10px;">搜索加入</td></tr>
 
         <tr>
-          <td style="width:20%;text-align:right;">
+          <td style="width:20%;text-align:center;">
+          班级科目 {{Form::select('class_type', $columnall, array(),array('class' => 'tyinput', 'style' => 'padding:5px;width:200px'))}}
 
-          班级类别 {{ Form::select('class_type', array('3' => '初级'), '', array('class' => 'tyinput', 'id' => 'inputClassid','style' => 'width:200px')) }}
-
-          {{ Form::text('teacher_name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'width:200px'))}}
+          老师 {{ Form::text('teacher_name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'padding:5px;width:100px'))}}
 
             {{ Form::hidden('column_id', $query['column_id'], array('class' => '')) }}
             {{ Form::submit('', array('class' => 'submitbtn')) }}
@@ -35,7 +34,7 @@
       </table>
       {{ Form::close() }}
       <div class="classes-list">
-        @if (isset($classes))
+        @if ($classes->count() > 0)
           @foreach ($classes as $list)
           <div class="classse-box" id="classes_{{$list->id}}">
             <div class="classes-txt">
@@ -44,10 +43,7 @@
               <div>成员：{{$list->students->count()}}</div>
             </div>
             <div class="classse-btn" style="display:none;margin-top:-30px;">
-                <!--
-                <a href="/classes/{{$list->id}}?column_id={{$query['column_id']}}">班级成员</a>
-                -->
-                <a class="delclass" style="width:200px;text-align:center;" href="#" >加入班级</a>
+                <a class="addclass" style="width:200px;text-align:center;" href="javascript:;" onClick="add_class('{{$list->id}}');" >加入班级</a>
                 <div class="clear"></div>
             </div>
           </div>
@@ -68,13 +64,24 @@ $(function(){
   }, function(){
     $(this).children(".classse-btn").css('display','none');
   });
-  $("#checkAll").click(function() {
-      $('input[name="student_id[]"]').prop("checked",this.checked);
-  });
-  var $subBox = $("input[name='student_id[]']");
-  $subBox.click(function(){
-      $("#checkAll").prop("checked",$subBox.length == $("input[name='student_id[]']:checked").length ? true : false);
-  });
+  add_class = function(id){
+    if(confirm('您确定要加入吗？')){
+      $.ajax({
+        url:'/classm/doAddClass?class_id='+id,
+        // async:false,
+        type:'get',
+      })
+      .fail(function(){
+        alert('操作失败');
+      })
+      .success(function(data){
+        // $('#classes_'+id).remove();
+        alert(data);
+      });
+      // alert(htmlobj.responseText);
+    }
+  };
+
 
 });
 </script>

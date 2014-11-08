@@ -231,7 +231,7 @@ echo "haha";
 
     public function addClass()
     {
-        $query = Input::only('column_id', 'teacher_name');
+        $query = Input::only('column_id', 'teacher_name', 'class_type');
 
         // if(empty($query['column_id']) || !is_numeric($query['column_id']))
         //     return $this->indexPrompt("", '请选择正确的科目', $url = "/");
@@ -239,20 +239,17 @@ echo "haha";
         // dd(Session::get('uid'));
         // $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         $user = User::find(Session::get('uid'));
-        if (isset($query['teacher_name']) && $query['teacher_name']!= '') {
+        if ((isset($query['teacher_name']) && $query['teacher_name']!= '') || isset($query['class_type'])) {
             if (strlen(Input::get('teacher_name'))>0) {
                 $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->select('id')->get()->toArray();
                 // $q->whereIn('teacherid', array_flatten($teachers));
             }
+            // $c = new Classes();
             if (!empty($teachers)) {
-                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->get();
+                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->whereColumnId($query['class_type'])->get();
+            } else {
+                $classes = Classes::whereColumnId($query['class_type'])->get();
             }
-            // $classes = Classes::where(function($q){
-
-            //     if (strlen(Input::get('class_type'))>0) {
-
-            //     }
-            // })->get();
         }
         else
         {
@@ -266,9 +263,46 @@ echo "haha";
             $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         }
 
+        $columnss = Column::whereParentId(0)->whereStatus(1)->orderBy('ordern', 'ASC')->select('id', 'name')->get();
+        foreach ($columnss as $key => $value) {
+            $columnall[$value->id] = $value->name;
+        }
 
-        return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns'));
+        return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns', 'columnall'));
 
+    }
+
+    public function doaddClass()
+    {
+        $query = Input::only('class_id');
+        $uid = Session::get('uid');
+        $thisclass = Classes::find($query['class_id']);
+        $classmates = Classmate::whereUserId($uid)->get();
+        // dd($thisclass->column_id);
+        foreach ($classmates as $key => $value) {
+            // dd($value->class_id);
+            $everyclass = Classes::find($value->class_id);
+            // dd($everyclass->column_id);
+            if ($thisclass->column_id == $everyclass->column_id) {
+                return Response::json('加入失败,一个科目下只能加入一个班级');
+            }
+        }
+
+        Classmate::create(
+                array(
+                    'user_id' => $uid,
+                    'class_id' => $query['class_id'],
+                    'created_at' => date("Y-m-d H:i:s"),
+                    'status' => 1
+                    )
+            );
+        return Response::json('加入成功');
+
+        // if (Request::ajax()) {
+        //     return Response::json('ok');
+        // } else {
+        //     return Redirect::to('/classes/'.$class_id);
+        // }
     }
 
 }
