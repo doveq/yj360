@@ -10,9 +10,13 @@
   @endif
 
   <div class="col-md-9">
-      <div class="tabtool">
-          <div class="clear"></div>
+      <div class="tabtool" style="margin-left:-30px;margin-bottom:10px;background-color:#f1f1f1;height:27px;padding-left:30px;border-bottom:1px solid #e0e0e0">
+        @if ($back_url)
+        <a href="{{$back_url}}" style="color:#499626;">&lt; 返回</a>
+        @endif
+{{$column_name}}
       </div>
+      <div class="clear"></div>
 
       <div class="classes-list">
         @if (isset($lists['files']))
