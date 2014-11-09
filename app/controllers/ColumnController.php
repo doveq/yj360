@@ -2,7 +2,7 @@
 
 class ColumnController extends BaseController
 {
-    public $pageSize = 30;
+    public $pageSize = 10;
 
 	public function __construct()
     {
