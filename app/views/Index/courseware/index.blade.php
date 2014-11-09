@@ -53,7 +53,7 @@
             </div>
             @else
               <div style="width: 100px; float: left; height: 100px; margin: 10px; padding: 10px; text-align: center;">
-                <h2><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}">{{$d['name']}}</a></h2>
+                <h2><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}">{{$d['name']}}</a></h2>
               </div>
             @endif
           @endforeach
