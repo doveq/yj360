@@ -14,7 +14,7 @@ class ColumnController extends BaseController
 
         $color = array("#2fc8d0","#efc825","#5fc1e8","#f28695","#f49543","#abd663","#b18ac1");
 
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern','ASC')->get();
 
         if(empty($columns[0]))
             return $this->indexPrompt("", '科目下没有信息', $url = "/column/static", false);

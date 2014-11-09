@@ -224,4 +224,7 @@ return array(
 	'mobile_md5' => '6c79e7f2359e6377c61e2ce40e0491f6',
 	'mobile_port'  => '0776',
 	'mobile_post'  => 'http://api.10690909.com/newmt',
+
+	/* 一个学生能加入多少个班级 */
+	'max_classes' => 2,
 );

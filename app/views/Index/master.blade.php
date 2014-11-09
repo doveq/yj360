@@ -64,7 +64,7 @@
           }
         );
       </script>
-      
+
       @yield('js')
 
       <div id="footer">

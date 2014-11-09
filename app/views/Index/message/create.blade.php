@@ -4,7 +4,7 @@
 @section('content')
 <div class="container-column wrap">
   <div style="padding:10px;"></div>
-  @include('Index.profile.nav')
+  @include('Index.column.nav')
 
   <div class="wrap-right">
       <div class="tabtool">
@@ -14,7 +14,7 @@
       <div class="clear"></div>
 
       <div class="classes-list">
-        {{ Form::open(array('url' => '/message', 'method' => 'post')) }}
+        {{ Form::open(array('url' => '/message?column_id='.$query['column_id'], 'method' => 'post')) }}
           <table class="stable" border="0" cellpadding="0" cellspacing="0">
           <tr>
             <td style="text-align:right;margin:10px;padding:10px;">{{ Form::label('inputName', '发送给:', array('class' => '')) }} </td>

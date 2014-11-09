@@ -13,49 +13,39 @@ class ClassesController extends BaseController {
     public function index()
     {
         $query = Input::only('column_id');
-
-        //左边菜单,需要知道是在初级,中级,高级,中小学音乐科目下,如果没有,默认为初级
-        // if (!isset($query['column_id'])) {
-        //     $query['column_id'] = 3;
-        // }
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
         // dd($user_type);
         if ($user_type < 0) $user_type = 1;
-        if (isset($query['column_id'])) {
-            if ($user_type == 1) {
-                $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-            } elseif ($user_type == 0) {
-                $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id')->get()->toArray();
-                if (!empty($classmates)) {
-                    $classmatess = array_flatten($classmates);
-                } else {
-                    $classmatess = array('-1');
-                }
-                $classes = Classes::whereIn('id', $classmatess)->get();
-            }
-            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        } else {
-            if ($user_type == 1) {
-                $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-            } elseif ($user_type == 0) {
-                $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id')->get()->toArray();
-                if (!empty($classmates)) {
-                    $classmatess = array_flatten($classmates);
-                } else {
-                    $classmatess = array('-1');
-                }
-                $classes = Classes::whereIn('id', $classmatess)->get();
-            }
-            // $classes = Classes::whereTeacherid($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-        }
-        // $trainings = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-        // $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
-        $statusEnum = $this->statusEnum;
+
+        if ($user_type == 1) {
+            $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        } elseif ($user_type == 0) {
+            $myclasses = array(-1);
+            $yqclasses = array(-1);
+            $sqclasses = array(-1);
+            $classmates = Classmate::whereUserId($user_id)->select('class_id', 'status')->get()->toArray();
+            if (!empty($classmates)) {
+                foreach ($classmates as $key => $value) {
+                    if ($value['status'] == 0) {
+                        $myclasses[] = $value['class_id'];
+                    } elseif ($value['status'] == 1) {
+                        $yqclasses[] = $value['class_id'];
+                    } elseif ($value['status'] == 2) {
+                        $sqclasses[] = $value['class_id'];
+                    }
+                }
+            }
+
+            $my_classes = Classes::whereIn('id', $myclasses)->get();
+            $yq_classes = Classes::whereIn('id', $yqclasses)->get();
+            $sq_classes = Classes::whereIn('id', $sqclasses)->get();
+        }
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $genderEnum = $this->genderEnum;
         // dd($user_type);
-        return $this->indexView('classes.index_' . $user_type, compact('statusEnum', 'genderEnum', 'classes', 'query', 'columns'));
+        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns','my_classes','yq_classes','sq_classes'));
     }
 
 
@@ -126,16 +116,17 @@ class ClassesController extends BaseController {
     public function show($id)
     {
         $query = Input::all();
-        $classes = Classes::whereId($id)->whereTeacherid(Session::get('uid'))->first();
-        // dd($classes->column_id);
-        if (!isset($query['column_id'])) {
+        $classes = Classes::whereId($id)->first();
+        // if (!isset($query['column_id'])) {
             $query['column_id'] = $classes->column_id;
-        }
+        // }
         $columns = Column::find($classes->column_id)->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
         $genderEnum = $this->genderEnum;
 
-        return $this->indexView('classes.show', compact("classes", 'columns', 'query', 'genderEnum'));
+        $user_type = Session::get('utype');
+        if ($user_type < 0) $user_type = 1;
+        return $this->indexView('classes.show_'.$user_type, compact("classes", 'columns', 'query', 'genderEnum'));
     }
 
 
