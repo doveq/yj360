@@ -29,7 +29,7 @@
             <div class="classes-txt">
               <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
               <div>创建人：{{$list->teacher->name}}</div>
-              <div>成员：{{$list->students->count()}}</div>
+              <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
             </div>
             <div class="classse-btn" style="display:none;margin-top:-30px;">
                 <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">班级成员</a>
@@ -41,7 +41,8 @@
           <div class="clear"></div>
         @endif
 
-        @if(!empty($messages))
+        @if($messages->count() > 0)
+        <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:邀请, 3:申请 4:老师拒绝 5:学生拒绝 -->
         <div style="margin:20px 10px 10px 10px;">班级申请记录:</div>
         <table class="table-2" border="0" cellpadding="0" cellspacing="0">
             @foreach($messages as $list)
@@ -49,12 +50,27 @@
                   <td class="tytd">
                     {{$list->content}}
                   </td>
-                  <td class="tytd table-2-del">
-                    @if ($list->classmate->status == 1)
-                    确认
-                    @elseif ($list->classmate->status == 2)
-                    待确认
+                  <td class="tytd">
+                    <div class="do_status">
+                    @if ($list->classmate)
+                      @if ($list->classmate->status == 0)
+                      待确认
+                      @elseif ($list->classmate->status == 1)
+                      已同意
+                      @elseif ($list->classmate->status == 2)
+                      待确认
+                      @elseif ($list->classmate->status == 3)
+                      <a href="javascript:;" onclick="do_status({{$list->classmate->id}},1)">同意</a>
+                      <a href="javascript:;" onclick="do_status({{$list->classmate->id}},4)">拒绝</a>
+                      @elseif ($list->classmate->status == 4)
+                      已拒绝
+                      @elseif ($list->classmate->status == 5)
+                      学生拒绝
+                      @endif
+                    @else
+                    已失效
                     @endif
+                    </div>
                   </td>
               </tr>
               <tr><td colspan="2">
@@ -73,31 +89,22 @@
 <script type="text/javascript" src="/assets/layer/layer.min.js"></script>
 
 <script type="text/javascript">
-  function choose_fav(training_id)
+  function do_status(classmateid, status)
   {
-    layer.closeAll();
-    $.layer({
-      type: 2,
-      border: [0],
-      title: false,
-      shadeClose: true,
-      // closeBtn: false,
-      area: ['860px', '600px'],
-      // offset: [($(window).height() - 100)/2+'px', ''], //上下垂直居中
-      iframe: {src: '/favorite/choose?training_id='+training_id}
-    });
-  }
-  function choose_question(training_id){
-    $.layer({
-        type: 1,
-        title: false, //不显示默认标题栏
-        shade: [1], //不显示遮罩
-        shadeClose: true,
-        area: ['auto', 'auto'],
-        // offset: [($(window).height() - 700)/2+'px', ''], //上下垂直居中
-        page: {
-          html: '<div style="margin:10px 20px 20px; width:400px;">请选择题库:</div><div style="margin:20px;text-align:center"><a href="javascript:void(0);" onclick="choose_fav('+training_id+');">我的收藏</a></div>'
-        }
+    $.ajax({
+      url:'/classmate/'+classmateid,
+      data: {status: status},
+      // async:false,
+      type:'put',
+    })
+    .fail(function(){
+      alert('操作失败');
+    })
+    .success(function(){
+      // alert(update_status);
+      // $this.attr('data-status', update_status);
+      // $this.text(status_txt)
+      location.reload();
     });
   }
 $(document).ready(function () {

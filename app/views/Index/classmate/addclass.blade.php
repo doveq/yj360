@@ -32,20 +32,24 @@
       </table>
       {{ Form::close() }}
       <div class="classes-list">
-        @if ($classes->count() > 0)
-          @foreach ($classes as $list)
-          <div class="classse-box" id="classes_{{$list->id}}">
-            <div class="classes-txt">
-              <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
-              <div>创建人：{{$list->teacher->name}}</div>
-              <div>成员：{{$list->students->count()}}</div>
+        @if (isset($classes))
+          @if ($classes->count() > 0)
+            @foreach ($classes as $list)
+            <div class="classse-box" id="classes_{{$list->id}}">
+              <div class="classes-txt">
+                <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
+                <div>创建人：{{$list->teacher->name}}</div>
+                <div>成员：{{$list->students->count()}}</div>
+              </div>
+              <div class="classse-btn" style="display:none;margin-top:-30px;">
+                  <a class="addclass" style="width:200px;text-align:center;" href="javascript:;" onClick="add_class('{{$list->id}}');" >加入班级</a>
+                  <div class="clear"></div>
+              </div>
             </div>
-            <div class="classse-btn" style="display:none;margin-top:-30px;">
-                <a class="addclass" style="width:200px;text-align:center;" href="javascript:;" onClick="add_class('{{$list->id}}');" >加入班级</a>
-                <div class="clear"></div>
-            </div>
-          </div>
-          @endforeach
+            @endforeach
+          @endif
+        @else
+        未找到班级
         @endif
           <div class="clear"></div>
       </div>

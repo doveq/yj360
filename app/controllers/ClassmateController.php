@@ -73,10 +73,6 @@ echo "haha";
         $statusEnum = $this->userstatusEnum;
         $genderEnum = $this->genderEnum;
 
-
-        //print_r(compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum', 'columns'));
-        //exit;
-
         return $this->indexView('classmate.create', compact('query', 'classes', 'students', 'teacher','statusEnum', 'genderEnum', 'columns'));
     }
 
@@ -104,22 +100,25 @@ echo "haha";
         $classes = Classes::find($query['class_id']);
 
         foreach ($query['student_id'] as $key => $student) {
-            Classmate::create(
+            $newclassmate = Classmate::create(
                 array(
                     'user_id' => $student,
                     'class_id' => $query['class_id'],
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 1
+                    'status' => 2
                     )
             );
-            $message_content = $classes->teacher->name . "邀请你加入:" . $classes->name;
+            $user_student = User::find($student);
+            $message_content = $classes->teacher->name . "(老师) ". date("Y-m-d H:i:s") . " 邀请 " . $user_student->name . " 加入班级: " . $classes->name;
             Message::create(
                 array(
                     'sender_id' => $classes->teacher->id,
                     'receiver_id' => $student,
                     'content' => $message_content,
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 1
+                    'status' => 1,
+                    'type' => 2,
+                    'classmate_id' => $newclassmate->id
                 )
             );
         }
@@ -177,8 +176,11 @@ echo "haha";
         if (isset($query['status'])) $classmate->status = $query['status'];
 
         $classmate->save();
-
-        return Redirect::to('/admin/classmate?class_id=' . $classmate->class_id."&column_id=".$query['column_id']);
+        if (Request::ajax()) {
+            return Response::json('ok');
+        } else {
+            return Redirect::to('/admin/classmate?class_id=' . $classmate->class_id."&column_id=".$query['column_id']);
+        }
     }
 
 
@@ -193,6 +195,7 @@ echo "haha";
         $classmate = Classmate::find($id);
         $class_id = $classmate->class_id;
         $classmate->delete();
+        Message::whereClassmateId($id)->delete();
 
         if (Request::ajax()) {
             return Response::json('ok');
@@ -238,14 +241,14 @@ echo "haha";
                 $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->select('id')->get()->toArray();
                 // $q->whereIn('teacherid', array_flatten($teachers));
             }
-            // $c = new Classes();
+
             if (!empty($teachers)) {
                 $classes = Classes::whereIn('teacherid', array_flatten($teachers))->whereColumnId($query['column_id'])->get();
             }
         }
         else
         {
-            $classes = Classes::where('column_id', '=', $query['column_id'])->get();
+            $classes = Classes::where('column_id', '=', $query['column_id'])->take(12)->get();
         }
         if ($query['column_id']) {
             $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
@@ -259,6 +262,7 @@ echo "haha";
     {
         $query = Input::only('class_id');
         $uid = Session::get('uid');
+        $uname = Session::get('uname');
         $thisclass = Classes::find($query['class_id']);
         $classmates = Classmate::whereUserId($uid)->get();
         $sameclass = array();
@@ -276,15 +280,27 @@ echo "haha";
             }
         }
 
-        Classmate::create(
+        $newclassmate = Classmate::create(
                 array(
                     'user_id' => $uid,
                     'class_id' => $query['class_id'],
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 2
+                    'status' => 3
                     )
             );
-        return Response::json('加入成功');
+        $message_content = $uname . "(学生) " . date("Y-m-d H:i:s"). " 申请加入班级: " . $thisclass->name;
+        Message::create(
+            array(
+                'sender_id' => $uid,
+                'receiver_id' => $thisclass->teacher->id,
+                'content' => $message_content,
+                'created_at' => date("Y-m-d H:i:s"),
+                'status' => 1,
+                'type' => 2,
+                'classmate_id' => $newclassmate->id
+            )
+        );
+        return Response::json('申请加入成功');
 
         // if (Request::ajax()) {
         //     return Response::json('ok');
