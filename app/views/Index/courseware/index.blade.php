@@ -15,6 +15,13 @@
         <a href="{{$back_url}}" style="color:#499626;">&lt; 返回</a>
         @endif
 {{$column_name}}
+{{Form::open(array('url' => '/courseware?column_id='.$query['column_id'].'&id='.$query['id'].'&type=' . $query['type'], 'method' => 'get', 'style' => 'margin-left:20px;float:right;'))}}
+           {{Form::text('q', '')}}
+           {{Form::hidden('column_id', $query['column_id'])}}
+           {{Form::hidden('id', $query['id'])}}
+           {{Form::hidden('type', $query['type'])}}
+           {{Form::submit('检索')}}
+          {{ Form::close() }}
       </div>
 
       <div class="classes-list">
