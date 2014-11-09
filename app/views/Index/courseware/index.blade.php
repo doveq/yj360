@@ -1,5 +1,5 @@
 @extends('Index.master')
-@section('title')我的班级 @stop
+@section('title')课件 @stop
 
 @section('content')
 <div class="container-fluid">
