@@ -29,7 +29,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($classes->students as $list)
+            @foreach ($students as $list)
             <tr id="{{$list->pivot->id}}">
               <td>{{Form::checkbox('classmate_id[]', $list->pivot->id)}}</td>
               <td>{{$list->name}}</td>

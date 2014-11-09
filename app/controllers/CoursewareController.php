@@ -87,4 +87,17 @@ class CoursewareController extends BaseController
         return $this->indexView('courseware.index', compact('columns', 'query', 'lists', 'config_path', 'back_url', 'column_name'));
 	}
 
+    public function show()
+    {
+        $query = Input::only('dir', 'type');
+        if ($query['type'] == 1) {
+            $config_path = "/data/flash_exe/";
+        } else {
+            $config_path = "/data/multimedia/";
+        }
+
+        include_once public_path() . $config_path . $query['dir'] . "/index.php";
+
+    }
+
 }

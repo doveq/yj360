@@ -30,7 +30,7 @@
             <div class="classes-txt">
               <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
               <div>创建人：{{$list->teacher->name}} <a href="/message/create?receiver_id={{$list->teacher->id}}&column_id={{$query['column_id']}}" style="background-color:#ffffff;color:#f2664d">给老师私信</a></div>
-              <div>成员：{{$list->students->count()}}</div>
+              <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
             </div>
           </div>
           @endforeach
@@ -45,12 +45,26 @@
                   <td class="tytd">
                     {{$list->content}}
                   </td>
-                  <td class="tytd table-2-del">
-                    <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:邀请, 3:申请 4:老师拒绝 5:学生拒绝 -->
-                    @if ($list->classmate->status == 0)
-                    待确认
-                    @elseif ($list->classmate->status == 1)
-                    已同意
+                  <td class="tytd">
+                    @if ($list->classmate)
+                      <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:邀请, 3:申请 4:老师拒绝 5:学生拒绝 -->
+                      @if ($list->classmate->status == 0)
+                      待确认
+                      @elseif ($list->classmate->status == 1)
+                      已同意
+                      @elseif ($list->classmate->status == 2)
+                      确认加入 拒绝加入
+                      <a href="javascript:;" onclick="do_status({{$list->classmate->id}},1)">确认加入</a>
+                      <a href="javascript:;" onclick="do_status({{$list->classmate->id}},5)">拒绝加入</a>
+                      @elseif ($list->classmate->status == 3)
+                      待确认
+                      @elseif ($list->classmate->status == 4)
+                      老师拒绝
+                      @elseif ($list->classmate->status == 5)
+                      已拒绝
+                      @endif
+                    @else
+                    已失效
                     @endif
                   </td>
               </tr>

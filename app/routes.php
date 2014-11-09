@@ -175,6 +175,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/products', 'ProductsController@index');
     //课件
     Route::get('/courseware', 'CoursewareController@index');
+    Route::get('/courseware/show', 'CoursewareController@show');
 
     //flash播放
     Route::get('/view_flv', 'ViewController@flv');
