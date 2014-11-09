@@ -19,7 +19,7 @@
 
       <div class="classes-list">
           @foreach ($content as $list)
-          <div class="classse-box">
+          <div class="classse-box" style="text-align:center">
             <div>
               <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
             </div>
@@ -43,8 +43,12 @@
                   <div class="table-2-sp"></div>
               </td></tr>
             @endforeach
+            <tr style="text-align:center">
+              <td>
+                          {{$column_questions->appends($query)->links()}}
+              </td>
+            </tr>
           </table>
-
           @endif
 
       </div>

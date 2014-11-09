@@ -11,7 +11,7 @@ class ColumnController extends BaseController
 
 	public function index()
 	{
-        $query = Input::only('id', 'column_id');
+        $query = Input::only('id', 'column_id', 'page');
 
         $color = array("#2fc8d0","#efc825","#5fc1e8","#f28695","#f49543","#abd663","#b18ac1");
 
@@ -45,10 +45,12 @@ class ColumnController extends BaseController
             }
 
             // $questions = $column->questions->paginate($this->pageSize);
+            // // 当前页数
+            if( !is_numeric($query['page']) || $query['page'] < 1 )
+                $query['page'] = 1;
             $column_questions = ColumnQuestionRelation::whereColumnId($query['id'])->paginate($this->pageSize);
     		$att = new Attachments();
     		foreach ($column_questions as $key => $r) {
-                // dd($r->question->id);
     	        $item = $att->get($r->question->img);
     			$route = $att->getTopicRoute($r->question->id, $item['file_name']);
     			$r->question->img_url = $route['url'];
@@ -65,7 +67,7 @@ class ColumnController extends BaseController
         $arr = $cn->getPath($query['column_id']);
         $columnHead = $arr[0];
 
-        return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions', 'columnHead', 'back_url'));
+        return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions', 'columnHead', 'back_url', 'column_questions'));
 	}
 
     /* 科目临时显示 */
