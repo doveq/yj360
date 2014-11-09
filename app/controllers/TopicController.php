@@ -172,6 +172,34 @@ class TopicController extends BaseController {
 			$info['columnHead'] = $path[$cnum -1];
 		}
 
+		// 来自错题记录
+		if(Input::get('from') == 'fail')
+		{
+			$info['headTitle'] = '错题记录';
+			$info['backurl'] = '/failTopic?column_id=' . Input::get('column_id');
+			$info['from'] = 'fail';
+
+			$cn = new Column();
+			$path = $cn->getPath(Input::get('column_id'));
+			$cnum = count($path);
+			$info['columnHead'] = $path[$cnum -1];
+
+			// 设置父顶级科目id
+			$info['column'] = $path[$cnum -1]['id'];
+		}
+		// 来自收藏夹
+		else if(Input::get('from') == 'favorite')
+		{
+			$info['headTitle'] = '我的收藏';
+			$info['backurl'] = '/favorite?column_id=' . Input::get('column_id');
+			$info['from'] = 'favorite';
+
+			$cn = new Column();
+			$path = $cn->getPath(Input::get('column_id'));
+			$cnum = count($path);
+			$info['columnHead'] = $path[$cnum -1];
+		}
+
 		// 答题对错
 		if(!empty($qinfo['trues']))
 			$info['trues'] = $qinfo['trues'];
@@ -334,6 +362,21 @@ class TopicController extends BaseController {
 		$data['list'] = $list;
 		$data['scores'] =  (100 / count($list)) * $data['rightNum'];
 		$data['scores'] = round($data['scores'], 1); // 四舍五入小数点后一位
+
+		// 生成返回链接
+		$cn = new Column();
+		$path = $cn->getPath($list[0]['column_id']);
+		$cnum = count($path);
+		if($cnum > 2)
+			$data['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
+		else if($cnum > 1)
+			$data['backurl'] = "/column?id={$path[$cnum -1]['id']}&column_id={$path[0]['id']}";
+
+		// 分类头显示使用
+		$data['columnHead'] = $path[$cnum -1];
+
+		// 设置父顶级科目id
+		$data['column'] = $path[$cnum -1]['id'];
 
 		return $this->indexView('topic_result',  $data);
 	}

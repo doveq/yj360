@@ -4,6 +4,12 @@ class IndexController extends BaseController {
 
     public function index()
     {
+        // 如果已经登录
+        if(Auth::check())
+        {
+            return Redirect::to('/column/static');
+        }
+
         return $this->indexView('index');
     }
 

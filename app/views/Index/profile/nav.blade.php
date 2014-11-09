@@ -10,5 +10,6 @@
           <div class="sort-item @if($_SERVER["REQUEST_URI"] == '/profile') sort-item-sel sort-ngr-sel @else sort-ngr @endif"><a href="/profile">个人资料</a><div class="sort-nsj"></div></div>
           <div class="sort-bb"></div>
           <div class="sort-item @if($_SERVER["REQUEST_URI"] == '/profile/passwd') sort-item-sel sort-npw-sel @else sort-npw @endif"><a href="/profile/passwd">密码管理</a><div class="sort-nsj"></div></div>
+          <div class="sort-bb"></div>
       </div>
   </div>

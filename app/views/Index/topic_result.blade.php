@@ -2,6 +2,16 @@
 @section('title')首页 @stop
 
 @section('content')
+    <div class="topic-head">
+        <div class="wrap">
+            @if(!empty($backurl))
+            <a class="back" href="{{$backurl}}">< 返回</a>
+            @endif
+            <b>{{$headTitle or ''}}</b>
+        </div>
+        <div class="clear"></div>
+    </div>
+
     <div class="container wrap">
         <div id="topic-rt">
             答题完毕！目前总得分：{{$scores}} 分！
@@ -13,7 +23,7 @@
             	<div style="padding:10px 0;">
             	@foreach($list as $k => $v)
             		@if($v['is_true'] != 1)
-            		<a class="topic-rcit" href="/topic?id={{$v['question_id']}}" target="_blank" >第{{$k+1}}题</a>
+            		<a class="topic-rcit" href="/topic?id={{$v['question_id']}}&column_id={{$column}}&from=fail" target="_blank" >第{{$k+1}}题</a>
             		@endif
             	@endforeach
             	</div>

@@ -200,7 +200,15 @@
             <div class="clear"></div>
         </div>
 
-        @if( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
+        @if(!empty($from) && $from == 'favorite')
+        {{--收藏夹不用显示--}}
+        @elseif(!empty($from) && $from == 'fail')
+        {{--错题记录显示--}}
+        <div id="topic-tools">
+            <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}},{{$column or '0'}});"></a>
+            <div class="clear"></div>
+        </div>
+        @elseif( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
         <div id="topic-tools">
             @if( $q['type'] == 2)
             <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
