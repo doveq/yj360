@@ -84,13 +84,6 @@
                         @endforeach
                         @endif
                         </table>
-                    {{-- 填空，写作 --}}
-                    @elseif($q['type'] == 4 || $q['type'] == 5 )
-                    <div id="type-45" style="display:none;">
-                        @if( !empty($q['disabuse']) )
-                            {{$q['disabuse']}}
-                        @endif
-                    </div>
                     {{-- 模唱 --}}
                     @elseif( $q['type'] == 6 )
                     {{-- 视唱 --}}
@@ -117,6 +110,7 @@
                     @endif 
 
             </div>
+
 
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )        
             <div id="disabuse" class="disabuse-close">
@@ -178,6 +172,16 @@
 
         </div>
         
+        {{-- 填空，写作 --}}
+        @if($q['type'] == 4 || $q['type'] == 5 )
+        <div id="type-45" style="display:none;">
+            <div><img src="/assets/img/topic-da.png" /></div>
+            <div class="clear"></div>
+            @if( !empty($q['disabuse']) )
+                {{$q['disabuse']}}
+            @endif
+        </div>
+        @endif
         
         <div id="qlist" style="display:none;">
             @foreach($qlist as $k => $v)
