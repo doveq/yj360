@@ -46,10 +46,11 @@
                     {{$list->content}}
                   </td>
                   <td class="tytd table-2-del">
-                    @if ($list->classmate->status == 1)
-                    确认
-                    @elseif ($list->classmate->status == 2)
+                    <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:邀请, 3:申请 4:老师拒绝 5:学生拒绝 -->
+                    @if ($list->classmate->status == 0)
                     待确认
+                    @elseif ($list->classmate->status == 1)
+                    已同意
                     @endif
                   </td>
               </tr>

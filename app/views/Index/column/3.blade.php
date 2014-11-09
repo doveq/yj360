@@ -9,8 +9,8 @@
 
 
   <div class="wrap-right">
-      <div class="tabtool">
-          <div class="clear"></div>
+      <div class="tabtool" style="margin-left:-30px;margin-bottom:10px;background-color:#f1f1f1;height:27px;padding-left:30px;border-bottom:1px solid #e0e0e0">
+{{$column->name}}
       </div>
       <div class="clear"></div>
 
@@ -21,13 +21,22 @@
               <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
             </div>
             <div class="classes-txt">
-              <a href="/topic?column={{$list->id}}" style="color:#fff;">
+              <a href="/column?id={{$list->id}}&column_id={{$query['column_id']}}" style="color:#fff;">
               <div><h2><b>{{$list->name}}</b></h2></div>
               </a>
             </div>
           </div>
           @endforeach
           <div class="clear"></div>
+          @if ($questions->count() > 0)
+          <ul>
+            @foreach ($questions as $list)
+              <li><a href="/topic?id={{$list->id}}">{{$list->txt}}</a></li>
+            @endforeach
+          </ul>
+            <div class="clear"></div>
+          @endif
+
       </div>
   </div>
   <div class="clear"></div>
