@@ -15,37 +15,27 @@ class ClassesController extends BaseController {
         $query = Input::only('column_id');
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
-        // dd($user_type);
         if ($user_type < 0) $user_type = 1;
-
-
+        //正式班级
         if ($user_type == 1) {
             $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
         } elseif ($user_type == 0) {
             $myclasses = array(-1);
-            $yqclasses = array(-1);
-            $sqclasses = array(-1);
-            $classmates = Classmate::whereUserId($user_id)->select('class_id', 'status')->get()->toArray();
+            $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id', 'status')->get()->toArray();
             if (!empty($classmates)) {
                 foreach ($classmates as $key => $value) {
-                    if ($value['status'] == 0) {
-                        $myclasses[] = $value['class_id'];
-                    } elseif ($value['status'] == 1) {
-                        $yqclasses[] = $value['class_id'];
-                    } elseif ($value['status'] == 2) {
-                        $sqclasses[] = $value['class_id'];
-                    }
+                    $myclasses[] = $value['class_id'];
                 }
             }
 
-            $my_classes = Classes::whereIn('id', $myclasses)->get();
-            $yq_classes = Classes::whereIn('id', $yqclasses)->get();
-            $sq_classes = Classes::whereIn('id', $sqclasses)->get();
+            $classes = Classes::whereIn('id', $myclasses)->get();
         }
+        //加入班级记录
+        $messages = Message::whereSenderId($user_id)->whereType(2)->get();
+
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $genderEnum = $this->genderEnum;
-        // dd($user_type);
-        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns','my_classes','yq_classes','sq_classes'));
+        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns', 'messages'));
     }
 
 
