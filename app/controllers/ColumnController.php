@@ -24,7 +24,6 @@ class ColumnController extends BaseController
         }
 
         $column = Column::find($query['id']);
-
         // 如果是试卷类型
         if($column->type == 2)
         {
@@ -55,13 +54,17 @@ class ColumnController extends BaseController
     			$questions[$key] = $q;
     		}
         }
-
+        if ($column->parent->id != $query['column_id']) {
+            $back_url = 1;
+        } else {
+            $back_url = 0;
+        }
         // 获取父类名页面显示
         $cn = new Column();
         $arr = $cn->getPath($query['column_id']);
         $columnHead = $arr[0];
 
-        return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions', 'columnHead'));
+        return $this->indexView('column.' . $column->type, compact('column', 'content', 'columns', 'query', 'questions', 'columnHead', 'back_url'));
 	}
 
     /* 科目临时显示 */

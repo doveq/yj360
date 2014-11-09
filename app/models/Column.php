@@ -41,6 +41,10 @@ class Column extends Eloquent {
         return $this->hasMany('Column', 'parent_id');
     }
 
+    public function parent() {
+        return $this->hasOne('Column', 'id', 'parent_id');
+    }
+
     public function questions() {
         return $this->belongsToMany('Question', 'column_question_relation', 'column_id', 'question_id');
     }
