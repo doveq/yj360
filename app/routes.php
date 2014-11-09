@@ -75,7 +75,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/examPaper/del', '\Admin\ExamPaperController@doDel');
     Route::get('/examPaper/column', '\Admin\ExamPaperController@showColumn');
     Route::get('/examPaper/addColumn', '\Admin\ExamPaperController@showAddColumn');
-    
+    Route::post('/examPaper/doEditQuestion', '\Admin\ExamPaperController@doEditQuestion');
 
     Route::resource('examSort', 'Admin\ExamSortController');
 });

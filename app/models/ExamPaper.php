@@ -41,6 +41,9 @@ class ExamPaper extends Eloquent {
         if(isset($data['sort']))
             $this->sort = $data['sort'];
 
+        if(is_numeric($data['ordern']))
+            $this->ordern = $data['ordern'];
+
         $this->save();
         return $this->id;  // 插入的id号
     }
@@ -62,6 +65,9 @@ class ExamPaper extends Eloquent {
 
         if(isset($data['sort']))
             $update['sort']  = $data['sort'];
+
+        if(is_numeric($data['ordern']))
+            $update['ordern'] = $data['ordern'];
 
         if(isset($data['score']))
         {
@@ -105,14 +111,15 @@ class ExamPaper extends Eloquent {
     /* 获取试卷大题列表 */
     public function getClist($exam_id)
     {
-        $list = $this->where('parent_id', '=', $exam_id)->orderBy('id', 'asc')->get();
+        $list = $this->where('parent_id', '=', $exam_id)->orderBy('ordern', 'asc')->get();
         return $list;
     }
 
     /* 获取试卷大题题目列表 */
     public function getQuestions($exam_id)
     {
-        $list = ExamQuestionRelation::where('exam_id', '=', $exam_id)->orderBy('id')->get();
+        $list = ExamQuestionRelation::where('exam_id', '=', $exam_id)->orderBy('ordern', 'asc')->get();
         return $list;
     }
+    
 }

@@ -281,8 +281,7 @@ class ExamPaperController extends \BaseController {
         $parent = $ep->find($info->parent_id);
         // $column = Column::find($info->column_id);
         // $paths = array_reverse($column->getPath($column->id));
-
-        $list = ExamQuestionRelation::where('exam_id', '=', $id)->get();
+        $list = $ep->getQuestions($id);
 
         return $this->adminView('examPaper.question', compact('column', 'paths', 'parent', 'info', 'list') );
     }
@@ -328,6 +327,18 @@ class ExamPaperController extends \BaseController {
         $paths = array_reverse($column->getPath($column->id));
 
         return $this->adminView('examPaper.addColumn', compact('query', 'lists', 'statusEnum', 'paths') );
+    }
+
+    public function doEditQuestion()
+    {
+        $query = Input::all();
+
+        if( is_numeric($query['id']) && is_numeric($query['ordern']) )
+        {
+            ExamQuestionRelation::where('id', '=', $query['id'])->update( array('ordern' => $query['ordern']) );
+        }
+
+        return Redirect::to($query['from']);
     }
 
 }

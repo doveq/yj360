@@ -21,6 +21,7 @@
             <th>{{Form::checkbox('checkAll', 1,false, array('id' => 'checkAll'))}}</th>
             <th>#</th>
             <th>题干</th>
+            <th>排序序号</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -30,7 +31,12 @@
                 <td><label>{{ Form::checkbox('id[]', $v['question_id']) }}</label></td>
                 <td>{{$v['question_id']}}</td>
                 <td><a href="/topic?id={{$v->question['id']}}" target="_blank">{{$v->question['txt']}}</a></td>
-                <td><a href="javascript:;" class="btn btn-primary btn-xs btn-del" data-id="{{$v['question_id']}}">删除</a></td>
+                <td>{{$v['ordern']}}</td>
+                <td>
+                  <a href="javascript:;" class="btn btn-primary btn-xs showedit" data-toggle="modal" data-id="{{$v['id']}}" data-tit="{{$v->question['txt']}}" data-ordern="{{$v['ordern']}}">编辑</a>
+                  &nbsp;&nbsp;
+                  <a href="javascript:;" class="btn btn-danger btn-xs btn-del" data-id="{{$v['question_id']}}">删除</a>
+                </td>
             </tr>
             @endforeach
         </tbody>
@@ -40,6 +46,40 @@
           <button type="button" class="btn btn-danger btn-delall">批量删除</button>
       </div>
   </div>
+
+
+<div class="modal fade" id="myModal">
+  <form method="POST" action="/admin/examPaper/doEditQuestion" role="form">
+  <input type="hidden" id="dfrom" name="from" value="" />
+  <input type="hidden" id="did" name="id" value="" />
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title">编辑排序序号</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="control-label" >题目</label>
+          <div id="dtit"></div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" >排序序号</label>
+          <div>
+            <input class="form-control" type="text" value="0" name="ordern" id="dordern" />
+            <p class="help-block">序号越小,排序越靠前</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+        <input type="submit" value="保存" class="btn btn-primary" />
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+  </form>
+</div><!-- /.modal -->
 
 @stop
 
@@ -109,6 +149,16 @@ $(function(){
       });
     }
   }
+
+  $(".showedit").on("click", function(){
+      $('#did').val( $(this).data('id') );
+      $('#dtit').html( $(this).data('tit') );
+      $('#dordern').val( $(this).data('ordern') );
+      $('#dfrom').val(location.href);
+
+      $('#myModal').modal();
+  });
+
 });
 </script>
 @stop
