@@ -31,9 +31,7 @@
           @if ($questions->count() > 0)
           <ul>
             @foreach ($questions as $list)
-              <li><a href="/topic?id={{$list->id}}" style="color:#fff;">
-              <div><h2><b>{{$list->txt}}</b></h2></div>
-              </a></li>
+              <li><a href="/topic?id={{$list->id}}">{{$list->txt}}</a></li>
             @endforeach
           </ul>
             <div class="clear"></div>
