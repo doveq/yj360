@@ -20,7 +20,7 @@
           @foreach($lists['files'] as $k => $d)
           <tr>
               <td class="tytd">
-                <a href="/data/flash_exe/{{$d['path']}}index.php" target="_blank">{{$d['name']}}</a>
+                <a href="/data/flash_exe/{{$d['path']}}index.php" target="_blank" class="play_ware">{{$d['name']}}</a>
               </td>
           </tr>
           <tr><td colspan="2">
@@ -42,7 +42,9 @@
               </div>
             </div>
             @else
-              <div style="width: 100px; float: left; height: 100px; margin: 10px; padding: 10px; text-align: center;"><h2><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}">{{$d['name']}}</a></h2></div>
+              <div style="width: 100px; float: left; height: 100px; margin: 10px; padding: 10px; text-align: center;">
+                <h2><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}">{{$d['name']}}</a></h2>
+              </div>
             @endif
           @endforeach
         @endif
@@ -54,8 +56,39 @@
 @stop
 
 @section('js')
+
 <script type="text/javascript">
+
+var winID = null;
+  function openFullWindow(url,winname)
+  {
+     var strFeatures = "left=0,screenX=0,top=0,screenY=0";
+     if (window.screen)
+     {
+         //获取屏幕的分辨率
+          var maxh = screen.availHeight;
+          var maxw = screen.availWidth;
+          strFeatures += ",height="+maxh;
+          strFeatures += "innerHeight"+maxh;
+           strFeatures += ",width="+maxw;
+          strFeatures += "innerwidth"+maxw;
+     }
+     else
+     {
+         strFeatures +=",resizable";
+
+     }
+     winID = window.open(url,winname,strFeatures);
+
+  }
+
+
 $(document).ready(function () {
+  $(".play_ware").on('click', function() {
+    // alert($(this).prop('href'));
+    openFullWindow($(this).prop('href'), 'newwin');
+    return false;
+  });
 
 });
 </script>
