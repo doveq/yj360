@@ -32,7 +32,7 @@
           <ul>
             @foreach ($questions as $list)
               <li><a href="/topic?id={{$list->id}}" style="color:#fff;">
-              <div><h2><b>{{$list->title}}</b></h2></div>
+              <div><h2><b>{{$list->txt}}</b></h2></div>
               </a></li>
             @endforeach
           </ul>
