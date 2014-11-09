@@ -45,7 +45,6 @@ class ColumnController extends BaseController
                 $content[$key] = $c;
             }
 
-
             $questions = $column->questions;
     		$att = new Attachments();
     		foreach ($questions as $key => $q) {
