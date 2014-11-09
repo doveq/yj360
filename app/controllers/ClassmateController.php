@@ -25,7 +25,6 @@ echo "haha";
     public function create()
     {
         $query = Input::only('class_id', 'page', 'name', 'tel', 'status', 'column_id');
-// dd($query);
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;

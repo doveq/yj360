@@ -68,7 +68,6 @@ $(function(){
     layer.confirm('您确定要加入吗？', function(){
         $.ajax({
           url:'/classm/doAddClass?class_id='+id,
-          // async:false,
           type:'get',
         })
         .fail(function(){
