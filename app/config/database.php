@@ -54,7 +54,7 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => '127.0.0.1',
+			'host'      => '182.92.223.66',
 			'database'  => 'yj360',
 			'username'  => 'root',
 			'password'  => 'info.works',

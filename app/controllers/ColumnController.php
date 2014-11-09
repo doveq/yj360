@@ -35,9 +35,11 @@ class ColumnController extends BaseController
                 $c->bgcolor = $color[array_rand($color)];
                 $content[$key] = $c;
             }
-        }
-        else
-        {
+        // } elseif ($column->type == 3) {
+            //多媒体教材类型
+
+
+        } else {
             $content = $column->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
             foreach ($content as $key => $c) {
                 $c->bgcolor = $color[array_rand($color)];

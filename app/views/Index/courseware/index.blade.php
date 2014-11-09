@@ -15,14 +15,35 @@
       </div>
 
       <div class="classes-list">
-
         @if (isset($lists['files']))
+        <table class="table-2" style="width:80%;margin:20px;padding:20px" border="0" cellpadding="0" cellspacing="0">
           @foreach($lists['files'] as $k => $d)
-          <div><a href="/data/flash_exe/{{$d['path']}}index.php" target="_blank">{{$d['name']}}</a></div>
+          <tr>
+              <td class="tytd">
+                <a href="/data/flash_exe/{{$d['path']}}index.php" target="_blank">{{$d['name']}}</a>
+              </td>
+          </tr>
+          <tr><td colspan="2">
+              <div class="table-2-sp"></div>
+          </td></tr>
           @endforeach
+          </table>
         @else
           @foreach($lists as $k => $d)
-          <div><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}">{{$d['name']}}</a></div>
+            @if ($d['pic'] != '')
+            <div class="classse-box" style="text-align:center">
+              <div>
+                <img src="/data/flash_exe/{{$d['pic']}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
+              </div>
+              <div class="classes-txt">
+                <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}" style="color:#fff;">
+                <div><h2><b>{{$d['name']}}</b></h2></div>
+                </a>
+              </div>
+            </div>
+            @else
+              <div style="width: 100px; float: left; height: 100px; margin: 10px; padding: 10px; text-align: center;"><h2><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}">{{$d['name']}}</a></h2></div>
+            @endif
           @endforeach
         @endif
           <div class="clear"></div>
