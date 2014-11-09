@@ -16,7 +16,6 @@
         @endif
 {{$column_name}}
       </div>
-      <div class="clear"></div>
 
       <div class="classes-list">
         @if (isset($lists['files']))
