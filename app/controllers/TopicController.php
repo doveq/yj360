@@ -184,8 +184,7 @@ class TopicController extends BaseController {
 			$cnum = count($path);
 			$info['columnHead'] = $path[$cnum -1];
 
-			// 设置父顶级科目id
-			$info['column'] = $path[$cnum -1]['id'];
+			$info['column'] = Input::get('column_id');
 		}
 		// 来自收藏夹
 		else if(Input::get('from') == 'favorite')
