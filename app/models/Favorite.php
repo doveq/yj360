@@ -41,14 +41,13 @@ class Favorite extends Eloquent {
 
     public function del($info)
     {
-        $this->where('uid', '=', $info['uid'])->where('question_id', '=', $info['qid'])->where('column_id', '=', $info['column_id'])->delete();
+        $this->where('uid', '=', $info['uid'])->where('question_id', '=', $info['qid'])->delete();
         return 1;
     }
 
 
     public function getList($info)
     {
-
         if(empty($info['column_id']))
         {
             $list = $this->where('uid', '=', $info['uid'])->take($info['limit'])->get();

@@ -41,7 +41,12 @@ class FavoriteController extends BaseController
         $column_id = Input::get('column_id');
 
         if(!is_numeric($id))
-            return $this->indexPrompt("", "错误的ID号", $url = "/favorite");
+        {
+            if(empty($column_id))
+                return $this->indexPrompt("", "错误的ID号", $url = "/favorite");
+            else
+                return $this->indexPrompt("", "错误的ID号", $url = "/favorite?column_id=". $column_id);
+        }
 
         $f = new Favorite();
         $f->del( array('uid' => Session::get('uid'), 'qid' => $id ) );
