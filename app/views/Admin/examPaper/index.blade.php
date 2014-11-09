@@ -2,19 +2,29 @@
 @section('title')试卷管理@stop
 
 @section('content')
-  <div class="row">
-    <ol class="breadcrumb">
-      <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
-        @foreach ($paths as $key => $path)
-        <li>{{link_to_route('admin.column.index', $path['name'], array('parent_id' => $path['id']))}}</li>
-        @endforeach
-      <li class="active">添加试卷</li>
-    </ol>
-  </div>
 
   <div class="row">
-      <div class="col-md-4 col-md-offset-8 text-right">
-          <a href="/admin/examPaper/add?column_id={{$columnId}}" class="btn btn-success">添加试卷</a>
+      <div class="row text-right">
+        {{ Form::open(array('role' => 'form', 'class' => 'form-inline', 'method' => 'get')) }}
+          <div class="form-group" id="sort" style="padding-right:60px;">
+              {{Form::select('sort1', array(), '', array('class' => 'sort1 form-control', 'data-value' => $query['sort1'] ))}}
+              {{Form::select('sort2', array(), '', array('class' => 'sort2 form-control', 'data-value' => $query['sort2'] ))}}
+              {{Form::select('sort3', array(), '', array('class' => 'sort3 form-control', 'data-value' => $query['sort3'] ))}}
+              {{Form::select('sort4', array(), '', array('class' => 'sort4 form-control', 'data-value' => $query['sort4'] ))}}
+              {{Form::select('sort5', array(), '', array('class' => 'sort5 form-control', 'data-value' => $query['sort5'] ))}}
+          </div>
+          <div class="clearfix"></div>
+
+          <div class="form-group">
+            {{ Form::label('inputName', '试卷名', array('class' => 'sr-only')) }}
+            {{ Form::text('name', $query['name'], array('class' => 'form-control', 'id' => 'inputName', 'placeholder' => '试卷名')) }}
+          </div>
+          <div class="form-group">
+            {{ Form::label('inputStatus', '状态', array('class' => 'sr-only')) }}
+            {{ Form::select('status', $statusEnum, $query['status'], array('class' => 'form-control', 'id' => 'inputStatus')) }}
+          </div>
+          {{ Form::button('查找', array('class' => 'btn btn-info', 'type' =>'submit')) }}
+        {{ Form::close() }}
       </div>
 
       <table class="table table-hover">
@@ -23,7 +33,6 @@
             <th>#</th>
             <th>试卷</th>
             <th>描述</th>
-            <th>价格</th>
             <th>状态</th>
             <th>操作</th>
           </tr>
@@ -34,7 +43,6 @@
                 <td>{{$list->id}}</td>
                 <td><a href="/admin/examPaper/clist?id={{$list->id}}">{{$list->title}}</a></td>
                 <td>{{$list->desc}}</td>
-                <td>{{$list->price}}</td>
                 <td>
                     @if ($list->status == 1)
                     <span class="label label-info">{{$statusEnum[$list->status]}}</span>
@@ -70,12 +78,13 @@
       </table>
   </div>
   <div class="row text-right">
-      
+      {{$lists->appends($query)->links()}}
   </div>
 
 @stop
 
 @section('js')
+{{ HTML::script('/assets/jquery.cxselect.min.js') }}
 <script type="text/javascript">
 
 $(function(){
@@ -122,6 +131,15 @@ $(function(){
             alert("删除失败,请刷新页面重试");
         });
       }
+  });
+
+  // http://code.ciaoca.com/jquery/cxselect/
+  $.cxSelect.defaults.url = '/admin/examSort.json';
+  $('#sort').cxSelect({
+      url:'/admin/examSort.json',
+      firstTitle: '-请选择-分类-',
+      selects: ['sort1', 'sort2', 'sort3', 'sort4', 'sort5'],
+      nodata: 'none'
   });
 });
 </script>

@@ -1,18 +1,26 @@
 @extends('Admin.master_column')
-@section('title')试卷管理@stop
+@section('title')科目管理@stop
 
 
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
-      <li><a href="/admin/examPaper/clist?id={{$parent->id}}">{{$parent->title}}</a></li>
-      <li class="active">{{$info->title}}</li>
+      <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
+      @if ($query['parent_id'] > 0)
+        @foreach ($paths as $key => $path)
+        <li>{{link_to_route('admin.column.index', $path['name'], array('parent_id' => $path['id']))}}</li>
+        @endforeach
+      @endif
+      <li class="active">浏览科目</li>
+      @if ($query['parent_id'] > 0)
+      <a href="{{url('/admin/column?parent_id='.$parent->parent_id)}}"><span class='pull-right  icon-arrow-up'> 返回上级</span></a>
+      @endif
     </ol>
   </div>
 
   <div class="row">
       <div class="col-md-4 col-md-offset-8 text-right">
-        <a href="/admin/topic/exam?id={{$info->id}}" class="btn btn-success">添加题目</a>
+        <a href="/admin/topic/column?id={{$query['parent_id']}}" class="btn btn-success">添加内容</a>
       </div>
 
       <table class="table table-hover">
@@ -39,13 +47,16 @@
       <div class="col-md-2">
           <button type="button" class="btn btn-danger btn-delall">批量删除</button>
       </div>
+      <div class="col-md-10 text-right">
+        {{$list->appends($query)->links()}}
+      </div>
   </div>
 
 @stop
 
 @section('js')
 <script type="text/javascript">
-var exam_id = {{$info->id}};
+var column_id = {{$query['parent_id']}};
 
 $(function(){
 
@@ -87,10 +98,10 @@ $(function(){
   function del(id)
   {
       if(confirm('您确定要删除吗？')){
-      $.post("/admin/relation/delExam",
+      $.post("/admin/relation/del_question",
         {
           question_id: id,
-          id: exam_id
+          column_id: column_id
         },
         function(data) {
             if(data.status == 1)

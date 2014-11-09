@@ -20,7 +20,7 @@
               @foreach($content as $list)
                 <tr>
                     <td class="tytd">
-                        <a href="/topic?exam={{$list->id}}" target="_blank">{{$list->title}}</a>
+                        <a href="/topic?exam={{$list->exam_id}}&column={{$column->id}}" target="_blank">{{$list->exam->title}}</a>
                     </td>
                 </tr>
                 <tr><td colspan="2">

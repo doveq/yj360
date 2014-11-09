@@ -13,6 +13,7 @@ use Response;
 
 use Column;
 use Sort;
+use ExamSort;
 
 class JsonController extends \BaseController {
 
@@ -38,6 +39,12 @@ class JsonController extends \BaseController {
     public function sort()
     {
         $lists = $this->sortChild(0);
+        return Response::json($lists);
+    }
+
+    public function examSort()
+    {
+        $lists = $this->examSortChild(0);
         return Response::json($lists);
     }
 
@@ -69,6 +76,23 @@ class JsonController extends \BaseController {
             $data[] = array('v' => $list->id,
                             'n' => $list->name,
                             's' => $this->sortChild($list->id)
+                            );
+        }
+        return $data;
+    }
+
+
+    public function examSortChild($id)
+    {
+        $res = ExamSort::whereParentId($id)->select('id', 'name')->orderBy('id', 'ASC')->get();
+        $data = array();
+        if (!$res) {
+            return $data;
+        }
+        foreach ($res as $key => $list) {
+            $data[] = array('v' => $list->id,
+                            'n' => $list->name,
+                            's' => $this->examSortChild($list->id)
                             );
         }
         return $data;

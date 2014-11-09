@@ -6,10 +6,7 @@
 
   <div class="row">
     <ol class="breadcrumb">
-      <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
-        @foreach ($paths as $key => $path)
-        <li>{{link_to_route('admin.column.index', $path['name'], array('parent_id' => $path['id']))}}</li>
-        @endforeach
+      <li><a href="/admin/examPaper">试卷管理</a></li>
         <li><a href="/admin/examPaper/clist?id={{$parent->id}}">{{$parent->title}}</a></li>
     </ol>
   </div>
@@ -23,7 +20,6 @@
         @else
         <form method="POST" action="/admin/examPaper/doAdd" role="form" class="form-horizontal">
         <input type="hidden" name="parent_id" value="{{$parent->id}}" />
-        <input type="hidden" name="column_id" value="{{$parent->column_id}}" />
         <input type="hidden" name="from" value="/admin/examPaper/clist?id={{$parent->id}}" />
         @endif
 

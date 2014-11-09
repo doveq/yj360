@@ -20,7 +20,7 @@ class ExamPaper extends Eloquent {
 
     public function add($data)
     {
-        $this->column_id = $data['column_id'];
+        //$this->column_id = $data['column_id'];
         $this->title = $data['title'];
         
         if(isset($data['score']))
@@ -38,7 +38,11 @@ class ExamPaper extends Eloquent {
         if(isset($data['desc']))
             $this->desc = $data['desc'];
         
-        return $this->save();
+        if(isset($data['sort']))
+            $this->sort = $data['sort'];
+
+        $this->save();
+        return $this->id;  // 插入的id号
     }
 
     public function edit($data)
@@ -55,6 +59,9 @@ class ExamPaper extends Eloquent {
 
         if(isset($data['status']))
             $update['status'] = $data['status'];
+
+        if(isset($data['sort']))
+            $update['sort']  = $data['sort'];
 
         if(isset($data['score']))
         {
@@ -79,14 +86,20 @@ class ExamPaper extends Eloquent {
     }
 
     /* 获取试卷列表 */
-    public function getElist($data)
+    public function getElist($data = array())
     {
-        $re = $this->where('column_id', '=', $data['column_id'])->where('parent_id', '=', 0);
+        $re = $this->where('parent_id', '=', 0);
 
-        if(isset($data['status']))
+        if(!empty($data['sort']))
+            $re = $re->where('sort', '=', $data['sort']);
+
+        if(isset($data['status']) && $data['status'] != '' )
             $re = $re->where('status', '=', $data['status']);
 
-        return $re->get();
+        if(!empty($data['name']))
+            $re->where('title', 'like', "%{$data['name']}%");
+
+        return $re;
     }
 
     /* 获取试卷大题列表 */

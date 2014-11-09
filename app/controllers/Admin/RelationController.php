@@ -13,6 +13,7 @@ use ColumnQuestionRelation;
 use Question;
 use ExamQuestionRelation;
 use ExamPaper;
+use ColumnExamRelation;
 
 class RelationController extends \BaseController {
 
@@ -218,4 +219,57 @@ class RelationController extends \BaseController {
         return $response = Response::json($tmp);
     }
 
+
+    /* 添加科目试卷对应表 */
+    public function doColumnExam()
+    {
+        $query = Input::only('exam_id', 'column_id');
+        $validator = Validator::make($query,
+            array(
+                'exam_id'   => 'required',
+                'column_id' => 'required',
+            )
+        );
+        if($validator->fails())
+        {
+            $tmp = array('error' => '操作失败,请刷新重试');
+            return Response::json($tmp);
+        }
+        if (!is_array($query['exam_id'])) {
+            $query['exam_id'] = explode(",", $query['exam_id']);
+        }
+
+        foreach ($query['exam_id'] as $key => $id) {
+            $relation = ColumnExamRelation::firstOrCreate(array('exam_id' => $id, 'column_id' => $query['column_id']));
+            $relation->exam_id = $id;
+            $relation->column_id = $query['column_id'];
+            $relation->save();
+        }
+        $tmp = array('info' => '操作成功');
+        return $response = Response::json($tmp);
+    }
+
+    public function delColumnExam()
+    {
+        $query = Input::only('id');
+        $validator = Validator::make($query,
+            array(
+                'id' => 'required',
+            )
+        );
+        if($validator->fails())
+        {
+            $tmp = array('info' => '操作失败,请刷新重试', 'status' => 0);
+            return Response::json($tmp);
+        }
+        if (!is_array($query['id'])) {
+            $query['id'] = explode(",", $query['id']);
+        }
+        foreach ($query['id'] as $key => $qid) {
+            ColumnExamRelation::whereId($qid)->delete();
+        }
+        $tmp = array('info' => '操作成功', 'status' => 1);
+        return $response = Response::json($tmp);
+    }
+    
 }

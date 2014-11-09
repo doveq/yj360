@@ -34,10 +34,6 @@ class TopicController extends BaseController {
 		{
 			$ep = new ExamPaper();
 
-			$parent = $ep::find($exam);
-			if( empty($parent) )
-				return $this->indexPrompt("", "没有这个试卷信息", $url = "/", false);
-
 			// 获取大题列表
 			$clist = $ep->getClist($exam);
 
@@ -55,7 +51,7 @@ class TopicController extends BaseController {
 
 			// 题目数据保存
 			$qinfo['exam_id'] = $exam;
-			$qinfo['column_id'] = $parent['column_id'];
+			$qinfo['column_id'] = $column;
 			$qinfo['uniqid'] = uniqid();
 			$qinfo['list'] = $qlist;  // 题目列表
 			$qinfo['answers'] = array();  // 记录用户每题的答案
@@ -144,9 +140,11 @@ class TopicController extends BaseController {
 			$epinfo = ExamPaper::find($exam);
 			$info['headTitle'] = $epinfo->title;
 
+
+
 			// 生成返回链接
 			$cn = new Column();
-			$path = $cn->getPath($epinfo['column_id']);
+			$path = $cn->getPath($column);
 			$cnum = count($path);
 			if($cnum > 1)
 				$info['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
@@ -366,10 +364,11 @@ class TopicController extends BaseController {
 		$cn = new Column();
 		$path = $cn->getPath($list[0]['column_id']);
 		$cnum = count($path);
+		
 		if($cnum > 2)
 			$data['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
 		else if($cnum > 1)
-			$data['backurl'] = "/column?id={$path[$cnum -1]['id']}&column_id={$path[0]['id']}";
+			$data['backurl'] = "/column?id={$path[0]['id']}&column_id={$path[$cnum -1]['id']}";
 
 		// 分类头显示使用
 		$data['columnHead'] = $path[$cnum -1];

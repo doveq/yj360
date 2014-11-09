@@ -3,7 +3,7 @@
 
 
 @section('content')
-
+ {{--
   <div class="row">
     <ol class="breadcrumb">
       <li>{{link_to_route('admin.column.index', '科目管理')}}</li>
@@ -13,17 +13,27 @@
       <li class="active">试卷管理</li>
     </ol>
   </div>
+  --}}
 
   <div class="row">
 
-        @if(!empty($info))
+        @if(!empty($info->id))
         <form method="POST" action="/admin/examPaper/doEdit" role="form" class="form-horizontal">
-        <input type="hidden" name="column_id" value="{{$columnId}}" />
         <input type="hidden" name="id" value="{{$info->id or ''}}" />
         @else
         <form method="POST" action="/admin/examPaper/doAdd" role="form" class="form-horizontal">
-        <input type="hidden" name="column_id" value="{{$columnId}}" />
         @endif
+
+        <div class="form-group">
+          <label for="sort_name" class="col-md-2 control-label">分类</label>
+          <div class="col-md-6" id="sort">
+              {{Form::select('sort1', array(), '', array('class' => 'sort1', 'data-value' => $info['sort1'] ))}}
+              {{Form::select('sort2', array(), '', array('class' => 'sort2', 'data-value' => $info['sort2'] ))}}
+              {{Form::select('sort3', array(), '', array('class' => 'sort3', 'data-value' => $info['sort3'] ))}}
+              {{Form::select('sort4', array(), '', array('class' => 'sort4', 'data-value' => $info['sort4'] ))}}
+              {{Form::select('sort5', array(), '', array('class' => 'sort5', 'data-value' => $info['sort5'] ))}}
+          </div>
+        </div>
 
         <div class="form-group">
           <label for="sort_name" class="col-md-2 control-label">试卷名</label>
@@ -54,4 +64,20 @@
 
       </form>
   </div>
+@stop
+
+@section('js')
+{{ HTML::script('/assets/jquery.cxselect.min.js') }}
+<script type="text/javascript">
+$(function(){
+  // http://code.ciaoca.com/jquery/cxselect/
+  $.cxSelect.defaults.url = '/admin/examSort.json';
+  $('#sort').cxSelect({
+      url:'/admin/examSort.json',
+      firstTitle: '-请选择-分类-',
+      selects: ['sort1', 'sort2', 'sort3', 'sort4', 'sort5'],
+      nodata: 'none'
+  });
+});
+</script>
 @stop

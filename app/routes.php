@@ -73,6 +73,11 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::get('/examPaper/child/edit', '\Admin\ExamPaperController@editClist');
     Route::get('/examPaper/qlist', '\Admin\ExamPaperController@showQlist');
     Route::post('/examPaper/del', '\Admin\ExamPaperController@doDel');
+    Route::get('/examPaper/column', '\Admin\ExamPaperController@showColumn');
+    Route::get('/examPaper/addColumn', '\Admin\ExamPaperController@showAddColumn');
+    
+
+    Route::resource('examSort', 'Admin\ExamSortController');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
@@ -112,7 +117,8 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/relation/del_question', '\Admin\RelationController@deleteColumn');
     Route::post('/relation/doExam', '\Admin\RelationController@doExam');
     Route::post('/relation/delExam', '\Admin\RelationController@delExam');
-
+    Route::post('/relation/columnExam', '\Admin\RelationController@doColumnExam');
+     Route::post('/relation/delColumnExam', '\Admin\RelationController@delColumnExam');
 });
 
 // 前台路由

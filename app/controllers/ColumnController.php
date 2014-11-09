@@ -28,11 +28,9 @@ class ColumnController extends BaseController
         // 如果是试卷类型
         if($column->type == 2)
         {
-            $ep = new ExamPaper();
-            $content = $ep->getElist( array('column_id' => $query['id'], 'status' => 1) );
-
+            $content = ColumnExamRelation::where('column_id', '=', $query['id'])->get();
             foreach ($content as $key => $c) {
-                $c->bgcolor = $color[array_rand($color)];
+                //$c->bgcolor = $color[array_rand($color)];
                 $content[$key] = $c;
             }
         }

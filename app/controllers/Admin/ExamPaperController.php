@@ -6,7 +6,11 @@ use Column;
 use ExamPaper;
 use Validator;
 use Redirect;
+use ExamSort;
 use ExamQuestionRelation;
+use ColumnQuestionRelation;
+use ColumnExamRelation;
+use DB;
 
 class ExamPaperController extends \BaseController {
 
@@ -14,28 +18,51 @@ class ExamPaperController extends \BaseController {
 
 	public function index()
 	{
-		$columnId = Input::get('column_id');
+		$query = Input::only('sort1','sort2','sort3','sort4','sort5','name','status');
 
+        /*
 		$parent = Column::find($columnId);
         $paths = array_reverse($parent->getPath($parent->id));
+        */
+
+        $query['sort'] = 0;
+        if( !empty($query['sort5']) )
+            $query['sort'] = $query['sort5'];
+        elseif( !empty($query['sort4']) )
+            $query['sort'] = $query['sort4'];
+        elseif( !empty($query['sort3']) )
+            $query['sort'] = $query['sort3'];
+        elseif( !empty($query['sort2']) )
+            $query['sort'] = $query['sort2'];
+        elseif( !empty($query['sort1']) )
+            $query['sort'] = $query['sort1'];
 
         // 显示列表
         $ep = new ExamPaper();
-        $lists = $ep->getElist( array('column_id' => $columnId) );
+        $lists = $ep->getElist($query)->paginate(30);
+        //var_dump( DB::getQueryLog() );
 
         $statusEnum = $this->statusEnum;
+        $statusEnum = array('' => '所有状态') + $statusEnum;
 
-		return $this->adminView('examPaper.index', compact('parent', 'paths', 'columnId', 'lists', 'statusEnum') );
+		return $this->adminView('examPaper.index', compact('query', 'lists', 'statusEnum') );
 	}
 
 	public function showAdd()
 	{
 		$columnId = Input::get('column_id');
 
-		$parent = Column::find($columnId);
-        $paths = array_reverse($parent->getPath($parent->id));
+		// $parent = Column::find($columnId);
+  //       $paths = array_reverse($parent->getPath($parent->id));
 
-		return $this->adminView('examPaper.add', compact('parent', 'paths', 'columnId') );
+        $info = array();
+        $info['sort1'] = 0;
+        $info['sort2'] = 0;
+        $info['sort3'] = 0;
+        $info['sort4'] = 0;
+        $info['sort5'] = 0;
+
+		return $this->adminView('examPaper.add', compact('parent', 'paths', 'columnId', 'info') );
 	}
 
 	public function showEdit()
@@ -43,12 +70,30 @@ class ExamPaperController extends \BaseController {
 		$id = Input::get('id');
 		$info = ExamPaper::find($id);
 
-		$parent = Column::find($info->column_id);
-        $paths = array_reverse($parent->getPath($parent->id));
+		// $parent = Column::find($info->column_id);
+  //       $paths = array_reverse($parent->getPath($parent->id));
 
-        $columnId = $info->column_id;
+  //       $columnId = $info->column_id;
 
-		return $this->adminView('examPaper.add', compact('parent', 'paths', 'columnId', 'info') );
+
+        $info['sort1'] = 0;
+        $info['sort2'] = 0;
+        $info['sort3'] = 0;
+        $info['sort4'] = 0;
+        $info['sort5'] = 0;
+
+        $sort = new ExamSort();
+        $sortInfo = $sort->getPath($info['sort']);
+        $sortNum = count($sortInfo);
+        for ($i = $sortNum; $i > 0; $i--) 
+        {
+            $v = $sortNum - $i +1;
+            $info['sort' . $v] = $sortInfo[$i -1]['id'];
+
+            //Session::put('sort'.$v, $info['sort' . $v]);
+        }
+
+		return $this->adminView('examPaper.add', compact('info') );
 	}
 
 	// 显示大题列表
@@ -63,8 +108,8 @@ class ExamPaperController extends \BaseController {
 
 		$lists = $ep->getClist($id);
 
-		$parent = Column::find($info->column_id);
-        $paths = array_reverse($parent->getPath($parent->id));
+		// $parent = Column::find($info->column_id);
+  //       $paths = array_reverse($parent->getPath($parent->id));
 
 		return $this->adminView('examPaper.clist', compact('info', 'lists', 'parent', 'paths', 'lists') );
 	}
@@ -74,29 +119,48 @@ class ExamPaperController extends \BaseController {
 		$query = Input::all();
         $validator = Validator::make($query,
             array(
-                'title' => 'alpha_dash|required',
-                'column_id' => 'numeric|required',
+                'title' => 'alpha_dash|required'
             )
         );
 
-        if($validator->fails())
+        // 处理分类
+        $query['sort'] = 0;
+        if( !empty($query['sort5']) )
+            $query['sort'] = $query['sort5'];
+        elseif( !empty($query['sort4']) )
+            $query['sort'] = $query['sort4'];
+        elseif( !empty($query['sort3']) )
+            $query['sort'] = $query['sort3'];
+        elseif( !empty($query['sort2']) )
+            $query['sort'] = $query['sort2'];
+        elseif( !empty($query['sort1']) )
+            $query['sort'] = $query['sort1'];
+
+        // 不是添加题干，并且每有选择分类
+        if($validator->fails() || ( empty($query['parent_id']) && $query['sort'] == 0) )
         {
             //return Redirect::to('/admin/examPaper/add?column_id='.$query['column_id'])->withErrors($validator)->withInput($query);
             if(isset($query['from']))
                 return $this->adminPrompt("操作失败", '信息必须填写完整，请反回重试', $query['from']);
             else
-                return $this->adminPrompt("操作失败", '信息必须填写完整，请反回重试', '/admin/examPaper/add?column_id='.$query['column_id']);
+                return $this->adminPrompt("操作失败", '信息必须填写完整，请反回重试', '/admin/examPaper/add');
         }
 
         $ep = new ExamPaper();
-        $ep->add($query);
+        $id = $ep->add($query);
 
         //return Redirect::to('/admin/column?parent_id='.$query['column_id']);
 
         if(isset($query['from']))
             return $this->adminPrompt("操作成功", '提交编辑成功', $query['from']);
         else
-            return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/column?parent_id='.$query['column_id']);
+        {
+            // 如果是添加的试卷，则跳到添加题干页
+            if( empty($query['parent_id']) )
+                return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/examPaper/clist?id=' . $id);
+            else
+                return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/examPaper');
+        }
 	}
 
 	public function doEdit()
@@ -117,13 +181,26 @@ class ExamPaperController extends \BaseController {
                 return $this->adminPrompt("操作失败", '信息必须填写完整，请反回重试', '/admin/examPaper/edit?id='.$query['id']);
         }
 
+        // 处理分类
+        $query['sort'] = 0;
+        if( !empty($query['sort5']) )
+            $query['sort'] = $query['sort5'];
+        elseif( !empty($query['sort4']) )
+            $query['sort'] = $query['sort4'];
+        elseif( !empty($query['sort3']) )
+            $query['sort'] = $query['sort3'];
+        elseif( !empty($query['sort2']) )
+            $query['sort'] = $query['sort2'];
+        elseif( !empty($query['sort1']) )
+            $query['sort'] = $query['sort1'];
+
         $ep = new ExamPaper();
         $ep->edit($query);
 
         if(isset($query['from']))
             return $this->adminPrompt("操作成功", '提交编辑成功', $query['from']);
         else
-            return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/column?parent_id='. $query['column_id']);
+            return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/examPaper');
 	}
 
     /* 删除分类并且一并删除对应的题目列表 */
@@ -172,8 +249,8 @@ class ExamPaperController extends \BaseController {
 		$parent_id = Input::get('parent_id');  //所属父类id
 		$parent = ExamPaper::find($parent_id);
 
-		$column = Column::find($parent->column_id);
-        $paths = array_reverse($column->getPath($column->id));
+		// $column = Column::find($parent->column_id);
+  //       $paths = array_reverse($column->getPath($column->id));
 
 
 		return $this->adminView('examPaper.child', compact('column', 'parent', 'paths') );
@@ -186,8 +263,8 @@ class ExamPaperController extends \BaseController {
 
         $parent = ExamPaper::find($info->parent_id);
 
-        $column = Column::find($info->column_id);
-        $paths = array_reverse($column->getPath($column->id));
+        // $column = Column::find($info->column_id);
+        // $paths = array_reverse($column->getPath($column->id));
 
 
         return $this->adminView('examPaper.child', compact('column', 'paths', 'parent', 'info') );
@@ -202,11 +279,55 @@ class ExamPaperController extends \BaseController {
         $info = $ep->find($id);
 
         $parent = $ep->find($info->parent_id);
-        $column = Column::find($info->column_id);
-        $paths = array_reverse($column->getPath($column->id));
+        // $column = Column::find($info->column_id);
+        // $paths = array_reverse($column->getPath($column->id));
 
         $list = ExamQuestionRelation::where('exam_id', '=', $id)->get();
 
         return $this->adminView('examPaper.question', compact('column', 'paths', 'parent', 'info', 'list') );
     }
+
+    /* 显示对应科目的试卷列表 */
+    public function showColumn()
+    {
+        $column_id = Input::get('column_id');
+        $lists = ColumnExamRelation::where('column_id', '=', $column_id)->get();
+
+        $column = Column::find($column_id);
+        $paths = array_reverse($column->getPath($column->id));
+
+        return $this->adminView('examPaper.column', compact('column_id', 'lists', 'paths'));
+    }
+
+    public function showAddColumn()
+    {
+        $query = Input::only('sort1','sort2','sort3','sort4','sort5','name', 'column_id');
+        $query['status'] = 1;  // 只显示通过的
+
+        $query['sort'] = 0;
+        if( !empty($query['sort5']) )
+            $query['sort'] = $query['sort5'];
+        elseif( !empty($query['sort4']) )
+            $query['sort'] = $query['sort4'];
+        elseif( !empty($query['sort3']) )
+            $query['sort'] = $query['sort3'];
+        elseif( !empty($query['sort2']) )
+            $query['sort'] = $query['sort2'];
+        elseif( !empty($query['sort1']) )
+            $query['sort'] = $query['sort1'];
+
+        // 显示列表
+        $ep = new ExamPaper();
+        $lists = $ep->getElist($query)->paginate(30);
+        //var_dump( DB::getQueryLog() );
+
+        $statusEnum = $this->statusEnum;
+        $statusEnum = array('' => '所有状态') + $statusEnum;
+
+        $column = Column::find($query['column_id']);
+        $paths = array_reverse($column->getPath($column->id));
+
+        return $this->adminView('examPaper.addColumn', compact('query', 'lists', 'statusEnum', 'paths') );
+    }
+
 }
