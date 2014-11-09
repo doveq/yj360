@@ -29,12 +29,18 @@
           @endforeach
           <div class="clear"></div>
           @if ($questions->count() > 0)
-          <ul>
-            @foreach ($questions as $list)
-              <li><a href="/topic?id={{$list->id}}">{{$list->txt}}</a></li>
+          <table class="table-2" border="0" cellpadding="0" cellspacing="0">
+            @foreach($questions as $list)
+              <tr>
+                  <td class="tytd">
+                    <a href="/topic?id={{$list->id}}" target="_blank">{{$list->txt}}</a>
+                  </td>
+              </tr>
+              <tr><td colspan="2">
+                  <div class="table-2-sp"></div>
+              </td></tr>
             @endforeach
-          </ul>
-            <div class="clear"></div>
+          </table>
           @endif
 
       </div>
