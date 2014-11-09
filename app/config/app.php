@@ -204,8 +204,8 @@ return array(
 	//科目展示图片保存目录
 	'thumbnail_dir' => public_path() . '/data/thumbnail_dir',
 	'thumbnail_url' => '/data/thumbnail_dir',
-	'thumbnail_width' => 150,
-	'thumbnail_height' => 150,
+	'thumbnail_width' => 146,
+	'thumbnail_height' => 200,
 
 	// 用户头像
 	'avatar_dir' => public_path() . '/data/avatar',
