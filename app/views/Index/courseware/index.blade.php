@@ -20,7 +20,7 @@
           @foreach($lists['files'] as $k => $d)
           <tr>
               <td class="tytd">
-                <a href="/data/flash_exe/{{$d['path']}}index.php" target="_blank" class="play_ware">{{$d['name']}}</a>
+                <a href="{{$config_path}}{{$d['path']}}index.php" target="_blank" class="play_ware">{{$d['name']}}</a>
               </td>
           </tr>
           <tr><td colspan="2">
@@ -33,7 +33,7 @@
             @if ($d['pic'] != '')
             <div class="classse-box" style="text-align:center">
               <div>
-                <img src="/data/flash_exe/{{$d['pic']}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
+                <img src="{{$config_path}}{{$d['pic']}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
               </div>
               <div class="classes-txt">
                 <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}" style="color:#fff;">
@@ -87,6 +87,7 @@ $(document).ready(function () {
   $(".play_ware").on('click', function() {
     // alert($(this).prop('href'));
     openFullWindow($(this).prop('href'), 'newwin');
+    // window.open($(this).prop('href'),'',"fullscreen=1,menubar=no,width=800,height=600");
     return false;
   });
 

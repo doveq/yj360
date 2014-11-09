@@ -18,11 +18,11 @@ class CoursewareController extends BaseController
         (!isset($query['type'])) ? $query['type']=1 : $query['type']=$query['type'];
         //科教
         if ($query['type'] == 1) {
-            $config_file = "/data/flash_exe/info.php";
+            $config_path = "/data/flash_exe/";
         } else {
-            $config_file = "/data/multimedia/info.php";
+            $config_path = "/data/multimedia/";
         }
-        include_once public_path() . $config_file;
+        include_once public_path() . $config_path . "info.php";
 
         $lists = array();
         if (!isset($query['d1'])) {
@@ -30,7 +30,7 @@ class CoursewareController extends BaseController
         } else {
             $lists = $dir_info[$query['d1']];
         }
-        return $this->indexView('courseware.index', compact('columns', 'query', 'lists'));
+        return $this->indexView('courseware.index', compact('columns', 'query', 'lists', 'config_path'));
 	}
 
 }
