@@ -2,6 +2,7 @@
 
 class ColumnController extends BaseController
 {
+    public $pageSize = 30;
 
 	public function __construct()
     {
@@ -39,19 +40,19 @@ class ColumnController extends BaseController
         {
             $content = $column->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
             foreach ($content as $key => $c) {
-                // dd($color[array_rand($color)]);
                 $c->bgcolor = $color[array_rand($color)];
                 $content[$key] = $c;
             }
 
-            $questions = $column->questions;
+            // $questions = $column->questions->paginate($this->pageSize);
+            $column_questions = ColumnQuestionRelation::whereColumnId($query['id'])->paginate($this->pageSize);
     		$att = new Attachments();
-    		foreach ($questions as $key => $q) {
-    	        $item = $att->get($q->img);
-    			$route = $att->getTopicRoute($q->id, $item['file_name']);
-    			// dd($route);
-    			$q->img_url = $route['url'];
-    			$questions[$key] = $q;
+    		foreach ($column_questions as $key => $r) {
+                // dd($r->question->id);
+    	        $item = $att->get($r->question->img);
+    			$route = $att->getTopicRoute($r->question->id, $item['file_name']);
+    			$r->question->img_url = $route['url'];
+    			$questions[$key] = $r->question;
     		}
         }
         if ($column->parent->id != $query['column_id']) {
