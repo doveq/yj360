@@ -66,12 +66,12 @@ var winID = null;
      if (window.screen)
      {
          //获取屏幕的分辨率
-          var maxh = screen.availHeight;
-          var maxw = screen.availWidth;
+          var maxh = screen.height;
+          var maxw = screen.width;
           strFeatures += ",height="+maxh;
-          strFeatures += "innerHeight"+maxh;
+          // strFeatures += "innerHeight"+maxh;
            strFeatures += ",width="+maxw;
-          strFeatures += "innerwidth"+maxw;
+          // strFeatures += "innerwidth"+maxw;
      }
      else
      {
