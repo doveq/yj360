@@ -21,7 +21,9 @@
               <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
             </div>
             <div class="classes-txt">
-              <div><b>{{$list->name}}</b></div>
+              <a href="/topic?column={{$list->id}}" style="color:#fff;">
+              <div><h2><b>{{$list->name}}</b></h2></div>
+              </a>
             </div>
           </div>
           @endforeach

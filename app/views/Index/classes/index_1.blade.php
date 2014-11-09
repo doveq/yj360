@@ -19,6 +19,11 @@
       <div class="clear"></div>
 
       <div class="classes-list">
+        @if ($classes->count() == 0)
+          <div style="margin:10px;">
+            你还未创建任何班级
+          </div>
+        @else
           @foreach ($classes as $list)
           <div class="classse-box" id="classes_{{$list->id}}">
             <div class="classes-txt">
@@ -34,6 +39,30 @@
           </div>
           @endforeach
           <div class="clear"></div>
+        @endif
+
+        @if(!empty($messages))
+        <div style="margin:20px 10px 10px 10px;">班级申请记录:</div>
+        <table class="table-2" border="0" cellpadding="0" cellspacing="0">
+            @foreach($messages as $list)
+              <tr>
+                  <td class="tytd">
+                    {{$list->content}}
+                  </td>
+                  <td class="tytd table-2-del">
+                    @if ($list->classmate->status == 1)
+                    确认
+                    @elseif ($list->classmate->status == 2)
+                    待确认
+                    @endif
+                  </td>
+              </tr>
+              <tr><td colspan="2">
+                  <div class="table-2-sp"></div>
+              </td></tr>
+            @endforeach
+        </table>
+        @endif
       </div>
   </div>
   <div class="clear"></div>

@@ -19,13 +19,13 @@
       <div class="clear"></div>
 
       <div class="classes-list">
-        @if ($my_classes->count() == 0)
+        @if ($classes->count() == 0)
           <div style="margin:10px;">
             你目前还未加入任何班级,可点击"加入班级"加入适合自己的班级
           </div>
         @else
-        <div>已经加入的班级</div>
-          @foreach ($my_classes as $list)
+        <div style="margin:20px 10px 10px 10px;">已经加入的班级</div>
+          @foreach ($classes as $list)
           <div class="classse-box">
             <div class="classes-txt">
               <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
@@ -37,15 +37,21 @@
           <div class="clear"></div>
         @endif
 
-       @if(!empty($yq_classes))
-       <div style="margin:20px 10px 10px 10px;">被邀请加入的班级:</div>
+       @if($messages->count() > 0)
+       <div style="margin:20px 10px 10px 10px;">班级申请记录:</div>
         <table class="table-2" border="0" cellpadding="0" cellspacing="0">
-            @foreach($yq_classes as $list)
+            @foreach($messages as $list)
               <tr>
                   <td class="tytd">
-                    <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
+                    {{$list->content}}
                   </td>
-                  <td class="tytd table-2-del">删除</td>
+                  <td class="tytd table-2-del">
+                    @if ($list->classmate->status == 1)
+                    确认
+                    @elseif ($list->classmate->status == 2)
+                    待确认
+                    @endif
+                  </td>
               </tr>
               <tr><td colspan="2">
                   <div class="table-2-sp"></div>
@@ -54,25 +60,7 @@
         </table>
         @endif
 
-        @if(!empty($sq_classes))
-        <div style="margin:20px 10px 10px 10px;">申请加入的班级:</div>
-        <table class="table-2" border="0" cellpadding="0" cellspacing="0">
-          @foreach($sq_classes as $list)
-            <tr>
-                <td class="tytd">
-                  <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
-                </td>
-                <td class="tytd table-2-del">删除</td>
-            </tr>
-            <tr><td colspan="2">
-                <div class="table-2-sp"></div>
-            </td></tr>
-          @endforeach
-        </table>
-        @endif
-
       </div>
-
   </div>
   <div class="clear"></div>
 </div> <!-- /container -->

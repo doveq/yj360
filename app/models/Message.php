@@ -50,7 +50,12 @@ class Message extends Eloquent {
         return $this->belongsTo('User', 'receiver_id', 'id');
     }
 
-    /* 发送手机短信 
+    public function classmate()
+    {
+        return $this->belongsTo('Classmate', 'classmate_id', 'id');
+    }
+
+    /* 发送手机短信
         $mobile 手机号
         $msg 短信信息
     */
