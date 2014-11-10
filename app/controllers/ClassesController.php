@@ -23,7 +23,7 @@ class ClassesController extends BaseController {
             foreach ($classes as $key => $value) {
                 $myclasses[] = $value->id;
             }
-            $classmates = Classmate::whereTeacherId($user_id)->get();
+            $classmate_logs = ClassmateLog::whereTeacherId($user_id)->get();
         } elseif ($user_type == 0) {
             $myclasses = array(-1);
             $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id', 'status')->get()->toArray();
@@ -34,7 +34,7 @@ class ClassesController extends BaseController {
             }
             $classes = Classes::whereIn('id', $myclasses)->get();
 
-            $classmates = Classmate::whereUserId($user_id)->get();
+            $classmate_logs = ClassmateLog::whereUserId($user_id)->get();
         }
         // //加入班级记录
         // $messages = Message::where(function($query){
@@ -44,7 +44,7 @@ class ClassesController extends BaseController {
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $genderEnum = $this->genderEnum;
-        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns', 'classmates'));
+        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns', 'classmate_logs'));
     }
 
 
@@ -117,13 +117,15 @@ class ClassesController extends BaseController {
         $query = Input::all();
         $classes = Classes::whereId($id)->first();
         $students = $classes->students()->where('classmate.status', 1)->get();
+        // dd($students->count());
 
         $columns = Column::find($classes->column_id)->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
         $genderEnum = $this->genderEnum;
+        $classmate = $classes->classmates()->where('user_id', Session::get('uid'))->where('status', 1)->get();
         $user_type = Session::get('utype');
         if ($user_type < 0) $user_type = 1;
-        return $this->indexView('classes.show_'.$user_type, compact("classes", 'columns', 'query', 'students', 'genderEnum'));
+        return $this->indexView('classes.show_'.$user_type, compact("classes", 'columns', 'query', 'students', 'classmate', 'genderEnum'));
     }
 
 

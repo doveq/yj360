@@ -11,6 +11,7 @@
 
   <div class="wrap-right">
       <div class="tabtool">
+          <a href="/classes?column_id={{$query['column_id']}}" style="color:#499626;"><返回</a>
           <a href="/classmate/create?class_id={{$classes->id}}&column_id={{$query['column_id']}}"><img src="/assets/img/classes-tj.jpg" /></a>
           <a href="javascript:void(0);" onClick="delete_all();"><img src="/assets/img/classes-sc.jpg" /></a>
           <div class="clear"></div>

@@ -1,13 +1,13 @@
 <?php
 
-class Classmate extends Eloquent {
+class ClassmateLog extends Eloquent {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'classmate';
+    protected $table = 'classmate_log';
     protected $guarded = array('id');
 
     /**
@@ -54,11 +54,9 @@ class Classmate extends Eloquent {
         return $this->belongsTo('User', 'teacher_id','id');
     }
 
-    public function log()
+    public function classmate()
     {
-        return $this->hasOne('ClassmateLog', 'classmate_id', 'id');
+        return $this->belongsTo('Classmate', 'classmate_id','id');
     }
-
-
 
 }

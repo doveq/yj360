@@ -13,7 +13,7 @@ class ClassmateController extends BaseController {
      */
     public function index()
     {
-echo "haha";
+        echo "haha";
     }
 
 
@@ -40,24 +40,11 @@ echo "haha";
             return Redirect::to('/classes?column_id='.$query['column_id']);
         }
         $classes        = Classes::find($query['class_id']);
-        $class_students = $classes->students;
+        $class_students = $classes->students()->where('classmate.status',1)->get();
         $tmp = array(0);
         foreach ($class_students as $key => $item) {
             $tmp[] = $item->id;
         }
-
-        $sql = User::whereType(0)->whereStatus(1)->whereNotIn('id', $tmp)->where(function($q) {
-            if (Input::get('tel')) {
-                $q->whereTel(Input::get('tel'));
-            }
-
-            if (Input::get('name')) {
-                $q->where('name', 'LIKE', '%'.Input::get('name').'%');
-            }
-        })->orderBy('id', 'DESC')->paginate($this->pageSize);
-
-        // print_r($sql);
-        // exit;
 
         $students = User::whereType(0)->whereStatus(1)->whereNotIn('id', $tmp)->where(function($q) {
             if (Input::get('tel')) {
@@ -100,16 +87,43 @@ echo "haha";
         $classes = Classes::find($query['class_id']);
 
         foreach ($query['student_id'] as $key => $student) {
-            $newclassmate = Classmate::create(
+            //如果学生申请过, 老师再邀请的时候直接通过
+            $sqclass = array();
+            $classmate = Classmate::whereUserId($student)->whereClassId($classes->id)->whereStatus(0)->get();
+            foreach ($classmate as $key => $value) {
+                if ($value->log->type == 2) {
+                    $sqclass[] = $value->id;
+                }
+            }
+            if (count($sqclass) > 0) {
+                $newclassmate = Classmate::find($sqclass[0]);
+                $newclassmate->status = 1;
+                $newclassmate->save();
+            } else {
+                //记录班级关系
+                $newclassmate = Classmate::create(
+                    array(
+                        'user_id' => $student,
+                        'teacher_id' => $classes->teacher->id,
+                        'class_id' => $query['class_id'],
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'status' => 0,
+                        'type' => 1
+                        )
+                );
+            }
+            //记录班级申请日志
+            ClassmateLog::create(
                 array(
                     'user_id' => $student,
                     'teacher_id' => $classes->teacher->id,
                     'class_id' => $query['class_id'],
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 0,
+                    'classmate_id' => $newclassmate->id,
                     'type' => 1
                     )
             );
+            //记录消息
             $user_student = User::find($student);
             $message_content = $classes->teacher->name . "(老师) ". date("Y-m-d H:i:s") . " 邀请 " . $user_student->name . " 加入班级: " . $classes->name;
             Message::create(
@@ -164,9 +178,9 @@ echo "haha";
 
         $validator = Validator::make($query ,
             array(
-                // 'desc' => 'alpha_dash',
-                // 'online_at' => 'date',
-                'status' => 'numeric')
+                'column_id' => 'numeric',
+                'status' => 'numeric'
+                )
         );
         $classmate = Classmate::find($id);
 
@@ -266,32 +280,56 @@ echo "haha";
         $uid = Session::get('uid');
         $uname = Session::get('uname');
         $thisclass = Classes::find($query['class_id']);
-        $classmates = Classmate::whereUserId($uid)->get();
+        $classmates = Classmate::whereUserId($uid)->whereNotIn('status', array(2,3))->get();
         $sameclass = array();
+        $yqclass = array();
         $max_classes = Config::get('app.max_classes');
         foreach ($classmates as $key => $value) {
-            $everyclass = Classes::find($value->class_id);
-            if ($thisclass->id == $everyclass->id && in_array($value->status,array(0,1,2,3))) {
-                return Response::json('你已经加入此班级');
+            // $everyclass = Classes::find($value->class_id);
+            if ($thisclass->id == $value->classes->id) {
+                //已经加入
+                if ($value->status == 1) {
+                    return Response::json('你已经加入此班级');
+                }
+
+                //已经被邀请加入, 则状态直接改成加入(1)
+                if ($value->log->type == 1 && $value->status == 0) {
+                    $yqclass[] = $value->id;
+                }
             }
-            if ($thisclass->column_id == $everyclass->column_id) {
-                $sameclass[] = $everyclass->id;
+            if ($thisclass->column_id == $value->classes->column_id) {
+                $sameclass[] = $value->id;
             }
             if (count($sameclass) >= $max_classes) {
                 return Response::json('加入失败,一个科目下只能加入'.$max_classes.'个班级');
             }
         }
-
-        $newclassmate = Classmate::create(
+        if (!empty($yqclass)) {
+            $newclassmate = Classmate::find($yqclass[0]);
+            $newclassmate->status = 1;
+            $newclassmate->save();
+        } else {
+            $newclassmate = Classmate::create(
+                    array(
+                        'user_id' => $uid,
+                        'teacher_id' => $thisclass->teacher->id,
+                        'class_id' => $query['class_id'],
+                        'created_at' => date("Y-m-d H:i:s"),
+                        'status' => 0,
+                        'type' => 2
+                        )
+                );
+            ClassmateLog::create(
                 array(
                     'user_id' => $uid,
                     'teacher_id' => $thisclass->teacher->id,
                     'class_id' => $query['class_id'],
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 0,
+                    'classmate_id' => $newclassmate->id,
                     'type' => 2
                     )
             );
+        }
         $message_content = $uname . "(学生) " . date("Y-m-d H:i:s"). " 申请加入班级: " . $thisclass->name;
         Message::create(
             array(
