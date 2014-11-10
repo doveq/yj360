@@ -30,7 +30,7 @@
           @foreach($lists['files'] as $k => $d)
           <tr>
               <td class="tytd">
-                <a href="{{$config_path}}{{$d['path']}}index.php?filename={{$d['name']}}" target="_blank" class="play_ware">{{$d['name']}}</a>
+                <a href="{{$config_path}}{{$d['path']}}index.php?filename={{$d['pinyin']}}" target="_blank" class="play_ware">{{$d['name']}}</a>
               </td>
           </tr>
           <tr><td colspan="2">

@@ -28,14 +28,15 @@ class CoursewareController extends BaseController
             $back_url = "/courseware?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
         }
         include_once public_path() . $config_path . "info.php";
-
+        $py = new pinyin();
+// dd($py->get_pinyin($column_name));
         $lists = array();
         //检索
         if ($query['q'] != '') {
             foreach ($dir_info as $key => $d) {
                 foreach ($d['files'] as $key => $f) {
                     if (stristr($f['name'],$query['q']) !== false) {
-                        $lists['files'][] = array('name' => $f['name'], 'path' => $f['path']);
+                        $lists['files'][] = array('name' => $f['name'], 'path' => $f['path'], 'pinyin' => $py->get_pinyin($f['name']));
                     }
                 }
             }
@@ -43,6 +44,11 @@ class CoursewareController extends BaseController
             if (!isset($query['d1'])) {
                 $lists = $dir_info;
             } else {
+                foreach ($dir_info[$query['d1']]['files'] as $key => $value) {
+                    $value['pinyin'] = $py->get_pinyin($value['name']);
+                    // $lists[$key] = $value;
+                    $dir_info[$query['d1']]['files'][$key] = $value;
+                }
                 $lists = $dir_info[$query['d1']];
             }
         }
