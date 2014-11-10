@@ -21,7 +21,10 @@ class MessageController extends BaseController {
         }
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        $lists = Message::whereReceiverId(Session::get('uid'))->where(function($q)
+        $lists = Message::where(function($q){
+            $q->Where('receiver_id', Session::get('uid'));
+                // ->orWhere('sender_id', Session::get('uid'));
+        })->where(function($q)
             {
                 if (strlen(Input::get('status')) > 0) {
                     $q->whereStatus(Input::get('status'));

@@ -37,6 +37,11 @@
             <td><a href="/message/{{$list->id}}?column_id={{$query['column_id']}}">查看</a> <a href="javascript:;" onClick="delete_message('{{$list->id}}');">删除</a></td>
           </tr>
           @endforeach
+          <tr style="text-align:center">
+            <td colspan="5">
+                        {{$lists->appends($query)->links()}}
+            </td>
+          </tr>
         </tbody>
       </table>
           <div class="clear"></div>

@@ -1,21 +1,22 @@
 @extends('Index.master')
 @section('title')课件 @stop
+@extends('Index.column.columnHead')
 
 @section('content')
-<div class="container-fluid">
+<div class="container-column wrap">
   @if ($query['column_id'])
     @include('Index.column.nav')
   @else
     @include('Index.profile.nav')
   @endif
 
-  <div class="col-md-9">
+  <div class="wrap-right">
       <div class="tabtool" style="margin-left:-30px;margin-bottom:10px;background-color:#f1f1f1;height:27px;padding-left:30px;border-bottom:1px solid #e0e0e0">
         @if ($back_url)
         <a href="{{$back_url}}" style="color:#499626;">&lt; 返回</a>
         @endif
-{{$column_name}}
-{{Form::open(array('url' => '/courseware?column_id='.$query['column_id'].'&id='.$query['id'].'&type=' . $query['type'], 'method' => 'get', 'style' => 'margin-left:20px;float:right;'))}}
+          {{$column_name}}
+          {{Form::open(array('url' => '/courseware?column_id='.$query['column_id'].'&id='.$query['id'].'&type=' . $query['type'], 'method' => 'get', 'style' => 'margin-left:20px;float:right;'))}}
            {{Form::text('q', '')}}
            {{Form::hidden('column_id', $query['column_id'])}}
            {{Form::hidden('id', $query['id'])}}

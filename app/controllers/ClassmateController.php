@@ -132,9 +132,9 @@ class ClassmateController extends BaseController {
                     'receiver_id' => $student,
                     'content' => $message_content,
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 1,
+                    'status' => 0,
                     'type' => 2,
-                    'classmate_id' => $newclassmate->id
+                    // 'classmate_id' => $newclassmate->id
                 )
             );
         }
@@ -289,7 +289,7 @@ class ClassmateController extends BaseController {
             if ($thisclass->id == $value->classes->id) {
                 //已经加入
                 if ($value->status == 1) {
-                    return Response::json('你已经加入此班级');
+                    return Response::json(2);
                 }
 
                 //已经被邀请加入, 则状态直接改成加入(1)
@@ -300,8 +300,9 @@ class ClassmateController extends BaseController {
             if ($thisclass->column_id == $value->classes->column_id) {
                 $sameclass[] = $value->id;
             }
+            //同一科目下只能加入2个
             if (count($sameclass) >= $max_classes) {
-                return Response::json('加入失败,一个科目下只能加入'.$max_classes.'个班级');
+                return Response::json(3);
             }
         }
         if (!empty($yqclass)) {
@@ -337,12 +338,12 @@ class ClassmateController extends BaseController {
                 'receiver_id' => $thisclass->teacher->id,
                 'content' => $message_content,
                 'created_at' => date("Y-m-d H:i:s"),
-                'status' => 1,
+                'status' => 0,
                 'type' => 2,
-                'classmate_id' => $newclassmate->id
+                // 'classmate_id' => $newclassmate->id
             )
         );
-        return Response::json('申请加入成功');
+        return Response::json(1);
 
         // if (Request::ajax()) {
         //     return Response::json('ok');

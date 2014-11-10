@@ -20,7 +20,9 @@ class TrainingController extends BaseController {
             $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         }
         $statusEnum = $this->statusEnum;
-        return $this->indexView('training.index', compact('statusEnum', 'lists', 'query', 'columns'));
+        $user_type = Session::get('utype');
+        if ($user_type < 0) $user_type = 1;
+        return $this->indexView('training.index_'.$user_type, compact('statusEnum', 'lists', 'query', 'columns'));
     }
 
 

@@ -1,5 +1,6 @@
 @extends('Index.master')
 @section('title')我的班级@stop
+@extends('Index.column.columnHead')
 
 @section('content')
 <div class="container-column wrap">
@@ -24,18 +25,18 @@
         <table class="stable" border="0" cellpadding="0" cellspacing="0">
           <thead>
             <tr>
+              <th>老师</th>
               <th>姓名</th>
               <th>性别</th>
-              <th>电话</th>
               <th>操作</th>
             </tr>
           </thead>
           <tbody>
             @foreach ($students as $list)
             <tr id="{{$list->pivot->id}}">
+              <td>{{$classes->teacher->name}}</td>
               <td>{{$list->name}}</td>
               <td>{{$genderEnum[$list->gender]}}</td>
-              <td>{{$list->tel}}</td>
               <td><a href="/message/create?receiver_id={{$list->id}}&column_id={{$query['column_id']}}">私信</a></td>
             </tr>
             @endforeach

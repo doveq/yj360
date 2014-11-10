@@ -1,5 +1,6 @@
 @extends('Index.master')
 @section('title')我的班级 @stop
+@extends('Index.column.columnHead')
 
 @section('content')
 <div class="container-column wrap">
@@ -13,11 +14,11 @@
       <div class="tabtool">
           @if ($query['column_id'])
             <a href="/classes/create?column_id={{$query['column_id']}}"><img src="/assets/img/addclasses.jpg" /></a>
-            <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
-          @else
+<!--             <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
+ -->          @else
             <a href="/classes/create"><img src="/assets/img/addclasses.jpg" /></a>
-            <a href="/training/create"><img src="/assets/img/addzdxl.jpg" /></a>
-          @endif
+<!--             <a href="/training/create"><img src="/assets/img/addzdxl.jpg" /></a>
+ -->          @endif
           <a href="/message" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
           <div class="clear"></div>
       </div>
@@ -33,14 +34,6 @@
               <td style="width:20%;text-align:right;">{{ Form::label('inputName', '班级名称', array('class' => 'tylabel')) }}</td>
               <td>{{ Form::text('name', '', array('class' => 'tyinput', 'id' => 'inputName','style' => 'width:200px'))}}</td>
             </tr>
-            @if (!$query['column_id'])
-            <tr>
-              <td style="width:20%;text-align:right;">{{ Form::label('inputColumn', '所属科目', array('class' => 'tylabel')) }}</td>
-              <td>
-                {{Form::select('column_id', $columnall, array(),array('class' => 'tyinput', 'style' => 'width:200px'))}}
-              </td>
-            </tr>
-            @endif
             <tr>
               <td></td>
               <td>

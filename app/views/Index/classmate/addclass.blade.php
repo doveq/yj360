@@ -78,9 +78,15 @@ $(function(){
           layer.msg('添加失败', 2, 1);
         })
         .success(function(data){
-          layer.msg(data, 2, function(){
-            window.location.href='/classes?column_id={{$query['column_id']}}';
-          });
+          if (data == 1) {
+            layer.msg('已经提交申请，请等待老师审核！', 2, 1,function(){
+              window.location.href='/classes?column_id={{$query['column_id']}}';
+            });
+          } else if (data == 2) {
+            layer.msg('你已经加入过此班级', 2, 5);
+          } else if (data == 3) {
+            layer.msg('加入失败,一个科目下只能加入两个班级', 2, 3);
+          }
         });
     });
   };

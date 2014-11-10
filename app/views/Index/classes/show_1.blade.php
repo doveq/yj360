@@ -1,5 +1,6 @@
 @extends('Index.master')
 @section('title')我的班级@stop
+@extends('Index.column.columnHead')
 
 @section('content')
 <div class="container-column wrap">
@@ -12,6 +13,7 @@
   <div class="wrap-right">
       <div class="tabtool">
           <a href="/classes?column_id={{$query['column_id']}}" style="color:#499626;"><返回</a>
+          <a>{{$classes->name}}</a>
           <a href="/classmate/create?class_id={{$classes->id}}&column_id={{$query['column_id']}}"><img src="/assets/img/classes-tj.jpg" /></a>
           <a href="javascript:void(0);" onClick="delete_all();"><img src="/assets/img/classes-sc.jpg" /></a>
           <div class="clear"></div>
@@ -25,7 +27,6 @@
               <th>{{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}</th>
               <th>姓名</th>
               <th>性别</th>
-              <th>电话</th>
               <th>操作</th>
             </tr>
           </thead>
@@ -35,7 +36,6 @@
               <td>{{Form::checkbox('classmate_id[]', $list->pivot->id)}}</td>
               <td>{{$list->name}}</td>
               <td>{{$genderEnum[$list->gender]}}</td>
-              <td>{{$list->tel}}</td>
               <td><a href="/message/create?receiver_id={{$list->id}}&column_id={{$query['column_id']}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
             </tr>
             @endforeach
@@ -59,7 +59,9 @@
         // async:false,
         type:'delete',
       })
-      .fail(function(){alert('操作失败')})
+      .fail(function(){
+        alert('操作失败');
+      })
       .success(function(){
         $('#'+id).remove();
       });
@@ -85,7 +87,9 @@
         data: {id: $classmate_ids},
         type:'post',
       })
-      .fail(function(){alert('操作失败')})
+      .fail(function(){
+        alert('操作失败')
+      })
       .success(function(){
         $.each($classmate_ids, function(index,value){
           $('#'+value).remove();

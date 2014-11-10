@@ -3,13 +3,9 @@
 
 @section('content')
 <div class="container-column wrap">
-  @include('Index.profile.nav')
 
-  <div class="wrap-right">
+  <div style="margin:20px;padding:50px">
       <table class="table-2" border="0" cellpadding="0" cellspacing="0">
-        <tr>
-            <th colspan="3"><img src="/assets/img/static-kmt.png" /></th>
-        </tr>
 
         <tr >
             <td style="padding:10px;">
@@ -30,12 +26,4 @@
   <div class="clear"></div>
 </div> <!-- /container -->
 @stop
-
-@section('js')
-<script type="text/javascript">
-$(document).ready(function () {
-});
-</script>
-@stop
-
 

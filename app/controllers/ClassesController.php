@@ -23,7 +23,7 @@ class ClassesController extends BaseController {
             foreach ($classes as $key => $value) {
                 $myclasses[] = $value->id;
             }
-            $classmate_logs = ClassmateLog::whereTeacherId($user_id)->get();
+            $classmate_logs = ClassmateLog::whereTeacherId($user_id)->orderBy('id', 'desc')->get();
         } elseif ($user_type == 0) {
             $myclasses = array(-1);
             $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id', 'status')->get()->toArray();
@@ -34,13 +34,8 @@ class ClassesController extends BaseController {
             }
             $classes = Classes::whereIn('id', $myclasses)->get();
 
-            $classmate_logs = ClassmateLog::whereUserId($user_id)->get();
+            $classmate_logs = ClassmateLog::whereUserId($user_id)->orderBy('id', 'desc')->get();
         }
-        // //加入班级记录
-        // $messages = Message::where(function($query){
-        //     $query->where('sender_id', Session::get('uid'))
-        //         ->orWhere('receiver_id', Session::get('uid'));
-        // })->whereType(2)->orderBy('id', 'desc')->get();
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $genderEnum = $this->genderEnum;
