@@ -3,6 +3,15 @@
 class MessageController extends BaseController {
 
     public $pageSize = 30;
+
+    public function __construct()
+    {
+        $query = Input::only('column_id');
+
+        if (!isset($query['column_id']) || !is_numeric($query['column_id']) ) {
+            echo ("<script>window.location.href='/column/static';</script>");
+        }
+    }
     /**
      * Display a listing of the resource.
      *

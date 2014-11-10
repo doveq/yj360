@@ -167,7 +167,6 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/favorite/choose', 'FavoriteController@choose');
 
     //初级
-    Route::get('/beginner', 'BeginnerController@index');
     Route::get('/column', 'ColumnController@index');
     Route::get('/column/static', 'ColumnController@tmpShow');
 

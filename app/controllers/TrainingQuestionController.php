@@ -6,6 +6,16 @@ class TrainingQuestionController extends BaseController {
     public $userstatusEnum = array('' => '所有状态', '0' => '无效', '1' => '有效', '-1' => '审核拒绝');
     public $genderEnum = array('f' => '女', 'm' => '男');
     public $pageSize = 30;
+
+    public function __construct()
+    {
+        $query = Input::only('column_id');
+
+        if (!isset($query['column_id']) || !is_numeric($query['column_id']) ) {
+            echo ("<script>window.location.href='/column/static';</script>");
+        }
+    }
+
     /**
      * Display a listing of the resource.
      *
