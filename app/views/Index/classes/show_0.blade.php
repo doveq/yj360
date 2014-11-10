@@ -25,17 +25,23 @@
         <table class="stable" border="0" cellpadding="0" cellspacing="0">
           <thead>
             <tr>
-              <th>老师</th>
               <th>姓名</th>
+              <th>身份</th>
               <th>性别</th>
               <th>操作</th>
             </tr>
           </thead>
           <tbody>
+            <tr>
+              <td>{{$classes->teacher->name}}</td>
+              <td>老师</td>
+              <td>{{$genderEnum[$classes->teacher->gender]}}</td>
+              <td><a href="/message/create?receiver_id={{$classes->teacher->id}}&column_id={{$query['column_id']}}">私信</a></td>
+            </tr>
             @foreach ($students as $list)
             <tr id="{{$list->pivot->id}}">
-              <td>{{$classes->teacher->name}}</td>
               <td>{{$list->name}}</td>
+              <td>学生</td>
               <td>{{$genderEnum[$list->gender]}}</td>
               <td><a href="/message/create?receiver_id={{$list->id}}&column_id={{$query['column_id']}}">私信</a></td>
             </tr>
