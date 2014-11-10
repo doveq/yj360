@@ -7,8 +7,8 @@ class ColumnController extends BaseController
 	public function __construct()
     {
         $query = Input::only('column_id');
-
-        if (!isset($query['column_id']) || !is_numeric($query['column_id']) ) {
+// dd(Request::path());
+        if ((!isset($query['column_id']) || !is_numeric($query['column_id'])) && Request::path() != 'column/static') {
             echo ("<script>window.location.href='/column/static';</script>");
         }
     }
