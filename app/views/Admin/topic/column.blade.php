@@ -157,8 +157,8 @@ function doAdd(question_ids)
 
         },
         function(data) {
-            alert(data.info);
             location.reload();
+            alert(data.info);
         },
         "json"
       )

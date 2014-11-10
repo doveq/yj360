@@ -151,8 +151,8 @@ function doAdd(question_ids)
           id: $id
         },
         function(data) {
-            alert(data.info);
             location.reload();
+            alert(data.info);
         },
         "json"
       )
