@@ -37,6 +37,21 @@ class Classmate extends Eloquent {
     // {
     //  return $this->password;
     // }
+    //
 
+    public function classes()
+    {
+        return $this->belongsTo('Classes', 'class_id','id');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo('User', 'user_id','id');
+    }
+
+    public function teacher()
+    {
+        return $this->belongsTo('User', 'teacher_id','id');
+    }
 
 }

@@ -41,36 +41,34 @@
           <div class="clear"></div>
         @endif
 
-        @if($messages->count() > 0)
-        <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:邀请, 3:申请 4:老师拒绝 5:学生拒绝 -->
+        @if($classmates->count() > 0)
         <div style="margin:20px 10px 10px 10px;">班级申请记录:</div>
         <table class="table-2" border="0" cellpadding="0" cellspacing="0">
-            @foreach($messages as $list)
+            @foreach($classmates as $list)
               <tr>
                   <td class="tytd">
-                    {{$list->content}}
+                    @if ($list->type == 1)
+                      {{$list->created_at}} 你邀请 {{$list->student->name}} 加入 {{$list->classes->name}}
+                    @elseif ($list->type == 2)
+                      {{$list->created_at}} {{$list->student->name}} 申请加入班级 {{$list->classes->name}}
+                    @endif
                   </td>
                   <td class="tytd">
-                    <div class="do_status">
-                    @if ($list->classmate)
-                      @if ($list->classmate->status == 0)
-                      待确认
-                      @elseif ($list->classmate->status == 1)
-                      已同意
-                      @elseif ($list->classmate->status == 2)
-                      待确认
-                      @elseif ($list->classmate->status == 3)
-                      <a href="javascript:;" onclick="do_status({{$list->classmate->id}},1)">同意</a>
-                      <a href="javascript:;" onclick="do_status({{$list->classmate->id}},4)">拒绝</a>
-                      @elseif ($list->classmate->status == 4)
-                      已拒绝
-                      @elseif ($list->classmate->status == 5)
-                      学生拒绝
+                      <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:老师拒绝 3:学生拒绝 -->
+                      @if ($list->status == 0)
+                        @if ($list->type == 2)
+                          <a href="javascript:;" onclick="do_status({{$list->id}},1)">同意</a>
+                          <a href="javascript:;" onclick="do_status({{$list->id}},2)">拒绝</a>
+                        @elseif ($list->type == 1)
+                          待确认
+                        @endif
+                      @elseif ($list->status == 1)
+                        已同意
+                      @elseif ($list->status == 2)
+                        已拒绝
+                      @elseif ($list->status == 3)
+                        学生拒绝
                       @endif
-                    @else
-                    已失效
-                    @endif
-                    </div>
                   </td>
               </tr>
               <tr><td colspan="2">
@@ -79,6 +77,8 @@
             @endforeach
         </table>
         @endif
+
+
       </div>
   </div>
   <div class="clear"></div>

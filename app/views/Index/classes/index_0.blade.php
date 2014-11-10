@@ -37,35 +37,34 @@
           <div class="clear"></div>
         @endif
 
-       @if($messages->count() > 0)
-       <div style="margin:20px 10px 10px 10px;">班级申请记录:</div>
+        @if($classmates->count() > 0)
+        <div style="margin:20px 10px 10px 10px;">班级申请记录:</div>
         <table class="table-2" border="0" cellpadding="0" cellspacing="0">
-            @foreach($messages as $list)
+            @foreach($classmates as $list)
               <tr>
                   <td class="tytd">
-                    {{$list->content}}
+                    @if ($list->type == 1)
+                      {{$list->created_at}} {{$list->teacher->name}}(老师) 邀请你加入 {{$list->classes->name}}
+                    @elseif ($list->type == 2)
+                      {{$list->created_at}} 你申请加入 {{$list->teacher->name}}(老师) 的 {{$list->classes->name}}
+                    @endif
                   </td>
                   <td class="tytd">
-                    @if ($list->classmate)
-                      <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:邀请, 3:申请 4:老师拒绝 5:学生拒绝 -->
-                      @if ($list->classmate->status == 0)
-                      待确认
-                      @elseif ($list->classmate->status == 1)
-                      已同意
-                      @elseif ($list->classmate->status == 2)
-                      确认加入 拒绝加入
-                      <a href="javascript:;" onclick="do_status({{$list->classmate->id}},1)">确认加入</a>
-                      <a href="javascript:;" onclick="do_status({{$list->classmate->id}},5)">拒绝加入</a>
-                      @elseif ($list->classmate->status == 3)
-                      待确认
-                      @elseif ($list->classmate->status == 4)
-                      老师拒绝
-                      @elseif ($list->classmate->status == 5)
-                      已拒绝
+                      <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:老师拒绝 3:学生拒绝 -->
+                      @if ($list->status == 0)
+                        @if ($list->type == 1)
+                          <a href="javascript:;" onclick="do_status({{$list->id}},1)">同意</a>
+                          <a href="javascript:;" onclick="do_status({{$list->id}},3)">拒绝</a>
+                        @elseif ($list->type == 2)
+                          待确认
+                        @endif
+                      @elseif ($list->status == 1)
+                        已同意
+                      @elseif ($list->status == 2)
+                        老师拒绝
+                      @elseif ($list->status == 3)
+                        已拒绝
                       @endif
-                    @else
-                    已失效
-                    @endif
                   </td>
               </tr>
               <tr><td colspan="2">
@@ -83,6 +82,24 @@
 
 @section('js')
 <script type="text/javascript">
+function do_status(classmateid, status)
+  {
+    $.ajax({
+      url:'/classmate/'+classmateid,
+      data: {status: status},
+      // async:false,
+      type:'put',
+    })
+    .fail(function(){
+      alert('操作失败');
+    })
+    .success(function(){
+      // alert(update_status);
+      // $this.attr('data-status', update_status);
+      // $this.text(status_txt)
+      location.reload();
+    });
+  }
 </script>
 @stop
 

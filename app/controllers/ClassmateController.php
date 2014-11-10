@@ -103,9 +103,11 @@ echo "haha";
             $newclassmate = Classmate::create(
                 array(
                     'user_id' => $student,
+                    'teacher_id' => $classes->teacher->id,
                     'class_id' => $query['class_id'],
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 2
+                    'status' => 0,
+                    'type' => 1
                     )
             );
             $user_student = User::find($student);
@@ -269,7 +271,7 @@ echo "haha";
         $max_classes = Config::get('app.max_classes');
         foreach ($classmates as $key => $value) {
             $everyclass = Classes::find($value->class_id);
-            if ($thisclass->id == $everyclass->id) {
+            if ($thisclass->id == $everyclass->id && in_array($value->status,array(0,1,2,3))) {
                 return Response::json('你已经加入此班级');
             }
             if ($thisclass->column_id == $everyclass->column_id) {
@@ -283,9 +285,11 @@ echo "haha";
         $newclassmate = Classmate::create(
                 array(
                     'user_id' => $uid,
+                    'teacher_id' => $thisclass->teacher->id,
                     'class_id' => $query['class_id'],
                     'created_at' => date("Y-m-d H:i:s"),
-                    'status' => 3
+                    'status' => 0,
+                    'type' => 2
                     )
             );
         $message_content = $uname . "(学生) " . date("Y-m-d H:i:s"). " 申请加入班级: " . $thisclass->name;

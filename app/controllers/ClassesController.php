@@ -19,6 +19,11 @@ class ClassesController extends BaseController {
         //正式班级
         if ($user_type == 1) {
             $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            $myclasses = array(-1);
+            foreach ($classes as $key => $value) {
+                $myclasses[] = $value->id;
+            }
+            $classmates = Classmate::whereTeacherId($user_id)->get();
         } elseif ($user_type == 0) {
             $myclasses = array(-1);
             $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id', 'status')->get()->toArray();
@@ -27,18 +32,19 @@ class ClassesController extends BaseController {
                     $myclasses[] = $value['class_id'];
                 }
             }
-
             $classes = Classes::whereIn('id', $myclasses)->get();
+
+            $classmates = Classmate::whereUserId($user_id)->get();
         }
-        //加入班级记录
-        $messages = Message::where(function($query){
-            $query->where('sender_id', Session::get('uid'))
-                ->orWhere('receiver_id', Session::get('uid'));
-        })->whereType(2)->orderBy('id', 'desc')->get();
+        // //加入班级记录
+        // $messages = Message::where(function($query){
+        //     $query->where('sender_id', Session::get('uid'))
+        //         ->orWhere('receiver_id', Session::get('uid'));
+        // })->whereType(2)->orderBy('id', 'desc')->get();
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $genderEnum = $this->genderEnum;
-        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns', 'messages'));
+        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns', 'classmates'));
     }
 
 
