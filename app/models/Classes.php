@@ -8,6 +8,7 @@ class Classes extends Eloquent {
      * @var string
      */
     protected $table = 'class';
+    // protected $guarded = array('id');
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -47,6 +48,11 @@ class Classes extends Eloquent {
     public function teacher()
     {
         return $this->belongsTo('User', 'teacherid','id');
+    }
+
+    public function classmates()
+    {
+        return $this->hasMany('Classmate', 'class_id', 'id');
     }
 
     public function creater()

@@ -11,7 +11,11 @@
 
   <div class="wrap-right">
       <div class="tabtool">
+        <a href="/classes?column_id={{$query['column_id']}}" style="color:#499626;"><返回</a>
         <a>班级成员</a>
+        @if ($classmate->count() > 0)
+        <a href="javascript:;" class="quit_class" style="float:right;color:#499626;" onclick="quit_class({{$classmate[0]->id}});">退出班级</a>
+        @endif
           <div class="clear"></div>
       </div>
       <div class="clear"></div>
@@ -27,7 +31,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($classes->students as $list)
+            @foreach ($students as $list)
             <tr id="{{$list->pivot->id}}">
               <td>{{$list->name}}</td>
               <td>{{$genderEnum[$list->gender]}}</td>
@@ -47,6 +51,24 @@
 
 @section('js')
 <script type="text/javascript">
-
+function quit_class(classmateid)
+  {
+    $.ajax({
+      url:'/classmate/'+classmateid,
+      data: {status: status},
+      // async:false,
+      type:'delete',
+    })
+    .fail(function(){
+      alert('操作失败');
+    })
+    .success(function(){
+      // alert(update_status);
+      // $this.attr('data-status', update_status);
+      // $this.text(status_txt)
+      // location.reload();
+      window.location.replace("/classes?column_id={{$query['column_id']}}");
+    });
+  }
 </script>
 @stop
