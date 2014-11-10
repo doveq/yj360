@@ -41,8 +41,9 @@ class ExamPaper extends Eloquent {
         if(isset($data['sort']))
             $this->sort = $data['sort'];
 
-        if(is_numeric($data['ordern']))
+        if(isset($data['ordern']))
             $this->ordern = $data['ordern'];
+
 
         $this->save();
         return $this->id;  // 插入的id号
@@ -66,7 +67,7 @@ class ExamPaper extends Eloquent {
         if(isset($data['sort']))
             $update['sort']  = $data['sort'];
 
-        if(is_numeric($data['ordern']))
+        if(isset($data['ordern']))
             $update['ordern'] = $data['ordern'];
 
         if(isset($data['score']))
