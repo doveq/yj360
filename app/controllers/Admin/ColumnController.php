@@ -45,7 +45,7 @@ class ColumnController extends \BaseController {
             $parent = Column::find($query['parent_id']);
 
             // 如果是试卷类型
-            if($parent['type'] == 2)
+            if($parent['type'] == 2 || $parent['type'] == 6 )
             {
                 return Redirect::to('/admin/examPaper/column?column_id=' . $query['parent_id']);
             }

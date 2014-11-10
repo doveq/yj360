@@ -52,7 +52,7 @@ class ColumnQuestionRelation extends Eloquent {
     /* 获取随机列表 */
     public function getRandList($column_id, $num)
     {
-        $info = $this->where('column_id', '=', $column_id)->orderByRaw("RAND()")->get();
+        $info = $this->where('column_id', '=', $column_id)->orderByRaw("RAND()")->take($num)->get();
         if($info)
             return $info->toArray();
         else

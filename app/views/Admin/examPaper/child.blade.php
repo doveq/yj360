@@ -31,6 +31,13 @@
         </div>
         
         <div class="form-group">
+          <label for="sort_name" class="col-md-2 control-label">出题数</label>
+          <div class="col-md-6">
+            <input class="form-control" id="rnum" name="rnum" type="text" value="{{$info->rnum or '0'}}">
+          </div>
+        </div>
+
+        <div class="form-group">
           <label for="sort_name" class="col-md-2 control-label">每题分数</label>
           <div class="col-md-6">
             <input class="form-control" id="score" name="score" type="text" value="{{$info->score or '1'}}">

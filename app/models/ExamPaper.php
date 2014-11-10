@@ -44,6 +44,9 @@ class ExamPaper extends Eloquent {
         if(isset($data['ordern']))
             $this->ordern = $data['ordern'];
 
+        if(isset($data['rnum']))
+            $this->rnum = $data['rnum'];
+
 
         $this->save();
         return $this->id;  // 插入的id号
@@ -69,6 +72,9 @@ class ExamPaper extends Eloquent {
 
         if(isset($data['ordern']))
             $update['ordern'] = $data['ordern'];
+
+        if(isset($data['rnum']))
+            $update['rnum'] = $data['rnum'];
 
         if(isset($data['score']))
         {
@@ -123,4 +129,9 @@ class ExamPaper extends Eloquent {
         return $list;
     }
     
+    public function getRandQuestions($exam_id, $num)
+    {
+        $list = ExamQuestionRelation::where('exam_id', '=', $exam_id)->orderByRaw("RAND()")->take($num)->get();
+        return $list;
+    }
 }

@@ -25,8 +25,8 @@ class ColumnController extends BaseController
         }
 
         $column = Column::find($query['id']);
-        // 如果是试卷类型
-        if($column->type == 2)
+        // 如果是真题试卷或模拟试卷
+        if($column->type == 2 || $column->type == 6)
         {
             $content = ColumnExamRelation::where('column_id', '=', $query['id'])->get();
             foreach ($content as $key => $c) {

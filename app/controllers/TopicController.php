@@ -32,6 +32,7 @@ class TopicController extends BaseController {
 		// 如果是试卷
 		elseif(is_numeric($exam))
 		{
+			$columnInfo = Column::find($column);
 			$ep = new ExamPaper();
 
 			// 获取大题列表
@@ -40,14 +41,28 @@ class TopicController extends BaseController {
 			if( empty($clist) )
 				return $this->indexPrompt("", "没有这个试卷信息", $url = "/", false);
 
+
 			foreach($clist as $key => $v) 
 			{
-				$questions = $ep->getQuestions($v->id);
-				foreach ($questions as $key => $q) {
-					$qlist[] = $q->question_id;
+				$questions = array();
+				// 如果是模拟试卷，则取指定的随机题数
+				if($columnInfo->type == 6)
+				{
+					if($v->rnum > 0)
+						$questions = $ep->getRandQuestions($v->id, $v->rnum);
 				}
-				
+				else
+					$questions = $ep->getQuestions($v->id);
+
+				if(!empty($questions))
+				{
+					foreach ($questions as $key => $q) {
+						$qlist[] = $q->question_id;
+					}
+				}
 			}
+
+			//print_r(DB::getQueryLog());
 
 			// 题目数据保存
 			$qinfo['exam_id'] = $exam;
