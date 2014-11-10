@@ -395,9 +395,13 @@
         // js 判断答题对错
         function correcting()
         {
-            if(ip) ip.stop();
-            if(hp) hp.stop();
-            if(sp) sp.stop();
+            try {
+                if(ip) ip.stop();
+                if(hp) hp.stop();
+                if(sp) sp.stop();
+            } catch(error) {
+                console.log(error);
+            }
 
             var err = new Array();
             var result = '';

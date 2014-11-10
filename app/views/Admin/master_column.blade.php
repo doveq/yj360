@@ -42,16 +42,6 @@
                   <li><a href="/admin/topic/add?type=1">添加题目</a></li>
                 </ul>
               </li>
-              
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="/admin/column">浏览科目</a></li>
-                  <li><a href="/admin/column/create">添加科目</a></li>
-                  <li class="divider"></li>
-                  <!-- <li><a href="/admin/zhuanti">专题管理</a></li> -->
-                </ul>
-              </li>
 
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">试卷管理 <span class="caret"></span></a>
@@ -60,6 +50,16 @@
                   <li class="divider"></li>
                   <li><a href="/admin/examPaper">试卷列表</a></li>
                   <li><a href="/admin/examPaper/add">添加试卷</a></li>
+                </ul>
+              </li>
+              
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="/admin/column">浏览科目</a></li>
+                  <li><a href="/admin/column/create">添加科目</a></li>
+                  <li class="divider"></li>
+                  <!-- <li><a href="/admin/zhuanti">专题管理</a></li> -->
                 </ul>
               </li>
 

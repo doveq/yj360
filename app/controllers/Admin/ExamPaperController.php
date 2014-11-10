@@ -152,12 +152,18 @@ class ExamPaperController extends \BaseController {
         //return Redirect::to('/admin/column?parent_id='.$query['column_id']);
 
         if(isset($query['from']))
-            return $this->adminPrompt("操作成功", '提交编辑成功', $query['from']);
+        {
+            //return $this->adminPrompt("操作成功", '提交编辑成功', $query['from']);
+            return Redirect::to($query['from']);
+        }
         else
         {
             // 如果是添加的试卷，则跳到添加题干页
             if( empty($query['parent_id']) )
-                return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/examPaper/clist?id=' . $id);
+            {
+                //return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/examPaper/clist?id=' . $id);
+                return Redirect::to('/admin/examPaper/clist?id=' . $id);
+            }
             else
                 return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/examPaper');
         }
@@ -198,7 +204,10 @@ class ExamPaperController extends \BaseController {
         $ep->edit($query);
 
         if(isset($query['from']))
-            return $this->adminPrompt("操作成功", '提交编辑成功', $query['from']);
+        {
+            //return $this->adminPrompt("操作成功", '提交编辑成功', $query['from']);
+            return Redirect::to($query['from']);
+        }
         else
             return $this->adminPrompt("操作成功", '提交编辑成功', '/admin/examPaper');
 	}

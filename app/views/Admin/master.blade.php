@@ -43,15 +43,6 @@
               </li>
 
               <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="/admin/column">浏览科目</a></li>
-                  <li><a href="/admin/column/create">添加科目</a></li>
-                  <li class="divider"></li>
-                </ul>
-              </li>
-
-              <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">试卷管理 <span class="caret"></span></a>
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="/admin/examSort">试卷分类管理</a></li>
@@ -60,6 +51,16 @@
                   <li><a href="/admin/examPaper/add">添加试卷</a></li>
                 </ul>
               </li>
+              
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">科目管理 <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="/admin/column">浏览科目</a></li>
+                  <li><a href="/admin/column/create">添加科目</a></li>
+                  <li class="divider"></li>
+                </ul>
+              </li>
+
               
 
               <li class="dropdown">
