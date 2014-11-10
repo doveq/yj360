@@ -15,7 +15,7 @@ use Column;
 class ColumnController extends \BaseController {
     public $pageSize = 30;
     public $statusEnum = array('0' => '准备', '1' => '上线', '-1' => '下线');
-    public $typeEnum = array('0' => '默认', '1' => '题目', '2' => '试卷', '3' => '教材', '4' => '视频', '5' => '游戏');
+    public $typeEnum = array('0' => '默认', '1' => '题目', '2' => '真题试卷',  '6' => '模拟试卷', '3' => '教材', '4' => '视频', '5' => '游戏');
     // 显示类型,0:无显示,1:分类 2:题目 3:试卷 4:视频 5: 游戏
 
 	/**

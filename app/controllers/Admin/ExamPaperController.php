@@ -119,7 +119,7 @@ class ExamPaperController extends \BaseController {
 		$query = Input::all();
         $validator = Validator::make($query,
             array(
-                'title' => 'alpha_dash|required'
+                'title' => 'required'
             )
         );
 
@@ -168,7 +168,7 @@ class ExamPaperController extends \BaseController {
 		$query = Input::all();
         $validator = Validator::make($query,
             array(
-                'title' => 'alpha_dash|required',
+                'title' => 'required',
                 'id' => 'numeric|required',
             )
         );
