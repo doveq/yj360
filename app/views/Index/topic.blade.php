@@ -397,7 +397,16 @@
         {
             try {
                 if(ip) ip.stop();
+            } catch(error) {
+                console.log(error);
+            }
+            try {
                 if(hp) hp.stop();
+            } catch(error) {
+                console.log(error);
+            }
+            
+            try {
                 if(sp) sp.stop();
             } catch(error) {
                 console.log(error);
