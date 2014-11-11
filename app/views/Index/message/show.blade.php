@@ -7,39 +7,59 @@
     @include('Index.column.nav')
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/message" class="tabtool-msg">查看消息 {{ HTML::ul($errors->all()) }}</a>
+          <a href="/message?column_id={{$query['column_id']}}" style="color:#499626;"><返回</a>
+          <a>查看消息</a>
           <div class="clear"></div>
       </div>
       <div class="clear"></div>
 
       <div class="classes-list">
-                      {{ Form::open(array('url' => '/message?column_id='.$query['column_id'], 'method' => 'post')) }}
-          <table class="stable" border="0" cellpadding="0" cellspacing="0">
-          <tr>
-            <td style="text-align:right;margin:10px;padding:10px;">{{ Form::label('inputName', '发送者: ', array('class' => '')) }} </td>
-            <td style="text-align:left;margin:10px;padding:10px;">  {{ $message->sender->name}}</td>
-          </tr>
-          <tr>
-            <td style="text-align:right;margin:10px;padding:10px;">{{ Form::label('inputName', '发送时间: ', array('class' => '')) }} </td>
-            <td style="text-align:left;margin:10px;padding:10px;">  {{ $message->created_at}}</td>
-          </tr>
-          <tr>
-            <td style="text-align:right;margin:10px;padding:10px;">{{ Form::label('inputName', '内容: ', array('class' => '')) }} </td>
-            <td style="text-align:left;margin:10px;padding:10px;">  {{ $message->content}}</td>
-          </tr>
-          <tr>
-            <td style="text-align:right;margin:10px;padding:10px;">回复:</td>
-            <td>
-              {{ Form::textarea('content', '', array('class' => '', 'id' => 'inputContent', 'style' => 'width:100%', 'rows' => 4)) }}
-            </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>{{ Form::hidden('receiver_id', $message->sender->id, array('class' => '')) }}
-{{ Form::submit('确定', array('class' => '')) }}</td>
-          </tr>
-      </table>
-            {{ Form::close() }}
+        <div>
+            @if(!empty($messages))
+            <div style="margin: 10px 0px; font-weight: 700; border-bottom: 1px dashed #999;">共有{{$messages->count()}}条对话记录:</div>
+              @foreach($messages as $k => $v)
+              <div style="border-bottom: 1px dashed #cdcdcd">
+                <div style="float: left; margin: 0px 0px 8px;">
+                  <img src="{{Attachments::getAvatar($v->sender_id)}}" width="48" height="48" style="border:1px solid #f2f2f2;padding:2px;"/>
+                </div>
+                <div style="padding: 0px 0px 0px 60px; margin: 8px 0px;">
+                  <div style="color: rgb(73, 149, 40); font-weight: 700;">
+                        @if ($v->sender_id == $message->sender_id)
+                        您说:
+                        @else
+                        {{$v->sender->name}}说:
+                        @endif
+                  </div>
+                  <div>
+                        {{$v->content}}
+                  </div>
+                  <div style="color:#999">
+                        {{$v->created_at}}
+                  </div>
+                </div>
+              </div>
+              @endforeach
+            {{ Form::open(array('url' => '/message?column_id='.$query['column_id'], 'method' => 'post')) }}
+
+            <div style="border-bottom: 1px dashed #cdcdcd">
+                <div style="float: left; margin: 0px 0px 8px;">
+                  <img src="{{Attachments::getAvatar(Session::get('uid'))}}" width="48" height="48" style="border:1px solid #f2f2f2;padding:2px;"/>
+                </div>
+                <div style="padding: 0px 0px 0px 60px; margin: 8px 0px;">
+                  <div style="margin">
+                    {{ Form::textarea('content', '', array('class' => '', 'id' => 'inputContent', 'style' => 'width:100%', 'rows' => 4)) }}
+                  </div>
+                  <div>
+                    {{ Form::hidden('receiver_id', $message->sender->id) }}
+                    {{ Form::hidden('dialog', 1) }}
+                    {{ Form::submit('发送', array('class' => '')) }}
+                    {{ HTML::ul($errors->all()) }}
+                  </div>
+                </div>
+              </div>
+            @endif
+        </div>
+
 
           <div class="clear"></div>
       </div>

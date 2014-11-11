@@ -4,7 +4,7 @@
 @section('content')
 <div class="container-column wrap">
     <div class="row">
-    @include('Index.column.nav')
+    @include('Index.profile.nav')
   <div class="wrap-right">
       <form role="form" action="doProfile" method="post" enctype="multipart/form-data" >
       <table class="table-2" border="0" cellpadding="0" cellspacing="0">

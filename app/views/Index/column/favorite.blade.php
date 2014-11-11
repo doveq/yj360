@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="container-column wrap">
-
+  <div class="row">
   @include('Index.column.nav')
 
   <div class="wrap-right">
@@ -16,7 +16,7 @@
 
       <div class="classes-list">
           <table class="table-2" border="0" cellpadding="0" cellspacing="0">
-         
+
             @if(!empty($list))
               @foreach($list as $k => $v)
                 <tr>
@@ -27,7 +27,7 @@
                         <a href="/topic?id={{$v->question->id}}&column_id={{$query['column_id']}}&from=favorite" target="_blank">{{$v->question->txt}}</a>
                       @endif
                     </td>
-                    
+
                     <td class="tytd table-2-del"><a href="/favorite/del?column_id={{$query['column_id']}}&qid={{$v->id}}" class="tyadel">删除</a></td>
                 </tr>
                 <tr><td colspan="2">
@@ -43,6 +43,8 @@
   <div class="clear"></div>
 
 </div> <!-- /container -->
+</div> <!-- /container -->
+
 @stop
 
 @section('js')

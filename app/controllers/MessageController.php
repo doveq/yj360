@@ -85,7 +85,7 @@ class MessageController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('receiver_id', 'content', 'column_id');
+        $query = Input::only('receiver_id', 'content', 'column_id', 'dialog');
         $validator = Validator::make($query,
             array(
                 'receiver_id'      => 'numeric|required',
@@ -104,6 +104,7 @@ class MessageController extends BaseController {
         $message->content = $query['content'];
         $message->created_at = date("Y-m-d H:i:s");
         $message->type = 1;
+        $message->dialog = $query['dialog'];
         $message->save();
         return Redirect::to('/message?column_id=' . $query['column_id']);
     }
@@ -119,13 +120,20 @@ class MessageController extends BaseController {
     {
         $query = Input::all();
         $message = Message::find($id);
-        if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
+        if ($message->status == 0) {
+            $message->status = 1;
+            $message->save();
         }
-        $message->status = 1;
-        $message->save();
+        // $messages = Message::whereSenderId($message->sender_id)->orWhere('receiver_id', $message->receiver_id)->orderBy('created_at')->get();
+        $messages = Message::where(function($q) use ($message) {
+            $q->whereSenderId($message->sender_id)
+                ->orWhere('sender_id', $message->receiver_id);
+            })->where(function($q) use ($message) {
+                $q->whereReceiverId($message->receiver_id)
+                ->orWhere('receiver_id', $message->sender_id);
+            })->orderBy('created_at', 'asc')->get();
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        return $this->indexView('message.show', compact('message', 'columns', 'query'));
+        return $this->indexView('message.show', compact('message', 'messages', 'columns', 'query'));
 
     }
 
