@@ -4,11 +4,8 @@
 
 @section('content')
 <div class="container-column wrap">
-  @if ($query['column_id'])
+  <div class="row">
     @include('Index.column.nav')
-  @else
-    @include('Index.profile.nav')
-  @endif
 
   <div class="wrap-right">
       <div class="tabtool">
@@ -49,11 +46,11 @@
           </tbody>
         </table>
 
-
       </div>
   </div>
 </div> <!-- /container -->
 <div class="clear"></div>
+</div>
 @stop
 
 @section('js')

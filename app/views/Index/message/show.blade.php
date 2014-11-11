@@ -3,8 +3,8 @@
 
 @section('content')
 <div class="container-column wrap">
-  @include('Index.column.nav')
-
+  <div class="row">
+    @include('Index.column.nav')
   <div class="wrap-right">
       <div class="tabtool">
           <a href="/message" class="tabtool-msg">查看消息 {{ HTML::ul($errors->all()) }}</a>
@@ -46,6 +46,7 @@
   </div>
   <div class="clear"></div>
 </div> <!-- /container -->
+</div>
 @stop
 
 @section('js')

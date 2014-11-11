@@ -3,8 +3,8 @@
 
 @section('content')
 <div class="container-column wrap">
-  <div style="padding:10px;"></div>
-  @include('Index.column.nav')
+  <div class="row">
+    @include('Index.column.nav')
 
   <div class="wrap-right">
       <div class="tabtool">
@@ -37,6 +37,7 @@
   </div>
   <div class="clear"></div>
 </div> <!-- /container -->
+</div>
 @stop
 
 @section('js')

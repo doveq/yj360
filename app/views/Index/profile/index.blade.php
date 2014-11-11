@@ -3,8 +3,8 @@
 
 @section('content')
 <div class="container-column wrap">
-  @include('Index.profile.nav')
-
+    <div class="row">
+    @include('Index.column.nav')
   <div class="wrap-right">
       <form role="form" action="doProfile" method="post" enctype="multipart/form-data" >
       <table class="table-2" border="0" cellpadding="0" cellspacing="0">
@@ -60,7 +60,7 @@
                 <div class="fileup">
                   <input type='text' name='textfield' id='textfield' class='tyinput' style="width:180px;" />
                   <input type='button' class='selbtn' value='' />
-                  <input type="file" name="avatar" class="file" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" />  
+                  <input type="file" name="avatar" class="file" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" />
                 </div>
             </td>
         </tr>
@@ -83,6 +83,7 @@
   </div>
   <div class="clear"></div>
 </div> <!-- /container -->
+</div>
 @stop
 
 @section('js')
