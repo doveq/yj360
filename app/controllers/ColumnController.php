@@ -6,7 +6,11 @@ class ColumnController extends BaseController
 
 	public function __construct()
     {
-    	//$this->beforeFilter('csrf', array('on' => 'post'));
+        $query = Input::only('column_id');
+// dd(Request::path());
+        if ((!isset($query['column_id']) || !is_numeric($query['column_id'])) && Request::path() != 'column/static') {
+            echo ("<script>window.location.href='/column/static';</script>");
+        }
     }
 
 	public function index()

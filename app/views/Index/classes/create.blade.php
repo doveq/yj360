@@ -4,21 +4,12 @@
 
 @section('content')
 <div class="container-column wrap">
-  @if ($query['column_id'])
-    @include('Index.column.nav')
-  @else
-    @include('Index.profile.nav')
-  @endif
+    <div class="row">
+  @include('Index.column.nav')
 
   <div class="wrap-right">
       <div class="tabtool">
-          @if ($query['column_id'])
-            <a href="/classes/create?column_id={{$query['column_id']}}"><img src="/assets/img/addclasses.jpg" /></a>
-<!--             <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
- -->          @else
-            <a href="/classes/create"><img src="/assets/img/addclasses.jpg" /></a>
-<!--             <a href="/training/create"><img src="/assets/img/addzdxl.jpg" /></a>
- -->          @endif
+          <a href="/classes/create?column_id={{$query['column_id']}}"><img src="/assets/img/addclasses.jpg" /></a>
           <a href="/message" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
           <div class="clear"></div>
       </div>
@@ -50,11 +41,11 @@
   </div>
   <div class="clear"></div>
 </div> <!-- /container -->
+</div>
 @stop
 
 @section('js')
-<script type="text/javascript">
-</script>
+
 @stop
 
 

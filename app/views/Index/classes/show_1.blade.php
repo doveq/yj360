@@ -4,11 +4,8 @@
 
 @section('content')
 <div class="container-column wrap">
-  @if ($query['column_id'])
-    @include('Index.column.nav')
-  @else
-    @include('Index.profile.nav')
-  @endif
+  <div class="row">
+  @include('Index.column.nav')
 
   <div class="wrap-right">
       <div class="tabtool">
@@ -26,6 +23,7 @@
             <tr>
               <th>{{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}</th>
               <th>姓名</th>
+              <th>身份</th>
               <th>性别</th>
               <th>操作</th>
             </tr>
@@ -35,6 +33,7 @@
             <tr id="{{$list->pivot->id}}">
               <td>{{Form::checkbox('classmate_id[]', $list->pivot->id)}}</td>
               <td>{{$list->name}}</td>
+              <td>学生</td>
               <td>{{$genderEnum[$list->gender]}}</td>
               <td><a href="/message/create?receiver_id={{$list->id}}&column_id={{$query['column_id']}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
             </tr>
@@ -47,6 +46,7 @@
   </div>
 </div> <!-- /container -->
 <div class="clear"></div>
+</div>
 @stop
 
 @section('js')

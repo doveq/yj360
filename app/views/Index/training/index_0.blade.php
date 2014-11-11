@@ -3,11 +3,8 @@
 
 @section('content')
 <div class="container-column wrap">
-  @if ($query['column_id'])
+  <div class="row">
     @include('Index.column.nav')
-  @else
-    @include('Index.profile.nav')
-  @endif
 
   <div class="wrap-right">
       <div class="tabtool">
@@ -43,6 +40,7 @@
 
   </div>
   <div class="clear"></div>
+</div> <!-- /container -->
 </div> <!-- /container -->
 @stop
 

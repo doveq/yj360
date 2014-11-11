@@ -5,6 +5,15 @@ class ClassesController extends BaseController {
     public $statusEnum = array('' => '所有状态', '0' => '发布', '1' => '撤销发布');
     public $genderEnum = array('f' => '女', 'm' => '男');
     public $pageSize = 30;
+
+    public function __construct()
+    {
+        $query = Input::only('column_id');
+
+        if ((!isset($query['column_id']) || !is_numeric($query['column_id'])) && Request::path() != 'column/static') {
+            echo ("<script>window.location.href='/column/static';</script>");
+        }
+    }
     /**
      * Display a listing of the resource.
      *
@@ -38,8 +47,9 @@ class ClassesController extends BaseController {
         }
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+        $columnHead = Column::find($query['column_id'])->first();
         $genderEnum = $this->genderEnum;
-        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns', 'classmate_logs'));
+        return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns', 'classmate_logs', 'columnHead'));
     }
 
 
@@ -50,21 +60,16 @@ class ClassesController extends BaseController {
      */
     public function create()
     {
+        $query = Input::only('column_id');
         //班级数
         $user_id = Session::get('uid');
         $classes = Classes::whereTeacherid($user_id)->select('id', 'name')->get();
         $classes_num = $classes->count();
         $trainings_num = Training::whereUserId($user_id)->get()->count();
-        $query = Input::only('column_id');
-        if ($query['column_id']) {
-            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        } else {
-            $columns = Column::whereParentId(0)->whereStatus(1)->orderBy('ordern', 'ASC')->select('id', 'name')->get();
-            foreach ($columns as $key => $value) {
-                $columnall[$value->id] = $value->name;
-            }
-        }
-        return $this->indexView('classes.create', compact('columns', 'query', 'classes_num', 'trainings_num', 'columnall'));
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+        $columnHead = Column::find($query['column_id'])->first();
+
+        return $this->indexView('classes.create', compact('columns', 'query', 'classes_num', 'trainings_num', 'columnHead'));
     }
 
 
