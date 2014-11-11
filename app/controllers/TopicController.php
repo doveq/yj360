@@ -155,8 +155,6 @@ class TopicController extends BaseController {
 			$epinfo = ExamPaper::find($exam);
 			$info['headTitle'] = $epinfo->title;
 
-
-
 			// 生成返回链接
 			$cn = new Column();
 			$path = $cn->getPath($column);
