@@ -44,10 +44,11 @@
           <tr>
             <th>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }}</th>
             <th>题干</th>
+            <th>类型</th>
             <th>原始编号</th>
             <th>状态</th>
             <th>添加时间</th>
-            <th>操作</th>
+            <th>操作 {{$paginator->count()}}/{{$paginator->getTotal()}}</th>
           </tr>
         </thead>
         <tbody>
@@ -55,6 +56,7 @@
           <tr>
             <td><label>{{ Form::checkbox('question_id[]', $info['id']) }} {{ $info['id'] }}</label></td>
             <td><a href="/topic?vetting=1&id={{ $info['id'] }}" target="_blank">{{$info['txt']}}</a></td>
+            <td>{{$typeEnum[$info['type']]}}</td>
             <td>{{$info['source']}}</td>
             <td>
               {{$statusEnum[$info['status']]}}

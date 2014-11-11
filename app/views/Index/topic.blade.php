@@ -36,7 +36,7 @@
     <div class="container wrap">
         <div style="position:relative;overflow:hidden;border:1px solid #e0e0e0;padding:15px;">
             <div style="padding-bottom:20px;">
-                @if( !empty($q['txt']) ) <h2>{{$q['txt']}}</h2> @endif
+                @if( !empty($q['txt']) ) <h2>{{$index}}. {{$q['txt']}}</h2> @endif
                 @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
             </div>
 
@@ -201,10 +201,16 @@
         </div>
 
         @if(!empty($from) && $from == 'favorite')
-        {{--收藏夹不用显示--}}
+        <div id="topic-tools">
+            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
+            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
+            <div class="clear"></div>
+        </div>
         @elseif(!empty($from) && $from == 'fail')
         {{--错题记录显示--}}
         <div id="topic-tools">
+            <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
+            <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}},{{$column or '0'}});"></a>
             <div class="clear"></div>
         </div>

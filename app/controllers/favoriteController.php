@@ -52,9 +52,15 @@ class FavoriteController extends BaseController
         $f->del( array('uid' => Session::get('uid'), 'qid' => $id ) );
 
         if(empty($column_id))
-            return $this->indexPrompt("", "删除收藏成功", $url = "/favorite");
+        {
+            //return $this->indexPrompt("", "删除收藏成功", $url = "/favorite");
+            return Redirect::to('/favorite');
+        }
         else
-            return $this->indexPrompt("", "删除收藏成功", $url = "/favorite?column_id=". $column_id);
+        {
+            //return $this->indexPrompt("", "删除收藏成功", $url = "/favorite?column_id=". $column_id);
+            return Redirect::to("/favorite?column_id=". $column_id);
+        }
     }
 
     public function ajax()

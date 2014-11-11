@@ -217,6 +217,9 @@ class TopicController extends BaseController {
 		if(!empty($qinfo['uniqid']))
 			$info['uniqid'] = $qinfo['uniqid'];
 
+		// 获取当前题目的编号，显示使用
+		$info['index'] = array_search($id, $qlist) +1;
+
 		return $this->indexView('topic', $info);
 	}
 

@@ -47,9 +47,15 @@ class FailTopicController extends BaseController
 		$f->del( array('uid' => Session::get('uid'), 'id' => $id ) );
 
 		if(empty($column_id))
-			return $this->indexPrompt("", "删除错题记录成功", $url = "/failTopic");
+		{
+			//return $this->indexPrompt("", "删除错题记录成功", $url = "/failTopic");
+			return Redirect::to("/failTopic");
+		}
 		else
-			return $this->indexPrompt("", "删除错题记录成功", $url = "/failTopic?column_id=". $column_id);
+		{
+			//return $this->indexPrompt("", "删除错题记录成功", $url = "/failTopic?column_id=". $column_id);
+			return Redirect::to("/failTopic?column_id=". $column_id);
+		}
 	}
 
 }

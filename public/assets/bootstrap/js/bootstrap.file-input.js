@@ -109,7 +109,15 @@ $.fn.bootstrapFileInput = function() {
         $(this).attr('title', fileName);
       } else {
         // Print the fileName aside (right after the the button)
-        $(this).parent().after('<span class="file-input-name">'+fileName+'</span>');
+        $(this).parent().after('<span class="file-input-name">'+fileName+'</span> <a class="btn btn-default btn-xs file-input-clear" href="javascript:;">取消上传</a>')
+        .promise().done( function(){
+            $('.file-input-clear').on('click', function(){
+               $(this).parent().find('.file-input-wrapper input[type=file]').val('');
+               $(this).parent().find('.file-input-name').remove();
+               $(this).remove();
+            });
+        });
+        
       }
     });
 
