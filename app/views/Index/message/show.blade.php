@@ -37,11 +37,11 @@
               </div>
             </div>
               @foreach($messages as $k => $v)
-              <div style="border-bottom: 1px dashed #cdcdcd">
+              <div style="border-bottom: 1px dashed #cdcdcd" id="message_{{$v->id}}">
                 <div style="float: left; margin: 0px 0px 8px;">
                   <img src="{{Attachments::getAvatar($v->sender_id)}}" width="48" height="48" style="border:1px solid #f2f2f2;padding:2px;"/>
                 </div>
-                <div style="padding: 0px 0px 0px 60px; margin: 8px 0px;">
+                <div style="padding: 0px 0px 0px 60px; margin: 8px 0px;" class="msg-box" data-id="{{$v->id}}">
                   <div style="color: rgb(73, 149, 40); font-weight: 700;">
                     @if ($v->sender_id == Session::get('uid'))
                     您说:
@@ -52,8 +52,9 @@
                   <div>
                         {{$v->content}}
                   </div>
-                  <div style="color:#999">
+                  <div style="color:#999" class="msg-date">
                         {{$v->created_at}}
+                        <span style="display:none;float:right;" class="msg-delete"><a href="javascript:;" onClick="delete_message('{{$v->id}}');">删除</a></span>
                   </div>
                 </div>
               </div>
@@ -72,7 +73,33 @@
 @stop
 
 @section('js')
+<script type="text/javascript" src="/assets/layer/layer.min.js"></script>
 <script type="text/javascript">
+$(function(){
+  $(".msg-box").hover(function(){
+    $(this).children(".msg-date").children(".msg-delete").css('display','block');
+  }, function(){
+    $(this).children(".msg-date").children(".msg-delete").css('display','none');
+  });
+
+  delete_message = function(id){
+    layer.confirm('您确定要删除吗？', function(){
+      $.ajax({
+      url:'/message/'+id+"?column_id={{$query['column_id']}}",
+        // async:false,
+        type:'delete',
+      })
+      .fail(function(){
+        layer.msg('删除失败,请刷新重试', 2, 1);
+      })
+      .success(function(){
+        $('#message_'+id).remove();
+        layer.msg('删除成功', 1, 1);
+      });
+    });
+  };
+
+});
 </script>
 @stop
 

@@ -58,7 +58,7 @@
             <td>{{$list->name}}</td>
             <td>{{$list->tel}}</td>
             <td>
-            
+
                 {{$typeEnum[$list->type]}}
                 @if($list->is_certificate == 1)
                   <a href="{{$list->certificate}}" data-lightbox="image-{{$list->id}}" data-title="{{$list->name}}教师证"><span class="icon-credit-card"></span></a>
@@ -145,7 +145,7 @@
 $(function(){
 
   //发布,下线
-  $(".btn_publish").bind("click", function(){
+  $(".btn_publish").on("click", function(){
       var $this = $(this);
       var user_id = $this.data("id");
       var user_val = $this.data("val");
