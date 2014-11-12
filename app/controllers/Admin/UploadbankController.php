@@ -73,7 +73,7 @@ class UploadbankController extends \BaseController {
     {
         $uploadbank = uploadbank::find($id);
         $file = Config::get('app.uploadbank_dir') . "/" . $uploadbank->filename;
-        return Response::download($file);
+        return Response::download($file, $uploadbank->filename);
 
     }
 
