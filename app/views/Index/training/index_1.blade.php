@@ -61,7 +61,7 @@ function choose_fav(training_id)
       // closeBtn: false,
       area: ['860px', '600px'],
       // offset: [($(window).height() - 100)/2+'px', ''], //上下垂直居中
-      iframe: {src: '/favorite/choose?training_id='+training_id}
+      iframe: {src: "/favorite/choose?column_id={{$query['column_id']}}&training_id="+training_id}
     });
   }
   function choose_question(training_id){

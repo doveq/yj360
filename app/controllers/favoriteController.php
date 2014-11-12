@@ -89,12 +89,25 @@ class FavoriteController extends BaseController
 
     public function choose()
     {
-        $training_id = Input::only('training_id');
-
+        $query = Input::only('training_id', 'column_id');
         $info = array();
         $f = new Favorite();
-        $lists = $f->getList( array('uid' => Session::get('uid'), 'limit' => 15 ) );
+        $lists = $f->getList( array('uid' => Session::get('uid'), 'limit' => 30 ) );
 
-        return $this->indexView('favorite.choose', compact('lists') );
+        return $this->indexView('favorite.choose', compact('lists', 'query') );
+    }
+
+    public function dochoose()
+    {
+        $query = Input::only('training_id', 'column_id', 'question_id');
+        $insert_values = array();
+        $created_at = date("Y-m-d H:i:s");
+        foreach ($query['question_id'] as $key => $qid) {
+            $insert_values[] = array('training_id' => $query['training_id'], 'question_id' => $qid, 'created_at' => $created_at);
+        }
+        TrainingQuestionRelation::insert($insert_values);
+        if (Request::ajax()) {
+            return Response::json('ok');
+        }
     }
 }

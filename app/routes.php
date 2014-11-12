@@ -166,6 +166,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/favorite/del', 'FavoriteController@doDel');
     Route::get('/favorite/ajax', 'FavoriteController@ajax');
     Route::get('/favorite/choose', 'FavoriteController@choose');
+    Route::post('/favorite/doChoose', 'FavoriteController@dochoose');
 
     //初级
     Route::get('/column', 'ColumnController@index');
