@@ -267,11 +267,13 @@ class ClassmateController extends BaseController {
         {
             $classes = Classes::where('column_id', '=', $query['column_id'])->take(12)->get();
         }
-        if ($query['column_id']) {
-            $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        }
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
 
-        return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns'));
+        return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns', 'columnHead'));
 
     }
 
