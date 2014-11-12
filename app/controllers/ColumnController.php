@@ -55,9 +55,13 @@ class ColumnController extends BaseController
             $column_questions = ColumnQuestionRelation::whereColumnId($query['id'])->paginate($this->pageSize);
     		$att = new Attachments();
     		foreach ($column_questions as $key => $r) {
-    	        $item = $att->get($r->question->img);
-    			$route = $att->getTopicRoute($r->question->id, $item['file_name']);
-    			$r->question->img_url = $route['url'];
+                if(!empty($r->question->img))
+                {
+    	           $item = $att->get($r->question->img);
+    			   $route = $att->getTopicRoute($r->question->id, $item['file_name']);
+    			   $r->question->img_url = $route['url'];
+                }
+                
     			$questions[$key] = $r->question;
     		}
         }
