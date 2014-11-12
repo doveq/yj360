@@ -125,7 +125,8 @@ class ClassesController extends BaseController {
         $classmate = $classes->classmates()->where('user_id', Session::get('uid'))->where('status', 1)->get();
         $user_type = Session::get('utype');
         if ($user_type < 0) $user_type = 1;
-        return $this->indexView('classes.show_'.$user_type, compact("classes", 'columns', 'query', 'students', 'classmate', 'genderEnum'));
+        $columnHead = Column::find($query['column_id'])->first();
+        return $this->indexView('classes.show_'.$user_type, compact("classes", 'columns', 'query', 'students', 'classmate', 'genderEnum', 'columnHead'));
     }
 
 
