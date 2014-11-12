@@ -25,11 +25,6 @@ class MessageController extends BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        if (!isset($query['column_id'])) {
-            $query['column_id'] = 3;
-        }
-
-        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $lists = Message::where(function($q){
             $q->Where('receiver_id', Session::get('uid'));
                 // ->orWhere('sender_id', Session::get('uid'));
@@ -46,6 +41,7 @@ class MessageController extends BaseController {
 
         // $statusEnum = $this->statusEnum;
         // $typeEnum = $this->typeEnum;
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         return $this->indexView('message.index', compact('query', 'lists', 'columns'));
     }
 
