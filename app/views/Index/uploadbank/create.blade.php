@@ -63,16 +63,38 @@
 
 @section('js')
 <script type="text/javascript">
+
+function getFileName(obj) {
+        var pos = obj.value.lastIndexOf("/") * 1;
+        return obj.value.substring(pos + 1);
+    }
+
+function getFileExt(pathfilename) {
+    var reg = /(\\+)/g;
+    var pfn = pathfilename.replace(reg, "#");
+    var arrpfn = pfn.split("#");
+    var fn = arrpfn[arrpfn.length - 1];
+    var arrfn = fn.split(".");
+    return arrfn[arrfn.length - 1];
+}
+
 $("#inputFile").change(function(event) {
   /* Act on the event */
   // alert($(this).val());
   // alert("d:/userAdmin/uploads/20120515_115146.jpg".match(/[^\/]*$/)[0]);
+  var file = $(this).get(0).files[0];
+  // alert(file.name);
+  var fn = file.name.split(".").shift();
+  // alert(fn);
+  // var fileName = $(this).val();
+  // fileName = fileName.substring(fileName.lastIndexOf('\\') + 1, fileName.length);
 
-  var filename = $(this).val();
-  var f = filename.match(/[^\/]*$/)[0];
+  // alert(fileName);
+  // var f = filename.match(/[^\/]*$/)[0];
+  // var f = fileName;
 // alert(f);
-  var fn_len = f.length;
-  $("#inputName").val(filename.substring(0, fn_len-4));
+  // var fn_len = f.length;
+  $("#inputName").val(fn);
 });
 </script>
 @stop
