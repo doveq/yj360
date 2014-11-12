@@ -36,7 +36,7 @@
     <div class="container wrap">
         <div style="position:relative;overflow:hidden;border:1px solid #e0e0e0;padding:15px;">
             <div style="padding-bottom:20px;">
-                @if( !empty($q['txt']) ) <h2>{{$index}}. {{$q['txt']}}</h2> @endif
+                @if( !empty($q['txt']) ) <h2 style="font-size:14px;">{{$index}}. {{$q['txt']}}</h2> @endif
                 @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
             </div>
 

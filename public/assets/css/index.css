@@ -373,7 +373,7 @@ li.index-list-more a {
 	vertical-align: middle;
 }
 .answers-list .flag{
-	font-size: 16px;
+	font-size: 14px;
 }
 .flag label{
 	position:relative;
@@ -550,7 +550,7 @@ li.index-list-more a {
 }
 .wrap-left{
 	float:left;
-	width: 220px;
+	width: 180px;
 	height: 100%;
 	background-color: #f1f1f1;
 	border-right: 1px solid #e0e0e0;
@@ -558,7 +558,7 @@ li.index-list-more a {
 }
 .wrap-right{
 	margin-left:30px;
-	width: 748px;
+	width: 788px;
 	float:left;
 	padding-bottom: 10px;
 }
@@ -566,30 +566,30 @@ li.index-list-more a {
 	border-bottom: 1px solid #e0e0e0;
 }
 .sort-tit{
-	background: url("/assets/img/sort-tit.jpg") no-repeat 0 14px;
-	padding:10px 0 10px 30px;
+	background: url("/assets/img/sort-tit.jpg") no-repeat 0 16px;
+	padding:15px 0 12px 30px;
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 14px;
 	color: #3f3f3f;
-	margin-left:60px;
+	margin-left:35px;
 }
 .sort-list{
 	list-style-position:inside;
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 14px;
 	padding:5px 0 0 2px;
 	list-style-type:disc;
 }
-.sort-list li{padding:5px 0 5px 65px;height:30px;position:relative;}
+.sort-list li{padding:9px 0 1px 40px;height:30px;position:relative;}
 .sort-list li a {color: #3f3f3f;}
 .sort-list .sort-act {background-color:#fb9742;}
 .sort-list .sort-act a{color: #fff;}
 .sort-item{
 	position:relative;
 	font-weight: bold;
-	font-size: 18px;
+	font-size: 14px;
 	line-height: 40px;
-	padding-left:60px;
+	padding-left:35px;
 }
 .sort-item a{
 	color: #3f3f3f;
@@ -600,7 +600,7 @@ li.index-list-more a {
 	position:absolute;
 	width: 11px;
 	height: 40px;
-	right: -11px;
+	right: 0px;
 	top:0px;
 }
 .sort-list .sort-act .sort-sj{
@@ -857,7 +857,7 @@ a.tyadel {
 
 #index-login{
 	width: 280px;
-	height: 250px;
+	height: 260px;
 	padding: 0 10px 10px;
 	background-color: #fff;
 	overflow: hidden;
@@ -1068,4 +1068,7 @@ a.tyadel {
 .footer-follow{
 	float: left;
 	margin-right:10px;
+}
+.classes-txt h2{
+	font-size: 14px;
 }
