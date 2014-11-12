@@ -34,7 +34,7 @@
             @foreach ($classes as $list)
             <div class="classse-box" id="classes_{{$list->id}}">
               <div class="classes-txt">
-                <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
+                <div><h2><b>{{$list->name}}</b></h2></div>
                 <div>创建人：{{$list->teacher->name}}</div>
                 <div>成员：{{$list->students->count()}}</div>
               </div>

@@ -135,7 +135,7 @@ class MessageController extends BaseController {
             })->where(function($q) use ($message) {
                 $q->whereReceiverId($message->receiver_id)
                 ->orWhere('receiver_id', $message->sender_id);
-            })->orderBy('created_at', 'asc')->get();
+            })->orderBy('created_at', 'dasc')->get();
         // 获取父类名页面显示
         $cn = new Column();
         $arr = $cn->getPath($query['column_id']);
