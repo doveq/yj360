@@ -15,7 +15,7 @@
                 <div class="row"><input type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
                 <div class="row">
                     <input type="checkbox" name="" id="checkbox-1" class="labelinput" /> <label for="checkbox-1">记住我</label>
-                    <a href="#" class="forget">忘记密码</a>
+                    <a href="/forgot" class="forget">忘记密码</a>
                 </div>
                 <br>
                 <div class="row"><button type="submit" class="loginbntn"></button></div>

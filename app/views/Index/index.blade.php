@@ -3,7 +3,7 @@
 
 @section('content')
     <div class="container wrap">
-    	<a class="index-block" href="#"><img src="/assets/img/index-2-1.png" /></a>
+    	<a class="index-block" href="/"><img src="/assets/img/index-2-1.png" /></a>
 
         <!--
     	<a class="index-block" href="#"><img src="/assets/img/index-2.jpg" /></a>
@@ -17,11 +17,14 @@
 
         <div class="index-block" id="index-login">
             <form role="form" action="doLogin" method="post">
+            <!--
             <h1>音基360登录</h1>
-            <div class="row"><input type="text" class="text" name="name" value="" placeholder="手机号" ></div>
-            <div class="row"><input type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
+            -->
+            <div class="row" style="padding:0;"><img src="/assets/img/index-a4.png" /></div>
+            <div class="row"><input id="login-input-name" type="text" class="text" name="name" value="" placeholder="手机号" ></div>
+            <div class="row"><input id="login-input-passwd" type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
             <div class="row">
-                <a href="#" class="forget">忘记密码？</a>
+                <a href="/forgot" class="forget">忘记密码？</a>
                 <div class="clear"></div>
             </div>
             <div class="row">
@@ -39,6 +42,11 @@
 
     	<div class="clear" style="height:50px;"></div>
 
+        <a class="index-block" style="" href="/column/static"><img src="/assets/img/index-a2.png" /></a>
+        <a class="index-block" style="margin-left:25px;" href="/column/static"><img src="/assets/img/index-a1.png" /></a>
+        <a class="index-block" style="margin-left:25px;" href="/column/static"><img src="/assets/img/index-a3.png" /></a>
+
+        <!--
     	<div class="index-list">
     		<div class="index-list-head">
     			<img src="/assets/img/index-list-1.jpg" />
@@ -106,7 +114,7 @@
     			<img src="/assets/img/index-list-8.jpg" />
     		</div>
     	</div>
-
+        -->
       	<div class="clear"></div>
     </div> <!-- /container -->
 @stop

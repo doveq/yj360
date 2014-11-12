@@ -19,7 +19,7 @@
           <tr>
             <td class="lable">&nbsp;</td>
             <td>
-              <button type="submit">发送新密码到手机</button>
+              <button type="submit" class="ggbtn">发送密码到手机</button>
             </td>
             <td class="reg-err"></td>
           </tr>

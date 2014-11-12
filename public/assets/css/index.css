@@ -149,11 +149,6 @@ a#site-fk{
 	margin-top:5px;
 	position: relative;
 }
-.footer-link{
-	color: #666;
-	padding:0 15px;
-	font-size: 12px;
-}
 .footer-sp{
 	color: #666;
 }
@@ -863,8 +858,8 @@ a.tyadel {
 #index-login{
 	width: 280px;
 	height: 250px;
-	padding:10px;
-	background-color: #f8f8f8;
+	padding: 0 10px 10px;
+	background-color: #fff;
 	overflow: hidden;
 }
 #index-login h1{
@@ -875,17 +870,21 @@ a.tyadel {
 }
 #index-login .row{
 	padding:5px 0;
+	margin: 0;
 }
 #index-login .text{
 	padding:8px 10px;
-	width: 260px;
+	width: 215px;
 	border: 1px solid #e1e1e1;
 }
 #index-login .loginbntn{
 	width: 280px;
-	height: 31px;
+	height: 30px;
 	background: url("/assets/img/index-login-btn.png") no-repeat 0 0;
 	border: none;
+}
+#index-login .loginbntn:hover{
+	background: url("/assets/img/index-login-btn-hover.png") no-repeat 0 0;
 }
 #index-login .forget{
 	float:right;
@@ -897,6 +896,14 @@ a.tyadel {
 }
 #index-login .linetxt a{
 	color: #fe6700;
+}
+#index-login #login-input-name {
+	background: url("/assets/img/index-a5.png") no-repeat 0 0;
+	padding-left:45px;
+}
+#index-login #login-input-passwd{
+	background: url("/assets/img/index-a6.png") no-repeat 0 0;
+	padding-left:45px;
 }
 .topic-head{
 	background-color: #f1f1f1;
@@ -1038,4 +1045,27 @@ a.tyadel {
     border-color: #ddd;
     color: #777;
     cursor: not-allowed;
+}
+.ggbtn{
+	background: url("/assets/img/gbtn.png") no-repeat 0 0;
+	width: 111px;
+	height: 23px;
+	border: none;
+	color: #fff;
+	line-height: 16px;
+}
+.footer-links li{
+	float: left;
+	color: #666;
+	padding:0 15px;
+	font-size: 12px;
+	list-style-type:none;
+}
+.footer-links li a {
+	color: #666;
+	text-decoration: none;
+}
+.footer-follow{
+	float: left;
+	margin-right:10px;
 }
