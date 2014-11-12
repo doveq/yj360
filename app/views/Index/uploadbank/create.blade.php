@@ -66,8 +66,12 @@
 $("#inputFile").change(function(event) {
   /* Act on the event */
   // alert($(this).val());
+  // alert("d:/userAdmin/uploads/20120515_115146.jpg".match(/[^\/]*$/)[0]);
+
   var filename = $(this).val();
-  var fn_len = $(this).val().length;
+  var f = filename.match(/[^\/]*$/)[0];
+// alert(f);
+  var fn_len = f.length;
   $("#inputName").val(filename.substring(0, fn_len-4));
 });
 </script>
