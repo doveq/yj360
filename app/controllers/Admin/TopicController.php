@@ -241,22 +241,22 @@ class TopicController extends \BaseController {
 			$sort = $inputs['sort5'];
 			Session::put('sort5', $sort);
 		}
-		if( !empty($inputs['sort4']) )
+		elseif( !empty($inputs['sort4']) )
 		{
 			$sort = $inputs['sort4'];
 			Session::put('sort4', $sort);
 		}
-		if( !empty($inputs['sort3']) )
+		elseif( !empty($inputs['sort3']) )
 		{
 			$sort = $inputs['sort3'];
 			Session::put('sort3', $sort);
 		}
-		if( !empty($inputs['sort2']) )
+		elseif( !empty($inputs['sort2']) )
 		{
 			$sort = $inputs['sort2'];
 			Session::put('sort2', $sort);
 		}
-		if( !empty($inputs['sort1']) )
+		elseif( !empty($inputs['sort1']) )
 		{
 			$sort = $inputs['sort1'];
 			Session::put('sort1', $sort);

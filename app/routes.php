@@ -132,6 +132,7 @@ Route::get('/', 'IndexController@index');
 Route::get('/testmsg', 'MessageController@mobileMsg');
 Route::get('/prompt', 'PromptController@index');
 Route::get('/prompt/test', 'TestController@test');
+Route::get('/forgot', 'LoginController@forgot');
 
 Route::group(array('before' => 'indexLogin'), function(){
     //

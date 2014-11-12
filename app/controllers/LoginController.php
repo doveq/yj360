@@ -164,12 +164,43 @@ class LoginController extends BaseController
 	public function ajax()
 	{
 		$inputs = Input::all();
+		// 手机验证码
 		if($inputs['act'] == 'code')
 		{
 			$re = $this->mkcode();
 			return Response::json(array('act' => $inputs['act'], 'state' => $re));
 		}
+		// 重设密码
+		elseif($inputs['act'] == 'forgot')
+		{
+			$user = new User;
+			$info = $user->where('tel', '=', $inputs['mobile'])->first();
+			if( !empty($info) )
+			{
+				$passwd = rand(100000, 999999);
+
+				$user->setInfo($info->id, array('password' => $user->encPasswd($passwd)) );
+
+				$msg = "新密码：{$passwd}（为了保证账户安全，请勿向他人泄漏）【音教360】";
+
+				$message = new Message();
+				$message->mobileMsg($inputs['mobile'], $msg);
+				return Response::json(array('act' => $inputs['act'], 'state' => 1));
+			}
+			else
+			{
+				return Response::json(array('act' => $inputs['act'], 'state' => 0, 'info' => '该手机号没有注册'));
+			}
+		}
 
 		return Response::json(array('act' => $inputs['act'], 'state' => '0'));
+	}
+
+	/* 找回密码页 */
+	public function forgot()
+	{
+		//$mobile = Input::get('mobile');
+
+		return $this->indexView('forgot');
 	}
 }
