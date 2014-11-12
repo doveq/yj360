@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-CN" xml:lang="zh-CN">
     <head>
-        <title>音名测试(单词战士)</title>
+        <title></title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <style type="text/css" media="screen">
-        html, body { height:100%; background-color: #ffffff;}
+        html, body { height:100%; background-color: #000000;}
         body { margin:0; padding:0; overflow:hidden; }
-        #flashContent { width:100%; height:100%; }
+        #flashContent { margin: 0 auto;width: 1024px;height:768px;}
         </style>
     </head>
     <body>
@@ -14,7 +14,7 @@
             <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="1024" height="768" id="index" align="middle">
                 <param name="movie" value="{{$config_path . $query['path']}}book.swf" />
                 <param name="quality" value="high" />
-                <param name="bgcolor" value="#ffffff" />
+                <param name="bgcolor" value="#000000" />
                 <param name="play" value="true" />
                 <param name="base" value="{{$config_path . $query['path']}}"></param>
                 <param name="loop" value="true" />
@@ -29,7 +29,7 @@
                 <object type="application/x-shockwave-flash" data="{{$config_path . $query['path']}}book.swf" width="1024" height="768">
                     <param name="movie" value="{{$config_path . $query['path']}}book.swf" />
                     <param name="quality" value="high" />
-                    <param name="bgcolor" value="#ffffff" />
+                    <param name="bgcolor" value="#000000" />
                     <param name="play" value="true" />
                     <param name="base" value="{{$config_path . $query['path']}}"></param>
                     <param name="loop" value="true" />
