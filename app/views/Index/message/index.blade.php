@@ -15,37 +15,34 @@
       <div class="clear"></div>
 
       <div class="classes-list">
-          <table class="stable" border="0" cellpadding="0" cellspacing="0">
-        <thead>
-          <tr>
-            <th>序号</th>
-            <th>消息内容</th>
-            <th>发送时间</th>
-            <th>发送人</th>
-            <th>操作</th>
-          </tr>
-        </thead>
-        <tbody>
-          @foreach ($lists as $list)
-          @if ($list->status == 0)
-          <tr style="font-weight:bold" id="message_{{$list->id}}">
-          @else
-          <tr id="message_{{$list->id}}">
-          @endif
-            <td>{{$list->id}}</td>
-            <td>{{str_limit($list->content, 10, '...')}}</td>
-            <td>{{$list->created_at}}</td>
-            <td>{{$list->sender->name}}</td>
-            <td><a href="/message/{{$list->id}}?column_id={{$query['column_id']}}">查看</a> <a href="javascript:;" onClick="delete_message('{{$list->id}}');">删除</a></td>
-          </tr>
-          @endforeach
-          <tr style="text-align:center">
-            <td colspan="5">
-                        {{$lists->appends($query)->links()}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+        @foreach($lists as $k => $v)
+        <div style="border-bottom: 1px dashed #cdcdcd">
+          <div style="float: left; margin: 0px 0px 8px;">
+            <img src="{{Attachments::getAvatar($v->sender_id)}}" width="48" height="48" style="border:1px solid #f2f2f2;padding:2px;"/>
+          </div>
+          <div style="padding: 0px 0px 0px 60px; margin: 8px 0px;" class="msg-box" data-id="{{$v->id}}">
+            <div style="color: rgb(73, 149, 40); font-weight: 700;">
+              @if ($v->sender_id == Session::get('uid'))
+              您对 {{$v->receiver->name}} 说:
+              @else
+              {{$v->sender->name}} 对你说:
+              @endif
+            </div>
+            <div>
+              @if ($v->status == 0)
+                  <b><a href="/message/{{$v->id}}?column_id={{$query['column_id']}}" style="color:#000;">{{$v->content}}</a></b>
+              @else
+                  <a href="/message/{{$v->id}}?column_id={{$query['column_id']}}" style="color:#000;">{{$v->content}}</a>
+              @endif
+            </div>
+            <div style="color:#999">
+                  {{$v->created_at}}
+            </div>
+          </div>
+        </div>
+        @endforeach
+
+
           <div class="clear"></div>
       </div>
   </div>
@@ -59,6 +56,16 @@
 
 <script type="text/javascript">
 $(function(){
+  $(".msg-box").hover(function(){
+    $(this).css({'background-color':'#f1f1f1','cursor': 'pointer'});
+  }, function(){
+    $(this).css('background-color','');
+  }).on('click', function() {
+    var $this = $(this);
+    var msg_id = $this.data("id");
+    window.location.replace("/message/"+msg_id+"?column_id={{$query['column_id']}}");
+
+  });
   delete_message = function(id){
     layer.confirm('您确定要删除吗？', function(){
       $.ajax({

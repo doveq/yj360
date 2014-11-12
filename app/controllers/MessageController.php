@@ -25,22 +25,57 @@ class MessageController extends BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        $lists = Message::where(function($q){
-            $q->Where('receiver_id', Session::get('uid'));
-                // ->orWhere('sender_id', Session::get('uid'));
-        })->where(function($q)
-            {
-                if (strlen(Input::get('status')) > 0) {
-                    $q->whereStatus(Input::get('status'));
-                }
-                if (strlen(Input::get('type')) > 0) {
-                    $q->whereStatus(Input::get('type'));
-                }
+        // $lists = Message::where(function($q){
+        //     $q->Where('receiver_id', Session::get('uid'));
+        //         // ->orWhere('sender_id', Session::get('uid'));
+        // })->where(function($q)
+        //     {
+        //         if (strlen(Input::get('status')) > 0) {
+        //             $q->whereStatus(Input::get('status'));
+        //         }
+        //         if (strlen(Input::get('type')) > 0) {
+        //             $q->whereStatus(Input::get('type'));
+        //         }
 
-            })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        //     })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
-        // $statusEnum = $this->statusEnum;
-        // $typeEnum = $this->typeEnum;
+        $send_users = Message::whereSenderId(Session::get('uid'))->select('receiver_id')->distinct()->get();
+        $s = array();
+        foreach ($send_users as $key => $value) {
+            // echo $value->receiver_id . "\n\r";
+            $s[] = $value->receiver_id;
+        }
+
+        $receiv_users = Message::whereReceiverId(Session::get('uid'))->select('sender_id')->distinct()->get();
+        foreach ($receiv_users as $key => $value) {
+            // echo $value->receiver_id . "\n\r";
+            $s[] = $value->sender_id;
+        }
+
+        $m = Message::where(function($q) use ($s) {
+            $q->whereSenderId(Session::get('uid'))
+                ->whereIn('receiver_id', $s);
+        })->orWhere(function($q) use ($s){
+            $q->whereReceiverId(Session::get('uid'))
+                ->whereIn('sender_id', $s);
+        })->groupBy('sender_id', 'receiver_id')->orderBy('created_at', 'desc')->get();
+
+
+        $lists = array();
+        $tmp = array();
+        foreach ($m as $key => $value) {
+            if ($value->sender_id < $value->receiver_id) {
+                $x = $value->sender_id."-".$value->receiver_id;
+            } else {
+                $x = $value->receiver_id."-".$value->sender_id;
+            }
+            if (!isset($tmp[$x])) {
+                $tmp[$x] = 1;
+                $lists[$key] = $value;
+            }
+        }
+        // dd($tmp);
+// dd(count($lists));
         // 获取父类名页面显示
         $cn = new Column();
         $arr = $cn->getPath($query['column_id']);
@@ -136,6 +171,12 @@ class MessageController extends BaseController {
                 $q->whereReceiverId($message->receiver_id)
                 ->orWhere('receiver_id', $message->sender_id);
             })->orderBy('created_at', 'dasc')->get();
+
+        $msgs = array();
+        foreach ($messages as $key => $value) {
+            $msgs[] = $value->id;
+        }
+        Message::whereIn('id', $msgs)->update(array('status' => 1));
         // 获取父类名页面显示
         $cn = new Column();
         $arr = $cn->getPath($query['column_id']);
