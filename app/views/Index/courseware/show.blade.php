@@ -12,7 +12,7 @@
     <body>
         <div id="flashContent">
             <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" width="1024" height="768" id="index" align="middle">
-                <param name="movie" value="{{$config_path . $query['path']}}index.swf" />
+                <param name="movie" value="{{$config_path . $query['path']}}book.swf" />
                 <param name="quality" value="high" />
                 <param name="bgcolor" value="#ffffff" />
                 <param name="play" value="true" />
@@ -25,8 +25,8 @@
                 <param name="allowScriptAccess" value="sameDomain" />
                 <param name="allowFullScreen" value="true" />
                 <!--[if !IE]>-->
-                <object type="application/x-shockwave-flash" data="{{$config_path . $query['path']}}index.swf" width="1024" height="768">
-                    <param name="movie" value="{{$config_path . $query['path']}}index.swf" />
+                <object type="application/x-shockwave-flash" data="{{$config_path . $query['path']}}book.swf" width="1024" height="768">
+                    <param name="movie" value="{{$config_path . $query['path']}}book.swf" />
                     <param name="quality" value="high" />
                     <param name="bgcolor" value="#ffffff" />
                     <param name="play" value="true" />
