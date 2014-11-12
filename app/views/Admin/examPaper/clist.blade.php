@@ -19,6 +19,7 @@
           <tr>
             <th>#</th>
             <th>大题题干</th>
+            <th>题量</th>
             <th>每题分数</th>
             <th>出题数</th>
             <th>排序序号</th>
@@ -30,6 +31,7 @@
               <tr>
                 <td>{{$list->id}}</td>
                 <td><a href="/admin/examPaper/qlist?id={{$list->id}}">{{$list->title}}</a></td>
+                <td>{{$list->count}}</td>
                 <td>{{$list->score}}</td>
                 <td>{{$list->rnum}}</td>
                 <td>{{$list->ordern}}</td>

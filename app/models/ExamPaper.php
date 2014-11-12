@@ -129,9 +129,17 @@ class ExamPaper extends Eloquent {
         return $list;
     }
     
+    /* 随机获取大题题目列表 */
     public function getRandQuestions($exam_id, $num)
     {
         $list = ExamQuestionRelation::where('exam_id', '=', $exam_id)->orderByRaw("RAND()")->take($num)->get();
+        return $list;
+    }
+
+    /* 获取试卷大题题目总数 */
+    public function getQuestionsCount($exam_id)
+    {
+        $list = ExamQuestionRelation::where('exam_id', '=', $exam_id)->orderBy('ordern', 'asc')->count();
         return $list;
     }
 }

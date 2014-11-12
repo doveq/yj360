@@ -107,6 +107,9 @@ class ExamPaperController extends \BaseController {
 		$info = $ep->find($id);
 
 		$lists = $ep->getClist($id);
+        foreach ($lists as &$v) {
+            $v->count = $ep->getQuestionsCount($v->id);
+        }
 
 		// $parent = Column::find($info->column_id);
   //       $paths = array_reverse($parent->getPath($parent->id));
