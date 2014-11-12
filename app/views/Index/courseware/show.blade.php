@@ -57,7 +57,7 @@
             }
             function dowZip()
             {
-                window.location.href="{{$config_path . $query['path']}}/zip.php?filename={{$query['filename']}}";
+                window.location.href="{{$config_path . $query['path']}}zip.php?filename={{$query['filename']}}";
             }
         </script>
 </html>
