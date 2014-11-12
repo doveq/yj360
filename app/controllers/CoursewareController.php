@@ -56,45 +56,12 @@ class CoursewareController extends BaseController
                 $lists = $dir_info[$query['d1']];
             }
         }
-//     $dir_info = array(
-// array(
-//     'name' => '第一册',
-//     'pic' => '',
-//     'files' => array(
-//         array(
-//             'name' => 'xxxx',
-//             'pic' => '',
-//             'path' => 'chapter1/1/',
-//         ),
-//         array(
-//             'name' => 'yyyy',
-//             'pic' => '',
-//             'path' => 'chapter1/2/',
-//         ),
-//     ),
-// ),
-// array(
-//     'name' => '第二册',
-//     'pic' => '',
-//     'files' => array(
-//         array(
-//             'name' => 'xxxx',
-//             'pic' => '',
-//             'path' => 'chapter2/1/',
-//         ),
-//         array(
-//             'name' => 'yyyy',
-//             'pic' => '',
-//             'path' => 'chapter2/2/',
-//         ),
-//     ),
-// ),
-
-
-// );
-
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        return $this->indexView('courseware.index', compact('columns', 'query', 'lists', 'config_path', 'back_url', 'column_name'));
+        return $this->indexView('courseware.index', compact('columns', 'query', 'lists', 'config_path', 'back_url', 'column_name', 'columnHead'));
 	}
 
     public function show()
@@ -114,9 +81,12 @@ class CoursewareController extends BaseController
             $column_name = '多媒体教材';
             $back_url = "/courseware?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
         }
-
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        return $this->indexView('courseware.show', compact('columns', 'query', 'config_path', 'back_url', 'column_name'));
+        return $this->indexView('courseware.show', compact('columns', 'query', 'config_path', 'back_url', 'column_name', 'columnHead'));
 
     }
 

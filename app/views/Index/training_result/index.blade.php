@@ -1,6 +1,8 @@
 @extends('Index.master')
 @section('title')重点训练@stop
 
+@extends('Index.column.columnHead')
+
 @section('content')
 <div class="container-column wrap">
   <div class="row">

@@ -41,8 +41,12 @@ class MessageController extends BaseController {
 
         // $statusEnum = $this->statusEnum;
         // $typeEnum = $this->typeEnum;
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        return $this->indexView('message.index', compact('query', 'lists', 'columns'));
+        return $this->indexView('message.index', compact('query', 'lists', 'columns', 'columnHead'));
     }
 
 
@@ -68,9 +72,13 @@ class MessageController extends BaseController {
             $query['column_id'] = 3;
         }
 
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $user = User::find($query['receiver_id']);
-        return $this->indexView('message.create', compact('user','columns', 'query'));
+        return $this->indexView('message.create', compact('user','columns', 'query', 'columnHead'));
     }
 
 
@@ -100,7 +108,7 @@ class MessageController extends BaseController {
         $message->content = $query['content'];
         $message->created_at = date("Y-m-d H:i:s");
         $message->type = 1;
-        $message->dialog = $query['dialog'];
+        if (isset($query['dialog'])) $message->dialog = $query['dialog'];
         $message->save();
         return Redirect::to('/message?column_id=' . $query['column_id']);
     }
@@ -128,8 +136,12 @@ class MessageController extends BaseController {
                 $q->whereReceiverId($message->receiver_id)
                 ->orWhere('receiver_id', $message->sender_id);
             })->orderBy('created_at', 'asc')->get();
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        return $this->indexView('message.show', compact('message', 'messages', 'columns', 'query'));
+        return $this->indexView('message.show', compact('message', 'messages', 'columns', 'query', 'columnHead'));
 
     }
 

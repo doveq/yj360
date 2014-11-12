@@ -1,6 +1,8 @@
 @extends('Index.master')
 @section('title')我的消息 @stop
 
+@extends('Index.column.columnHead')
+
 @section('content')
 <div class="container-column wrap">
   <div class="row">
@@ -53,21 +55,25 @@
 @stop
 
 @section('js')
+<script type="text/javascript" src="/assets/layer/layer.min.js"></script>
+
 <script type="text/javascript">
 $(function(){
   delete_message = function(id){
-    if(confirm('您确定要删除吗？')){
+    layer.confirm('您确定要删除吗？', function(){
       $.ajax({
-        url:'/message/'+id,
+      url:'/message/'+id+"?column_id={{$query['column_id']}}",
         // async:false,
         type:'delete',
       })
-      .fail(function(){alert('操作失败')})
+      .fail(function(){
+        layer.msg('删除失败,请刷新重试', 2, 1);
+      })
       .success(function(){
         $('#message_'+id).remove();
+        layer.msg('删除成功', 1, 1);
       });
-      // alert(htmlobj.responseText);
-    }
+    });
   };
 });
 </script>

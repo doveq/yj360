@@ -16,6 +16,7 @@
                 <param name="quality" value="high" />
                 <param name="bgcolor" value="#ffffff" />
                 <param name="play" value="true" />
+                <param name="base" value="{{$config_path . $query['path']}}"></param>
                 <param name="loop" value="true" />
                 <param name="wmode" value="window" />
                 <param name="scale" value="showall" />
@@ -30,6 +31,7 @@
                     <param name="quality" value="high" />
                     <param name="bgcolor" value="#ffffff" />
                     <param name="play" value="true" />
+                    <param name="base" value="{{$config_path . $query['path']}}"></param>
                     <param name="loop" value="true" />
                     <param name="wmode" value="window" />
                     <param name="scale" value="showall" />
@@ -55,7 +57,7 @@
             }
             function dowZip()
             {
-                window.location.href="{{$config_path . $query['path']}}/zip.php?filename={{$query['filename']}}";
+                window.location.href="{{$config_path . $query['path']}}zip.php?filename={{$query['filename']}}";
             }
         </script>
 </html>

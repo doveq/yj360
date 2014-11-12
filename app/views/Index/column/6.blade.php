@@ -5,6 +5,7 @@
 
 @section('content')
 <div class="container-column wrap">
+  <div class="row">
   @include('Index.column.nav')
 
   <div class="wrap-right">
@@ -15,7 +16,7 @@
 
       <div class="classes-list">
           <table class="table-2" border="0" cellpadding="0" cellspacing="0">
-         
+
             @if(!empty($content))
               @foreach($content as $list)
                 <tr>
@@ -35,6 +36,7 @@
 
   </div>
   <div class="clear"></div>
+</div> <!-- /container -->
 </div> <!-- /container -->
 @stop
 

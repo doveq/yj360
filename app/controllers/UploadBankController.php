@@ -26,9 +26,13 @@ class UploadBankController extends BaseController {
         $user_id = Session::get('uid');
         $lists = Uploadbank::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
 
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $statusEnum = $this->statusEnum;
-        return $this->indexView('uploadbank.index', compact('statusEnum', 'lists', 'query', 'columns'));
+        return $this->indexView('uploadbank.index', compact('statusEnum', 'lists', 'query', 'columns', 'columnHead'));
     }
 
 
@@ -43,8 +47,12 @@ class UploadBankController extends BaseController {
         $query = Input::only('column_id');
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->get();
 
+        // 获取父类名页面显示
+        $cn = new Column();
+        $arr = $cn->getPath($query['column_id']);
+        $columnHead = $arr[0];
         $lists = Uploadbank::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-        return $this->indexView('uploadbank.create', compact('columns', 'query', 'lists'));
+        return $this->indexView('uploadbank.create', compact('columns', 'query', 'lists', 'columnHead'));
     }
 
 
