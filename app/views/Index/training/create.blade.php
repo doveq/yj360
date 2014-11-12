@@ -1,5 +1,6 @@
 @extends('Index.master')
 @section('title')我的班级 @stop
+@extends('Index.column.columnHead')
 
 @section('content')
 <div class="container-column wrap">
