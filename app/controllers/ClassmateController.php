@@ -208,10 +208,11 @@ class ClassmateController extends BaseController {
      */
     public function destroy($id)
     {
+
         $classmate = Classmate::find($id);
         $class_id = $classmate->class_id;
         $classmate->delete();
-        Message::whereClassmateId($id)->delete();
+        // Message::whereClassmateId($id)->delete();
 
         if (Request::ajax()) {
             return Response::json('ok');

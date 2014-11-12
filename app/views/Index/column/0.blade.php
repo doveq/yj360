@@ -5,7 +5,7 @@
 
 @section('content')
 <div class="container-column wrap">
-
+<div class="row">
   @include('Index.column.nav')
 
   <div class="wrap-right">
@@ -30,6 +30,7 @@
       </div>
   </div>
   <div class="clear"></div>
+</div> <!-- /container -->
 </div> <!-- /container -->
 @stop
 

@@ -100,7 +100,7 @@ class MessageController extends BaseController {
         $message->content = $query['content'];
         $message->created_at = date("Y-m-d H:i:s");
         $message->type = 1;
-        $message->dialog = $query['dialog'];
+        if (isset($query['dialog'])) $message->dialog = $query['dialog'];
         $message->save();
         return Redirect::to('/message?column_id=' . $query['column_id']);
     }
