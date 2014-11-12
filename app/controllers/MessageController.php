@@ -171,6 +171,12 @@ class MessageController extends BaseController {
                 $q->whereReceiverId($message->receiver_id)
                 ->orWhere('receiver_id', $message->sender_id);
             })->orderBy('created_at', 'dasc')->get();
+
+        $msgs = array();
+        foreach ($messages as $key => $value) {
+            $msgs[] = $value->id;
+        }
+        Message::whereIn('id', $msgs)->update(array('status' => 1));
         // 获取父类名页面显示
         $cn = new Column();
         $arr = $cn->getPath($query['column_id']);
