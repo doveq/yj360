@@ -205,5 +205,5 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::post('/feedback/dopost', 'FeedbackController@doPost');
 });
 
-
-
+// 数据导入
+Route::get('/api/import', '\Api\ImportController@index');
