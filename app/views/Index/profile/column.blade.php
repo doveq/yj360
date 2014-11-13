@@ -9,15 +9,15 @@
 
         <tr >
             <td style="padding:10px;">
-                <a href="/column?column_id=3"><img src="/assets/img/static-k1.png" /></a>
+                <a href="/column?column_id=3"><img src="/assets/img/index-a3.png" /></a>
             </td>
 
             <td style="padding:10px;">
-                <a href="/column?column_id=4"><img src="/assets/img/static-k2.png" /></a>
+                <a href="/column?column_id=4"><img src="/assets/img/index-a2.png" /></a>
             </td>
 
             <td style="padding:10px;">
-                <a href="/column?column_id=5"><img src="/assets/img/static-k3.png" /></a>
+                <a href="/column?column_id=5"><img src="/assets/img/index-a1.png" /></a>
             </td>
         </tr>
 

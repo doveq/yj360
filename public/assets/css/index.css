@@ -67,7 +67,7 @@ a img {
 	z-index: 99999;
 }
 #column-head-list{
-	width: 345px;
+	/*width: 345px;*/
 	height: 220px;
 	padding:10px;
 	background-color: #fff;
@@ -82,7 +82,7 @@ a img {
 	float: left;
 }
 #chl-jt{
-	display: none;
+	/*display: none;*/
 	text-align: center;
 	height:2px;
 	line-height:2px;
