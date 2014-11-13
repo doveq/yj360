@@ -11,7 +11,7 @@
       <div class="tabtool">
         <a>我的作业</a>
         <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
-        <a href="/message" class="tabtool-msg" style="float:right;">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
+        <a href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
