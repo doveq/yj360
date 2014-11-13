@@ -1072,3 +1072,15 @@ a.tyadel {
 .classes-txt h2{
 	font-size: 14px;
 }
+.invite-box {
+	margin:0 auto;
+	width:480px;
+	height:280px;
+	border:1px solid #f1f1f1;
+	margin-top:20px;
+	margin-bottom: 30px;
+}
+
+.center {
+	text-align: center;
+}

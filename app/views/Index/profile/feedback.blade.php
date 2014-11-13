@@ -3,8 +3,9 @@
 
 @section('content')
 <div class="container-column wrap">
-  @include('Index.profile.nav')
+  <div class="row">
 
+  @include('Index.profile.nav')
 
   <div class="wrap-right">
       <form role="form" action="/feedback/dopost" method="post" enctype="multipart/form-data" >
@@ -16,19 +17,20 @@
         <tr>
             <td style="padding:10px 10px;">
               <textarea name="content" rows="5" style="width:600px;" placeholder="您可以将你的问题与联系方式写在这里"></textarea>
-            </td>            
+            </td>
         </tr>
-        
+
         <tr>
             <td style="padding:10px 10px;">
               <input type="submit" value="提交" style="padding:10px 20px;background-color:#00b1bb;border:none;color:#fff;" />
-            </td>            
+            </td>
         </tr>
 
       </table>
       </form>
   </div>
   <div class="clear"></div>
+</div> <!-- /container -->
 </div> <!-- /container -->
 @stop
 

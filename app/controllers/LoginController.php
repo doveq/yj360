@@ -84,6 +84,9 @@ class LoginController extends BaseController
 	/* 用户注册 */
 	public function register()
 	{
+		if (Session::get('inviter') == '') {
+			return Redirect::to('/invite_by');
+		}
 		return $this->indexView('register');
 	}
 
@@ -119,7 +122,8 @@ class LoginController extends BaseController
 
 					//$data['type'] = 2;
 				}
-
+				//删除session中的邀请人
+				Session::forget('inviter');
 				return $this->indexPrompt("操作成功", "用户注册成功，请登录", $url = "/login", $auto = true);
 			}
 		}
@@ -153,7 +157,7 @@ class LoginController extends BaseController
 		$code = rand(100000, 999999);
 		Session::put('code', $code);
 
-		$msg = "验证码：{$code}（为了保证账户安全，请勿向他人泄漏）【音教360】";
+		$msg = "验证码：{$code}（为了保证账户安全，请勿向他人泄漏）【音基360】";
 
 		$message = new Message();
 		return $message->mobileMsg($mobile, $msg);
@@ -181,7 +185,7 @@ class LoginController extends BaseController
 
 				$user->setInfo($info->id, array('password' => $user->encPasswd($passwd)) );
 
-				$msg = "新密码：{$passwd}（为了保证账户安全，请勿向他人泄漏）【音教360】";
+				$msg = "新密码：{$passwd}（为了保证账户安全，请勿向他人泄漏）【音基360】";
 
 				$message = new Message();
 				$message->mobileMsg($inputs['mobile'], $msg);
@@ -202,5 +206,36 @@ class LoginController extends BaseController
 		//$mobile = Input::get('mobile');
 
 		return $this->indexView('forgot');
+	}
+
+	/* 填写邀请人 */
+	public function inviteby()
+	{
+
+		return $this->indexView('inviteby');
+	}
+	/* 填写邀请人 */
+	public function doinviteby()
+	{
+		$query = Input::only('name');
+        $validator = Validator::make($query,
+            array(
+                'name' => 'required',
+            )
+        );
+
+        if($validator->fails())
+        {
+            return Redirect::to('/invite_by')->withErrors($validator)->withInput($query);
+        }
+        $info = User::whereName($query['name'])->first();
+        if ($info) {
+        	Session::put('inviter', $info->name);
+			return Redirect::to('/register');
+        } else {
+        	$error = '没有此人';
+			return $this->indexView('inviteby', compact('error'));
+        }
+		// return $this->indexView('inviteby');
 	}
 }
