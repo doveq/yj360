@@ -28,7 +28,6 @@
           @foreach($lists['files'] as $k => $d)
           <tr>
               <td class="tytd">
-                <!-- <a href="{{$config_path}}{{$d['path']}}index.php?filename={{$d['pinyin']}}" target="_blank" class="play_ware">{{$d['name']}}</a> -->
                 <a href="/courseware/show?column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware">{{$d['name']}}</a>
               </td>
           </tr>
@@ -39,7 +38,7 @@
           </table>
         @else
           @foreach($lists as $k => $d)
-            @if ($d['pic'] != '')
+            <!-- @if ($d['pic'] != '')
             <div class="classse-box" style="text-align:center">
               <div>
                 <img src="{{$config_path}}{{$d['pic']}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
@@ -54,7 +53,26 @@
               <div style="width: 100px; float: left; height: 100px; margin: 10px; padding: 10px; text-align: center;">
                 <h2><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}">{{$d['name']}}</a></h2>
               </div>
-            @endif
+            @endif -->
+
+            @foreach($lists['files'] as $k => $d)
+            <div style="background-color: #fff;
+                float:left;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: block;
+        line-height: 1.42857;
+        margin-bottom: 20px;
+        width:25%;
+        margin-left:10px;
+        padding: 4px;">
+                <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}"><img width="100%" height="200" style="vertical-align:middle;" src="{{$config_path.$d['pic']}}"></a>
+                <div style="padding:9px;text-align:center;" class="label">
+                  <h4><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}">{{$d['name']}}</a></h4>
+                </div>
+              </div>
+            @endforeach
+
           @endforeach
         @endif
           <div class="clear"></div>

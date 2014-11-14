@@ -40,7 +40,7 @@ class CoursewareController extends BaseController
             foreach ($dir_info as $key => $d) {
                 foreach ($d['files'] as $key => $f) {
                     if (stristr($f['name'],$query['q']) !== false) {
-                        $lists['files'][] = array('name' => $f['name'], 'path' => $f['path'], 'pinyin' => $py->get_pinyin($f['name']));
+                        $lists['files'][] = array('name' => $f['name'], 'path' => $f['path'], 'pinyin' => $py->get_pinyin($f['name'], 'pic' => $f['pic']));
                     }
                 }
             }
