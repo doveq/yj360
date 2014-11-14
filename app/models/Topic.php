@@ -291,6 +291,8 @@ class Topic  {
 		if(isset($data['flash']) && is_numeric($data['flash']))
 			$info['flash'] = $data['flash'];
 
+		if(isset($data['explain']) && !empty($data['explain']))
+			$info['explain'] = $data['explain'];
 		
 		$id = 0;
 		if($info)
