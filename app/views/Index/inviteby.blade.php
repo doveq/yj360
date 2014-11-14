@@ -14,7 +14,7 @@
     @endif
     <div style="text-align:center;">{{ Form::text('name', '', array('class' => 'tyinput', 'id' => 'inputName','style' => 'width:200px'))}}</div>
     <br/>
-    <div style="text-align:center;">{{ Form::submit('下一步', array('class' => '')) }}</div>
+    <div style="text-align:center;">{{ Form::submit('', array('class' => 'nextbtn')) }}</div>
     <br/>
     <div style="text-align:center;margin:5px;color:#ff0000">没有邀请人, 但我想注册怎么办?</div>
     <div style="text-align:center;margin:5px;color:#5ABC61">请加入QQ群:249878625</div>

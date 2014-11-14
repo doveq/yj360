@@ -882,6 +882,7 @@ a.tyadel {
 	height: 30px;
 	background: url("/assets/img/index-login-btn.png") no-repeat 0 0;
 	border: none;
+	cursor:pointer;
 }
 #index-login .loginbntn:hover{
 	background: url("/assets/img/index-login-btn-hover.png") no-repeat 0 0;
@@ -1083,4 +1084,15 @@ a.tyadel {
 
 .center {
 	text-align: center;
+}
+
+.nextbtn{
+	width: 100px;
+	height: 30px;
+	background: url("/assets/img/next.png") no-repeat 0 0;
+	border: none;
+	cursor:pointer;
+}
+.nextbtn:hover {
+	background: url("/assets/img/next_hover.png") no-repeat 0 0;
 }
