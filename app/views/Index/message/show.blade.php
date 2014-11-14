@@ -10,7 +10,7 @@
   <div class="wrap-right">
       <div class="tabtool">
           <a href="/message?column_id={{$query['column_id']}}" style="color:#499626;"><返回</a>
-          <a>查看消息</a>
+          查看消息
           <div class="clear"></div>
       </div>
       <div class="clear"></div>

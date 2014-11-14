@@ -653,15 +653,26 @@ li.index-list-more a {
     /*padding-left: 30px;*/
 }
 .tabtool a {
-	float: left;
+	/*float: left;*/
 	margin-right:20px;
+	color: #499528;
 }
 .tabtool-msg {
+	float: right;
 	color: #333;
-	font-size: 16px;
+	/*font-size: 16px;*/
 }
 .tabtool-msg span {
 	color: #fb9742;
+}
+
+.tabtool-btn-back {
+	color: #499528;
+	float: left;
+}
+.tabtool-btn {
+	color: #499528;
+	float: right;
 }
 .classes-list{
 	padding-bottom: 30px;

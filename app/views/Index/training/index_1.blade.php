@@ -9,10 +9,9 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        <a>我的作业</a>
-        <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
+        我的作业
         <a style="float:right;" href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
-        <div class="clear"></div>
+        <a href="/training/create?column_id={{$query['column_id']}}" class="tabtool-btn">布置作业</a>
       </div>
       <div class="clear"></div>
         <table  class="stable" border="0" cellpadding="0" cellspacing="0">

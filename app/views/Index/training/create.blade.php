@@ -9,20 +9,19 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/training/create?column_id={{$query['column_id']}}"><img src="/assets/img/addzdxl.jpg" /></a>
-          <a style="float:right;" href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
-          <div class="clear"></div>
+        布置作业
+          <a href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
       </div>
       <div class="clear"></div>
 
       <div class="classes-list">
-        <div style="padding:10px;">你已加入{{$classes_num}}个班级, 安排了{{$trainings_num}}个重点训练</div>
+        <div style="padding:10px;">你已加入{{$classes_num}}个班级, 安排了{{$trainings_num}}个作业</div>
         {{ HTML::ul($errors->all()) }}
         {{ Form::open(array('url' => '/training', 'method' => 'post')) }}
           <table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #f1f1f1; width:100%;">
-            <tr><td style="background-color:#00bbac;padding:10px;" colspan="2">新建重点训练</td></tr>
+            <tr><td style="background-color:#00bbac;padding:10px;" colspan="2">布置作业</td></tr>
             <tr>
-              <td style="width:20%;text-align:right;">{{ Form::label('inputName', '* 训练名称', array('class' => 'tylabel')) }}</td>
+              <td style="width:20%;text-align:right;">{{ Form::label('inputName', '* 作业名称', array('class' => 'tylabel')) }}</td>
               <td>{{ Form::text('name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'width:200px'))}}</td>
             </tr>
             <tr>
