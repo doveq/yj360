@@ -4,7 +4,7 @@
 @section('content')
 <div class="container-column wrap">
 
-  <div style="margin:20px;padding:50px">
+  <div style="margin:50px 0;">
       <table class="table-2" border="0" cellpadding="0" cellspacing="0">
 
         <tr >

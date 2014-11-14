@@ -3,6 +3,7 @@
 
 @section('content')
 <div class="container-column wrap">
+    <div class="row">
   @include('Index.profile.nav')
 
   <div class="wrap-right">
@@ -32,7 +33,7 @@
                 <input class="tyinput" type="password" name="password_confirmation" value=""  />
             </td>
         </tr>
-        
+
 
         <tr>
             <td class="lable">&nbsp;</td>
@@ -44,6 +45,7 @@
       </form>
   </div>
   <div class="clear"></div>
+</div> <!-- /container -->
 </div> <!-- /container -->
 @stop
 

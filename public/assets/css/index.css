@@ -557,7 +557,7 @@ li.index-list-more a {
 	border-left: 1px solid #e0e0e0;
 }
 .wrap-right{
-	margin-left:30px;
+	margin-left:10px;
 	width: 808px;
 	float:left;
 	padding-bottom: 10px;
@@ -566,8 +566,8 @@ li.index-list-more a {
 	border-bottom: 1px solid #e0e0e0;
 }
 .sort-tit{
-	background: url("/assets/img/sort-tit.jpg") no-repeat 0 16px;
-	padding:15px 0 12px 30px;
+	background: url("/assets/img/sort-tit.jpg") no-repeat 0 10px;
+	padding:10px 0 10px 30px;
 	font-weight: bold;
 	font-size: 14px;
 	color: #3f3f3f;
@@ -642,10 +642,15 @@ li.index-list-more a {
 }
 .tabtool{
 	background-color: #f1f1f1;
-	margin-left: -30px;
+	margin-left: -10px;
     padding: 10px 30px;
-    font-size: 16px;
-    height: 27px;
+    /*font-size: 16px;*/
+    height: 20px;
+
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+
+    /*padding-left: 30px;*/
 }
 .tabtool a {
 	float: left;

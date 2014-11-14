@@ -10,7 +10,7 @@
 
 
   <div class="wrap-right">
-      <div class="tabtool" style="margin-left:-30px;margin-bottom:10px;background-color:#f1f1f1;height:27px;padding-left:30px;border-bottom:1px solid #e0e0e0">
+      <div class="tabtool">
           @if ($back_url == 1)
           <a href="/column?id={{$column->parent_id}}&column_id={{$query['column_id']}}" style="color:#499626;">&lt; 返回</a>
           @endif
