@@ -40,7 +40,7 @@
           @foreach($lists as $k => $d)
             <div style="background-color: #fff;
                 float:left;
-        border: 1px solid #ddd;
+
         border-radius: 4px;
         display: block;
         line-height: 1.42857;
@@ -49,7 +49,7 @@
         margin-left:10px;
         padding: 4px;">
                 @if ($d['pic'] != '')
-                <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}"><img width="180" style="vertical-align:middle;" src="{{$config_path.$d['pic']}}"></a>
+                <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}"><img width="155" height="210" style="vertical-align:middle;" src="{{$config_path.$d['pic']}}"></a>
                 @endif
                 <div style="padding:9px;text-align:center;" class="label">
                   <h4><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}">{{$d['name']}}</a></h4>
