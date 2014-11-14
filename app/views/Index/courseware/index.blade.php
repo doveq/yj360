@@ -55,7 +55,7 @@
               </div>
             @endif -->
 
-            @foreach($lists['files'] as $k => $d)
+            @foreach($lists as $k => $d)
             <div style="background-color: #fff;
                 float:left;
         border: 1px solid #ddd;
