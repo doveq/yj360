@@ -123,7 +123,7 @@ class LoginController extends BaseController
 					//$data['type'] = 2;
 				}
 				//删除session中的邀请人
-				Session::forget('inviter');
+				// Session::forget('inviter');
 				return $this->indexPrompt("操作成功", "用户注册成功，请登录", $url = "/login", $auto = true);
 			}
 		}
@@ -230,7 +230,7 @@ class LoginController extends BaseController
         }
         $info = User::whereName($query['name'])->first();
         if ($info) {
-        	Session::put('inviter', $info->name);
+        	Session::flash('inviter', $info->name);
 			return Redirect::to('/register');
         } else {
         	$error = '没有此人';
