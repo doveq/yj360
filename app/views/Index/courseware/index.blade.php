@@ -38,24 +38,6 @@
           </table>
         @else
           @foreach($lists as $k => $d)
-            <!-- @if ($d['pic'] != '')
-            <div class="classse-box" style="text-align:center">
-              <div>
-                <img src="{{$config_path}}{{$d['pic']}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
-              </div>
-              <div class="classes-txt">
-                <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}" style="color:#fff;">
-                <div><h2><b>{{$d['name']}}</b></h2></div>
-                </a>
-              </div>
-            </div>
-            @else
-              <div style="width: 100px; float: left; height: 100px; margin: 10px; padding: 10px; text-align: center;">
-                <h2><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}">{{$d['name']}}</a></h2>
-              </div>
-            @endif -->
-
-            @foreach($lists as $k => $d)
             <div style="background-color: #fff;
                 float:left;
         border: 1px solid #ddd;
@@ -74,8 +56,6 @@
                 </div>
               </div>
             @endforeach
-
-          @endforeach
         @endif
           <div class="clear"></div>
       </div>
