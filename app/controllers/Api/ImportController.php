@@ -1,4 +1,8 @@
 <?php namespace Api;
+set_time_limit(0);
+header('Content-Type:text/html; charset=utf-8');
+
+use DB;
 use Attachments;
 use Topic;
 use SortQuestionRelation;
@@ -6,11 +10,17 @@ use SortQuestionRelation;
 /* 批量导入题目数据 */
 class ImportController extends \BaseController {
 
-    public function index()
+    public function __construct()
     {
-        $this->info();
+        $this->att = new Attachments();
+        $this->topic = new Topic();
+        $this->sar = new SortQuestionRelation();
     }
 
+    public function index()
+    {
+        $this->start();
+    }
 
     /* 解析题目信息 */
     public function encode($path)
@@ -32,7 +42,7 @@ class ImportController extends \BaseController {
         while (!feof($file_handle)) 
         {
             $line = trim( fgets($file_handle) );
-            $line = mb_convert_encoding($line, "UTF-8", "GB2312");
+            $line = mb_convert_encoding($line, "UTF-8", "GBK");
 
             $lines = explode(":", $line, 2);
             switch ($lines[0]) {
@@ -49,10 +59,8 @@ class ImportController extends \BaseController {
                     {
                         $info['question']['type'] = 1;
                     }
-                    elseif($lines[1] == 'MCQ')
-                    {
-                        $info['question']['type'] = 2;
-                    }
+                    else
+                        return false;  // 不知道的题型则跳出
                     break;
                 case 'A':
                     if ($lines[1] != '') {
@@ -190,27 +198,30 @@ class ImportController extends \BaseController {
     /* 添加题目信息 */
     public function addQuestion($info)
     {
-        $topic = new Topic();
-        $att = new Attachments();
-        $sar = new SortQuestionRelation();
 
-        $qid = $topic->add($info);
+        $qid = $this->topic->add($info);
 
         // 添加分类信息
-        $sar->addMap(array('sort' => $info['sort'], 'qid' => $qid));
+        $this->sar->addMap(array('sort' => $info['sort'], 'qid' => $qid));
 
         $questionAtt = array();
         if( !empty($info['img_file']) )
-            $questionAtt['img'] = $att->addTopicImg($qid, $info['img_file']);
+            $questionAtt['img'] = $this->att->addTopicImg($qid, $info['img_file']);
 
         if( !empty($info['sound_file']) )
-            $questionAtt['sound'] = $att->addTopicAudio( $qid, $info['sound_file']);
+        {
+            $type = $this->att->getExt($info['sound_file']);
+            $questionAtt['sound'] = $this->att->addTopicAudio( $qid, $info['sound_file'], $type);
+        }
 
         if( !empty($info['hint_file']) )
-            $questionAtt['hint'] = $att->addTopicAudio( $qid, $info['hint_file']);
+        {
+            $type = $this->att->getExt($info['hint_file']);
+            $questionAtt['hint'] = $this->att->addTopicAudio( $qid, $info['hint_file'], $type);
+        }
 
         if($questionAtt)
-            $topic->edit($qid, $questionAtt);
+            $this->topic->edit($qid, $questionAtt);
 
         return $qid;
     }
@@ -219,15 +230,24 @@ class ImportController extends \BaseController {
     /* 添加答案信息 */
     public function addAnswer($qid, $info)
     {
-        $att = new Attachments();
-
         foreach($info as $answer) 
         {
-            $topic->addAnswers($qid, $answer);
+            if( !empty($answer['img_file']) )
+            {
+                $answer['img'] = $this->att->addTopicImg($qid, $answer['img_file']);
+            }
+
+            if( !empty($answer['sound_file']) )
+            {
+                $type = $this->att->getExt($answer['sound_file']);
+                $answer['sound'] = $this->att->addTopicAudio( $qid, $answer['sound_file'], $type);
+            }
+
+            $this->topic->addAnswers($qid, $answer);
         }
     }
 
-    public function info()
+    public function start()
     {
         $dir_root = public_path() .'/data/questions';
         require $dir_root . "/import_config.php";  // 获取 $info 数据
@@ -247,18 +267,26 @@ class ImportController extends \BaseController {
                         $thisdir = $dir . "/" . $entry;
                         
                         $tpinfo = $this->encode($thisdir);
-                        $tpinfo['question']['sort'] = $info['sort'];  // 题库分类
-                        
-                        $qid = $this->addQuestion($tpinfo['question']);
-                        if($qid)
+
+                        if($tpinfo)
                         {
-                            $this->addAnswer($qid, $tpinfo['answer']);
+                            // 根据原始编号判断是否已经入库
+                            $qinfo = DB::table('questions')->where('source', $tpinfo['question']['source'])->first();
+                            if(!$qinfo)
+                            {
+                                $tpinfo['question']['sort'] = $config['sort'];  // 题库分类
+                                
+                                $qid = $this->addQuestion($tpinfo['question']);
+                                if($qid)
+                                {
+                                    $this->addAnswer($qid, $tpinfo['answer']);
+                                }
+
+                                $this->delTree($thisdir);
+                                print_r($tpinfo['question']['source']);
+                            }
                         }
 
-                        print_r($info);
-                        exit;
-
-                        //test
                     }
                 }
 
@@ -266,7 +294,19 @@ class ImportController extends \BaseController {
             }
         }
 
-
+        echo "完成！！！";
     }// function end
+
+    // 删除目录和目录下的文件
+    public function delTree($dir) 
+    {
+        $files = array_diff(scandir($dir), array('.','..'));
+        foreach ($files as $file) 
+        {
+            (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
+        }
+
+        return rmdir($dir);
+    } 
 
 }

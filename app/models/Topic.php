@@ -184,6 +184,8 @@ class Topic  {
 		return $info;
 	}
 
+
+
 	/* 添加题目 */
 	public function add($data)
 	{
