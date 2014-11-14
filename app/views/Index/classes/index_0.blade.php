@@ -9,10 +9,8 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        <a>我的班级</a>
-        @if ($query['column_id'])
-          <a style="float:right;" href="/classm/add_class?column_id={{$query['column_id']}}"><img src="/assets/img/addclass.png" /></a>
-        @endif
+        我的班级
+        <a href="/classm/add_class?column_id={{$query['column_id']}}" class="tabtool-btn">加入班级</a>
       </div>
       <div class="clear"></div>
 

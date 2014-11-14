@@ -10,7 +10,7 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/message" class="tabtool-msg">发送消息 {{ HTML::ul($errors->all()) }}</a>
+          发送消息 {{ HTML::ul($errors->all()) }}
           <div class="clear"></div>
       </div>
       <div class="clear"></div>

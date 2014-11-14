@@ -9,8 +9,9 @@
     @include('Index.column.nav')
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
-          <div class="clear"></div>
+        我的消息
+        <a href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
+        <div class="clear"></div>
       </div>
       <div class="clear"></div>
 

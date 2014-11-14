@@ -8,9 +8,9 @@
     @include('Index.column.nav')
   <div class="wrap-right">
       <div class="tabtool">
-        <a>我的班级</a>
-          <a href="/classes/create?column_id={{$query['column_id']}}"><img src="/assets/img/addclasses.jpg" /></a>
-          <a style="float:right;" href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
+        我的班级
+          <a href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
+          <a href="/classes/create?column_id={{$query['column_id']}}" class="tabtool-btn">创建班级</a>
           <div class="clear"></div>
       </div>
       <div class="clear"></div>

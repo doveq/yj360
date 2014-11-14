@@ -8,7 +8,8 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/classmate/create?class_id={{$classes->id}}&column_id={{$query['column_id']}}"><img src="/assets/img/classes-tj.jpg" /></a>
+          <a href="/classes/{{$query['class_id']}}?column_id={{$query['column_id']}}" class="tabtool-btn-back"><返回</a>
+          添加成员
           <div class="clear"></div>
       </div>
       <div class="clear"></div>

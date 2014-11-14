@@ -9,10 +9,10 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        <a href="/classes?column_id={{$query['column_id']}}" style="color:#499626;"><返回</a>
-        <a>班级成员</a>
+        <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back"><返回</a>
+        班级成员
         @if ($classmate->count() > 0)
-        <a href="javascript:;" class="quit_class" style="float:right;color:#499626;" onclick="quit_class({{$classmate[0]->id}});">退出班级</a>
+        <a href="javascript:;" class="quit_class tabtool-btn" onclick="quit_class({{$classmate[0]->id}});">退出班级</a>
         @endif
           <div class="clear"></div>
       </div>

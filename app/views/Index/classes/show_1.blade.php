@@ -9,10 +9,10 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-          <a href="/classes?column_id={{$query['column_id']}}" style="color:#499626;"><返回</a>
-          <a>{{$classes->name}}</a>
-          <a href="/classmate/create?class_id={{$classes->id}}&column_id={{$query['column_id']}}"><img src="/assets/img/classes-tj.jpg" /></a>
-          <a href="javascript:void(0);" onClick="delete_all();"><img src="/assets/img/classes-sc.jpg" /></a>
+          <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back"><返回</a>
+          {{$classes->name}}
+          <a href="/classmate/create?class_id={{$classes->id}}&column_id={{$query['column_id']}}" class="tabtool-btn">添加成员</a>
+          <a href="javascript:void(0);" onClick="delete_all();" class="tabtool-btn">批量删除</a>
           <div class="clear"></div>
       </div>
       <div class="clear"></div>
