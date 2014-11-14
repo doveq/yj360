@@ -3,16 +3,16 @@
 
 @section('content')
 <div class="container wrap">
+  <div class="row">
   @include('Index.index.nav')
   <div class="wrap-right">
     <div class="tabtool">
       关于我们
     </div>
-    <div class="clear"></div>
     <div class="classes-list">
       关于我们...
     </div>
   </div>
-  <div class="clear"></div>
+</div> <!-- /container -->
 </div> <!-- /container -->
 @stop
