@@ -66,7 +66,9 @@
         width:25%;
         margin-left:10px;
         padding: 4px;">
+                @if ($d['pic'] != '')
                 <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}"><img width="100%" height="200" style="vertical-align:middle;" src="{{$config_path.$d['pic']}}"></a>
+                @endif
                 <div style="padding:9px;text-align:center;" class="label">
                   <h4><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}">{{$d['name']}}</a></h4>
                 </div>
