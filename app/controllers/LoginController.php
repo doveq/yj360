@@ -94,7 +94,7 @@ class LoginController extends BaseController
 	{
 		$data = Input::all();
 		$validator = Validator::make($data , array(
-			'name' => 'required|alpha_dash|between:3,8|unique:users',
+			'name' => 'required|alpha_dash|between:2,8',
 	        'tel' => 'required|digits:11|unique:users',
 	        'password' => 'required|min:6|confirmed')
 		);
