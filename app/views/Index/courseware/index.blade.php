@@ -38,18 +38,14 @@
           </table>
         @else
           @foreach($lists as $k => $d)
-            <div style="background-color: #fff;
-                float:left;
-
-        border-radius: 4px;
-        display: block;
-        line-height: 1.42857;
-        margin-bottom: 20px;
-        width:25%;
-        margin-left:10px;
-        padding: 4px;">
+            <div style="float:left;
+            margin-bottom: 20px;
+            width:25%;
+            margin-left:10px;
+            padding: 4px;
+            text-align:center;">
                 @if ($d['pic'] != '')
-                <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}"><img width="155" height="210" style="vertical-align:middle;" src="{{$config_path.$d['pic']}}"></a>
+                <a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}"><img src="{{$config_path.$d['pic']}}"></a>
                 @endif
                 <div style="padding:9px;text-align:center;" class="label">
                   <h4><a href="/courseware?d1={{$k}}&column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}">{{$d['name']}}</a></h4>
