@@ -24,9 +24,11 @@
     width:25%;
     margin-left:10px;
     padding: 4px;">
-              <a href="/topic?id={{$list->id}}" target="_blank"><img src="{{$list->img_url}}" width="100%" height="{{Config::get('app.thumbnail_height')}}" style="vertical-align:middle;"/></a>
+              <a href="/topic?id={{$list['id']}}" target="_blank">
+                <img src="{{$list['img_url']}}" width="100%" height="{{Config::get('app.thumbnail_height')}}" style="vertical-align:middle;"/>
+              </a>
               <div class='label' style="padding:9px;text-align:center;">
-                <h4>{{$list->txt}}</h4>
+                <h4>{{$list['txt']}}</h4>
               </div>
             </div>
           @endforeach
