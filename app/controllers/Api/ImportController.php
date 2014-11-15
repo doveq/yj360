@@ -14,7 +14,6 @@ class ImportController extends \BaseController {
     {
         $this->att = new Attachments();
         $this->topic = new Topic();
-        $this->sar = new SortQuestionRelation();
     }
 
     public function index()
@@ -26,6 +25,7 @@ class ImportController extends \BaseController {
     public function encode($path)
     {
         $smfile = $path . "/sm.txt";
+        $_POST['smfile'] =  $smfile;
 
         $info = array();
         $info['question'] = array();
@@ -47,6 +47,9 @@ class ImportController extends \BaseController {
             $lines = explode(":", $line, 2);
             switch ($lines[0]) {
                 case 'FloderName':
+                    $info['question']['source'] = $lines[1];  // 原始编号
+                    break;
+                case 'FolderName':
                     $info['question']['source'] = $lines[1];  // 原始编号
                     break;
                 case 'title':
@@ -150,9 +153,15 @@ class ImportController extends \BaseController {
         if(is_file($path . '/ts.mp3')) 
             $info['question']['sound_file'] = $path . '/ts.mp3';
 
+        if(is_file($path . '/ts.wav')) 
+            $info['question']['sound_file'] = $path . '/ts.wav';
+
         // 提干音
         if(is_file($path . '/tm.mp3')) 
             $info['question']['hint_file'] = $path . '/tm.mp3';
+
+        if(is_file($path . '/tm.wav')) 
+            $info['question']['hint_file'] = $path . '/tm.wav';
 
         /* 答案图片 */
         if(is_file($path . '/AP.png')) 
@@ -192,6 +201,26 @@ class ImportController extends \BaseController {
         if(is_file($path . '/FM.wav')) 
             $info['answer'][5]['sound_file'] = $path . '/FM.wav';
 
+        
+        // mp3 格式
+        if(is_file($path . '/AM.mp3')) 
+            $info['answer'][0]['sound_file'] = $path . '/AM.mp3';
+
+        if(is_file($path . '/BM.mp3')) 
+            $info['answer'][1]['sound_file'] = $path . '/BM.mp3';
+
+        if(is_file($path . '/CM.mp3')) 
+            $info['answer'][2]['sound_file'] = $path . '/CM.mp3';
+
+        if(is_file($path . '/DM.mp3')) 
+            $info['answer'][3]['sound_file'] = $path . '/DM.mp3';
+
+        if(is_file($path . '/EM.mp3')) 
+            $info['answer'][4]['sound_file'] = $path . '/EM.mp3';
+
+        if(is_file($path . '/FM.mp3')) 
+            $info['answer'][5]['sound_file'] = $path . '/FM.mp3';
+
         return $info;
     }
 
@@ -202,7 +231,8 @@ class ImportController extends \BaseController {
         $qid = $this->topic->add($info);
 
         // 添加分类信息
-        $this->sar->addMap(array('sort' => $info['sort'], 'qid' => $qid));
+        $sar = new SortQuestionRelation();
+        $sar->addMap(array('sort' => $info['sort'], 'qid' => $qid));
 
         $questionAtt = array();
         if( !empty($info['img_file']) )
@@ -283,7 +313,7 @@ class ImportController extends \BaseController {
                                 }
 
                                 // 删除已入库的题目
-                                //$this->delTree($thisdir);
+                                $this->delTree($thisdir);
                                 print_r($tpinfo['question']['source']);
                             }
                         }
