@@ -27,6 +27,9 @@ class ImportController extends \BaseController {
         $smfile = $path . "/sm.txt";
         $_POST['smfile'] =  $smfile;
 
+        if(!is_file($smfile))
+            return false;
+
         $info = array();
         $info['question'] = array();
         $info['answer'] = array();
@@ -55,6 +58,9 @@ class ImportController extends \BaseController {
                     break;
                 */
                 case 'title':
+                    $info['question']['txt'] = $lines[1];  // 标题
+                    break;
+                case 'tittle':
                     $info['question']['txt'] = $lines[1];  // 标题
                     break;
                 case 'type':
@@ -323,8 +329,15 @@ class ImportController extends \BaseController {
                         $tpinfo = $this->encode($thisdir);
                         $tpinfo['question']['source'] = $entry;
 
+                        
+                        // 西城区08年中考题库-备份 指定为单选
                         if($config['dir'] == 'jx')
                             $tpinfo['question']['type'] = 1;
+
+                        // 999 音基考级库 指定为单选
+                        if(substr($config['dir'] , 0, 3)== 'kj/')
+                            $tpinfo['question']['type'] = 1;
+
 
                         // 没有分类信息跳过
                         if(empty($tpinfo['question']['type']))
