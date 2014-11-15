@@ -58,6 +58,7 @@ class TopicController extends \BaseController {
         // 分页
         $paginator = Paginator::make($info['data'], $info['total'], $pageSize);
         unset($query['pageSize']); // 减少分页url无用参数
+        unset($query['sort']); // 处理分页显示
         $paginator->appends($query);  // 设置分页url参数
 
         $this->typeEnum = array('' =>'所有题型') + $this->typeEnum ;

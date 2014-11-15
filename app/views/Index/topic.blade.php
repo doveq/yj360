@@ -367,6 +367,7 @@
             });
             */
 
+            @if( !empty($q['sound_url']) )
             new MediaElementPlayer('#q-sound', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function(e) {
@@ -377,7 +378,9 @@
                     ip.play();
                 }
             });
-
+            @elseif( !empty($q['hint_url']) )
+            hintPlay();
+            @endif;
         }
 
         var hp;

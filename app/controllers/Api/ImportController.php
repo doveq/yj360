@@ -45,13 +45,15 @@ class ImportController extends \BaseController {
             $line = mb_convert_encoding($line, "UTF-8", "GBK");
 
             $lines = explode(":", $line, 2);
-            switch ($lines[0]) {
+            switch( strtolower($lines[0]) ) {
+                /* 原始编号直接读取文件夹名字
                 case 'FloderName':
                     $info['question']['source'] = $lines[1];  // 原始编号
                     break;
                 case 'FolderName':
                     $info['question']['source'] = $lines[1];  // 原始编号
                     break;
+                */
                 case 'title':
                     $info['question']['txt'] = $lines[1];  // 标题
                     break;
@@ -62,65 +64,69 @@ class ImportController extends \BaseController {
                     {
                         $info['question']['type'] = 1;
                     }
+                    elseif( $lines[1] == 'MCQ')
+                    {
+                        $info['question']['type'] = 2;
+                    }
                     else
                         return false;  // 不知道的题型则跳出
                     break;
-                case 'A':
+                case 'a':
                     if ($lines[1] != '') {
                         $info['answer'][0]['txt'] = $lines[1];
                     }
                     break;
-                case 'B':
+                case 'b':
                     if ($lines[1] != '') {
                         $info['answer'][1]['txt'] = $lines[1];
                     }
                     break;
-                case 'C':
+                case 'b':
                     if ($lines[1] != '') {
                         $info['answer'][2]['txt'] = $lines[1];
                     }
                     break;
-                case 'D':
+                case 'd':
                     if ($lines[1] != '') {
                         $info['answer'][3]['txt'] = $lines[1];
                     }
                     break;
-                case 'E':
+                case 'e':
                     if ($lines[1] != '') {
                         $info['answer'][4]['txt'] = $lines[1];
                     }
                     break;
-                case 'F':
+                case 'f':
                     if ($lines[1] != '') {
                         $info['answer'][5]['txt'] = $lines[1];
                     }
                     break;
-                case 'An':
+                case 'an':
                     if ($lines[1] != '') {
                         $info['answer'][0]['explain'] = $lines[1];
                     }
                     break;
-                case 'Bn':
+                case 'bn':
                     if ($lines[1] != '') {
                         $info['answer'][1]['explain'] = $lines[1];
                     }
                     break;
-                case 'Cn':
+                case 'cn':
                     if ($lines[1] != '') {
                         $info['answer'][2]['explain'] = $lines[1];
                     }
                     break;
-                case 'Dn':
+                case 'dn':
                     if ($lines[1] != '') {
                         $info['answer'][3]['explain'] = $lines[1];
                     }
                     break;
-                case 'En':
+                case 'en':
                     if ($lines[1] != '') {
                         $info['answer'][4]['explain'] = $lines[1];
                     }
                     break;
-                case 'Fn':
+                case 'fn':
                     if ($lines[1] != '') {
                         $info['answer'][5]['explain'] = $lines[1];
                     }
@@ -129,12 +135,32 @@ class ImportController extends \BaseController {
                     $answer = $lines[1];
                     if ($lines[1] != '') 
                     {
-                        if($lines[1] == 'A') $info['answer'][0]['is_right'] = 1;
-                        elseif($lines[1] == 'B') $info['answer'][1]['is_right'] = 1;
-                        elseif($lines[1] == 'C') $info['answer'][2]['is_right'] = 1;
-                        elseif($lines[1] == 'D') $info['answer'][3]['is_right'] = 1;
-                        elseif($lines[1] == 'E') $info['answer'][4]['is_right'] = 1;
-                        elseif($lines[1] == 'F') $info['answer'][5]['is_right'] = 1;
+                        $str = $lines[1];
+
+                        // 如果是多选题
+                        if($info['question']['type'] == 2 && strlen($str) > 1)
+                        {
+                            for($i=0; $i < strlen($str); $i++)
+                            {
+                                $char = mb_substr($str, $i, 1);
+
+                                if($char == 'A') $info['answer'][0]['is_right'] = 1;
+                                elseif($char == 'B') $info['answer'][1]['is_right'] = 1;
+                                elseif($char == 'C') $info['answer'][2]['is_right'] = 1;
+                                elseif($char == 'D') $info['answer'][3]['is_right'] = 1;
+                                elseif($char == 'E') $info['answer'][4]['is_right'] = 1;
+                                elseif($char == 'F') $info['answer'][5]['is_right'] = 1;
+                            }
+                        }
+                        else
+                        {
+                            if($lines[1] == 'A') $info['answer'][0]['is_right'] = 1;
+                            elseif($lines[1] == 'B') $info['answer'][1]['is_right'] = 1;
+                            elseif($lines[1] == 'C') $info['answer'][2]['is_right'] = 1;
+                            elseif($lines[1] == 'D') $info['answer'][3]['is_right'] = 1;
+                            elseif($lines[1] == 'E') $info['answer'][4]['is_right'] = 1;
+                            elseif($lines[1] == 'F') $info['answer'][5]['is_right'] = 1;
+                        }
                     }
                     break;
                 default:
@@ -297,6 +323,11 @@ class ImportController extends \BaseController {
                         $thisdir = $dir . "/" . $entry;
                         
                         $tpinfo = $this->encode($thisdir);
+                        $tpinfo['question']['source'] = $entry;
+
+                        // 没有分类信息跳过
+                        if(empty($tpinfo['question']['type']))
+                            continue;
 
                         if($tpinfo)
                         {
@@ -307,7 +338,7 @@ class ImportController extends \BaseController {
                                 $tpinfo['question']['sort'] = $config['sort'];  // 题库分类
                                 
                                 $qid = $this->addQuestion($tpinfo['question']);
-                                if($qid)
+                                if($qid && !empty($tpinfo['answer']))
                                 {
                                     $this->addAnswer($qid, $tpinfo['answer']);
                                 }
@@ -315,6 +346,11 @@ class ImportController extends \BaseController {
                                 // 删除已入库的题目
                                 $this->delTree($thisdir);
                                 print_r($tpinfo['question']['source']);
+                            }
+                            else
+                            {
+                                echo "原始编号已经入库";
+                                print_r($tpinfo);
                             }
                         }
 
