@@ -25,6 +25,8 @@ class SortController extends \BaseController {
 	{
         $query = Input::only('name', 'parent_id', 'page');
 
+        $sortId = $query['parent_id'];  // 当前分类id
+
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
@@ -49,7 +51,7 @@ class SortController extends \BaseController {
         $statusEnum = $this->statusEnum;
         // $paths = Sort::parent($query['parent_id']);
 
-        return $this->adminView('sort.index', compact('lists', 'query', 'statusEnum', 'parent', 'paths'));
+        return $this->adminView('sort.index', compact('lists', 'query', 'statusEnum', 'parent', 'paths', 'sortId'));
 	}
 
 

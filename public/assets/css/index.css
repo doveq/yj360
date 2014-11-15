@@ -30,8 +30,10 @@ a img {
     width: 1000px;
 }
 .row {
+/*
   margin-left: -15px;
   margin-right: -15px;
+  */
 }
 .row:after {
 	clear: :both;
@@ -449,7 +451,7 @@ li.index-list-more a {
 	left:42%;
 }
 #qlist{
-	position:relative;
+	position:absolute;
 }
 #qlist a {
 	font-weight: bold;

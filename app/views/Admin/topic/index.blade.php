@@ -55,7 +55,7 @@
           @foreach ($list as $info)
           <tr>
             <td><label>{{ Form::checkbox('question_id[]', $info['id']) }} {{ $info['id'] }}</label></td>
-            <td><a href="/topic?vetting=1&id={{ $info['id'] }}" target="_blank">{{$info['txt']}}</a></td>
+            <td><a href="/topic?vetting=1&id={{ $info['id'] }}&from=/admin/topic" target="_blank">{{$info['txt']}}</a></td>
             <td>{{$typeEnum[$info['type']]}}</td>
             <td>{{$info['source']}}</td>
             <td>

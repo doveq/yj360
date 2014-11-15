@@ -282,6 +282,7 @@ class ImportController extends \BaseController {
                                     $this->addAnswer($qid, $tpinfo['answer']);
                                 }
 
+                                // 删除已入库的题目
                                 $this->delTree($thisdir);
                                 print_r($tpinfo['question']['source']);
                             }
@@ -307,6 +308,6 @@ class ImportController extends \BaseController {
         }
 
         return rmdir($dir);
-    } 
+    }
 
 }

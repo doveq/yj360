@@ -35,10 +35,57 @@
 
     <div class="container wrap">
         <div style="position:relative;overflow:hidden;border:1px solid #e0e0e0;padding:15px;">
-            <div style="padding-bottom:20px;">
+            <div>
                 @if( !empty($q['txt']) ) <h2 style="font-size:14px;">{{$index}}. {{$q['txt']}}</h2> @endif
                 @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
             </div>
+
+
+            {{-- 录音相关 --}}
+            <div id="save_button">
+                <span id="flashcontent">
+                  <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
+                </span>
+            </div>
+            <div style="display:none;">
+                <div id="recorder-audio" class="control_panel idle">
+                    <button class="record_button" onclick="FWRecorder.record('audio', 'audio.wav');" title="Record">
+                        <img src="/assets/recorder/images/record.png" alt="Record"/>
+                    </button>
+                    <button class="stop_recording_button" onclick="FWRecorder.stopRecording('audio');" title="Stop Recording">
+                        <img src="/assets/recorder/images/stop.png" alt="Stop Recording"/>
+                    </button>
+                    <button class="play_button" onclick="FWRecorder.playBack('audio');" title="Play">
+                        <img src="/assets/recorder/images/play.png" alt="Play"/>
+                    </button>
+                    <button class="pause_playing_button" onclick="FWRecorder.pausePlayBack('audio');" title="Pause Playing">
+                        <img src="/assets/recorder/images/pause.png" alt="Pause Playing"/>
+                    </button>
+                    <button class="stop_playing_button" onclick="FWRecorder.stopPlayBack();" title="Stop Playing">
+                        <img src="/assets/recorder/images/stop.png" alt="Stop Playing"/>
+                    </button>
+                    <div class="level"></div>
+                </div>
+                <div class="details" >
+                  <button class="show_level" onclick="FWRecorder.observeLevel();">Show Level</button>
+                  <button class="hide_level" onclick="FWRecorder.stopObservingLevel();" style="display: none;">Hide Level</button>
+                  
+                  
+                  <div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
+                  <div id="status">
+                   Recorder Status...
+                  </div>
+                  <div>Duration: <span id="duration"></span></div>
+                  <div>Activity Level: <span id="activity_level"></span></div>
+                  <div>Upload status: <span id="upload_status"></span></div>
+                </div>
+
+                <form id="uploadForm" name="uploadForm" action="/recorder/upload">
+                  <input name="authenticity_token" value="" type="hidden">
+                  <input name="format" value="json" type="hidden">
+                </form>
+            </div>
+
 
             <div id="answers">
                     {{-- 单选，多选，判断 --}}
@@ -124,51 +171,6 @@
                 <div id="disabuse-flag" onclick="disabuse();"></div>
             </div>
             @endif
-
-            {{-- 录音相关 --}}
-            <div id="save_button">
-                <span id="flashcontent">
-                  <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
-                </span>
-            </div>
-            <div style="display:none;">
-                <div id="recorder-audio" class="control_panel idle">
-                    <button class="record_button" onclick="FWRecorder.record('audio', 'audio.wav');" title="Record">
-                        <img src="/assets/recorder/images/record.png" alt="Record"/>
-                    </button>
-                    <button class="stop_recording_button" onclick="FWRecorder.stopRecording('audio');" title="Stop Recording">
-                        <img src="/assets/recorder/images/stop.png" alt="Stop Recording"/>
-                    </button>
-                    <button class="play_button" onclick="FWRecorder.playBack('audio');" title="Play">
-                        <img src="/assets/recorder/images/play.png" alt="Play"/>
-                    </button>
-                    <button class="pause_playing_button" onclick="FWRecorder.pausePlayBack('audio');" title="Pause Playing">
-                        <img src="/assets/recorder/images/pause.png" alt="Pause Playing"/>
-                    </button>
-                    <button class="stop_playing_button" onclick="FWRecorder.stopPlayBack();" title="Stop Playing">
-                        <img src="/assets/recorder/images/stop.png" alt="Stop Playing"/>
-                    </button>
-                    <div class="level"></div>
-                </div>
-                <div class="details" >
-                  <button class="show_level" onclick="FWRecorder.observeLevel();">Show Level</button>
-                  <button class="hide_level" onclick="FWRecorder.stopObservingLevel();" style="display: none;">Hide Level</button>
-                  
-                  
-                  <div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
-                  <div id="status">
-                   Recorder Status...
-                  </div>
-                  <div>Duration: <span id="duration"></span></div>
-                  <div>Activity Level: <span id="activity_level"></span></div>
-                  <div>Upload status: <span id="upload_status"></span></div>
-                </div>
-
-                <form id="uploadForm" name="uploadForm" action="/recorder/upload">
-                  <input name="authenticity_token" value="" type="hidden">
-                  <input name="format" value="json" type="hidden">
-                </form>
-            </div>
 
         </div>
         
@@ -529,6 +531,9 @@
 
         function showList()
         {
+            /*计算题目列表定位高度*/
+            h = $('#qlist').height() + 10;
+            $('#qlist').css('bottom', h);
             $('#qlist').toggle();
         }
 

@@ -11,6 +11,7 @@ class TopicController extends BaseController {
 		$exam = Input::get('exam');
 		$vetting = Input::get('vetting');  // 如果是后台审核显示
 		$uniqid = Input::get('uniqid');
+		$from = Input::get('from'); // 返回页面url
 
 		// 题目数据保存
 		$qinfo = array();
@@ -147,6 +148,10 @@ class TopicController extends BaseController {
 		$info['qlist'] = $qlist;
 		$info['column'] = $column;
 		$info['exam'] = $exam;
+
+		// 设置返回地址
+		if( !empty($from) )
+			$info['backurl'] = $from;
 
 		// 获取标题
 		$info['headTitle'] = '';

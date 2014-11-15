@@ -54,18 +54,20 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }}</th>
+            <th>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll', 'autocomplete' => 'off')) }}</th>
             <th>题干</th>
+            <th>类型</th>
             <th>原始编号</th>
             <th>状态</th>
-            <th>操作</th>
+            <th>操作 {{$paginator->count()}}/{{$paginator->getTotal()}}</th>
           </tr>
         </thead>
         <tbody>
           @foreach ($list as $info)
           <tr>
-            <td><label>{{ Form::checkbox('question_id[]', $info['id']) }} {{ $info['id'] }}</label></td>
+            <td><label>{{ Form::checkbox('question_id[]', $info['id'], false, array('autocomplete' => 'off')) }} {{ $info['id'] }}</label></td>
             <td><a href="/topic?id={{ $info['id'] }}" target="_blank">{{$info['txt']}}</a></td>
+            <td>{{$typeEnum[$info['type']]}}</td>
             <td>{{$info['source']}}</td>
             <td>
               {{$statusEnum[$info['status']]}}

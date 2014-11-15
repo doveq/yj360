@@ -195,6 +195,8 @@ class TopicController extends \BaseController {
 	public function showAdd()
 	{
 		$type = Input::get('type');
+		$sortId = Input::get('sort');
+
 		if( !array_key_exists($type, $this->typeEnum) )
 			$type = 1;
 
@@ -203,11 +205,35 @@ class TopicController extends \BaseController {
 		$info['type'] = $type;
 		$info['flag'] = $this->flag;
 
-		$info['sort1'] = Session::get('sort1') ? Session::get('sort1') : 0;
-		$info['sort2'] = Session::get('sort2') ? Session::get('sort2') : 0;
-		$info['sort3'] = Session::get('sort3') ? Session::get('sort3') : 0;
-		$info['sort4'] = Session::get('sort4') ? Session::get('sort4') : 0;
-		$info['sort5'] = Session::get('sort5') ? Session::get('sort5') : 0;
+		$info['sort1'] = 0;
+		$info['sort2'] = 0;
+		$info['sort3'] = 0;
+		$info['sort4'] = 0;
+		$info['sort5'] = 0;
+
+		// 如果有传递分类id
+		if($sortId)
+		{
+			$sort = new Sort();
+			$sortInfo = $sort->getPath($sortId);
+
+			$sortNum = count($sortInfo);
+			for ($i = $sortNum; $i > 0; $i--) 
+			{
+				$v = $sortNum - $i +1;
+				$info['sort' . $v] = $sortInfo[$i -1]['id'];
+
+				Session::put('sort'.$v, $info['sort' . $v]);
+			}
+		}
+		else
+		{
+			$info['sort1'] = Session::get('sort1') ? Session::get('sort1') : 0;
+			$info['sort2'] = Session::get('sort2') ? Session::get('sort2') : 0;
+			$info['sort3'] = Session::get('sort3') ? Session::get('sort3') : 0;
+			$info['sort4'] = Session::get('sort4') ? Session::get('sort4') : 0;
+			$info['sort5'] = Session::get('sort5') ? Session::get('sort5') : 0;
+		}
 
 
 		if($type == 1 || $type == 2)

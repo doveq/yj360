@@ -16,8 +16,10 @@
       @endif
       <li class="active">浏览分类</li>
       @if ($query['parent_id'] > 0)
-      <a href="{{url('/admin/sort?parent_id='.$parent->parent_id)}}"><span class='pull-right  icon-arrow-up'> 返回上级</span></a>
+      <a href="{{url('/admin/sort?parent_id='.$parent->parent_id)}}"><span class='pull-right icon-arrow-up'> 返回上级</span></a>
       @endif
+
+      <a href="{{url('/admin/topic/add?type=1&sort='.$sortId)}}" target="_blank"><span class='pull-right icon-plus-sign'> 添加题目</span></a>
     </ol>
 
   </div>
