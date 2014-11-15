@@ -68,8 +68,6 @@ class ImportController extends \BaseController {
                     {
                         $info['question']['type'] = 2;
                     }
-                    else
-                        return false;  // 不知道的题型则跳出
                     break;
                 case 'a':
                     if ($lines[1] != '') {
@@ -138,7 +136,7 @@ class ImportController extends \BaseController {
                         $str = $lines[1];
 
                         // 如果是多选题
-                        if($info['question']['type'] == 2 && strlen($str) > 1)
+                        if(!empty($info['question']['type']) && $info['question']['type'] == 2 && strlen($str) > 1)
                         {
                             for($i=0; $i < strlen($str); $i++)
                             {
@@ -324,6 +322,9 @@ class ImportController extends \BaseController {
                         
                         $tpinfo = $this->encode($thisdir);
                         $tpinfo['question']['source'] = $entry;
+
+                        if($config['dir'] == 'jx')
+                            $tpinfo['question']['type'] = 1;
 
                         // 没有分类信息跳过
                         if(empty($tpinfo['question']['type']))
