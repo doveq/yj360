@@ -10,7 +10,8 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        <a href="/uploadbank/create?column_id={{$query['column_id']}}"><img src="/assets/img/uploadbankbtn.png" /></a>
+        原创题库
+        <a href="/uploadbank/create?column_id={{$query['column_id']}}" class="tabtool-btn">上传题库</a>
         <div class="clear"></div>
       </div>
       <div class="clear"></div>
