@@ -9,7 +9,7 @@ use DB;
 use Request;
 use Str;
 use Config;
-
+use Column;
 use Sort;
 
 class SortController extends \BaseController {
@@ -163,6 +163,7 @@ class SortController extends \BaseController {
             return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "sort");
         }
 		$sort = Sort::find($id);
+        $column = new Column();
         $paths = array_reverse($column->getPath($id));
         return $this->adminView('sort.edit', compact("sort", 'paths'));
 	}

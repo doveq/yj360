@@ -59,11 +59,11 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }}</th>
+            <th width="100">{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }}</th>
             <th>题干</th>
-            <th>原始编号</th>
-            <th>状态</th>
-            <th>操作</th>
+            <th width="100">原始编号</th>
+            <th width="100">状态</th>
+            <th width="150">操作</th>
           </tr>
         </thead>
         <tbody>
