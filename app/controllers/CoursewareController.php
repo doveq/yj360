@@ -32,7 +32,11 @@ class CoursewareController extends BaseController
             $column_name = '多媒体教材';
             $back_url = "/courseware?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
         }
-        include_once public_path() . $config_path . "info.php";     //返回 $dir_info
+        if (!file_exists(public_path() . $config_path . "info.php")) {
+            $dir_info = array();
+        } else {
+            include_once public_path() . $config_path . "info.php";     //返回 $dir_info
+        }
         $py = new pinyin();
         $lists = array();
         //检索
