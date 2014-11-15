@@ -283,7 +283,7 @@ class ImportController extends \BaseController {
                                 }
 
                                 // 删除已入库的题目
-                                $this->delTree($thisdir);
+                                //$this->delTree($thisdir);
                                 print_r($tpinfo['question']['source']);
                             }
                         }
