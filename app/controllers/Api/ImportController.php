@@ -81,7 +81,7 @@ class ImportController extends \BaseController {
                         $info['answer'][1]['txt'] = $lines[1];
                     }
                     break;
-                case 'b':
+                case 'c':
                     if ($lines[1] != '') {
                         $info['answer'][2]['txt'] = $lines[1];
                     }
