@@ -48,6 +48,11 @@ class Training extends Eloquent {
         return $this->belongsTo('User', 'user_id');
     }
 
+    public function classes()
+    {
+        return $this->belongsTo('Classes', 'class_id');
+    }
+
     public function student()
     {
         return $this->belongsToMany('User', 'training_result', 'training_id', 'user_id');

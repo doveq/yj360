@@ -24,18 +24,28 @@ class TrainingController extends BaseController {
         $query = Input::only('page', 'column_id' );
 
         $user_id = Session::get('uid');
-        $lists = Training::whereUserId($user_id)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-
+        $user_type = Session::get('utype');
+        if ($user_type < 0) $user_type = 1;
+        //分为老师和学生
+        if ($user_type == 1) {
+            //老师
+            $classeses = Classes::whereTeacherid($user_id)->select('id')->get()->toArray();
+            $lists = Training::whereIn('class_id', $classeses)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        } else {
+            //学生
+            $classeses = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id')->get()->toArray();
+            $lists = Training::whereIn('class_id', $classeses)->whereStatus(1)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        }
+        // dd($classeses);
         if ($query['column_id']) {
             $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         }
-        $statusEnum = $this->statusEnum;
-        $user_type = Session::get('utype');
-        if ($user_type < 0) $user_type = 1;
         // 获取父类名页面显示
         $cn = new Column();
         $arr = $cn->getPath($query['column_id']);
         $columnHead = $arr[0];
+
+        $statusEnum = $this->statusEnum;
         return $this->indexView('training.index_'.$user_type, compact('statusEnum', 'lists', 'query', 'columns', 'columnHead'));
     }
 
@@ -140,53 +150,39 @@ class TrainingController extends BaseController {
      */
     public function update($id)
     {
-        // //
-        // $query = Input::only('id','name','status', 'user_id', 'memo');
-        // // dd($data);
-        // $validator = Validator::make($query,
-        //     array(
-        //         'id'      => 'numeric',
-        //         // 'name'  => 'alpha_dash',
-        //         'status'  => 'numeric',
-        //         'user_id' => 'numeric',
-        //     )
-        // );
-        // // dd($query['status']);
-        // if($validator->fails())
-        // {
-        //     if (Request::ajax()) {
-        //         return Response::json('error');
-        //     } else {
-        //         return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "training");
-        //     }
-        // }
-        // if (isset($query['name']) && $query['name'] == '') {
-        //     $errors = "名称不能为空";
-        //     if (Request::ajax()) {
-        //         return Response::json('error');
-        //     } else {
-        //         return Redirect::to('/admin/training/'.$id."/edit")->withErrors($errors)->withInput($query);
-        //     }
-        // }
-        // $training = Training::find($id);
-        // if (isset($query['name'])) $training->name           = $query['name'];
-        // if (isset($query['user_id'])) $training->user_id = $query['user_id'];
-        // if (isset($query['status'])) {
-        //     $training->status       = $query['status'];
-        //     if ($query['status'] == 1) {
-        //         $training->online_at = date("Y-m-d H:i:s");
-        //     } else {
-        //         $training->online_at = NULL;
-        //     }
-        // }
+        //
+        $query = Input::only('id','status', 'column_id');
+        // dd($data);
+        $validator = Validator::make($query,
+            array(
+                'id'      => 'numeric',
+                'status'  => 'numeric',
+            )
+        );
+        // dd($query['status']);
+        if($validator->fails())
+        {
+            if (Request::ajax()) {
+                return Response::json('error');
+            }
+        }
+        $training = Training::find($id);
+        if (isset($query['status'])) {
+            $training->status       = $query['status'];
+            if ($query['status'] == 1) {
+                $training->online_at = date("Y-m-d H:i:s");
+            } else {
+                $training->online_at = NULL;
+            }
+        }
 
-        // if ($training->save()) {
-        //     if (Request::ajax()) {
-        //         return Response::json('ok');
-        //     } else {
-        //         return Redirect::to('/admin/training');
-        //     }
-        // }
+        if ($training->save()) {
+            if (Request::ajax()) {
+                return Response::json('ok');
+            } else {
+                return Redirect::to('/training');
+            }
+        }
     }
 
 

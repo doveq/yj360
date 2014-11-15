@@ -17,8 +17,9 @@
         <table  class="stable" border="0" cellpadding="0" cellspacing="0">
           <thead>
             <tr>
-              <th>序号</th>
-              <th>训练名称</th>
+              <!-- <th>序号</th> -->
+              <th>班级</th>
+              <th>作业</th>
               <th>时间</th>
               <th>状态操作</th>
               <th>操作</th>
@@ -27,9 +28,10 @@
           <tbody>
             @foreach ($lists as $list)
             <tr>
-              <td>{{$list->id}}</td>
+              <!-- <td>{{$list->id}}</td> -->
+              <td>{{$list->classes->name}}</td>
               <td>{{$list->name}}</td>
-              <td>{{$list->created_at}}</td>
+              <td>{{str_limit($list->created_at,10,'')}}</td>
               <td>
                 <button class="btn_publish" data-id="{{$list->id}}" data-status="{{$list->status}}">{{$statusEnum[$list->status]}}</button>
               </td>
@@ -83,6 +85,7 @@ $(document).ready(function () {
     var training_status = $this.data("status");
     // var aa = $this.text();
     // alert(training_status);
+    // return false;
     if (training_status == 0) {
       status_txt = '撤销发布';
       update_status = 1;
@@ -91,7 +94,7 @@ $(document).ready(function () {
       update_status = 0;
     }
     $.ajax({
-      url:'/training/'+training_id,
+      url:'/training/'+training_id+"?column_id={{$query['column_id']}}",
       data: {status: update_status},
       // async:false,
       type:'put',
@@ -100,9 +103,6 @@ $(document).ready(function () {
       alert('操作失败');
     })
     .success(function(){
-      // alert(update_status);
-      // $this.attr('data-status', update_status);
-      // $this.text(status_txt)
       location.reload();
     });
   });
