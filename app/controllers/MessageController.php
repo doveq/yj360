@@ -52,17 +52,20 @@ class MessageController extends BaseController {
             $s[] = $value->sender_id;
         }
 
-        $m = Message::where(function($q) use ($s) {
-            $q->whereSenderId(Session::get('uid'))
-                ->whereIn('receiver_id', $s);
-        })->orWhere(function($q) use ($s){
-            $q->whereReceiverId(Session::get('uid'))
-                ->whereIn('sender_id', $s);
-        })->groupBy('sender_id', 'receiver_id')->orderBy('created_at', 'desc')->get();
+        // $m = Message::where(function($q) use ($s) {
+        //     $q->whereSenderId(Session::get('uid'))
+        //         ->whereIn('receiver_id', $s);
+        // })->orWhere(function($q) use ($s){
+        //     $q->whereReceiverId(Session::get('uid'))
+        //         ->whereIn('sender_id', $s);
+        // })->groupBy('sender_id', 'receiver_id')->orderBy('created_at', 'desc')->get();
 
+        $ids = implode(",", $s);
+        $m = DB::select('select * from (select * from message where (`sender_id` = '.Session::get('uid').' and `receiver_id` in ('.$ids.')) or (sender_id in ('.$ids.') and receiver_id='.Session::get('uid').') order by id desc) temp group by sender_id, receiver_id order by created_at desc');
 
-        $lists = array();
+        // $lists = array();
         $tmp = array();
+        $xx = array();
         foreach ($m as $key => $value) {
             if ($value->sender_id < $value->receiver_id) {
                 $x = $value->sender_id."-".$value->receiver_id;
@@ -71,9 +74,11 @@ class MessageController extends BaseController {
             }
             if (!isset($tmp[$x])) {
                 $tmp[$x] = 1;
-                $lists[$key] = $value;
+                // $lists[$key] = $value;
+                $xx[] = $value->id;
             }
         }
+        $lists = Message::whereIn('id', $xx)->orderBy('created_at', 'desc')->get();
         // dd($tmp);
 // dd(count($lists));
         // 获取父类名页面显示
