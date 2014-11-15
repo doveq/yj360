@@ -12,6 +12,7 @@ class TopicController extends BaseController {
 		$vetting = Input::get('vetting');  // 如果是后台审核显示
 		$uniqid = Input::get('uniqid');
 		$from = Input::get('from'); // 返回页面url
+		$fromColumn = Input::get('fromColumn');
 
 		// 题目数据保存
 		$qinfo = array();
@@ -170,7 +171,7 @@ class TopicController extends BaseController {
 			// 分类头显示使用
             $info['columnHead'] = $path[$cnum -1];
 		}
-		else if( !empty($column) )
+		elseif( !empty($column) )
 		{
 			$cninfo = Column::find($column);
 			$info['headTitle'] = $cninfo->name;
@@ -183,6 +184,21 @@ class TopicController extends BaseController {
 				$info['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
 			else if($cnum > 1)
 				$info['backurl'] = "/column?id={$path[$cnum -1]['id']}&column_id={$path[0]['id']}";
+
+			// 分类头显示使用
+			$info['columnHead'] = $path[$cnum -1];
+		}
+		elseif( !empty($fromColumn) )
+		{
+			$cninfo = Column::find($fromColumn);
+			$info['headTitle'] = $cninfo->name;
+
+			// 生成返回链接
+			$cn = new Column();
+			$path = $cn->getPath($fromColumn);
+			$cnum = count($path);
+			if($cnum > 1)
+				$info['backurl'] = "/column?id={$path[$cnum -2]['id']}&column_id={$path[$cnum -1]['id']}";
 
 			// 分类头显示使用
 			$info['columnHead'] = $path[$cnum -1];

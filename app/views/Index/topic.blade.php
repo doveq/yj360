@@ -28,7 +28,11 @@
             @if(!empty($backurl))
             <a class="back" href="{{$backurl}}">< 返回</a>
             @endif
+            @if($q['type'] == 8 || $q['type'] == 9 || $q['type'] == 10)
+            <b>{{$q['txt'] or ''}}</b>
+            @else
             <b>{{$headTitle or ''}}</b>
+            @endif
         </div>
         <div class="clear"></div>
     </div>
@@ -36,7 +40,7 @@
     <div class="container wrap">
         <div style="position:relative;overflow:hidden;border:1px solid #e0e0e0;padding:15px;">
             <div>
-                @if( !empty($q['txt']) ) <h2 style="font-size:14px;">{{$index}}. {{$q['txt']}}</h2> @endif
+                @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['txt']) ) <h2 style="font-size:14px;">{{$index}}. {{$q['txt']}}</h2> @endif
                 @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
             </div>
 
@@ -264,12 +268,15 @@
         </div>
         @else
         {{-- 视频，flash有上下题选择 --}}
+        <!--
         <div id="topic-tools">
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
             <a class="topic-btn" id="topic-btn-6" hint="显示答题卡" href="javascript:;" onclick="showList();"></a>
+            
             <div class="clear"></div>
         </div>
+        -->
         @endif
 
 
