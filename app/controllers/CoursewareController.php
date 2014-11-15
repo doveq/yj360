@@ -28,7 +28,7 @@ class CoursewareController extends BaseController
             $column_name = '多媒体教材';
             $back_url = "/courseware?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
         } elseif ($query['column_id'] == 5) {
-            $config_path = "/data/primary_school/";
+            $config_path = "/data/middle_school/";
             $column_name = '多媒体教材';
             $back_url = "/courseware?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
         }
@@ -77,7 +77,7 @@ class CoursewareController extends BaseController
             $column_name = '多媒体教材';
             $back_url = "/courseware?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
         } elseif ($query['column_id'] == 5) {
-            $config_path = "/data/primary_school/";
+            $config_path = "/data/middle_school/";
             $column_name = '多媒体教材';
             $back_url = "/courseware?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
         }
