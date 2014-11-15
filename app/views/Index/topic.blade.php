@@ -412,13 +412,13 @@
                 console.log(error);
             }
             try {
-                if(hp) hp.stop();
+                if(hp) hp.pause();
             } catch(error) {
                 console.log(error);
             }
             
             try {
-                if(sp) sp.stop();
+                if(sp) sp.pause();
             } catch(error) {
                 console.log(error);
             }
