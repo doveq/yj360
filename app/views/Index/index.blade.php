@@ -28,7 +28,7 @@
                 <div class="clear"></div>
             </div>
             <div class="row">
-                <button type="submit" class="loginbntn"></button>
+                <button type="submit" class="loginbntn">登 录</button>
             </div>
 
             <div class="row-sp"></div>
