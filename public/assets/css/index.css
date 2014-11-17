@@ -1119,3 +1119,10 @@ a.tyadel {
 .nextbtn:hover {
 	background: url("/assets/img/next_hover.png") no-repeat 0 0;
 }
+.topic-con{
+	position:relative;
+	overflow:hidden;
+	border:1px solid #e0e0e0;
+	padding:15px;
+	background: url("/assets/img/topic-bg.png") repeat 0 0;
+}
