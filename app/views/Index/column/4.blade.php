@@ -15,6 +15,9 @@
         @if (!empty($questions))
           @foreach ($questions as $list)
             <div style="background-color: #fff;
+            overflow: hidden;
+            width:136px;
+            height:184px;
             float:left;
     border: 1px solid #ddd;
     border-radius: 4px;
