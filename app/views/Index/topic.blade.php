@@ -38,13 +38,14 @@
     </div>
 
     <div class="container wrap">
-        <div class="topic-con">
+        <div class="topic-con" @if($q['type'] == 8 || $q['type'] == 9 || $q['type'] == 10): style="padding:0;" @endif >
             <div>
                 @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['txt']) ) <h2 style="font-size:14px;">{{$index}}. {{$q['txt']}}</h2> @endif
                 @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
             </div>
 
-
+            {{-- 视唱,模唱 --}}
+            @if( $q['type'] == 6 || $q['type'] == 7)
             {{-- 录音相关 --}}
             <div id="save_button">
                 <span id="flashcontent">
@@ -89,7 +90,7 @@
                   <input name="format" value="json" type="hidden">
                 </form>
             </div>
-
+            @endif
 
             <div id="answers">
                     {{-- 单选，多选，判断 --}}

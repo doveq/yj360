@@ -7,25 +7,32 @@
 <div class="container-column wrap">
   <div class="row">
   @include('Index.column.nav')
-
-
   <div class="wrap-right">
       <div class="tabtool">
-          <div class="clear"></div>
+{{$column->name}}
       </div>
-      <div class="clear"></div>
-
       <div class="classes-list">
-          @foreach ($content as $list)
-          <div class="classse-box">
-            <div>
-              <img src="{{Config::get('app.thumbnail_url')}}/{{$list->thumbnail}}" width="{{Config::get('app.thumbnail_width')}}" height="{{Config::get('app.thumbnail_height')}}" class="thumbnail"/>
+        @if (!empty($questions))
+          @foreach ($questions as $list)
+            <div style="background-color: #fff;
+            float:left;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: block;
+    line-height: 1.42857;
+    margin-bottom: 20px;
+    width:25%;
+    margin-left:10px;
+    padding: 4px;">
+              <a href="/topic?id={{$list['id']}}&fromColumn={{$column->id}}" target="_blank">
+                <img src="{{$list['img_url']}}" width="100%" height="{{Config::get('app.thumbnail_height')}}" style="vertical-align:middle;"/>
+              </a>
+              <div class='label' style="padding:9px;text-align:center;">
+                <h4>{{$list['txt']}}</h4>
+              </div>
             </div>
-            <div class="classes-txt">
-              <div><b>{{$list->name}}</b></div>
-            </div>
-          </div>
           @endforeach
+        @endif
           <div class="clear"></div>
       </div>
   </div>

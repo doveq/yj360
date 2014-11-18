@@ -41,8 +41,11 @@ class ColumnController extends BaseController
             //多媒体教材类型
             return Redirect::to('/courseware?id='.$query['id'].'&column_id=' . $column->parent_id . '&type=2');
 
-        } else {
+        }
+        else {
             $content = $column->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+            //dd(DB::getQueryLog());
+
             foreach ($content as $key => $c) {
                 $c->bgcolor = $color[array_rand($color)];
                 $content[$key] = $c;
