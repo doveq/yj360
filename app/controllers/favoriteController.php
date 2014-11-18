@@ -90,6 +90,7 @@ class FavoriteController extends BaseController
     public function choose()
     {
         $query = Input::only('training_id', 'column_id');
+        // dd($query);
         $info = array();
         $f = new Favorite();
         $lists = $f->getList( array('uid' => Session::get('uid'), 'limit' => 30 ) );

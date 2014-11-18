@@ -18,7 +18,6 @@
       <tr>
         <td style="padding:15px;">{{ Form::checkbox('question_id[]', $list->id, false, array('id' => 'q'.$list->id)) }}</td>
         <td style="padding:15px;">{{$list->question->txt}}</td>
-        <!-- <td>{{$list->question->type}}</td> -->
         <td style="padding:15px;">{{$list->created_at}}</td>
         <td style="padding:15px;"><a href="/topic?id={{$list->question_id}}&column_id={{$query['column_id']}}&from=favorite" target="_blank">查看</a></td>
       </tr>
