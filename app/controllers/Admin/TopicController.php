@@ -578,13 +578,13 @@ class TopicController extends \BaseController {
 				$asoundid = empty($inputs['answers_sound_id'][$k]) ? 0 : $inputs['answers_sound_id'][$k];
 
 				$answers = array();
-				if($atxt)
-					$answers['txt'] = $atxt;
+				
+				$answers['txt'] = $atxt;
 
-				if( !empty($inputs['answers_explain'][$k]) )
+				if( isset($inputs['answers_explain'][$k]) )
 					$answers['explain'] = $inputs['answers_explain'][$k];
 				
-				if( !empty($inputs['answers_right']) && in_array($aid, $inputs['answers_right']) )
+				if( isset($inputs['answers_right']) && in_array($aid, $inputs['answers_right']) )
 					$answers['is_right'] = 1;
 				else
 					$answers['is_right'] = 0;
@@ -633,7 +633,11 @@ class TopicController extends \BaseController {
 						$topic->addAnswers($qid, $answers);
 				}
 			}
+
 		}
+
+		// 删除可能存在的空答案
+		$topic->delNullAnswer($qid);
 
 		//return $this->adminPrompt("操作成功", '题目编辑成功。', $url = "topic/edit?id=" . $qid);
 		return $this->adminPrompt("操作成功", '题目编辑成功。', $url = "topic");

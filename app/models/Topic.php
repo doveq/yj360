@@ -315,10 +315,10 @@ class Topic  {
 	{
 		$info = array();
 		
-		if(isset($data['txt']) && !empty($data['txt']))
+		if( isset($data['txt']) )
 			$info['txt'] = $data['txt'];
 
-		if(isset($data['explain']) && !empty($data['explain']))
+		if(isset($data['explain']) )
 			$info['explain'] = $data['explain'];
 
 		if(isset($data['sound']) && is_numeric($data['sound']))
@@ -335,7 +335,17 @@ class Topic  {
 
 		if($info)
 			DB::table("answers")->where('id', $aid)->update($info);
-	
+	}
+
+	/* 删除空答案 */
+	public function delNullAnswer($qid)
+	{
+		DB::table("answers")->where('qid', '=', $qid)
+			->where('txt', '=', '')
+			->where('sound', '=', '0')
+			->where('img', '=', '0')
+			->where('flash', '=', '0')
+			->where('explain', '=', '')->delete();
 	}
 
 
