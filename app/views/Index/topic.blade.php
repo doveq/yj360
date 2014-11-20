@@ -37,6 +37,18 @@
         <div class="clear"></div>
     </div>
 
+    {{-- 播放音频相关 --}}
+    <div style="display:none;">
+        <!-- 初始播放列表 -->
+        <audio id="play-list" src="">
+        <!-- 题干音 -->
+        <audio class="playlist" id="q-sound" src="{{$q['sound_url'] or ''}}">
+        <!-- 提示音 -->
+        <audio class="playlist" id="q-hint" src="{{$q['hint_url'] or ''}}">
+
+        <audio id="q-cky" src="{{$a[0]['sound_url'] or ''}}">
+    </div>
+
     <div class="container wrap">
         <div class="topic-con" @if($q['type'] == 8 || $q['type'] == 9 || $q['type'] == 10): style="padding:0;" @endif >
             <div>
@@ -49,7 +61,9 @@
             {{-- 录音相关 --}}
             <div id="save_button">
                 <span id="flashcontent">
+                <!--
                   <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
+                  -->
                 </span>
             </div>
             <div style="display:none;">
@@ -124,9 +138,9 @@
                                     @if( !empty($item['img_url']) )
                                         <img src="{{$item['img_url']}}" />
                                     @elseif( !empty($item['sound_url']) )
-                                        <button type="button" class="sound-play" sound-id="{{$item['sound_att_id']}}" >播放</button>
+                                        <button type="button" class="sound-play playlist playbtn" sound-id="{{$item['sound_att_id']}}" src="{{$item['sound_url']}}" ></button>
                                         <span style="display:none;">
-                                            <audio id="{{$item['sound_att_id']}}" src="{{$item['sound_url']}}">
+                                            <audio id="{{$item['sound_att_id']}}" src="{{$item['sound_url']}}" >
                                         </span>
                                     @elseif( !empty($item['txt']) )
                                         {{$item['txt']}}
@@ -229,6 +243,14 @@
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
 
+            {{-- 不是视唱或模唱 --}}
+            @if( $q['type'] != 6 && $q['type'] != 7 )
+                {{-- 如果有提示音或题目音 --}}
+                @if( !empty($q['hint_url']) || !empty($a[0]['sound_url']))
+                <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
+                @endif
+            @endif
+
             @if( empty($_GET['vetting']) )
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}},{{$column or '0'}});"></a>
             @endif
@@ -247,8 +269,8 @@
                 <input type="checkbox" name="ato" id="checkbox-2" onchange="topauto();" /> <label for="checkbox-2">答对后自动跳转到下一题</label>
             </div>
             @endif
-            @if( $q['type'] == 6 || $q['type'] == 7)
-            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="soundPlay();"></a>
+            @if( $q['type'] == 6 || $q['type'] == 7 )
+            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
             <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="ckyPlay();"></a>
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
             <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
@@ -283,17 +305,7 @@
 
     </div> <!-- /container -->
 
-    {{-- 播放音频相关 --}}
-    <div style="display:none;">
-        <!-- 初始播放列表 -->
-        <audio id="init-play" src="">
-        <!-- 题干音 -->
-        <audio id="q-sound" src="{{$q['sound_url'] or ''}}">
-        <!-- 提示音 -->
-        <audio id="q-hint" src="{{$q['hint_url'] or ''}}">
-
-        <audio id="q-cky" src="{{$a[0]['sound_url'] or ''}}">
-    </div>
+    
 
     {{-- 答题数据提交 --}}
     <form id="topicForm" name="topicForm" action="/topic/post" method="post">
@@ -331,64 +343,76 @@
 
             $('.sound-play').click(function(){
                 id = $(this).attr('sound-id');
-                player = new MediaElementPlayer('#' + id);
+                player = new MediaElementPlayer('#' + id, {
+                    success: function (mediaElement, domObject) {
+                        mediaElement.addEventListener('ended', function (e) {
+                            $('.playbtn-current').each(function(){
+                                $(this).removeClass('playbtn-current');
+                            });
+                        }, false);
+                    }
+                });
                 player.pause();
                 player.play();
+
+                $(this).addClass('playbtn-current');
             });
-
-            initPlay();
-
+    
             if( $.cookie('ashow') ==1)
                 $("input[name=ashow]").prop("checked", true);
 
             if( $.cookie('ato') ==1)
                 $("input[name=ato]").prop("checked", true);
 
+
+            //initPlay();
+            // 延时2秒播放
+            setTimeout(initPlay, 2000);  
+
         });
-
-        function topauto()
-        {
-             if( $("input[name=ashow]").is(':checked') )
-                $.cookie('ashow', '1', { expires: 365, path: '/' });
-            else
-                $.cookie('ashow', '0', { expires: 365, path: '/' });
-
-            if( $("input[name=ato]").is(':checked') )
-                $.cookie('ato', '1', { expires: 365, path: '/' });
-            else
-                $.cookie('ato', '0', { expires: 365, path: '/' });
-        }
-
-        // 播放题干音和提示音
+        
+        /* 播放题干音和提示音 */
         var ip;
         function initPlay()
         {
-            /*
-            new MediaElementPlayer('#q-hint', {
-                success: function (mediaElement, domObject) {
-                    mediaElement.addEventListener('ended', function(e) {
-                        soundPlay();
-                    }, false);
-                     
-                    mediaElement.play();
-                }
-            });
-            */
+            var list = getPlayList();
+            //console.log(list);
+            if(list.length > 0)
+            {
+                $('#play-list').attr('src', list[0]);
 
-            @if( !empty($q['sound_url']) )
-            new MediaElementPlayer('#q-sound', {
-                success: function (mediaElement, domObject) {
-                    mediaElement.addEventListener('ended', function(e) {
-                        hintPlay();
-                    }, false);
-                    
-                    ip = mediaElement;
+                ip = new MediaElementPlayer('#play-list', {
+                    success: function (mediaElement, domObject) {
+                        mediaElement.addEventListener('ended', function (e) {
+                            playNext(e.target);
+                        }, false);
+                    },
+                    error: function () {
+                        console.log('MediaElementPlayer error!');
+                    },
+                    keyActions: []
+                });
+
+                ip.play();
+            }
+        }
+
+        /* 重复播放 */
+        function loopPlay()
+        {
+            var list = getPlayList();
+            if(list.length > 0)
+            {
+                $('#play-list').attr('src', list[0]);
+                try
+                {
                     ip.play();
                 }
-            });
-            @elseif( !empty($q['hint_url']) )
-            hintPlay();
-            @endif;
+                catch (e)
+                {
+                    console.log("loop play fail");
+                }
+            }
         }
 
         var hp;
@@ -405,17 +429,85 @@
             sp.play();
         }
 
+        /* 参考音 */
         function ckyPlay()
         {
             player = new MediaElementPlayer('#q-cky');
             player.play();
         }
 
+        /* 获取播放列表 */
+        function getPlayList()
+        {
+            /* 获取播放列表 */
+            var list = new Array();
+            $('.playlist').each(function(){
+                if($(this).attr('src') != '')
+                {
+                    list.push( $(this).attr('src') );
+                }
+            });
+
+            return list;
+        }
+
+        function playNext(currentPlayer) 
+        {   
+            /* 当前播放的声音 */
+            var current = $('#play-list').attr('src');
+            var next = '';  // 下一个需要播放的声音
+            var list = getPlayList();
+            for(i = 0; i < list.length; i++)
+            {
+                if(list[i] == current)
+                {
+                    nid = i +1;
+                    if(nid < list.length)
+                    {
+                        next = list[nid];
+                        break;
+                    }
+                }
+            }
+
+            $('.playbtn-current').each(function(){
+                $(this).removeClass('playbtn-current');
+            });
+
+            if(next != '')
+            {
+                currentPlayer.setSrc(next);
+                currentPlayer.play();
+
+                $('.playbtn').each(function(){
+                    if( $(this).attr('src') == next )
+                    {
+                        $(this).addClass('playbtn-current');
+                    }
+                });
+            }
+
+        }
+
+
+        function topauto()
+        {
+             if( $("input[name=ashow]").is(':checked') )
+                $.cookie('ashow', '1', { expires: 365, path: '/' });
+            else
+                $.cookie('ashow', '0', { expires: 365, path: '/' });
+
+            if( $("input[name=ato]").is(':checked') )
+                $.cookie('ato', '1', { expires: 365, path: '/' });
+            else
+                $.cookie('ato', '0', { expires: 365, path: '/' });
+        }
+
         // js 判断答题对错
         function correcting()
         {
             try {
-                if(ip) ip.stop();
+                if(ip) ip.pause();
             } catch(error) {
                 console.log(error);
             }
