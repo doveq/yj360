@@ -180,6 +180,9 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/courseware', 'CoursewareController@index');
     Route::get('/courseware/show', 'CoursewareController@show');
 
+    Route::get('/games', 'GamesController@index');
+    Route::get('/games/show', 'GamesController@show');
+
     //flash播放
     Route::get('/view_flv', 'ViewController@flv');
 
