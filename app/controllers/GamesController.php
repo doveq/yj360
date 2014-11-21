@@ -21,15 +21,15 @@ class GamesController extends BaseController
         if ($query['column_id'] == 3) {
             $config_path = "/data/games/music_basic/";
             $column_name = '趣味练习';
-            $back_url = "/games?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
+            $back_url = "/games?id=".$query['id']."&column_id=". $query['column_id'];
         } elseif ($query['column_id'] == 4) {
             $config_path = "/data/games/primary_school/";
             $column_name = '趣味练习';
-            $back_url = "/games?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
+            $back_url = "/games?id=".$query['id']."&column_id=". $query['column_id'];
         } elseif ($query['column_id'] == 5) {
             $config_path = "/data/games/middle_school/";
             $column_name = '趣味练习';
-            $back_url = "/games?id=".$query['id']."&column_id=". $query['column_id'] . "&type=" . $query['type'];
+            $back_url = "/games?id=".$query['id']."&column_id=". $query['column_id'];
         }
         if (!file_exists(public_path() . $config_path . "info.php")) {
             $dir_info = array();
