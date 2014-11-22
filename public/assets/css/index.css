@@ -1135,3 +1135,11 @@ a.tyadel {
 .playbtn-current{
 	background: url("/assets/img/play-current.png") repeat 0 0 !important;
 }
+#total_time{
+	display: none;
+	float: right;
+	color: #666;
+}
+#total_time_show{
+	color:red;
+}

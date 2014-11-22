@@ -53,6 +53,27 @@
         </div>
 
         <div class="form-group">
+          <label for="sort_name" class="col-md-2 control-label">答题时间(秒)</label>
+          <div class="col-md-6">
+            <input class="form-control" id="total_time" name="total_time" type="text" value="{{$info->total_time or '0'}}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sort_name" class="col-md-2 control-label">提示音播放次数</label>
+          <div class="col-md-6">
+            <input class="form-control" id="loops" name="loops" type="text" value="{{$info->loops or '0'}}">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="sort_name" class="col-md-2 control-label">播放间隔时间(秒)</label>
+          <div class="col-md-6">
+            <input class="form-control" id="time_spacing" name="time_spacing" type="text" value="{{$info->time_spacing or '0'}}">
+          </div>
+        </div>
+
+        <div class="form-group">
           <div class="col-md-offset-2 col-md-6">
             <input type="submit" value="提交" class="btn btn-default">
            </div>

@@ -23,6 +23,9 @@
             <th>每题分数</th>
             <th>出题数</th>
             <th>排序序号</th>
+            <th>答题时间</th>
+            <th>播放次数</th>
+            <th>播放间隔</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -35,6 +38,9 @@
                 <td>{{$list->score}}</td>
                 <td>{{$list->rnum}}</td>
                 <td>{{$list->ordern}}</td>
+                <td>{{$list->total_time}}</td>
+                <td>{{$list->loops}}</td>
+                <td>{{$list->time_spacing}}</td>
                 <td>
                     <div class="btn-group btn-xs">
                       <a class="btn btn-default btn-xs" href="{{url('/admin/examPaper/child/edit?id='. $list->id) }}"><i class="icon-edit"></i> 编辑</a>

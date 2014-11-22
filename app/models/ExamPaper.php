@@ -47,6 +47,14 @@ class ExamPaper extends Eloquent {
         if(isset($data['rnum']))
             $this->rnum = $data['rnum'];
 
+        if(isset($data['total_time']))
+            $this->total_time = $data['total_time'];
+
+        if(isset($data['loops']))
+            $this->loops = $data['loops'];
+
+        if(isset($data['time_spacing']))
+            $this->time_spacing = $data['time_spacing'];
 
         $this->save();
         return $this->id;  // 插入的id号
@@ -75,6 +83,15 @@ class ExamPaper extends Eloquent {
 
         if(isset($data['rnum']))
             $update['rnum'] = $data['rnum'];
+
+        if(isset($data['total_time']))
+            $update['total_time'] = $data['total_time'];
+
+        if(isset($data['loops']))
+            $update['loops'] = $data['loops'];
+
+        if(isset($data['time_spacing']))
+            $update['time_spacing'] = $data['time_spacing'];
 
         if(isset($data['score']))
         {

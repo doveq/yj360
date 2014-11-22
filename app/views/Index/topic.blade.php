@@ -33,6 +33,9 @@
             @else
             <b>{{$headTitle or ''}}</b>
             @endif
+            <div id="total_time">
+                答题时间<span id="total_time_show"></span>
+            </div>
         </div>
         <div class="clear"></div>
     </div>
@@ -45,7 +48,7 @@
         <audio class="playlist" id="q-sound" src="{{$q['sound_url'] or ''}}">
         <!-- 提示音 -->
         <audio class="playlist" id="q-hint" src="{{$q['hint_url'] or ''}}">
-
+        <!-- 参考音 -->
         <audio id="q-cky" src="{{$a[0]['sound_url'] or ''}}">
     </div>
 
@@ -240,6 +243,8 @@
             @if( $q['type'] == 2)
             <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
             @endif
+
+            {{-- 试卷没有上一题，下一题和答题卡 --}}
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
 
@@ -269,12 +274,15 @@
                 <input type="checkbox" name="ato" id="checkbox-2" onchange="topauto();" /> <label for="checkbox-2">答对后自动跳转到下一题</label>
             </div>
             @endif
+
+
             @if( $q['type'] == 6 || $q['type'] == 7 )
             <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
             <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="ckyPlay();"></a>
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
             <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
             <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="recorderPlay();" style="display:none;"></a>
+            <a class="topic-btn" hint="开始"  href="javascript:;" onclick="recorderStart();">开始答题</a>
             @endif
 
             @if( !empty($_GET['vetting']) )
@@ -338,6 +346,10 @@
     </div>
 
     <script>
+        /* 提示音循环次数 */
+        var loops = {{$loops or '0'}};
+        /* 提示音循环间隔时间 */
+        var time_spacing = {{$time_spacing or '0'}};
 
         $(document).ready(function(){
 
@@ -364,13 +376,32 @@
             if( $.cookie('ato') ==1)
                 $("input[name=ato]").prop("checked", true);
 
+            @if( !empty($total_time) )
+            totalTime({{$total_time}});
+            @endif
 
             //initPlay();
             // 延时2秒播放
-            setTimeout(initPlay, 2000);  
-
+            setTimeout(initPlay, 2000);
         });
         
+
+        /* 总时间倒计时，自动跳转到下一题 */
+        function totalTime(t)
+        {
+            $('#total_time').show();
+
+            /* 时间用尽则跳转 */
+            if(t < 0)
+                topicSubmit('next');
+            else
+                $('#total_time_show').html(t);
+
+            setTimeout(function(){
+                totalTime(--t);
+            }, 1000);
+        }
+
         /* 播放题干音和提示音 */
         var ip;
         function initPlay()
@@ -397,7 +428,7 @@
             }
         }
 
-        /* 重复播放 */
+        /* 手动点击重复播放 */
         function loopPlay()
         {
             var list = getPlayList();

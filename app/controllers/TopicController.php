@@ -43,6 +43,7 @@ class TopicController extends BaseController {
 			if( empty($clist) )
 				return $this->indexPrompt("", "没有这个试卷信息", $url = "/", false);
 
+			$exam_question = array(); // 记录试卷大题id和题目对应
 
 			foreach($clist as $key => $v) 
 			{
@@ -60,6 +61,7 @@ class TopicController extends BaseController {
 				{
 					foreach ($questions as $key => $q) {
 						$qlist[] = $q->question_id;
+						$exam_question[$q->question_id] = $q->exam_id;
 					}
 				}
 			}
@@ -67,12 +69,13 @@ class TopicController extends BaseController {
 			//print_r(DB::getQueryLog());
 
 			// 题目数据保存
-			$qinfo['exam_id'] = $exam;
-			$qinfo['column_id'] = $column;
-			$qinfo['uniqid'] = uniqid();
+			$qinfo['exam_id'] = $exam;  // 试卷id号
+			$qinfo['column_id'] = $column; // 科目分类id号
+			$qinfo['uniqid'] = uniqid();  
 			$qinfo['list'] = $qlist;  // 题目列表
 			$qinfo['answers'] = array();  // 记录用户每题的答案
 			$qinfo['trues'] = array();  // 记录答题对错
+			$qinfo['exam_question'] = $exam_question; // 记录试卷大题id和题目对应
 
 			Session::put('qinfo', $qinfo);
 			Session::save();
@@ -240,6 +243,27 @@ class TopicController extends BaseController {
 
 		// 获取当前题目的编号，显示使用
 		$info['index'] = array_search($id, $qlist) +1;
+
+
+		/* 
+			如果是试卷题目，则要判断 答题时间，播放次数，播放间隔。
+			如果有总答题时间则，则该时间后自动跳转到下一题
+			如果没有设置总答题时间，但是设置了播放次数和播放间隔(该情况为视唱模唱)，
+			则播放完成后跳转到下一题
+		*/
+		if( !empty($info['exam']) )
+		{
+			// 获取试卷大题设置
+			$epid = $qinfo['exam_question'][$id];  // 获取题目对应的大题id号
+			$dtinfo = ExamPaper::find($epid);
+			$info['total_time'] = $dtinfo['total_time'];
+			$info['loops'] = $dtinfo['loops'];
+			$info['time_spacing'] = $dtinfo['time_spacing'];
+		}
+
+		/* 如果有各种音频则生成播放列表 */
+		
+
 
 		return $this->indexView('topic', $info);
 	}

@@ -30,7 +30,7 @@
             <tr>
                 <td><label>{{ Form::checkbox('id[]', $v['question_id']) }}</label></td>
                 <td>{{$v['question_id']}}</td>
-                <td><a href="/topic?id={{$v->question['id']}}" target="_blank">{{$v->question['txt']}}</a></td>
+                <td><a href="/topic?id={{$v->question['id']}}&is_exam={{$v['exam_id']}}" target="_blank">{{$v->question['txt']}}</a></td>
                 <td>{{$v['ordern']}}</td>
                 <td>
                   <a href="javascript:;" class="btn btn-primary btn-xs showedit" data-toggle="modal" data-id="{{$v['id']}}" data-tit="{{$v->question['txt']}}" data-ordern="{{$v['ordern']}}">编辑</a>

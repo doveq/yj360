@@ -176,6 +176,13 @@
 			  </div>
 
 			  <div class="form-group">
+			    <label class="col-sm-2 control-label">答题时间</label>
+			    <div class="col-sm-10">
+			      <input type="text" class="form-control" name="qtime" value="{{$q['qtime'] or '0'}}" />
+			    </div>
+			  </div>
+
+			  <div class="form-group">
 			    <label for="inputPassword" class="col-sm-3 control-label"></label>
 			    <div class="col-sm-9">
 			      	<button type="submit" class="btn btn-success">提交保存</button>

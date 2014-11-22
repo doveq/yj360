@@ -39,6 +39,7 @@ $(function () {
         break;
 
       case "no_microphone_found":
+        console.log("no_microphone_found");
         break;
 
       case "microphone_user_request":
@@ -49,11 +50,14 @@ $(function () {
       case "microphone_connected":
         FWRecorder.isReady = true;
         $uploadStatus.css({'color': '#000'});
+        console.log("microphone_connected");
         break;
 
       case "permission_panel_closed":
         FWRecorder.defaultSize();
         recorderEl().removeClass("floating");
+
+        console.log("permission_panel_closed");
         break;
 
       case "microphone_activity":
