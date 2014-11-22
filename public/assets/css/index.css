@@ -685,13 +685,17 @@ li.index-list-more a {
 .classse-box {
 	float: left;
 	/*border-top:10px solid #ec4330;*/
-	/*background-color: #f2664d;*/
-	background-image:url("/assets/img/bg_class.png");
+	background-color: #00A8A8;
+	/*background-image:url("/assets/img/bg_class.png");*/
 	color: #fff;
 	/*margin:10px 0 0 10px;*/
 	width: 253px;
 	height: 163px;
 	overflow: hidden;
+	margin:0 15px 15px 0;
+	background-size:100px 100px;
+	background-repeat:no-repeat;
+	background-position:right bottom;
 }
 .classes-box-name {
 	margin: 10px 20px;
@@ -701,14 +705,20 @@ li.index-list-more a {
 }
 .classes-txt{margin:80px 0 0 20px;}
 .classse-btn {
-	background-color: #793327;
-	padding:5px 10px;
+	/*background-color: #793327;*/
+	display:none;
+	padding-top:10px;
 }
 .classse-btn a{
-	color: #fff;
-	width: 100px;
-	float: left;
+	color: #000;
+	background-color: #fff;
+	/*width: 100px;*/
+	float: right;
 	text-align: center;
+	margin-top: -20px;
+	padding: 0 5px;
+	border-radius: 25px;
+	-moz-border-radius:25px;
 }
 .delclass {
 }
