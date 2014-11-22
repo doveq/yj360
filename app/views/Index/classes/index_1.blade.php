@@ -21,7 +21,7 @@
           </div>
         @else
           @foreach ($classes as $list)
-          <div class="classse-box" id="classes_{{$list->id}}">
+          <div class="classse-box" id="classes_{{$list->id}}" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}');">
             <div class="classes-box-name">
               <a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
             </div>
@@ -29,27 +29,29 @@
               <div>创建人：{{$list->teacher->name}}</div>
               <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
             </div>
-            <div class="classse-btn" style="display:none;margin-top:-30px;">
-                <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">删除班级</a>
+            @if ($list->teacher->id == Session::get('uid'))
+            <div class="classse-btn">
+                <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">删除</a>
             </div>
+            @endif
           </div>
           @endforeach
           <div class="clear"></div>
         @endif
 
         @if($classmate_logs->count() > 0)
-        <div style="margin:20px 10px 10px 0px;font-size:18px;color:#499528;border-bottom: 1px solid #ccc;">班级申请加入消息</div>
+        <div style="margin:20px 10px 0px 0px;font-size:18px;color:#499528;border-bottom: 1px solid #ccc;">班级申请加入消息</div>
         <table class="table-2" border="0" cellpadding="0" cellspacing="0">
             @foreach($classmate_logs as $list)
               <tr>
-                  <td class="tytd">
+                  <td class="tytd" style="color:#999999;">
                     @if ($list->type == 1)
                       {{$list->created_at}} 你邀请 {{$list->student->name}} 加入 {{$list->classes->name}}
                     @elseif ($list->type == 2)
                       {{$list->created_at}} {{$list->student->name}} 申请加入班级 {{$list->classes->name}}
                     @endif
                   </td>
-                  <td class="tytd">
+                  <td class="tytd" style="color:#999999;">
                       <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:老师拒绝 3:学生拒绝 -->
                       @if ($list->classmate)
                         @if ($list->classmate->status == 0)
