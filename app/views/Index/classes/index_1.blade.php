@@ -9,9 +9,8 @@
   <div class="wrap-right">
       <div class="tabtool">
         我的班级
-          <a href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
-          <a href="/classes/create?column_id={{$query['column_id']}}" class="tabtool-btn">创建班级</a>
-          <div class="clear"></div>
+        <a href="/classm/add_class?column_id={{$query['column_id']}}" class="tabtool-btn">加入班级</a>
+        <a href="/classes/create?column_id={{$query['column_id']}}" class="tabtool-btn">创建班级</a>
       </div>
       <div class="clear"></div>
 
@@ -23,15 +22,15 @@
         @else
           @foreach ($classes as $list)
           <div class="classse-box" id="classes_{{$list->id}}">
+            <div class="classes-box-name">
+              <a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
+            </div>
             <div class="classes-txt">
-              <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
               <div>创建人：{{$list->teacher->name}}</div>
               <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
             </div>
             <div class="classse-btn" style="display:none;margin-top:-30px;">
-                <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">班级成员</a>
                 <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">删除班级</a>
-                <div class="clear"></div>
             </div>
           </div>
           @endforeach
@@ -39,7 +38,7 @@
         @endif
 
         @if($classmate_logs->count() > 0)
-        <div style="margin:20px 10px 10px 10px;">班级申请记录:</div>
+        <div style="margin:20px 10px 10px 0px;font-size:18px;color:#499528;border-bottom: 1px solid #ccc;">班级申请加入消息</div>
         <table class="table-2" border="0" cellpadding="0" cellspacing="0">
             @foreach($classmate_logs as $list)
               <tr>
