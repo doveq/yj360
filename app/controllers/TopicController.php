@@ -248,8 +248,7 @@ class TopicController extends BaseController {
 		/* 
 			如果是试卷题目，则要判断 答题时间，播放次数，播放间隔。
 			如果有总答题时间则，则该时间后自动跳转到下一题
-			如果没有设置总答题时间，但是设置了播放次数和播放间隔(该情况为视唱模唱)，
-			则播放完成后跳转到下一题
+			如果没有设置总答题时间，但是设置了播放次数和播放间隔则播放完成后跳转到下一题
 		*/
 		if( !empty($info['exam']) )
 		{
@@ -260,10 +259,6 @@ class TopicController extends BaseController {
 			$info['loops'] = $dtinfo['loops'];
 			$info['time_spacing'] = $dtinfo['time_spacing'];
 		}
-
-		/* 如果有各种音频则生成播放列表 */
-		
-
 
 		return $this->indexView('topic', $info);
 	}

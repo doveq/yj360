@@ -60,7 +60,7 @@
         </div>
 
         <div class="form-group">
-          <label for="sort_name" class="col-md-2 control-label">提示音播放次数</label>
+          <label for="sort_name" class="col-md-2 control-label">重复播放次数</label>
           <div class="col-md-6">
             <input class="form-control" id="loops" name="loops" type="text" value="{{$info->loops or '0'}}">
           </div>

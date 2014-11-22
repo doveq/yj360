@@ -74,6 +74,10 @@ class ImportController extends \BaseController {
                     {
                         $info['question']['type'] = 2;
                     }
+                    elseif( $lines[1] == 'SQS')
+                    {
+                        $info['question']['type'] = 7;
+                    }
                     break;
                 case 'a':
                     if ($lines[1] != '') {
@@ -165,6 +169,16 @@ class ImportController extends \BaseController {
                             elseif($lines[1] == 'E') $info['answer'][4]['is_right'] = 1;
                             elseif($lines[1] == 'F') $info['answer'][5]['is_right'] = 1;
                         }
+                    }
+                    break;
+                case 'ptl':
+                    if ($lines[1] != '') {
+                        $info['question']['read_time'] = $lines[1];
+                    }
+                    break;
+                case 'rtl':
+                    if ($lines[1] != '') {
+                        $info['question']['qtime'] = $lines[1];
                     }
                     break;
                 default:
@@ -387,7 +401,7 @@ class ImportController extends \BaseController {
             (is_dir("$dir/$file")) ? $this->delTree("$dir/$file") : unlink("$dir/$file");
         }
 
-        return rmdir($dir);
+        return rmdir("{$dir}");
     }
 
 }

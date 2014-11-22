@@ -47,9 +47,14 @@
         <!-- 题干音 -->
         <audio class="playlist" id="q-sound" src="{{$q['sound_url'] or ''}}">
         <!-- 提示音 -->
-        <audio class="playlist" id="q-hint" src="{{$q['hint_url'] or ''}}">
+        <audio class="playlist playloop" id="q-hint" src="{{$q['hint_url'] or ''}}">
         <!-- 参考音 -->
         <audio id="q-cky" src="{{$a[0]['sound_url'] or ''}}">
+        <!-- 播放地几遍 -->
+        <audio id="play-djb" src="">
+        <audio id="play-djb-1" src="/assets/sound/d1.mp3">
+        <audio id="play-djb-2" src="/assets/sound/d2.mp3">
+        <audio id="play-djb-3" src="/assets/sound/d3.mp3">
     </div>
 
     <div class="container wrap">
@@ -141,7 +146,7 @@
                                     @if( !empty($item['img_url']) )
                                         <img src="{{$item['img_url']}}" />
                                     @elseif( !empty($item['sound_url']) )
-                                        <button type="button" class="sound-play playlist playbtn" sound-id="{{$item['sound_att_id']}}" src="{{$item['sound_url']}}" ></button>
+                                        <button type="button" class="sound-play playlist playloop playbtn" sound-id="{{$item['sound_att_id']}}" src="{{$item['sound_url']}}" ></button>
                                         <span style="display:none;">
                                             <audio id="{{$item['sound_att_id']}}" src="{{$item['sound_url']}}" >
                                         </span>
@@ -282,7 +287,9 @@
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
             <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
             <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="recorderPlay();" style="display:none;"></a>
+            <!--
             <a class="topic-btn" hint="开始"  href="javascript:;" onclick="recorderStart();">开始答题</a>
+            -->
             @endif
 
             @if( !empty($_GET['vetting']) )
@@ -348,8 +355,11 @@
     <script>
         /* 提示音循环次数 */
         var loops = {{$loops or '0'}};
+        var loops_static = {{$loops or '0'}};
         /* 提示音循环间隔时间 */
         var time_spacing = {{$time_spacing or '0'}};
+        /* 判断是否是开始循环 */
+        var isLoop = false;
 
         $(document).ready(function(){
 
@@ -380,7 +390,6 @@
             totalTime({{$total_time}});
             @endif
 
-            //initPlay();
             // 延时2秒播放
             setTimeout(initPlay, 2000);
         });
@@ -431,7 +440,7 @@
         /* 手动点击重复播放 */
         function loopPlay()
         {
-            var list = getPlayList();
+            var list = getLoopList();
             if(list.length > 0)
             {
                 $('#play-list').attr('src', list[0]);
@@ -442,6 +451,50 @@
                 catch (e)
                 {
                     console.log("loop play fail");
+                }
+            }
+        }
+
+        /* 自动重复播放 */
+        function autoLoopPlay()
+        {
+            var list = getLoopList();
+            if(list.length > 0)
+            {
+                $('#play-list').attr('src', list[0]);
+                try
+                {
+                    /* 播放地几遍提示音 */
+                    // 播放第几遍
+                    if(loops_static - loops == 1)
+                    {
+                        dp = new MediaElementPlayer('#play-djb-2', {
+                            success: function (mediaElement, domObject) {
+                                mediaElement.addEventListener('ended', function (e) {
+                                    ip.play();
+                                }, false);
+                            }
+                        });
+
+                        dp.play();
+                    }
+                    else if(loops_static - loops == 2)
+                    {
+                        dp = new MediaElementPlayer('#play-djb-3', {
+                            success: function (mediaElement, domObject) {
+                                mediaElement.addEventListener('ended', function (e) {
+                                    ip.play();
+                                }, false);
+                            }
+                        });
+
+                        dp.play();
+                    }
+
+                }
+                catch (e)
+                {
+                    console.log("loop play fail: " + e);
                 }
             }
         }
@@ -482,8 +535,22 @@
             return list;
         }
 
+        /* 获取重复播放列表 */
+        function getLoopList()
+        {
+            var list = new Array();
+            $('.playloop').each(function(){
+                if($(this).attr('src') != '')
+                {
+                    list.push( $(this).attr('src') );
+                }
+            });
+
+            return list;
+        }
+
         function playNext(currentPlayer) 
-        {   
+        {
             /* 当前播放的声音 */
             var current = $('#play-list').attr('src');
             var next = '';  // 下一个需要播放的声音
@@ -516,6 +583,33 @@
                         $(this).addClass('playbtn-current');
                     }
                 });
+            }
+            else
+            {
+                /* 没有更多音频 */
+                isLoop = true;
+
+                if(time_spacing > 0)
+                {
+                    if(loops > 0)
+                    {
+                        setTimeout(autoLoopPlay, time_spacing * 1000);
+                        --loops;
+                    }
+                }
+                else if(loops > 0)
+                {
+                    autoLoopPlay();
+                    --loops;
+                }
+                else if(loops_static > 0 && loops <= 0)
+                {
+                    console.log("0---------->" + loops);
+                    /* 如果设置了循环次数，并且已经循环完成则跳转到下一题 */
+                    setTimeout(function(){ topicSubmit('next'); }, time_spacing * 1000);
+                }
+
+                console.log("loops:" + loops);
             }
 
         }
