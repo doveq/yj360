@@ -42,19 +42,12 @@
 
     {{-- 播放音频相关 --}}
     <div style="display:none;">
-        <!-- 初始播放列表 -->
-        <audio id="play-list" src="">
         <!-- 题干音 -->
         <audio class="playlist" id="q-sound" src="{{$q['sound_url'] or ''}}">
         <!-- 提示音 -->
         <audio class="playlist playloop" id="q-hint" src="{{$q['hint_url'] or ''}}">
         <!-- 参考音 -->
         <audio id="q-cky" src="{{$a[0]['sound_url'] or ''}}">
-        <!-- 播放地几遍 -->
-        <audio id="play-djb" src="">
-        <audio id="play-djb-1" src="/assets/sound/d1.mp3">
-        <audio id="play-djb-2" src="/assets/sound/d2.mp3">
-        <audio id="play-djb-3" src="/assets/sound/d3.mp3">
     </div>
 
     <div class="container wrap">
@@ -161,12 +154,14 @@
                     {{-- 模唱 --}}
                     @elseif( $q['type'] == 6 )
                     {{-- 视唱 --}}
-                    @elseif( $q['type'] == 7 ) 
+                    @elseif( $q['type'] == 7 )
+                        @if(!empty($a))
                         @foreach($a as $k => $item)
                             @if( !empty($item['img_url']) )
                                 <div style="text-align:center;"><img src="{{$item['img_url']}}" /></div>
                             @endif
                         @endforeach
+                        @endif
                     @elseif( $q['type'] == 8)
                        <div style="text-align:center;">
                          {{$a[0]['txt']}}
@@ -282,7 +277,7 @@
 
 
             @if( $q['type'] == 6 || $q['type'] == 7 )
-            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
+            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="loopPlay();"></a>
             <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="ckyPlay();"></a>
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
             <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
@@ -320,7 +315,25 @@
 
     </div> <!-- /container -->
 
-    
+    {{-- 自动播放音频列表 --}}
+
+    @if( !empty($playList) )
+    <div style="display:none;">
+        <!-- 初始播放列表 -->
+        <audio id="list-audio" src="{{$playList[0]['url'] or ''}}" />
+
+        <ul id="play-list">
+        @foreach($playList as $v)
+            @if(!empty($v['time_spacing']))
+            <li time-spacing="{{$v['time_spacing']}}"></li>
+            @endif
+            @if(!empty($v['url']))
+            <li>{{$v['url']}}</li>
+            @endif
+        @endforeach
+        </ul>
+    </div>
+    @endif
 
     {{-- 答题数据提交 --}}
     <form id="topicForm" name="topicForm" action="/topic/post" method="post">
@@ -353,14 +366,6 @@
     </div>
 
     <script>
-        /* 提示音循环次数 */
-        var loops = {{$loops or '0'}};
-        var loops_static = {{$loops or '0'}};
-        /* 提示音循环间隔时间 */
-        var time_spacing = {{$time_spacing or '0'}};
-        /* 判断是否是开始循环 */
-        var isLoop = false;
-
         $(document).ready(function(){
 
             $('.sound-play').click(function(){
@@ -406,36 +411,92 @@
             else
                 $('#total_time_show').html(t);
 
-            setTimeout(function(){
-                totalTime(--t);
-            }, 1000);
+            setTimeout(function(){ totalTime(--t); }, 1000);
         }
 
         /* 播放题干音和提示音 */
         var ip;
         function initPlay()
         {
-            var list = getPlayList();
-            //console.log(list);
-            if(list.length > 0)
+            ip = new MediaElementPlayer('#list-audio', {
+                success: function (mediaElement, domObject) {
+                    mediaElement.addEventListener('ended', function (e) {
+                        mejsPlayNext(e.target);
+                    });
+
+                    mediaElement.play();
+                },
+                error: function (e) {
+                    console.log('MediaElementPlayer error: ' + e);
+                },
+                keyActions: []
+            });
+        }
+
+        
+        function mejsPlayNext(currentPlayer) 
+        {
+            if ($('#play-list li.current').length > 0)
             {
-                $('#play-list').attr('src', list[0]);
+                var current_item = $('#play-list li.current:first');
+                var next = $(current_item).next();
 
-                ip = new MediaElementPlayer('#play-list', {
-                    success: function (mediaElement, domObject) {
-                        mediaElement.addEventListener('ended', function (e) {
-                            playNext(e.target);
-                        }, false);
-                    },
-                    error: function () {
-                        console.log('MediaElementPlayer error!');
-                    },
-                    keyActions: []
-                });
+                // 如果是暂停
+                if(next.attr('time-spacing'))
+                {
+                    $(current_item).next().addClass('current').siblings().removeClass('current');
+                    setTimeout(function(){ mejsPlayNext(currentPlayer); }, next.attr('time-spacing') *1000);
+                    console.log('spacing');
+                    return;
+                }
+                else
+                {
+                    var audio_src = next.text();
+                    $(current_item).next().addClass('current').siblings().removeClass('current');
 
-                ip.play();
+                    setPlaybtn(audio_src);
+                }
+                console.log('if '+audio_src);
+            }
+            else
+            {
+                // if there is no .current class
+                var current_item = $('#play-list li:first'); // get :first if we don't have .current class
+                var audio_src = $(current_item).next().text();
+                $(current_item).next().addClass('current').siblings().removeClass('current');
+
+                setPlaybtn(audio_src);
+                console.log('elseif '+audio_src);
+            }
+
+            // 如果当前是最后一个
+            if( $(current_item).is(':last-child') ) 
+            { 
+                $(current_item).removeClass('current');
+
+                //setTimeout(function(){ mejsPlayNext(currentPlayer); }, next.attr('time-spacing') *1000);
+            }
+            else if(audio_src)
+            {
+                currentPlayer.setSrc(audio_src);
+                currentPlayer.play();
             }
         }
+
+        // 设置播放时图标
+        function setPlaybtn(src)
+        {
+            $('.playbtn-current').each(function(){
+                $(this).removeClass('playbtn-current');
+            });
+            $('.playbtn').each(function(){
+                if( $(this).attr('src') == src )
+                {
+                    $(this).addClass('playbtn-current');
+                }
+            });
+        }
+ 
 
         /* 手动点击重复播放 */
         function loopPlay()
@@ -455,48 +516,18 @@
             }
         }
 
-        /* 自动重复播放 */
-        function autoLoopPlay()
+        /* 获取重复播放列表 */
+        function getLoopList()
         {
-            var list = getLoopList();
-            if(list.length > 0)
-            {
-                $('#play-list').attr('src', list[0]);
-                try
+            var list = new Array();
+            $('.playloop').each(function(){
+                if($(this).attr('src') != '')
                 {
-                    /* 播放地几遍提示音 */
-                    // 播放第几遍
-                    if(loops_static - loops == 1)
-                    {
-                        dp = new MediaElementPlayer('#play-djb-2', {
-                            success: function (mediaElement, domObject) {
-                                mediaElement.addEventListener('ended', function (e) {
-                                    ip.play();
-                                }, false);
-                            }
-                        });
-
-                        dp.play();
-                    }
-                    else if(loops_static - loops == 2)
-                    {
-                        dp = new MediaElementPlayer('#play-djb-3', {
-                            success: function (mediaElement, domObject) {
-                                mediaElement.addEventListener('ended', function (e) {
-                                    ip.play();
-                                }, false);
-                            }
-                        });
-
-                        dp.play();
-                    }
-
+                    list.push( $(this).attr('src') );
                 }
-                catch (e)
-                {
-                    console.log("loop play fail: " + e);
-                }
-            }
+            });
+
+            return list;
         }
 
         var hp;
@@ -519,101 +550,6 @@
             player = new MediaElementPlayer('#q-cky');
             player.play();
         }
-
-        /* 获取播放列表 */
-        function getPlayList()
-        {
-            /* 获取播放列表 */
-            var list = new Array();
-            $('.playlist').each(function(){
-                if($(this).attr('src') != '')
-                {
-                    list.push( $(this).attr('src') );
-                }
-            });
-
-            return list;
-        }
-
-        /* 获取重复播放列表 */
-        function getLoopList()
-        {
-            var list = new Array();
-            $('.playloop').each(function(){
-                if($(this).attr('src') != '')
-                {
-                    list.push( $(this).attr('src') );
-                }
-            });
-
-            return list;
-        }
-
-        function playNext(currentPlayer) 
-        {
-            /* 当前播放的声音 */
-            var current = $('#play-list').attr('src');
-            var next = '';  // 下一个需要播放的声音
-            var list = getPlayList();
-            for(i = 0; i < list.length; i++)
-            {
-                if(list[i] == current)
-                {
-                    nid = i +1;
-                    if(nid < list.length)
-                    {
-                        next = list[nid];
-                        break;
-                    }
-                }
-            }
-
-            $('.playbtn-current').each(function(){
-                $(this).removeClass('playbtn-current');
-            });
-
-            if(next != '')
-            {
-                currentPlayer.setSrc(next);
-                currentPlayer.play();
-
-                $('.playbtn').each(function(){
-                    if( $(this).attr('src') == next )
-                    {
-                        $(this).addClass('playbtn-current');
-                    }
-                });
-            }
-            else
-            {
-                /* 没有更多音频 */
-                isLoop = true;
-
-                if(time_spacing > 0)
-                {
-                    if(loops > 0)
-                    {
-                        setTimeout(autoLoopPlay, time_spacing * 1000);
-                        --loops;
-                    }
-                }
-                else if(loops > 0)
-                {
-                    autoLoopPlay();
-                    --loops;
-                }
-                else if(loops_static > 0 && loops <= 0)
-                {
-                    console.log("0---------->" + loops);
-                    /* 如果设置了循环次数，并且已经循环完成则跳转到下一题 */
-                    setTimeout(function(){ topicSubmit('next'); }, time_spacing * 1000);
-                }
-
-                console.log("loops:" + loops);
-            }
-
-        }
-
 
         function topauto()
         {

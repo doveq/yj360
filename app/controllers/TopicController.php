@@ -260,6 +260,48 @@ class TopicController extends BaseController {
 			$info['time_spacing'] = $dtinfo['time_spacing'];
 		}
 
+		/* 生成音频播放列表 */
+		$playList = array();
+		// 读题音不用重复播放
+		if( !empty($info['q']['sound_url']) )
+		{
+			$playList[] = array('url' => $info['q']['sound_url']);
+		}
+
+		$loop = empty( $info['loops'] ) ? 1 : $info['loops'];
+		for($i = 0; $i < $loop; $i++)
+		{
+			// 如果设置了循环次数，则添加第几遍提示音
+			if( !empty( $info['loops'] ) && $info['loops'] > 1)
+			{
+				if($i == 0)
+					$playList[] = array('url' => '/assets/sound/d1.mp3');
+				elseif($i == 1)
+					$playList[] = array('url' => '/assets/sound/d2.mp3');
+				else
+					$playList[] = array('url' => '/assets/sound/d3.mp3');
+			}
+
+			if( !empty($info['q']['hint_url']) )
+			{
+				$playList[] = array('url' => $info['q']['hint_url']);
+			}
+
+			if( !empty($info['a']) )
+			{
+				foreach ($info['a'] as $a) 
+				{
+					if( !empty($a['sound_url']) )
+						$playList[] = array('url' => $a['sound_url']);
+				}
+			}
+
+			if( !empty($info['time_spacing']) )
+				$playList[] = array('time_spacing' => $info['time_spacing']);
+		}
+		
+		$info['playList'] = $playList;
+
 		return $this->indexView('topic', $info);
 	}
 
