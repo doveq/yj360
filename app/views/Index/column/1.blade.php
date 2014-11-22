@@ -15,12 +15,13 @@
 
       <div class="classes-list">
           @foreach ($content as $list)
-          <div class="classse-box" style="height:60px;width:150px; border-top:0;background-color:{{$list->bgcolor}}">
-            <div class="classes-txt" style="background-color:{{$list->bgcolor}};vertical-align:middle;">
-              <a href="/topic?column={{$list->id}}" style="color:#fff;">
-              <div><h2><b>{{$list->name}}</b></h2></div>
+          <div class="tmbox" style="background-color:{{$list->bgcolor}}">
+            <div class="tmbox-txt" style="background-color:{{$list->bgcolor}};">
+              <a href="/topic?column={{$list->id}}">
+              {{$list->name}}
               </a>
             </div>
+            <div class="clear"></div>
           </div>
           @endforeach
           <div class="clear"></div>

@@ -1154,3 +1154,20 @@ a.tyadel {
 #total_time_show{
 	color:red;
 }
+.tmbox{
+	float:left;
+	height:60px;
+	width:150px; 
+	border-top:0;
+	overflow: hidden;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+.tmbox-txt{
+	vertical-align:middle;
+	padding:5px;
+}
+.tmbox-txt a{
+	color: #fff;
+	font-weight: bold;
+}
