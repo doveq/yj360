@@ -13,12 +13,13 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        原创题库
-        <a href="/uploadbank/create?column_id={{$query['column_id']}}" class="tabtool-btn">上传题库</a>
-        <div class="clear"></div>
+        <span class="tab-bar"></span>
+        <span class="tab-title">原创题库</span>
+        <span class="tab-btn">
+          <a href="/uploadbank/create?column_id={{$query['column_id']}}" class="tabtool-btn">上传题库</a>
+        </span>
       </div>
       <div class="clear"></div>
-        <div style="margin:10px;">你已经上传了{{$lists->count()}}个题库</div>
         <table  class="stable" border="0" cellpadding="0" cellspacing="0">
           <thead>
             <tr>

@@ -10,17 +10,14 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        上传题库
-        <div class="clear"></div>
+        <span class="tab-bar"></span>
+        <a href="/uploadbank?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
+        <span class="tab-title">上传题库</span>
       </div>
-      <div class="clear"></div>
-
       <div class="classes-list">
-        <div style="margin:10px;">你已经上传了{{$lists->count()}}个题库</div>
         {{ HTML::ul($errors->all()) }}
         {{ Form::open(array('url' => '/uploadbank?column_id='.$query['column_id'], 'method' => 'post', 'files' => true)) }}
           <table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #f1f1f1; width:100%;">
-            <tr><td style="background-color:#00bbac;padding:10px; color:#ffffff" colspan="2">上传题库</td></tr>
             <tr>
               <td style="width:20%;text-align:right;">{{ Form::label('inputFile', '选择文件', array('class' => 'tylabel')) }}</td>
               <td>
