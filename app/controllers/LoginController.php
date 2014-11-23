@@ -159,6 +159,7 @@ class LoginController extends BaseController
 
 		$code = rand(100000, 999999);
 		Session::put('code', $code);
+		Session::put('mobile', $mobile);
 
 		$msg = "验证码：{$code}（为了保证账户安全，请勿向他人泄漏）【音基360】";
 
@@ -209,6 +210,40 @@ class LoginController extends BaseController
 		//$mobile = Input::get('mobile');
 
 		return $this->indexView('forgot');
+	}
+
+	public function doForgot()
+	{
+		$data = Input::all();
+
+		$validator = Validator::make($data , array(
+	        'tel' => 'required|digits:11',
+	        'password' => 'required|min:6|confirmed')
+		);
+
+		if($data['code'] == Session::get('code') && $data['tel'] == Session::get('mobile') )
+		{
+			if($validator->passes())
+			{
+				$user = new User;
+				$info = $user->where('tel', '=', $data['tel'])->first();
+				if( !empty($info) )
+				{
+					$user->setInfo($info->id, array('password' => $user->encPasswd($data['password'])) );
+					return $this->indexPrompt("操作成功", "密码重置成功，请登录", $url = "/login", $auto = true);
+				}
+				else
+				{
+					return $this->indexPrompt("", "该手机没有注册，请重试", $url = "/forgot", $auto = true);
+				}
+			}
+		}
+		else
+		{
+			$data['codeErr'] = "验证码错误";
+		}
+
+		return Redirect::to('forgot')->withErrors($validator)->withInput($data);
 	}
 
 	/* 填写邀请人 */

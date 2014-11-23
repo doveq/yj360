@@ -1104,12 +1104,11 @@ a.tyadel {
     cursor: not-allowed;
 }
 .ggbtn{
-	background: url("/assets/img/gbtn.png") no-repeat 0 0;
-	width: 111px;
-	height: 23px;
 	border: none;
 	color: #fff;
 	line-height: 16px;
+	background-color: #00b1bc;
+	padding:5px 10px;
 }
 .footer-links li{
 	float: left;

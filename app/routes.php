@@ -133,6 +133,7 @@ Route::get('/testmsg', 'MessageController@mobileMsg');
 Route::get('/prompt', 'PromptController@index');
 Route::get('/prompt/test', 'TestController@test');
 Route::get('/forgot', 'LoginController@forgot');
+Route::post('/doForgot', 'LoginController@doForgot');
 Route::get('/invite_by', 'LoginController@inviteby');
 Route::post('/do_invite_by', 'LoginController@doinviteby');
 

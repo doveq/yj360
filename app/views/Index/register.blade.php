@@ -121,7 +121,7 @@ function mobileCode()
             $('#codebox').show();
              if(data.state == 1)
              {
-                t = 180;
+                t = 120;
                 $('#codeerr').text(t + " 秒后可重新获取短信");
                 res  = setInterval(function(){
                     $('#codeerr').text(t + " 秒后可重新获取短信");
@@ -131,7 +131,6 @@ function mobileCode()
                         $('#codebox').hide();
                         $('#mcbtn').removeAttr("disabled");
                         $("#mcbtn").removeClass('mcbtn-2').addClass('mcbtn-1');
-                        console.log("xxxxxxxxxxx");
                         clearInterval(res);
                     }
 
