@@ -23,6 +23,7 @@
             </tr>
           </thead>
           <tbody>
+            @if (isset($lists))
             @foreach ($lists as $list)
             <tr>
               <td>{{$list->classes->name}}</td>
@@ -31,6 +32,7 @@
               <td><a href="#" target="_blank">做题</a>  <a href="/training_result?training_id={{$list->id}}&column_id={{$query['column_id']}}">查看练习情况</a></td>
             </tr>
             @endforeach
+            @endif
           </tbody>
         </table>
 
