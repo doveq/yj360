@@ -115,6 +115,13 @@ class LoginController extends BaseController
 					$data['is_certificate'] = 1;
 				}
 
+				// 如果这个手机在老师信息表则类型修改为老师
+				$results = DB::select('select * from teacher_info where tel = ?', array($data['tel']));
+				if(!empty($results[0]))
+				{
+					$data['type'] = 1;
+				}
+
 				$user = new User;
 				$uid = $user->add($data);
 
