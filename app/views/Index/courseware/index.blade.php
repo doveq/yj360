@@ -25,7 +25,7 @@
       <div class="classes-list">
         @if (isset($lists['files']))
           @foreach($lists['files'] as $k => $d)
-            <a class="cwblock" style="background-color:{{$color[array_rand($color)]}};" href="/courseware/show?column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware">{{$d['name']}}</a>
+            <a style="background-color:{{$color[array_rand($color)]}};" href="/courseware/show?column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware cwblock">{{$d['name']}}</a>
           @endforeach
         <!--
         <table class="table-2" style="width:80%;margin:20px;padding:20px" border="0" cellpadding="0" cellspacing="0">
