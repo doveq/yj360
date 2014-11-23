@@ -771,6 +771,7 @@ li.index-list-more a {
 	bottom: 0;
 	z-index: 9;
 	margin:10px 20px;
+	color:#fff;
 }
 .classse-btn {
 	/*background-color: #793327;*/
@@ -788,6 +789,66 @@ li.index-list-more a {
 	border-radius: 15px;
 	-moz-border-radius:15px;
 }
+
+.classmate-box {
+	margin: 5px 10px 5px 0;
+	float: left;
+	width: 120px;
+	height: 120px;
+	text-align: center;
+	position: relative;
+}
+
+.classmate-bzr {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height:65px;
+	width:65px;
+
+	background-size:65px 65px;
+	background-repeat:no-repeat;
+	background-position:center;
+	z-index: 9;
+	background-image: url('/assets/img/banzhuren.png');
+}
+.classmate-name {
+	color:#499528;
+}
+.classmate-title {
+	padding: 5px;
+}
+.classmate-msg {
+	width: 30px;
+	height: 25px;
+	background-color: #ff0000;
+	position: absolute;
+	right: 0;
+	top: 0;
+	color: #ffffff;
+	z-index: 10;
+}
+.msg-box {
+	/*height: 60px;*/
+}
+.msg-head {
+	width: 68px;
+	height: 48px;
+	float: left;
+	position: relative;
+}
+.msg-arrow {
+	width: 20px;
+	height: 25px;
+	position:absolute;
+	top:0;
+	right:0;
+}
+.msg-content {
+	width: 664px;
+	/*height: 58px;*/
+}
+
 .delclass {
 }
 .column-cj{

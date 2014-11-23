@@ -15,8 +15,6 @@
       <div class="clear"></div>
       {{ Form::open(array('url' => '/classm/add_class?column_id='.$query['column_id'], 'method' => 'post')) }}
       <table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #f1f1f1; width:100%;">
-        <tr><td style="background-color:#00bbac;padding:10px;">搜索加入</td></tr>
-
         <tr>
           <td style="width:20%;text-align:center;">
           老师 {{ Form::text('teacher_name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'padding:5px;width:100px'))}}
@@ -50,8 +48,6 @@
             </div>
             @endforeach
           @endif
-        @else
-        未找到班级
         @endif
           <div class="clear"></div>
       </div>
@@ -88,7 +84,7 @@ $(function(){
           } else if (data == 2) {
             layer.msg('你已经加入过此班级', 2, 5);
           } else if (data == 3) {
-            layer.msg('加入失败,一个科目下只能加入两个班级', 2, 3);
+            layer.msg('加入失败,当前科目下你已经申请或者加入过一个班级', 2, 3);
           }
         });
     });

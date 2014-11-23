@@ -25,15 +25,17 @@
         @else
           @foreach ($classes as $list)
           <div class="classse-box" id="classes_{{$list->id}}" style="">
+            <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">
             <div class="classes-box-head" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
             </div>
             <div class="classes-box-name">
-              <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
+              {{$list->name}}
             </div>
             <div class="classes-txt">
               <div>创建者：{{$list->teacher->name}} @if ($list->teacher->id == Session::get('uid'))(我)@endif</div>
               <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
             </div>
+            </a>
             @if ($list->teacher->id == Session::get('uid'))
             <div class="classse-btn">
                 <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">删除</a>
@@ -54,18 +56,19 @@
                     @if ($list->type == 1)
                       {{$list->created_at}} 你邀请 {{$list->student->name}} 加入 {{$list->classes->name}}
                     @elseif ($list->type == 2)
-                      {{$list->created_at}} {{$list->student->name}} 申请加入班级 {{$list->classes->name}}
+                      {{$list->created_at}} {{$list->student->name}} 申请加入{{$list->teacher->name}} 的 {{$list->classes->name}}
                     @endif
                   </td>
                   <td class="tytd" style="color:#999999;">
                       <!-- 学生对应班级状态, 0:待确认, 1: 已同意 2:老师拒绝 3:学生拒绝 -->
                       @if ($list->classmate)
                         @if ($list->classmate->status == 0)
-                          @if ($list->type == 2)
+                          @if ($list->type == 2 && $list->teacher_id == Session::get('uid'))
                             <a href="javascript:;" onclick="do_status({{$list->classmate_id}},1)">同意</a>
                             <a href="javascript:;" onclick="do_status({{$list->classmate_id}},2)">拒绝</a>
-                          @elseif ($list->type == 1)
-                            待确认
+                          @else
+                            待确认 <a href="javascript:;" onclick="cancel_sq({{$list->classmate_id}})">撤销申请</a>
+
                           @endif
                         @elseif ($list->classmate->status == 1)
                           已同意
@@ -107,7 +110,7 @@
       type:'put',
     })
     .fail(function(){
-      alert('操作失败');
+      layer.msg('删除失败', 2, 1);
     })
     .success(function(){
       location.reload();
@@ -131,6 +134,24 @@ $(document).ready(function () {
         } else {
           layer.msg('删除失败,班级中还有成员', 2, 5);
         }
+      });
+    });
+  };
+
+
+  cancel_sq = function(id){
+    layer.confirm('您确定要撤销吗？', function(){
+      $.ajax({
+        url:'/classmate/postDelete?id='+id+'&column_id='+{{$query['column_id']}},
+        // async:false,
+        type:'post',
+      })
+      .fail(function(){
+        layer.msg('删除失败', 2, 1);
+      })
+      .success(function(data){
+          layer.closeAll();
+          location.reload();
       });
     });
   };

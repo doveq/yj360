@@ -23,9 +23,11 @@
         {{ HTML::ul($errors->all()) }}
         {{ Form::open(array('url' => '/classes', 'method' => 'post')) }}
           <table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #f1f1f1; width:100%;">
-            <tr><td style="background-color:#00a8a8;padding:10px;color:#fff;" colspan="2">创建班级</td></tr>
+            <tr><td style="padding:10px;color:#ccc;text-align:center;" colspan="2">
+创建的班级，最多可加入60位学生，解散班级需要先移除班级内成员。
+</td></tr>
             <tr>
-              <td style="width:20%;text-align:right;">{{ Form::label('inputName', '班级名称', array('class' => 'tylabel')) }}</td>
+              <td style="width:40%;text-align:right;">{{ Form::label('inputName', '班级名称', array('class' => 'tylabel')) }}</td>
               <td>{{ Form::text('name', '', array('class' => 'tyinput', 'id' => 'inputName','style' => 'width:200px'))}}(最多50个字)</td>
             </tr>
             <tr>

@@ -190,12 +190,9 @@ class ClassmateController extends BaseController {
         }
 
         if (isset($query['status'])) $classmate->status = $query['status'];
-
         $classmate->save();
         if (Request::ajax()) {
             return Response::json('ok');
-        } else {
-            return Redirect::to('/admin/classmate?class_id=' . $classmate->class_id."&column_id=".$query['column_id']);
         }
     }
 
@@ -226,7 +223,7 @@ class ClassmateController extends BaseController {
         $query = Input::only('id');
         $validator = Validator::make($query,
             array(
-                'id' => 'array|required',
+                'id' => 'required',
             )
         );
         if($validator->fails())
@@ -260,26 +257,23 @@ class ClassmateController extends BaseController {
             }
 
             if (!empty($teachers)) {
-                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->whereColumnId($query['column_id'])->get();
+                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->whereColumnId($query['column_id'])->where('teacherid', '!=', Session::get('uid'))->get();
             }
         }
-        else
-        {
-            $classes = Classes::where('column_id', '=', $query['column_id'])->take(12)->get();
-        }
+        // else
+        // {
+        //     $classes = Classes::where('column_id', '=', $query['column_id'])->take(12)->get();
+        // }
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         // 获取父类名页面显示
-        $cn = new Column();
-        $arr = $cn->getPath($query['column_id']);
-        $columnHead = $arr[0];
-
+        $columnHead = Column::whereId($query['column_id'])->first();
         return $this->indexView('classmate.addclass', compact('query', 'user', 'classes', 'columns', 'columnHead'));
 
     }
 
     public function doaddClass()
     {
-        $query = Input::only('class_id');
+        $query = Input::only('class_id', 'column_id');
         $uid = Session::get('uid');
         $uname = Session::get('uname');
         $thisclass = Classes::find($query['class_id']);
@@ -334,25 +328,19 @@ class ClassmateController extends BaseController {
                     )
             );
         }
-        $message_content = $uname . "(学生) " . date("Y-m-d H:i:s"). " 申请加入班级: " . $thisclass->name;
-        Message::create(
-            array(
-                'sender_id' => $uid,
-                'receiver_id' => $thisclass->teacher->id,
-                'content' => $message_content,
-                'created_at' => date("Y-m-d H:i:s"),
-                'status' => 0,
-                'type' => 2,
-                // 'classmate_id' => $newclassmate->id
-            )
-        );
+        // $message_content = $uname . "(学生) " . date("Y-m-d H:i:s"). " 申请加入班级: " . $thisclass->name;
+        // Message::create(
+        //     array(
+        //         'sender_id' => $uid,
+        //         'receiver_id' => $thisclass->teacher->id,
+        //         'content' => $message_content,
+        //         'created_at' => date("Y-m-d H:i:s"),
+        //         'status' => 0,
+        //         'type' => 2,
+        //         // 'classmate_id' => $newclassmate->id
+        //     )
+        // );
         return Response::json(1);
-
-        // if (Request::ajax()) {
-        //     return Response::json('ok');
-        // } else {
-        //     return Redirect::to('/classes/'.$class_id);
-        // }
     }
 
 }

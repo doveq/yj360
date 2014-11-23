@@ -25,28 +25,7 @@ class ClassesController extends BaseController {
         $user_id = Session::get('uid');
         $user_type = Session::get('utype');
         if ($user_type < 0) $user_type = 1;
-        //正式班级
-        // if ($user_type == 1) {
-        //     $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-        //     $myclasses = array(-1);
-        //     foreach ($classes as $key => $value) {
-        //         $myclasses[] = $value->id;
-        //     }
 
-        // } elseif ($user_type == 0) {
-        //     $myclasses = array(-1);
-        //     $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id', 'status')->get()->toArray();
-        //     if (!empty($classmates)) {
-        //         foreach ($classmates as $key => $value) {
-        //             $myclasses[] = $value['class_id'];
-        //         }
-        //     }
-        //     $classes = Classes::whereIn('id', $myclasses)->get();
-        // }
-
-        // $sql = "select a.* from class a, classmate b where (b.user_id = ".$user_id." or b.teacher_id = $user_id) and a.column_id=".$query['column_id']." and b.status = 1 order by a.id desc";
-        // $classes = DB::select($sql);
-        // dd($res);
         $myclasses = array(-1);
         if ($user_type == 1) {
             $thisclasses = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->get()->toArray();
@@ -60,12 +39,13 @@ class ClassesController extends BaseController {
             $q->whereTeacherId(Session::get('uid'));
             $q->orWhere('user_id', Session::get('uid'));
         })->whereStatus(1)->select('class_id', 'status')->get()->toArray();
+
         if (!empty($classmates)) {
             foreach ($classmates as $key => $value) {
                 $myclasses[] = $value['class_id'];
             }
         }
-        $classes = Classes::whereIn('id', $myclasses)->orderBy('created_at', 'desc')->get();
+        $classes = Classes::whereIn('id', $myclasses)->whereColumnId($query['column_id'])->orderBy('created_at', 'desc')->get();
 
         $classmate_logs = ClassmateLog::where(function($q){
                 $q->whereTeacherId(Session::get('uid'));
@@ -73,7 +53,7 @@ class ClassesController extends BaseController {
             })->orderBy('id', 'desc')->paginate($this->pageSize);
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        $columnHead = Column::find($query['column_id'])->first();
+        $columnHead = Column::whereId($query['column_id'])->first();
         $genderEnum = $this->genderEnum;
         return $this->indexView('classes.index_' . $user_type, compact('genderEnum', 'classes', 'query', 'columns', 'classmate_logs', 'columnHead'));
     }
@@ -141,9 +121,36 @@ class ClassesController extends BaseController {
     public function show($id)
     {
         $query = Input::all();
+        $user_id = Session::get('uid');
         $classes = Classes::whereId($id)->first();
+        $message = Message::where(
+            function($q) use ($classes) {
+                $q->where(function($q) use ($classes){
+                    $q->whereSenderId(Session::get('uid'))->whereReceiverId($classes->teacherid);
+                });
+
+                $q->orWhere(function($q) use ($classes){
+                    $q->whereReceiverId(Session::get('uid'))->whereSenderId($classes->teacherid);
+                });
+        })->whereStatus(0)->get();
+        $classes->message = $message->count();
+
+
         $students = $classes->students()->where('classmate.status', 1)->get();
         // dd($students->count());
+        foreach ($students as $key => $value) {
+            $message = Message::where(
+                function($q) use ($value) {
+                    $q->where(function($q) use ($value){
+                        $q->whereSenderId(Session::get('uid'))->whereReceiverId($value->id);
+                    });
+
+                    $q->orWhere(function($q) use ($value){
+                        $q->whereReceiverId(Session::get('uid'))->whereSenderId($value->id);
+                    });
+            })->whereStatus(0)->get();
+            $value->message = $message->count();
+        }
 
         $columns = Column::find($classes->column_id)->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
 
@@ -201,5 +208,56 @@ class ClassesController extends BaseController {
         }
     }
 
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return Response
+     */
+    public function mates()
+    {
+        $query = Input::all();
+        $user_id = Session::get('uid');
+        $classes = Classes::whereId($query['class_id'])->first();
+        // $message = Message::where(
+        //     function($q) use ($classes) {
+        //         $q->where(function($q) use ($classes){
+        //             $q->whereSenderId(Session::get('uid'))->whereReceiverId($classes->teacherid);
+        //         });
+
+        //         $q->orWhere(function($q) use ($classes){
+        //             $q->whereReceiverId(Session::get('uid'))->whereSenderId($classes->teacherid);
+        //         });
+        // })->whereStatus(0)->get();
+        // $classes->message = $message->count();
+
+
+        $students = $classes->students()->where('classmate.status', 1)->select('classmate.id')->get();
+        // dd($students);
+        // dd($students->count());
+        // foreach ($students as $key => $value) {
+        //     $message = Message::where(
+        //         function($q) use ($value) {
+        //             $q->where(function($q) use ($value){
+        //                 $q->whereSenderId(Session::get('uid'))->whereReceiverId($value->id);
+        //             });
+
+        //             $q->orWhere(function($q) use ($value){
+        //                 $q->whereReceiverId(Session::get('uid'))->whereSenderId($value->id);
+        //             });
+        //     })->whereStatus(0)->get();
+        //     $value->message = $message->count();
+        // }
+
+        $columns = Column::find($classes->column_id)->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+
+        $genderEnum = $this->genderEnum;
+        $classmate = $classes->classmates()->where('user_id', Session::get('uid'))->where('status', 1)->get();
+        $user_type = Session::get('utype');
+        if ($user_type < 0) $user_type = 1;
+        $columnHead = Column::find($query['column_id'])->first();
+        return $this->indexView('classes.view', compact("classes", 'columns', 'query', 'students', 'classmate', 'genderEnum', 'columnHead'));
+    }
 
 }
