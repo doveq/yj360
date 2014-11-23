@@ -28,7 +28,7 @@
             padding: 4px;
             text-align:center;">
                 @if ($d['pic'] != '')
-                <a href="/games/show?column_id={{$query['column_id']}}&id={{$query['id']}}&path={{$d['path']}}&filename={{$d['pinyin']}}"><img src="{{$config_path.$d['pic']}}" style="margin:0 auto;"></a>
+                <a href="/games/show?column_id={{$query['column_id']}}&id={{$query['id']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware"><img src="{{$config_path.$d['pic']}}" style="margin:0 auto;"></a>
                 @endif
                 <div style="padding:9px;text-align:center;" class="label">
                   <h4>

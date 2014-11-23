@@ -8,25 +8,30 @@
     @include('Index.column.nav')
   <div class="wrap-right">
       <div class="tabtool">
-        我的班级
-        <a href="/classm/add_class?column_id={{$query['column_id']}}" class="tabtool-btn">加入班级</a>
-        <a href="/classes/create?column_id={{$query['column_id']}}" class="tabtool-btn">创建班级</a>
+        <span class="tab-bar"></span>
+        <span class="tab-title">我的班级</span>
+        <span class="tab-btn">
+          <a href="/classes/create?column_id={{$query['column_id']}}" class="tabtool-btn">创建班级</a>
+          <a href="/classm/add_class?column_id={{$query['column_id']}}" class="tabtool-btn">加入班级</a>
+        </span>
       </div>
       <div class="clear"></div>
 
       <div class="classes-list">
-        @if ($classes->count() == 0)
+        @if (count($classes) == 0)
           <div style="margin:10px;">
-            你还未创建任何班级
+            你还未创建或加入任何班级
           </div>
         @else
           @foreach ($classes as $list)
-          <div class="classse-box" id="classes_{{$list->id}}" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}');">
+          <div class="classse-box" id="classes_{{$list->id}}" style="">
+            <div class="classes-box-head" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
+            </div>
             <div class="classes-box-name">
-              <a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
+              <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
             </div>
             <div class="classes-txt">
-              <div>创建人：{{$list->teacher->name}}</div>
+              <div>创建者：{{$list->teacher->name}} @if ($list->teacher->id == Session::get('uid'))(我)@endif</div>
               <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
             </div>
             @if ($list->teacher->id == Session::get('uid'))
@@ -34,6 +39,7 @@
                 <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">删除</a>
             </div>
             @endif
+
           </div>
           @endforeach
           <div class="clear"></div>
@@ -104,58 +110,29 @@
       alert('操作失败');
     })
     .success(function(){
-      // alert(update_status);
-      // $this.attr('data-status', update_status);
-      // $this.text(status_txt)
       location.reload();
     });
   }
 $(document).ready(function () {
-  // $(".choose_question").on('click',
-
-
-  $(".btn_publish").on('click', function() {
-    var $this = $(this);
-    var training_id = $this.data("id");
-    var training_status = $this.data("status");
-    // var aa = $this.text();
-    // alert(training_status);
-    if (training_status == 0) {
-      status_txt = '撤销发布';
-      update_status = 1;
-    } else if (training_status == 1) {
-      status_txt = '发布';
-      update_status = 0;
-    }
-    $.ajax({
-      url:'/training/'+training_id,
-      data: {status: update_status},
-      // async:false,
-      type:'put',
-    })
-    .fail(function(){
-      alert('操作失败');
-    })
-    .success(function(){
-      // alert(update_status);
-      // $this.attr('data-status', update_status);
-      // $this.text(status_txt)
-      location.reload();
-    });
-  });
   delete_classes = function(id){
-    if(confirm('您确定要删除吗？')){
+    layer.confirm('您确定要删除吗？', function(){
       $.ajax({
-        url:'/classes/'+id,
+        url:'/classes/'+id+'?column_id='+{{$query['column_id']}},
         // async:false,
         type:'delete',
       })
-      .fail(function(){alert('操作失败')})
-      .success(function(){
-        $('#classes_'+id).remove();
+      .fail(function(){
+        layer.msg('删除失败', 2, 1);
+      })
+      .success(function(data){
+        if (data == 'ok') {
+          layer.closeAll();
+          $('#classes_'+id).remove();
+        } else {
+          layer.msg('删除失败,班级中还有成员', 2, 5);
+        }
       });
-      // alert(htmlobj.responseText);
-    }
+    });
   };
 
   $(".classse-box").hover(function(){

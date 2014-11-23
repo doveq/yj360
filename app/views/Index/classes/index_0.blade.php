@@ -9,8 +9,11 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        我的班级
-        <a href="/classm/add_class?column_id={{$query['column_id']}}" class="tabtool-btn">加入班级</a>
+        <span class="tab-bar"></span>
+        <span class="tab-title">我的班级</span>
+        <span class="tab-btn">
+          <a href="/classm/add_class?column_id={{$query['column_id']}}" class="tabtool-btn">加入班级</a>
+        </span>
       </div>
       <div class="clear"></div>
 
@@ -20,12 +23,15 @@
             你目前还未加入任何班级,可点击"加入班级"加入适合自己的班级
           </div>
         @else
-        <div style="margin:20px 10px 10px 10px;">已经加入的班级</div>
           @foreach ($classes as $list)
-          <div class="classse-box">
+          <div class="classse-box" id="classes_{{$list->id}}" style="">
+            <div class="classes-box-head" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
+            </div>
+            <div class="classes-box-name">
+              <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
+            </div>
             <div class="classes-txt">
-              <div><a style="color:#ffffff" href="/classes/{{$list->id}}?column_id={{$list->column->id}}"><h2><b>{{$list->name}}</b></h2></a></div>
-              <div>创建人：{{$list->teacher->name}} <a href="/message/create?receiver_id={{$list->teacher->id}}&column_id={{$query['column_id']}}" style="background-color:#ffffff;color:#f2664d">给老师私信</a></div>
+              <div>创建者：{{$list->teacher->name}}</div>
               <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
             </div>
           </div>
@@ -34,7 +40,7 @@
         @endif
 
         @if($classmate_logs->count() > 0)
-        <div style="margin:20px 10px 10px 10px;">班级申请记录:</div>
+        <div style="margin:20px 10px 0px 0px;font-size:18px;color:#499528;border-bottom: 1px solid #ccc;">班级申请加入消息</div>
         <table class="table-2" border="0" cellpadding="0" cellspacing="0">
             @foreach($classmate_logs as $list)
               <tr>

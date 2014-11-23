@@ -681,7 +681,7 @@ li.index-list-more a {
 .tabtool{
 	background-color: #f1f1f1;
 	margin-left: -10px;
-    padding: 10px 30px;
+    padding: 10px 10px;
     /*font-size: 16px;*/
     height: 20px;
 
@@ -690,14 +690,19 @@ li.index-list-more a {
 
     /*padding-left: 30px;*/
 }
-.tabtool a {
-	/*float: left;*/
-	margin-right:20px;
-	color: #fff;
-	background-color: #00A8A8;
-	padding:2px 10px;
-	font-size: 13px;
+.tabtool .tab-bar {
+	border-left: 3px solid #00A8A8;
+	padding-left: 5px;
 }
+
+.tabtool .tab-title {
+	color:#499528;
+}
+.tabtool .tab-btn {
+	float:right;
+}
+
+
 .tabtool-msg {
 	float: right;
 	color: #333;
@@ -708,12 +713,14 @@ li.index-list-more a {
 }
 
 .tabtool-btn-back {
-	color: #499528;
-	float: left;
+	color: #999999;
 }
 .tabtool-btn {
-	color: #499528;
-	float: right;
+	margin-right:10px;
+	background-color: #00A8A8;
+	padding:2px 10px 3px 10px;
+	font-size: 13px;
+	color:#fff;
 }
 .classes-list{
 	padding-bottom: 30px;
@@ -727,34 +734,60 @@ li.index-list-more a {
 	/*margin:10px 0 0 10px;*/
 	width: 253px;
 	height: 163px;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	margin:0 15px 15px 0;
+	/*background-size:100px 100px;*/
+	/*background-repeat:no-repeat;*/
+	/*background-position:right bottom;*/
+	position: relative;
+}
+.classes-box-head {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	height:100px;
+	width:100px;
+	border-radius: 50px;
+	border:1px solid #999999;
 	background-size:100px 100px;
 	background-repeat:no-repeat;
-	background-position:right bottom;
+	background-position:center;
+	z-index: 0;
 }
 .classes-box-name {
 	margin: 10px 20px;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 9;
+	color:#ffffff;
 }
-.classse-box a {
-	color: #fff;
+.classes-box-name a{
+	color:#ffffff;
 }
-.classes-txt{margin:80px 0 0 20px;}
+
+.classes-txt{
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	z-index: 9;
+	margin:10px 20px;
+}
 .classse-btn {
 	/*background-color: #793327;*/
 	display:none;
-	padding-top:10px;
+	z-index:10;
+	position: absolute;
+	right: 0;
+	bottom: 0;
 }
 .classse-btn a{
 	color: #000;
 	background-color: #fff;
-	/*width: 100px;*/
-	float: right;
 	text-align: center;
-	margin-top: -20px;
-	padding: 0 5px;
-	border-radius: 25px;
-	-moz-border-radius:25px;
+	padding: 3px 8px;
+	border-radius: 15px;
+	-moz-border-radius:15px;
 }
 .delclass {
 }
@@ -1202,7 +1235,7 @@ a.tyadel {
 .tmbox{
 	float:left;
 	height:60px;
-	width:150px; 
+	width:150px;
 	border-top:0;
 	overflow: hidden;
 	margin-right: 10px;
