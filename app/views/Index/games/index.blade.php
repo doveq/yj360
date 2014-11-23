@@ -25,14 +25,13 @@
             margin-bottom: 20px;
             margin-left:10px;
             padding: 4px;
-            text-align:center;">
+            text-align:center;
+            overflow: hidden;width:140px;height:170px;">
                 @if ($d['pic'] != '')
                 <a href="/games/show?column_id={{$query['column_id']}}&id={{$query['id']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware"><img src="{{$config_path.$d['pic']}}" style="margin:0 auto;"></a>
                 @endif
                 <div style="padding:9px;text-align:center;" class="label">
-                  <h4>
-                    <a href="/games/show?column_id={{$query['column_id']}}&id={{$query['id']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware">{{$d['name']}}</a>
-                  </h4>
+                    <a style="color:#000;" href="/games/show?column_id={{$query['column_id']}}&id={{$query['id']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware">{{$d['name']}}</a>
                 </div>
               </div>
             @endforeach
