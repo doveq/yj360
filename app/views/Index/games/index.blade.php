@@ -26,7 +26,7 @@
             margin-left:10px;
             padding: 4px;
             text-align:center;
-            overflow: hidden;width:140px;height:170px;">
+            overflow: hidden;width:140px;height:168px;">
                 @if ($d['pic'] != '')
                 <a href="/games/show?column_id={{$query['column_id']}}&id={{$query['id']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware"><img src="{{$config_path.$d['pic']}}" style="margin:0 auto;"></a>
                 @endif
