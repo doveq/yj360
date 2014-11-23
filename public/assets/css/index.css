@@ -1243,7 +1243,7 @@ a.tyadel {
 }
 .tmbox-txt{
 	vertical-align:middle;
-	padding:5px;
+	padding:10px 5px 10px 5px;
 	text-align: center;
 }
 .tmbox-txt a{
