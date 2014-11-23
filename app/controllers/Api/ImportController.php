@@ -220,11 +220,13 @@ class ImportController extends \BaseController {
         if(is_file($path . '/DP.png')) 
             $info['answer'][3]['img_file'] = $path . '/DP.png';
 
+        /*
         if(is_file($path . '/EP.png')) 
             $info['answer'][4]['img_file'] = $path . '/EP.png';
 
         if(is_file($path . '/FP.png')) 
             $info['answer'][5]['img_file'] = $path . '/FP.png';
+        */
 
         /* 答案声音 */
         if(is_file($path . '/AM.wav')) 
@@ -239,13 +241,14 @@ class ImportController extends \BaseController {
         if(is_file($path . '/DM.wav')) 
             $info['answer'][3]['sound_file'] = $path . '/DM.wav';
 
+        /*
         if(is_file($path . '/EM.wav')) 
             $info['answer'][4]['sound_file'] = $path . '/EM.wav';
 
         if(is_file($path . '/FM.wav')) 
             $info['answer'][5]['sound_file'] = $path . '/FM.wav';
+        */
 
-        
         // mp3 格式
         if(is_file($path . '/AM.mp3')) 
             $info['answer'][0]['sound_file'] = $path . '/AM.mp3';
@@ -259,12 +262,14 @@ class ImportController extends \BaseController {
         if(is_file($path . '/DM.mp3')) 
             $info['answer'][3]['sound_file'] = $path . '/DM.mp3';
 
+        /*
         if(is_file($path . '/EM.mp3')) 
             $info['answer'][4]['sound_file'] = $path . '/EM.mp3';
 
         if(is_file($path . '/FM.mp3')) 
             $info['answer'][5]['sound_file'] = $path . '/FM.mp3';
-
+        */
+        
         return $info;
     }
 

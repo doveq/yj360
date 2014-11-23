@@ -287,12 +287,16 @@ class TopicController extends BaseController {
 				$playList[] = array('url' => $info['q']['hint_url']);
 			}
 
-			if( !empty($info['a']) )
+			/* 如果是视唱或模唱不播放答案音，答案音实际为参考音 */
+			if( $info['q']['type'] != 6 && $info['q']['type'] != 7)
 			{
-				foreach ($info['a'] as $a) 
+				if( !empty($info['a']) )
 				{
-					if( !empty($a['sound_url']) )
-						$playList[] = array('url' => $a['sound_url']);
+					foreach ($info['a'] as $a) 
+					{
+						if( !empty($a['sound_url']) )
+							$playList[] = array('url' => $a['sound_url']);
+					}
 				}
 			}
 
