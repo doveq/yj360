@@ -28,7 +28,7 @@ class LoginController extends BaseController
 		$data = Input::all();
 
 		// Auth::attempt( array('name' => $data['name'], 'password' => $data['password'], 'status' => 1))
-		if( Auth::attempt( array('tel' => $data['name'], 'password' => $data['password'], 'status' => 1)) )
+		if( Auth::attempt( array('tel' => trim($data['name']), 'password' => $data['password'], 'status' => 1)) )
 		{
 			//login(UserInterface $user, bool $remember = false);
 			$user = Auth::user();
