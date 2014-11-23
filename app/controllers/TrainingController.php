@@ -57,8 +57,9 @@ class TrainingController extends BaseController {
      */
     public function create()
     {
+        $query = Input::only('column_id');
         $user_id = Session::get('uid');
-        $classes = Classes::whereTeacherid($user_id)->select('id', 'name')->get();
+        $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->select('id', 'name')->get();
         $classeses = array();
         foreach ($classes as $key => $c) {
             $classeses[$c->id] = $c->name;
@@ -66,12 +67,9 @@ class TrainingController extends BaseController {
 
         $classes_num = $classes->count();
         $trainings_num = Training::whereUserId($user_id)->get()->count();
-        $query = Input::only('column_id');
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         // 获取父类名页面显示
-        $cn = new Column();
-        $arr = $cn->getPath($query['column_id']);
-        $columnHead = $arr[0];
+        $columnHead = Column::whereId($query['column_id'])->first();
         return $this->indexView('training.create', compact('columns', 'query', 'classeses', 'classes_num', 'trainings_num', 'columnHead'));
     }
 

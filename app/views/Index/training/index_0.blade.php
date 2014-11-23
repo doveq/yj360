@@ -9,8 +9,8 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        我的作业
-        <a href="/message?column_id={{$query['column_id']}}" class="tabtool-msg" style="float:right;">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
+        <span class="tab-bar"></span>
+        <span class="tab-title">我的作业</span>
       </div>
       <div class="clear"></div>
         <table  class="stable" border="0" cellpadding="0" cellspacing="0">

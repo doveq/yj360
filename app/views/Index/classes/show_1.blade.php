@@ -13,7 +13,11 @@
       <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
       <span class="tab-title">{{$classes->name}}</span>
       <span class="tab-btn">
+        @if ($classes->teacher->id == Session::get('uid'))
         <a href="/classes/mates?class_id={{$classes->id}}&column_id={{$query['column_id']}}" class="tabtool-btn">成员管理</a>
+        @else
+        <a href="javascript:;" class="quit_class tabtool-btn" onclick="quit_class({{$classmate[0]->id}});">退出班级</a>
+        @endif
       </span>
     </div>
 
@@ -66,6 +70,25 @@
 
 @section('js')
 <script type="text/javascript">
+function quit_class(classmateid)
+  {
+    $.ajax({
+      url:'/classmate/'+classmateid,
+      data: {status: status},
+      // async:false,
+      type:'delete',
+    })
+    .fail(function(){
+      alert('操作失败');
+    })
+    .success(function(){
+      // alert(update_status);
+      // $this.attr('data-status', update_status);
+      // $this.text(status_txt)
+      // location.reload();
+      window.location.replace("/classes?column_id={{$query['column_id']}}");
+    });
+  }
 
   function delete_classmate(id){
     if(confirm('您确定要删除吗？')){

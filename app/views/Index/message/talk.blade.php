@@ -43,10 +43,10 @@
           @foreach($messages as $k => $v)
 
           @if ($v->sender_id == Session::get('uid'))
-            <div id="message_{{$v->id}}"  style="margin:10px 0px;">
-              <div style="float: left; margin: 8px 0px 8px;position: relative;width:72px;">
+            <div id="message_{{$v->id}}"  style="margin:0px;">
+              <div style="float: left; margin:1px 0;position: relative;width:72px;">
               </div>
-              <div style="margin: 8px 0px; float:left; width:600px;" class="msg-box" data-id="{{$v->id}}">
+              <div style="margin: 0px; float:left; width:600px;" class="msg-box" data-id="{{$v->id}}">
                 <div style="border: 1px solid #ccc; border-radius: 5px; padding: 10px 5px;background-color:#00CC66;color:#fff;">
                       {{$v->content}}
                       <br/>
@@ -55,24 +55,24 @@
                       </div>
                 </div>
               </div>
-              <div style="float: left; margin: 8px 0px 8px;position: relative;width:72px;">
+              <div style="float: left; margin: 0px;position: relative;width:72px;">
                 <img src="/assets/img/msg-arrow2.png" style="float: left; top: 15px; position: absolute;transform: rotate(180deg);margin:-3px;">
-                <div style="padding:2px;float:right;width:48px;">
+                <div style="padding:2px;float:right;width:48px;text-align:center;">
                   <img src="{{Attachments::getAvatar($v->sender_id)}}" width="48" height="48" style="padding:2px;border:1px solid #f2f2f2;"/>
-                  <span style="color:#999;">{{$v->sender->name}}</span>
+                  <span style="color:#999;font-size:9pt;">{{$v->sender->name}}</span>
                 </div>
               </div>
             </div>
           @else
-            <div id="message_{{$v->id}}" style="margin:10px 0px;">
-              <div style="float: left; margin: 8px 0px 8px;position: relative;width:72px;">
-                <div style="float:left;width:48px;">
+            <div id="message_{{$v->id}}" style="margin:0px;">
+              <div style="float: left; margin: 1px 0; position: relative;width:72px;">
+                <div style="float:left;width:48px;text-align:center;">
                   <img src="{{Attachments::getAvatar($v->sender_id)}}" width="48" height="48" style="padding:2px;border:1px solid #f2f2f2;"/>
-                  <span style="color:#999;">{{$v->sender->name}}</span>
+                  <span style="color:#999;font-size:9pt;">{{$v->sender->name}}</span>
                 </div>
                 <img src="/assets/img/msg-arrow1.png" style="float: right; top: 15px;right:-3px; position: absolute;">
               </div>
-              <div style="margin: 8px 0px; float:left; width:600px;" class="msg-box" data-id="{{$v->id}}">
+              <div style="margin:0px; float:left; width:600px;" class="msg-box" data-id="{{$v->id}}">
                 <div style="border: 1px solid #ccc; border-radius: 5px; padding: 10px 5px;">
                       {{$v->content}}
                       <br/>
@@ -82,13 +82,17 @@
                       <div class="clear"></div>
                 </div>
               </div>
-              <div style="float: left; margin: 8px 0px 8px;position: relative;width:72px;">
+              <div style="float: left; margin:0px;position: relative;width:72px;">
               </div>
             </div>
           @endif
             <div class="clear"></div>
           @endforeach
+          <div class="pages" style="text-align:center;">
+                       {{$messages->appends($query)->links()}}
+           </div>
         </div>
+
       </div>
   </div>
   <div class="clear"></div>
