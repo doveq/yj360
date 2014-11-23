@@ -268,7 +268,8 @@ class TopicController extends BaseController {
 			$playList[] = array('url' => $info['q']['sound_url']);
 		}
 
-		if( !empty($info['q']['hint_url']) || !empty($info['a'][0]['sound_url']) )
+		// 这个判断是为了防止没有声音的播放 第几遍提示音
+		if( !empty($info['q']['hint_url']) || !empty($info['a'][1]['sound_url']) )
 		{
 			$loop = empty( $info['loops'] ) ? 1 : $info['loops'];
 			for($i = 0; $i < $loop; $i++)
@@ -287,7 +288,12 @@ class TopicController extends BaseController {
 				if( !empty($info['q']['hint_url']) )
 				{
 					$playList[] = array('url' => $info['q']['hint_url']);
+
+					// 如果是模唱则默认放二遍提示音
+					if($info['q']['type'] == 6)
+						$playList[] = array('url' => $info['q']['hint_url']);
 				}
+
 
 				/* 如果是视唱或模唱不播放答案音，答案音实际为参考音 */
 				if( $info['q']['type'] != 6 && $info['q']['type'] != 7)
