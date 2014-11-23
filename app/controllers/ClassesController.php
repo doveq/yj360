@@ -4,7 +4,7 @@ class ClassesController extends BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '发布', '1' => '撤销发布');
     public $genderEnum = array('f' => '女', 'm' => '男');
-    public $pageSize = 30;
+    public $pageSize = 10;
 
     public function __construct()
     {
@@ -73,7 +73,7 @@ class ClassesController extends BaseController {
         $classes_num = $classes->count();
         $trainings_num = Training::whereUserId($user_id)->get()->count();
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        $columnHead = Column::find($query['column_id'])->first();
+        $columnHead = Column::whereId($query['column_id'])->first();
 
         return $this->indexView('classes.create', compact('columns', 'query', 'classes_num', 'trainings_num', 'columnHead'));
     }
@@ -158,7 +158,7 @@ class ClassesController extends BaseController {
         $classmate = $classes->classmates()->where('user_id', Session::get('uid'))->where('status', 1)->get();
         $user_type = Session::get('utype');
         if ($user_type < 0) $user_type = 1;
-        $columnHead = Column::find($query['column_id'])->first();
+        $columnHead = Column::whereId($query['column_id'])->first();
         return $this->indexView('classes.show_'.$user_type, compact("classes", 'columns', 'query', 'students', 'classmate', 'genderEnum', 'columnHead'));
     }
 

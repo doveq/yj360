@@ -665,10 +665,11 @@ li.index-list-more a {
 	width: 100%;
 }
 .stable th{
-	background-color: #333333;
+	/*background-color: #333333;*/
 	text-align: center;
-	color: #fff;
+	color: #000;
 	padding:8px 0;
+	border-bottom: 1px solid #ccc;
 }
 .stable td{
 	padding :8px 0;
@@ -1185,7 +1186,7 @@ a.tyadel {
 .pagination > li > a, .pagination > li > span {
     background-color: #fff;
     border: 1px solid #ddd;
-    color: #428bca;
+    color: #00a8a8;
     float: left;
     line-height: 1.42857;
     margin-left: -1px;
@@ -1208,8 +1209,8 @@ a.tyadel {
     color: #2a6496;
 }
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
-    background-color: #428bca;
-    border-color: #428bca;
+    background-color: #00a8a8;
+    border-color: #00a8a8;
     color: #fff;
     cursor: default;
     z-index: 2;

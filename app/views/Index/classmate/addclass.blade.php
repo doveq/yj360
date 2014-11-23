@@ -9,8 +9,9 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        加入班级
-        <a href="/message?column_id={{$query['column_id']}}" class="tabtool-msg">消息(<span>{{Session::get('newmassage_count')}}</span>)</a>
+        <span class="tab-bar"></span>
+        <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
+        <span class="tab-title">加入班级</span>
       </div>
       <div class="clear"></div>
       {{ Form::open(array('url' => '/classm/add_class?column_id='.$query['column_id'], 'method' => 'post')) }}

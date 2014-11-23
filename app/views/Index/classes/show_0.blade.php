@@ -33,7 +33,11 @@
           @endif
         </div>
         <div class="classmate-title">
+          @if ($classes->teacher->id == Session::get('uid'))
+          <span class="classmate-name" style="color:#ff0000;">{{$classes->teacher->name}}(我)</span>
+          @else
           <span class="classmate-name" style="color:#ff0000;">{{$classes->teacher->name}}</span>
+          @endif
         </div>
       </div>
       @if ($students->count() > 0)
@@ -52,7 +56,11 @@
           @endif
         </div>
         <div class="classmate-title">
+          @if ($list->id == Session::get('uid'))
+          <span class="classmate-name">{{$list->name}}(我)</span>
+          @else
           <span class="classmate-name">{{$list->name}}</span>
+          @endif
         </div>
       </div>
       @endforeach

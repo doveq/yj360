@@ -79,6 +79,9 @@
                   <div class="table-2-sp"></div>
               </td></tr>
             @endforeach
+            <tr><td colspan="2" style="text-align:center;">
+              {{$classmate_logs->appends($query)->links()}}
+            </td></tr>
         </table>
         @endif
 
