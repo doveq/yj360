@@ -267,7 +267,7 @@
             @if( $q['type'] != 6 && $q['type'] != 7 )
                 {{-- 如果有提示音或题目音 --}}
                 @if( !empty($q['hint_url']) || !empty($a[0]['sound_url']))
-                <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
+                <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="loopPlay();"></a>
                 @endif
             @endif
 
@@ -460,6 +460,7 @@
                     });
 
                     mediaElement.play();
+                    setPlaybtn($('#list-audio').attr('src'));
                 },
                 error: function (e) {
                     console.log('MediaElementPlayer error: ' + e);
@@ -518,6 +519,7 @@
             {
                 currentPlayer.setSrc(audio_src);
                 currentPlayer.play();
+                setPlaybtn(audio_src);
             }
         }
 
@@ -545,6 +547,7 @@
                 $('#play-list').attr('src', list[0]);
                 try
                 {
+                    setPlaybtn(list[0]);
                     ip.play();
                 }
                 catch (e)
