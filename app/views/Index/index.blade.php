@@ -40,7 +40,7 @@
             </form>
         </div>
 
-    	<div class="clear" style="height:10px;"></div>
+    	<div class="clear" style="height:25px;"></div>
         <a class="index-block" href="/column/static"><img src="/assets/img/index-a3.png" /></a>
         <a class="index-block" style="margin-left:25px;" style="" href="/column/static"><img src="/assets/img/index-a2.png" /></a>
         <a class="index-block" style="margin-left:25px;" href="/column/static"><img src="/assets/img/index-a1.png" /></a>

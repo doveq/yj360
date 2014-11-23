@@ -13,6 +13,7 @@
     @yield('headjs')
   </head>
   <body role="document">
+  <div class="wrapper">
       <div id="site-head">
           <div class="wrap">
               <a id="site-logo" href="/"><img src="/assets/img/logo.png" /></a>
@@ -54,36 +55,49 @@
 
       @yield('content')
 
-      <script type="text/javascript">
-        $("#column-head").hover(
-          function () {
-            $("#column-head-list").show();
-          },
-          function () {
-            $("#column-head-list").hide();
-          }
-        );
-      </script>
+      <div class="clear"></div>
+      <div class="footer-push"></div>
+      
+    </div><!-- wrapper -->
 
-      @yield('js')
-
-      <div id="footer">
-        <div  class="wrap">
-          <ul class="footer-links">
-            <li><a href="/about">关于我们</a></li>
-            <li><span class="footer-sp">|</span></li>
-            <li><a href="/link">联系我们</a></li>
-            <li><span class="footer-sp">|</span></li>
-            <li><a href="/feedback">意见反馈</a></li>
-            <li><span class="footer-sp">|</span></li>
-            <li>
-              <div class="footer-follow">关注我们</div> 
-              <a class="footer-follow" href=""><img src="/assets/img/sina.png"></a> 
-              <a class="footer-follow" href=""><img src="/assets/img/renren.png"></a>
-            </li>
-          </ul>
-          <div class="clear"></div>
-        </div>
+    <div id="footer">
+      <div  class="wrap">
+        <ul class="footer-links">
+          <li><a href="/about">关于我们</a></li>
+          <li><span class="footer-sp">|</span></li>
+          <li><a href="/">回到首页</a></li>
+          <!--
+          <li><span class="footer-sp">|</span></li>
+          <li><a href="/link">联系我们</a></li>
+          <li><span class="footer-sp">|</span></li>
+          <li><a href="/feedback">意见反馈</a></li>
+          <li><span class="footer-sp">|</span></li>
+          <li>
+            <div class="footer-follow">关注我们</div> 
+            <a class="footer-follow" href=""><img src="/assets/img/sina.png"></a> 
+            <a class="footer-follow" href=""><img src="/assets/img/renren.png"></a>
+          </li>
+          -->
+        </ul>
+        <ul class="footer-links" style="float:right;">
+            <li>©2014 yinji360.com 版权所有 京ICP备14036259号-1</li>
+        </ul>
+        <div class="clear"></div>
       </div>
+    </div>
+
+    <script type="text/javascript">
+      $("#column-head").hover(
+        function () {
+          $("#column-head-list").show();
+        },
+        function () {
+          $("#column-head-list").hide();
+        }
+      );
+    </script>
+
+    @yield('js')
+  
   </body>
 </html>
