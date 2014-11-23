@@ -144,7 +144,7 @@ class ClassesController extends BaseController {
             // })->whereStatus(0)->get();
 
             $message = Message::whereReceiverId(Session::get('uid'))
-                                ->whereSenderId($value->id);
+                                ->whereSenderId($value->id)
                                 ->whereStatus(0)->get();
             $value->message = $message->count();
         }
