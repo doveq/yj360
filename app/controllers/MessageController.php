@@ -25,20 +25,6 @@ class MessageController extends BaseController {
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;
 
-        // $lists = Message::where(function($q){
-        //     $q->Where('receiver_id', Session::get('uid'));
-        //         // ->orWhere('sender_id', Session::get('uid'));
-        // })->where(function($q)
-        //     {
-        //         if (strlen(Input::get('status')) > 0) {
-        //             $q->whereStatus(Input::get('status'));
-        //         }
-        //         if (strlen(Input::get('type')) > 0) {
-        //             $q->whereStatus(Input::get('type'));
-        //         }
-
-        //     })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-
         $send_users = Message::whereSenderId(Session::get('uid'))->select('receiver_id')->distinct()->get();
         $s = array();
         foreach ($send_users as $key => $value) {
@@ -51,14 +37,6 @@ class MessageController extends BaseController {
             // echo $value->receiver_id . "\n\r";
             $s[] = $value->sender_id;
         }
-
-        // $m = Message::where(function($q) use ($s) {
-        //     $q->whereSenderId(Session::get('uid'))
-        //         ->whereIn('receiver_id', $s);
-        // })->orWhere(function($q) use ($s){
-        //     $q->whereReceiverId(Session::get('uid'))
-        //         ->whereIn('sender_id', $s);
-        // })->groupBy('sender_id', 'receiver_id')->orderBy('created_at', 'desc')->get();
 
         $ids = implode(",", $s);
         $m = DB::select('select * from (select * from message where (`sender_id` = '.Session::get('uid').' and `receiver_id` in ('.$ids.')) or (sender_id in ('.$ids.') and receiver_id='.Session::get('uid').') order by id desc) temp group by sender_id, receiver_id order by created_at desc');
@@ -79,8 +57,7 @@ class MessageController extends BaseController {
             }
         }
         $lists = Message::whereIn('id', $xx)->orderBy('created_at', 'desc')->get();
-        // dd($tmp);
-// dd(count($lists));
+
         // 获取父类名页面显示
         $cn = new Column();
         $arr = $cn->getPath($query['column_id']);

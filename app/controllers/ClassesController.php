@@ -123,31 +123,28 @@ class ClassesController extends BaseController {
         $query = Input::all();
         $user_id = Session::get('uid');
         $classes = Classes::whereId($id)->first();
-        $message = Message::where(
-            function($q) use ($classes) {
-                $q->where(function($q) use ($classes){
-                    $q->whereSenderId(Session::get('uid'))->whereReceiverId($classes->teacherid);
-                });
-
-                $q->orWhere(function($q) use ($classes){
-                    $q->whereReceiverId(Session::get('uid'))->whereSenderId($classes->teacherid);
-                });
-        })->whereStatus(0)->get();
+        $message = Message::whereReceiverId(Session::get('uid'))
+                            ->whereSenderId($classes->teacherid)
+                            ->whereStatus(0)->get();
         $classes->message = $message->count();
 
 
         $students = $classes->students()->where('classmate.status', 1)->get();
         // dd($students->count());
         foreach ($students as $key => $value) {
-            $message = Message::where(
-                function($q) use ($value) {
-                    $q->where(function($q) use ($value){
-                        $q->whereSenderId(Session::get('uid'))->whereReceiverId($value->id);
-                    });
+            // $message = Message::where(
+            //     function($q) use ($value) {
+            //         $q->where(function($q) use ($value){
+            //             $q->whereSenderId(Session::get('uid'))->whereReceiverId($value->id);
+            //         });
 
-                    $q->orWhere(function($q) use ($value){
-                        $q->whereReceiverId(Session::get('uid'))->whereSenderId($value->id);
-                    });
+            //         $q->orWhere(function($q) use ($value){
+            //             $q->whereReceiverId(Session::get('uid'))->whereSenderId($value->id);
+            //         });
+            // })->whereStatus(0)->get();
+
+            $message = Message::where(
+                $q->whereReceiverId(Session::get('uid'))->whereSenderId($value->id);
             })->whereStatus(0)->get();
             $value->message = $message->count();
         }
