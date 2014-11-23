@@ -4,7 +4,7 @@ class ClassesController extends BaseController {
 
     public $statusEnum = array('' => '所有状态', '0' => '发布', '1' => '撤销发布');
     public $genderEnum = array('f' => '女', 'm' => '男');
-    public $pageSize = 30;
+    public $pageSize = 10;
 
     public function __construct()
     {
