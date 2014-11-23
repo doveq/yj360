@@ -10,7 +10,7 @@ $(function () {
   var CLASS_PLAYING = "playing";
   var CLASS_PLAYBACK_PAUSED = "playback_paused";
   // 设置2分钟停止录音
-  var TIMEOUT_RECORDING = 120;
+  var TIMEOUT_RECORDING = 60;
 
 //  Embedding flash object ---------------------------------------------------------------------------------------------
 
@@ -65,11 +65,6 @@ $(function () {
         if( FWRecorder.isReady )
         {
             FWRecorder.record('audio', 'audio.wav');
-            // 如果是试卷
-            if(is_exam)
-            {
-              startQ();
-            }
         }
 
         break;
@@ -83,6 +78,12 @@ $(function () {
         $controls = controlsEl(name);
         FWRecorder.hide();
         setControlsClass($controls, CLASS_RECORDING);
+
+        // 如果是试卷
+        if(is_exam)
+        {
+          startQ();
+        }
 
         $('#topic-btn-10').hide();
         $('#topic-btn-12').show();

@@ -292,11 +292,11 @@
             @endif
 
             @if( $q['type'] == 6 || $q['type'] == 7 )
-            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="loopPlay();"></a>
-            <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="ckyPlay();"></a>
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
             <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
             <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="recorderPlay();" style="display:none;"></a>
+            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="loopPlay();"></a>
+            <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="ckyPlay();"></a>
             <!--
             <a class="topic-btn" hint="开始"  href="javascript:;" onclick="recorderStart();">开始答题</a>
             -->
@@ -382,6 +382,8 @@
 
     <script>
         var is_exam = @if( empty($exam) ) false @else true @endif;
+        {{-- 视唱答题时间，时间 --}}
+        var qtime = {{$q['qtime'] or 0}};
 
         $(document).ready(function(){
 
@@ -418,6 +420,8 @@
                 @if( $q['type'] == 7 && !empty($q['read_time']) )
                 setTimeout(function(){ $('#tp').hide(); }, {{$q['read_time']}} *1000);
                 @endif
+            @elseif($q['type'] == 6 || $q['type'] == 7)
+
             @else
             // 延时2秒播放
             setTimeout(initPlay, 2000);

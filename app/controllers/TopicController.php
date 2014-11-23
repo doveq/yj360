@@ -315,6 +315,7 @@ class TopicController extends BaseController {
 		
 		$info['playList'] = $playList;
 
+
 		return $this->indexView('topic', $info);
 	}
 
