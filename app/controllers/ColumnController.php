@@ -41,6 +41,10 @@ class ColumnController extends BaseController
             //多媒体教材类型
             return Redirect::to('/courseware?id='.$query['id'].'&column_id=' . $column->parent_id . '&type=2');
 
+        } elseif ($column->type == 5) {
+            //多媒体教材类型
+            return Redirect::to('/games?id='.$query['id'].'&column_id=' . $column->parent_id);
+
         }
         else {
             $content = $column->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
@@ -64,7 +68,7 @@ class ColumnController extends BaseController
     			   $route = $att->getTopicRoute($r->question->id, $item['file_name']);
     			   $r->question->img_url = $route['url'];
                 }
-                
+
     			$questions[$key] = $r->question;
     		}
         }
