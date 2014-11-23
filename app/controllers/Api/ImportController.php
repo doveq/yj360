@@ -78,6 +78,10 @@ class ImportController extends \BaseController {
                     {
                         $info['question']['type'] = 7;
                     }
+                    elseif( $lines[1] == 'IQS')
+                    {
+                        $info['question']['type'] = 6;
+                    }
                     break;
                 case 'a':
                     if ($lines[1] != '') {
@@ -212,13 +216,13 @@ class ImportController extends \BaseController {
             $info['question']['hint_file'] = $path . '/tm.wav';
 
         // 如果是视唱模唱则参考音转为答案音
-        if( $info['question']['type'] = 6 || $info['question']['type'] = 7)
+        if( $info['question']['type'] == 6 || $info['question']['type'] == 7)
         {
-            if(is_file($path . '/DEM.wav')) 
-                $info['answer'][0]['sound_file'] = $path . '/DEM.wav';
+            if(is_file($path . '/DAM.wav')) 
+                $info['answer'][0]['sound_file'] = $path . '/DAM.wav';
 
-            if(is_file($path . '/DEM.mp3')) 
-                $info['answer'][0]['sound_file'] = $path . '/DEM.mp3';
+            if(is_file($path . '/DAM.mp3')) 
+                $info['answer'][0]['sound_file'] = $path . '/DAM.mp3';
         }
 
         /* 答案图片 */

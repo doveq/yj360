@@ -268,40 +268,43 @@ class TopicController extends BaseController {
 			$playList[] = array('url' => $info['q']['sound_url']);
 		}
 
-		$loop = empty( $info['loops'] ) ? 1 : $info['loops'];
-		for($i = 0; $i < $loop; $i++)
+		if( !empty($info['q']['hint_url']) || !empty($info['a'][0]['sound_url']) )
 		{
-			// 如果设置了循环次数，则添加第几遍提示音
-			if( !empty( $info['loops'] ) && $info['loops'] > 1)
+			$loop = empty( $info['loops'] ) ? 1 : $info['loops'];
+			for($i = 0; $i < $loop; $i++)
 			{
-				if($i == 0)
-					$playList[] = array('url' => '/assets/sound/d1.mp3');
-				elseif($i == 1)
-					$playList[] = array('url' => '/assets/sound/d2.mp3');
-				else
-					$playList[] = array('url' => '/assets/sound/d3.mp3');
-			}
-
-			if( !empty($info['q']['hint_url']) )
-			{
-				$playList[] = array('url' => $info['q']['hint_url']);
-			}
-
-			/* 如果是视唱或模唱不播放答案音，答案音实际为参考音 */
-			if( $info['q']['type'] != 6 && $info['q']['type'] != 7)
-			{
-				if( !empty($info['a']) )
+				// 如果设置了循环次数，则添加第几遍提示音
+				if( !empty( $info['loops'] ) && $info['loops'] > 1)
 				{
-					foreach ($info['a'] as $a) 
+					if($i == 0)
+						$playList[] = array('url' => '/assets/sound/d1.mp3');
+					elseif($i == 1)
+						$playList[] = array('url' => '/assets/sound/d2.mp3');
+					else
+						$playList[] = array('url' => '/assets/sound/d3.mp3');
+				}
+
+				if( !empty($info['q']['hint_url']) )
+				{
+					$playList[] = array('url' => $info['q']['hint_url']);
+				}
+
+				/* 如果是视唱或模唱不播放答案音，答案音实际为参考音 */
+				if( $info['q']['type'] != 6 && $info['q']['type'] != 7)
+				{
+					if( !empty($info['a']) )
 					{
-						if( !empty($a['sound_url']) )
-							$playList[] = array('url' => $a['sound_url']);
+						foreach ($info['a'] as $a) 
+						{
+							if( !empty($a['sound_url']) )
+								$playList[] = array('url' => $a['sound_url']);
+						}
 					}
 				}
-			}
 
-			if( !empty($info['time_spacing']) )
-				$playList[] = array('time_spacing' => $info['time_spacing']);
+				if( !empty($info['time_spacing']) )
+					$playList[] = array('time_spacing' => $info['time_spacing']);
+			}
 		}
 		
 		$info['playList'] = $playList;
