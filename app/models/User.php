@@ -62,7 +62,8 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	/* 添加用户 */
 	public function add($data)
 	{
-		$id = DB::table($this->table)->insertGetId(array(
+
+		 $info = array(
 				'name' =>  $data['name'],
     			'tel' => $data['tel'],
     			'password' => $this->encPasswd($data['password']),
@@ -70,7 +71,13 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
     			'type' => $data['type'],
     			'created_at' => date('Y-m-d H:is'),
     			'status' => 1,
-    		));
+    		);
+
+		 if(!empty($data['inviter']) && is_numeric($data['inviter']))
+		 	$info['inviter'] = $data['inviter'];
+
+
+		$id = DB::table($this->table)->insertGetId($info);
 
     	return $id;
 	}

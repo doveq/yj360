@@ -164,7 +164,7 @@ a#site-fk{
 	margin-top: -90px;
 }
 .footer-sp{
-	color: #666;
+	color: #8a8a86;
 }
 #bzfk a{
 	float: right;
@@ -1192,4 +1192,17 @@ a.tyadel {
 .tmbox-txt a{
 	color: #fff;
 	font-weight: bold;
+}
+#mcbtn{
+	padding:5px;
+	border:none;
+	width: 142px;
+}
+.mcbtn-1{
+	background-color: #acdfdf;
+	color: #007d82;
+}
+.mcbtn-2{
+	background-color: #e7e5e2;
+	color: #9a9691;
 }

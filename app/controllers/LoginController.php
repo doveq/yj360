@@ -84,10 +84,11 @@ class LoginController extends BaseController
 	/* 用户注册 */
 	public function register()
 	{
-		if (Session::get('inviter') == '') {
+		$inviter = Session::get('inviter');
+		if ($inviter == '') {
 			return Redirect::to('/invite_by');
 		}
-		return $this->indexView('register');
+		return $this->indexView('register', compact('inviter'));
 	}
 
 	public function doRegister()
@@ -96,11 +97,13 @@ class LoginController extends BaseController
 		$validator = Validator::make($data , array(
 			'name' => 'required|alpha_dash|between:2,8',
 	        'tel' => 'required|digits:11|unique:users',
-	        'password' => 'required|min:6|confirmed')
+	        'password' => 'required|min:6|confirmed',
+	        'inviter' => 'numeric')
 		);
 
 		$data['is_certificate'] = 0;
 		$data['type'] = 0; // 默认为学生
+
 
 		if($data['code'] == Session::get('code') )
 		{
@@ -230,7 +233,7 @@ class LoginController extends BaseController
         }
         $info = User::whereName($query['name'])->first();
         if ($info) {
-        	Session::flash('inviter', $info->name);
+        	Session::flash('inviter', $info->id);
 			return Redirect::to('/register');
         } else {
         	$error = '没有此人';
