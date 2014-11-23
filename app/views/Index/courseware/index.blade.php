@@ -10,20 +10,24 @@
   <div class="wrap-right">
       <div class="tabtool">
         @if ($back_url && isset($query['d1']))
-        <a href="{{$back_url}}" style="color:#499626;">&lt; 返回</a>
+        <a href="{{$back_url}}" style="color:#499626;background-color:transparent;">&lt; 返回</a>
         @endif
           {{$column_name}}
           {{Form::open(array('url' => '/courseware?column_id='.$query['column_id'].'&id='.$query['id'].'&type=' . $query['type'], 'method' => 'get', 'style' => 'margin-left:20px;float:right;'))}}
-           {{Form::text('q', '')}}
+           {{Form::text('q', '', array('style' => 'padding:2px;') )}}
            {{Form::hidden('column_id', $query['column_id'])}}
            {{Form::hidden('id', $query['id'])}}
            {{Form::hidden('type', $query['type'])}}
-           {{Form::submit('检索')}}
+           {{Form::submit('检索', array('style' => 'background-color:#00b1bc;border:none;color:#fff;padding:2px 5px;') )}}
           {{ Form::close() }}
       </div>
 
       <div class="classes-list">
         @if (isset($lists['files']))
+          @foreach($lists['files'] as $k => $d)
+            <a class="cwblock" style="background-color:{{$color[array_rand($color)]}};" href="/courseware/show?column_id={{$query['column_id']}}&id={{$query['id']}}&type={{$query['type']}}&path={{$d['path']}}&filename={{$d['pinyin']}}" target="_blank" class="play_ware">{{$d['name']}}</a>
+          @endforeach
+        <!--
         <table class="table-2" style="width:80%;margin:20px;padding:20px" border="0" cellpadding="0" cellspacing="0">
           @foreach($lists['files'] as $k => $d)
           <tr>
@@ -36,6 +40,7 @@
           </td></tr>
           @endforeach
           </table>
+        -->
         @else
           @foreach($lists as $k => $d)
             <div style="float:left;

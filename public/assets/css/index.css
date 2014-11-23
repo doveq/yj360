@@ -1229,3 +1229,18 @@ a.tyadel {
 	background-color: #e7e5e2;
 	color: #9a9691;
 }
+.cwblock{
+	float: left;
+	margin-right: 20px;
+	margin-bottom: 20px;
+	padding:10px;
+	width: 228px;
+	height: 20px;
+	line-height: 20px;
+	overflow: hidden;
+	text-align: center;
+	-moz-border-radius: 15px;
+    -webkit-border-radius: 15px;
+    border-radius:15px;
+    color: #fff;
+}

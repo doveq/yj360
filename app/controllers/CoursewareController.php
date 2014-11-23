@@ -17,6 +17,8 @@ class CoursewareController extends BaseController
 	{
         $query = Input::only('column_id', 'd1', 'id', 'q', 'type');
 
+        $color = array("#2fc8d0","#efc825","#5fc1e8","#f28695","#f49543","#abd663","#b18ac1");
+
         //type : 区分多媒体教材还是多媒体课件, 多媒体课件以后可能会加
         //科目
         if ($query['column_id'] == 3) {
@@ -65,7 +67,7 @@ class CoursewareController extends BaseController
         $arr = $cn->getPath($query['column_id']);
         $columnHead = $arr[0];
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        return $this->indexView('courseware.index', compact('columns', 'query', 'lists', 'config_path', 'back_url', 'column_name', 'columnHead'));
+        return $this->indexView('courseware.index', compact('columns', 'query', 'lists', 'config_path', 'back_url', 'column_name', 'columnHead', 'color'));
 	}
 
     public function show()

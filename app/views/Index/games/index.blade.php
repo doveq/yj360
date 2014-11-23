@@ -11,10 +11,10 @@
       <div class="tabtool">
           {{$column_name}}
           {{Form::open(array('url' => '/games?column_id='.$query['column_id'].'&id='.$query['id'], 'method' => 'get', 'style' => 'margin-left:20px;float:right;'))}}
-           {{Form::text('q', '')}}
+           {{Form::text('q', '', array('style' => 'padding:2px;') )}}
            {{Form::hidden('column_id', $query['column_id'])}}
            {{Form::hidden('id', $query['id'])}}
-           {{Form::submit('检索')}}
+           {{Form::submit('检索', array('style' => 'background-color:#00b1bc;border:none;color:#fff;padding:2px 5px;') )}}
           {{ Form::close() }}
       </div>
 
@@ -23,7 +23,6 @@
           @foreach($lists as $k => $d)
             <div style="float:left;
             margin-bottom: 20px;
-            width:25%;
             margin-left:10px;
             padding: 4px;
             text-align:center;">
