@@ -1244,6 +1244,7 @@ a.tyadel {
 .tmbox-txt{
 	vertical-align:middle;
 	padding:5px;
+	text-align: center;
 }
 .tmbox-txt a{
 	color: #fff;

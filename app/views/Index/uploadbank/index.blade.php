@@ -4,6 +4,9 @@
 @extends('Index.column.columnHead')
 
 @section('content')
+<style>
+    .stable th{background-color:#fff;color:#000;border-bottom:1px dashed #8a8a86;}
+</style>
 <div class="container-column wrap">
   <div class="row">
     @include('Index.column.nav')

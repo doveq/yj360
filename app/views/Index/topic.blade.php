@@ -207,6 +207,7 @@
         </div>
         @endif
         
+        {{-- 答题卡 --}}
         <div id="qlist" style="display:none;">
             @foreach($qlist as $k => $v)
                 @if( ( empty($_GET['id']) && $k == 0 ) || ( !empty($_GET['id']) && $_GET['id'] == $v) )
@@ -236,6 +237,17 @@
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}},{{$column or '0'}});"></a>
+            <div class="clear"></div>
+        </div>
+        @elseif( !empty('exam') )
+        {{-- 如果是测试试卷 --}}
+        <div id="topic-tools">
+            @if( $q['type'] == 2)
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
+            @endif
+            @if( $q['type'] == 6 || $q['type'] == 7)
+            <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
+            @endif
             <div class="clear"></div>
         </div>
         @elseif( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )

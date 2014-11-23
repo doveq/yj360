@@ -2,6 +2,10 @@
 @section('title')个人中心 @stop
 
 @section('content')
+<style>
+    .table-2 .lable {padding:5px;}
+    .tyinput{padding:5px;margin:5px;}
+</style>
 <div class="container-column wrap">
     <div class="row">
     @include('Index.profile.nav')
