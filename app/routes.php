@@ -145,6 +145,7 @@ Route::group(array('before' => 'indexLogin'), function(){
 	Route::post('/recorder/upload', 'RecorderController@upload');
 
     //我的班级
+    Route::get('/classes/mates', 'ClassesController@mates');
     Route::resource('classes', 'ClassesController');
     //训练集
     Route::resource('training', 'TrainingController');
@@ -155,6 +156,8 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::any('/classm/doAddClass', 'ClassmateController@doaddClass');
     Route::get('/training_result', 'TrainingResultController@index');
     //消息
+    Route::get('/message/talk', 'MessageController@talk');
+    Route::get('/message/delete_all', 'MessageController@deleteAll');
     Route::resource('message', 'MessageController');
     //老师上传题库
     Route::resource('uploadbank', 'UploadBankController');

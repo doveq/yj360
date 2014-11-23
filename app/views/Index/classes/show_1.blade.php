@@ -8,42 +8,56 @@
   @include('Index.column.nav')
 
   <div class="wrap-right">
-      <div class="tabtool">
-        <span class="tab-bar"></span>
-        <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
-        <span class="tab-title">{{$classes->name}}</span>
-        <span class="tab-btn">
-          <a href="javascript:void(0);" onClick="delete_all();" class="tabtool-btn">成员管理</a>
-        </span>
+    <div class="tabtool">
+      <span class="tab-bar"></span>
+      <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
+      <span class="tab-title">{{$classes->name}}</span>
+      <span class="tab-btn">
+        <a href="/classes/mates?class_id={{$classes->id}}&column_id={{$query['column_id']}}" class="tabtool-btn">成员管理</a>
+      </span>
+    </div>
+
+    <div class="classmate-list">
+      <div class="classmate-box">
+        @if ($classes->message > 0)
+        <div class="classmate-msg"><span>{{$classes->message}}</span></div>
+        @endif
+        <div class="classmate-bzr"></div>
+        <div class="classmate-head">
+          @if ($classes->teacher->id == Session::get('uid'))
+          <img src="{{Attachments::getAvatar($classes->teacher->id)}}" width="120px" height="120px"/>
+          @else
+          <a href="/message/talk?column_id={{$query['column_id']}}&user_id={{$classes->teacher->id}}&class_id={{$classes->id}}">
+            <img src="{{Attachments::getAvatar($classes->teacher->id)}}" width="120px" height="120px"/>
+          </a>
+          @endif
+        </div>
+        <div class="classmate-title">
+          <span class="classmate-name" style="color:#ff0000;">{{$classes->teacher->name}}</span>
+        </div>
       </div>
-      <div class="clear"></div>
-
-      <div>
-        <table class="stable" border="0" cellpadding="0" cellspacing="0">
-          <thead>
-            <tr>
-              <th>{{ Form::checkbox('checkAll', 1, false, array('id' => 'checkAll')) }}</th>
-              <th>姓名</th>
-              <th>身份</th>
-              <th>性别</th>
-              <th>操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            @foreach ($students as $list)
-            <tr id="{{$list->pivot->id}}">
-              <td>{{Form::checkbox('classmate_id[]', $list->pivot->id)}}</td>
-              <td>{{$list->name}}</td>
-              <td>学生</td>
-              <td>{{$genderEnum[$list->gender]}}</td>
-              <td><a href="/message/create?receiver_id={{$list->id}}&column_id={{$query['column_id']}}">私信</a> <a href="javascript:void(0);" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a></td>
-            </tr>
-            @endforeach
-          </tbody>
-        </table>
-
-
+      @if ($students->count() > 0)
+      @foreach ($students as $list)
+      <div class="classmate-box">
+        @if ($list->message > 0)
+        <div class="classmate-msg"><span>{{$list->message}}</span></div>
+        @endif
+        <div class="classmate-head">
+          @if ($list->id == Session::get('uid'))
+          <img src="{{Attachments::getAvatar($list->id)}}" width="120px" height="120px"/>
+          @else
+          <a href="/message/talk?column_id={{$query['column_id']}}&user_id={{$list->id}}&class_id={{$classes->id}}">
+            <img src="{{Attachments::getAvatar($list->id)}}" width="120px" height="120px"/>
+          </a>
+          @endif
+        </div>
+        <div class="classmate-title">
+          <span class="classmate-name">{{$list->name}}</span>
+        </div>
       </div>
+      @endforeach
+      @endif
+    </div>
   </div>
 </div> <!-- /container -->
 <div class="clear"></div>
@@ -70,43 +84,10 @@
     }
   }
 
-  function delete_all(){
-    $this = $(this);
-    var $item = $('input[name="classmate_id[]"]:checked');
-    // alert($item);
-    if ($item.length <= 0) {
-      alert('请选择学生');
-      return false;
-    }
-    if (confirm('你确定要批量删除吗?')){
-      var $classmate_ids = new Array();
-      $item.each(function(){
-        $classmate_ids.push($(this).val());
-      });
-      $.ajax({
-        url:'/classmate/postDelete',
-        data: {id: $classmate_ids},
-        type:'post',
-      })
-      .fail(function(){
-        alert('操作失败')
-      })
-      .success(function(){
-        $.each($classmate_ids, function(index,value){
-          $('#'+value).remove();
-        });
 
-      });
-    }
-  }
-
-  $("#checkAll").click(function() {
-      $('input[name="classmate_id[]"]').prop("checked",this.checked);
-  });
-  var $subBox = $("input[name='classmate_id[]']");
-  $subBox.click(function(){
-      $("#checkAll").prop("checked",$subBox.length == $("input[name='classmate_id[]']:checked").length ? true : false);
-  });
 
 </script>
 @stop
+
+
+

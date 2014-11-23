@@ -5,23 +5,20 @@
 @section('content')
 <div class="container-column wrap">
   <div class="row">
-    @include('Index.column.nav')
+  @include('Index.column.nav')
 
   <div class="wrap-right">
-      <div class="tabtool">
-        <span class="tab-bar"></span>
-        <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
-        <span class="tab-title">{{$classes->name}}</span>
-        <span class="tab-btn">
-          <a href="javascript:;" class="quit_class tabtool-btn" onclick="quit_class({{$classmate[0]->id}});">退出班级</a>
-        </span>
-      </div>
+    <div class="tabtool">
+      <span class="tab-bar"></span>
+      <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
+      <span class="tab-title">{{$classes->name}}</span>
+      <span class="tab-btn">
+        <a href="/classes/mates?class_id={{$classes->id}}&column_id={{$query['column_id']}}" class="tabtool-btn">成员管理</a>
+      </span>
+    </div>
 
-      <div class="classmate-list">
+    <div class="classmate-list">
       <div class="classmate-box">
-        @if ($classes->message > 0)
-        <div class="classmate-msg"><span>{{$classes->message}}</span></div>
-        @endif
         <div class="classmate-bzr"></div>
         <div class="classmate-head">
           @if ($classes->teacher->id == Session::get('uid'))
@@ -38,7 +35,7 @@
       </div>
       @if ($students->count() > 0)
       @foreach ($students as $list)
-      <div class="classmate-box">
+      <div class="classmate-box" id="classmate_{{$list->pivot->id}}">
         @if ($list->message > 0)
         <div class="classmate-msg"><span>{{$list->message}}</span></div>
         @endif
@@ -54,6 +51,9 @@
         <div class="classmate-title">
           <span class="classmate-name">{{$list->name}}</span>
         </div>
+         <div class="classse-btn" style="display:block;">
+              <a class="delclass" href="javascript:;" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a>
+          </div>
       </div>
       @endforeach
       @endif
@@ -65,25 +65,29 @@
 @stop
 
 @section('js')
+<script type="text/javascript" src="/assets/layer/layer.min.js"></script>
+
 <script type="text/javascript">
-function quit_class(classmateid)
-  {
-    $.ajax({
-      url:'/classmate/'+classmateid,
-      data: {status: status},
-      // async:false,
-      type:'delete',
-    })
-    .fail(function(){
-      alert('操作失败');
-    })
-    .success(function(){
-      // alert(update_status);
-      // $this.attr('data-status', update_status);
-      // $this.text(status_txt)
-      // location.reload();
-      window.location.replace("/classes?column_id={{$query['column_id']}}");
+$(document).ready(function () {
+  delete_classmate = function(id){
+    layer.confirm('您确定要删除吗？', function(){
+      $.ajax({
+        url:'/classmate/'+id,
+        // async:false,
+        type:'delete',
+      })
+      .fail(function(){
+        layer.msg('删除失败', 2, 1);
+      })
+      .success(function(){
+        layer.closeAll();
+        $('#classmate_'+id).remove();
+      });
     });
-  }
+  };
+});
 </script>
 @stop
+
+
+

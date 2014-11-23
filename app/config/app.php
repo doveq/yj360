@@ -226,5 +226,5 @@ return array(
 	'mobile_post'  => 'http://api.10690909.com/newmt',
 
 	/* 一个学生能加入多少个班级 */
-	'max_classes' => 2,
+	'max_classes' => 1,
 );

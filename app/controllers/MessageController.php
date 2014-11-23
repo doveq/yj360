@@ -2,7 +2,7 @@
 
 class MessageController extends BaseController {
 
-    public $pageSize = 30;
+    public $pageSize = 10;
 
     public function __construct()
     {
@@ -129,10 +129,10 @@ class MessageController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('receiver_id', 'content', 'column_id', 'dialog');
+        $query = Input::only('user_id', 'content', 'column_id', 'dialog', 'class_id');
         $validator = Validator::make($query,
             array(
-                'receiver_id'      => 'numeric|required',
+                'user_id'      => 'numeric|required',
                 'content' => 'required',
                 // 'name' => 'alpha_dash',
             )
@@ -140,17 +140,17 @@ class MessageController extends BaseController {
 
         if($validator->fails())
         {
-            return Redirect::to('/message/create?receiver_id='.$query['receiver_id']."&column_id=".$query['column_id'])->withErrors($validator)->withInput($query);
+            return Redirect::to('/message/talk?column_id=' . $query['column_id'] . '&class_id=' .$query['class_id'].'&user_id='.$query['user_id'])->withErrors($validator)->withInput($query);
         }
         $message = new Message();
         $message->sender_id = Session::get('uid');
-        $message->receiver_id = $query['receiver_id'];
+        $message->receiver_id = $query['user_id'];
         $message->content = $query['content'];
         $message->created_at = date("Y-m-d H:i:s");
         $message->type = 1;
         if (isset($query['dialog'])) $message->dialog = $query['dialog'];
         $message->save();
-        return Redirect::to('/message?column_id=' . $query['column_id']);
+        return Redirect::to('/message/talk?column_id=' . $query['column_id'] . '&class_id=' .$query['class_id'].'&user_id='.$query['user_id']);
     }
 
 
@@ -280,6 +280,55 @@ class MessageController extends BaseController {
             return Response::json('ok');
         } else {
             return Redirect::to('/message?column_id='.$query['column_id']);
+        }
+    }
+
+
+    public function talk()
+    {
+        $query = Input::only('column_id', 'user_id', 'class_id');
+
+        $m = Message::where(function($q) use ($query) {
+            $q->whereSenderId(Session::get('uid'))
+                ->orWhere('sender_id', $query['user_id']);
+            })->where(function($q) use ($query) {
+                $q->whereReceiverId(Session::get('uid'))
+                ->orWhere('receiver_id', $query['user_id']);
+            })->orderBy('created_at', 'dasc');//->paginate($this->pageSize);
+
+        // dd($m->count());
+        $allnums = $m->count();
+        $messages = $m->paginate($this->pageSize);
+        if ($allnums > 0) {
+            $msgs = array();
+            foreach ($messages as $key => $value) {
+                $msgs[] = $value->id;
+            }
+            Message::whereIn('id', $msgs)->update(array('status' => 1));
+        }
+
+        $classes = Classes::find($query['class_id'])->first();
+        $user = User::whereId($query['user_id'])->first();
+
+        // 获取父类名页面显示
+        $columnHead = Column::whereId($query['column_id'])->first();;
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+        return $this->indexView('message.talk', compact('messages', 'columns', 'query', 'columnHead', 'classes', 'user', 'allnums'));
+    }
+
+    public function deleteAll()
+    {
+        $query = Input::only('column_id', 'user_id', 'class_id');
+        $m = Message::where(function($q) use ($query) {
+            $q->whereSenderId(Session::get('uid'))
+                ->orWhere('sender_id', $query['user_id']);
+            })->where(function($q) use ($query) {
+                $q->whereReceiverId(Session::get('uid'))
+                ->orWhere('receiver_id', $query['user_id']);
+            })->delete();
+
+        if (Request::ajax()) {
+            return Response::json('ok');
         }
     }
 

@@ -58,6 +58,7 @@
                   </div>
                 </div>
               </div>
+          <div class="clear"></div>
               @endforeach
 
             @endif
