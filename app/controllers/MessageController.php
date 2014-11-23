@@ -304,7 +304,7 @@ class MessageController extends BaseController {
             foreach ($messages as $key => $value) {
                 $msgs[] = $value->id;
             }
-            Message::whereIn('id', $msgs)->update(array('status' => 1));
+            Message::whereIn('id', $msgs)->whereReceiverId(Session::get('uid'))->update(array('status' => 1));
         }
 
         $classes = Classes::find($query['class_id'])->first();
