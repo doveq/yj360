@@ -13,7 +13,7 @@
       <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
       <span class="tab-title">{{$classes->name}}</span>
       <span class="tab-btn">
-        <a href="/classes/mates?class_id={{$classes->id}}&column_id={{$query['column_id']}}" class="tabtool-btn">成员管理</a>
+        <a href="/classes/{{$classes->id}}?column_id={{$query['column_id']}}" class="tabtool-btn">返回班级</a>
       </span>
     </div>
 
@@ -49,7 +49,12 @@
           @endif
         </div>
         <div class="classmate-title">
+          @if ($list->id == Session::get('uid'))
+          <span class="classmate-name">{{$list->name}}(我)</span>
+          @else
           <span class="classmate-name">{{$list->name}}</span>
+          @endif
+          <!-- <span class="classmate-name">{{$list->name}}</span> -->
         </div>
          <div class="classse-btn" style="display:block;">
               <a class="delclass" href="javascript:;" onClick="delete_classmate('{{$list->pivot->id}}');">删除</a>
