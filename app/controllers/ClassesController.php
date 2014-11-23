@@ -26,25 +26,51 @@ class ClassesController extends BaseController {
         $user_type = Session::get('utype');
         if ($user_type < 0) $user_type = 1;
         //正式班级
-        if ($user_type == 1) {
-            $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
-            $myclasses = array(-1);
-            foreach ($classes as $key => $value) {
-                $myclasses[] = $value->id;
-            }
-            $classmate_logs = ClassmateLog::whereTeacherId($user_id)->orderBy('id', 'desc')->get();
-        } elseif ($user_type == 0) {
-            $myclasses = array(-1);
-            $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id', 'status')->get()->toArray();
-            if (!empty($classmates)) {
-                foreach ($classmates as $key => $value) {
-                    $myclasses[] = $value['class_id'];
-                }
-            }
-            $classes = Classes::whereIn('id', $myclasses)->get();
+        // if ($user_type == 1) {
+        //     $classes = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        //     $myclasses = array(-1);
+        //     foreach ($classes as $key => $value) {
+        //         $myclasses[] = $value->id;
+        //     }
 
-            $classmate_logs = ClassmateLog::whereUserId($user_id)->orderBy('id', 'desc')->get();
+        // } elseif ($user_type == 0) {
+        //     $myclasses = array(-1);
+        //     $classmates = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id', 'status')->get()->toArray();
+        //     if (!empty($classmates)) {
+        //         foreach ($classmates as $key => $value) {
+        //             $myclasses[] = $value['class_id'];
+        //         }
+        //     }
+        //     $classes = Classes::whereIn('id', $myclasses)->get();
+        // }
+
+        // $sql = "select a.* from class a, classmate b where (b.user_id = ".$user_id." or b.teacher_id = $user_id) and a.column_id=".$query['column_id']." and b.status = 1 order by a.id desc";
+        // $classes = DB::select($sql);
+        // dd($res);
+        $myclasses = array(-1);
+        if ($user_type == 1) {
+            $thisclasses = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->get()->toArray();
         }
+        if (!empty($thisclasses)) {
+            foreach ($thisclasses as $key => $value) {
+                $myclasses[] = $value['id'];
+            }
+        }
+        $classmates = Classmate::where(function($q){
+            $q->whereTeacherId(Session::get('uid'));
+            $q->orWhere('user_id', Session::get('uid'));
+        })->whereStatus(1)->select('class_id', 'status')->get()->toArray();
+        if (!empty($classmates)) {
+            foreach ($classmates as $key => $value) {
+                $myclasses[] = $value['class_id'];
+            }
+        }
+        $classes = Classes::whereIn('id', $myclasses)->orderBy('created_at', 'desc')->get();
+
+        $classmate_logs = ClassmateLog::where(function($q){
+                $q->whereTeacherId(Session::get('uid'));
+                $q->orWhere('user_id', Session::get('uid'));
+            })->orderBy('id', 'desc')->paginate($this->pageSize);
 
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
         $columnHead = Column::find($query['column_id'])->first();
@@ -162,8 +188,12 @@ class ClassesController extends BaseController {
      */
     public function destroy($id)
     {
+        $classmates = Classmate::whereClassId($id)->get();
+        if ($classmates->count() > 0) {
+            return Response::json('删除失败,班级中还有成员');
+        }
         Classes::destroy($id);
-        Classmate::whereClassId($id)->delete();
+        // Classmate::whereClassId($id)->delete();
         if (Request::ajax()) {
             return Response::json('ok');
         } else {

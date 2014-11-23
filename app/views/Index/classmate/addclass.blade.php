@@ -32,16 +32,21 @@
         @if (isset($classes))
           @if ($classes->count() > 0)
             @foreach ($classes as $list)
-            <div class="classse-box" id="classes_{{$list->id}}">
+            <div class="classse-box" id="classes_{{$list->id}}" style="">
+              <div class="classes-box-head" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
+              </div>
+              <div class="classes-box-name">
+                <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
+              </div>
               <div class="classes-txt">
-                <div><h2><b>{{$list->name}}</b></h2></div>
-                <div>创建人：{{$list->teacher->name}}</div>
-                <div>成员：{{$list->students->count()}}</div>
+                <div>创建者：{{$list->teacher->name}} @if ($list->teacher->id == Session::get('uid'))(我)@endif</div>
+                <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
               </div>
-              <div class="classse-btn" style="display:none;margin-top:-30px;">
-                  <a class="addclass" style="width:200px;text-align:center;" href="javascript:;" onClick="add_class('{{$list->id}}');" >加入班级</a>
-                  <div class="clear"></div>
+              @if ($list->teacher->id != Session::get('uid'))
+              <div class="classse-btn">
+                <a class="addclass" href="javascript:;" onClick="add_class('{{$list->id}}');">加入班级</a>
               </div>
+              @endif
             </div>
             @endforeach
           @endif
