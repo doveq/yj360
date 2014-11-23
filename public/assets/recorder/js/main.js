@@ -9,7 +9,8 @@ $(function () {
   var CLASS_PLAYBACK_READY = "playback_ready";
   var CLASS_PLAYING = "playing";
   var CLASS_PLAYBACK_PAUSED = "playback_paused";
-  var TIMEOUT_RECORDING = 30;
+  // 设置2分钟停止录音
+  var TIMEOUT_RECORDING = 120;
 
 //  Embedding flash object ---------------------------------------------------------------------------------------------
 
@@ -36,6 +37,7 @@ $(function () {
         FWRecorder.recorderOriginalWidth = width;
         FWRecorder.recorderOriginalHeight = height;
         $('.save_button').css({'width': width, 'height': height});
+        console.log("ready");
         break;
 
       case "no_microphone_found":
@@ -58,6 +60,18 @@ $(function () {
         recorderEl().removeClass("floating");
 
         console.log("permission_panel_closed");
+        
+        // 如果选择允许录音则开始录音
+        if( FWRecorder.isReady )
+        {
+            FWRecorder.record('audio', 'audio.wav');
+            // 如果是试卷
+            if(is_exam)
+            {
+              startQ();
+            }
+        }
+
         break;
 
       case "microphone_activity":
@@ -73,7 +87,7 @@ $(function () {
         $('#topic-btn-10').hide();
         $('#topic-btn-12').show();
         $('#topic-btn-8').hide();
-
+        
         setTimeout(function(){
             $('#topic-btn-10').show();
             $('#topic-btn-12').hide();

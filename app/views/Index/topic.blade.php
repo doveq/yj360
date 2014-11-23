@@ -54,7 +54,7 @@
         <div class="topic-con" @if($q['type'] == 8 || $q['type'] == 9 || $q['type'] == 10): style="padding:0;" @endif >
             <div>
                 @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['txt']) ) <h2 style="font-size:14px;">{{$index}}. {{$q['txt']}}</h2> @endif
-                @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img src= "{{$q['img_url']}}" /></div> @endif
+                @if( ($q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10) && !empty($q['img']) ) <div><img id="tp" src= "{{$q['img_url']}}" /></div> @endif
             </div>
 
             {{-- 视唱,模唱 --}}
@@ -195,7 +195,7 @@
             </div>
             @endif
             @endif
-            
+
         </div>
         
         {{-- 填空，写作 --}}
@@ -249,6 +249,7 @@
             @endif
             @if( $q['type'] == 6 || $q['type'] == 7)
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
+            <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
             @endif
             <div class="clear"></div>
         </div>
@@ -380,6 +381,8 @@
     </div>
 
     <script>
+        var is_exam = @if( empty($exam) ) false @else true @endif;
+
         $(document).ready(function(){
 
             $('.sound-play').click(function(){
@@ -409,10 +412,24 @@
             totalTime({{$total_time}});
             @endif
 
+            {{-- 如果是试卷视唱,并且是试唱或模唱。因为视唱或模唱需要点击开始答题后才能开始 --}}
+            @if( !empty($exam) && ( $q['type'] == 6 || $q['type'] == 7 ) )
+                {{-- 视唱图片时间到后隐藏--}}
+                @if( $q['type'] == 7 && !empty($q['read_time']) )
+                setTimeout(function(){ $('#tp').hide(); }, {{$q['read_time']}} *1000);
+                @endif
+            @else
             // 延时2秒播放
             setTimeout(initPlay, 2000);
+            @endif
         });
         
+        {{-- 试卷视唱模唱的开始答题,录音开始后回调 --}}
+        function startQ()
+        {
+            $('#tp').show();
+            initPlay();
+        }
 
         /* 总时间倒计时，自动跳转到下一题 */
         function totalTime(t)
