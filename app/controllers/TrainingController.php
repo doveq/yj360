@@ -30,11 +30,15 @@ class TrainingController extends BaseController {
         if ($user_type == 1) {
             //老师
             $classeses = Classes::whereTeacherid($user_id)->select('id')->get()->toArray();
-            $lists = Training::whereIn('class_id', $classeses)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            if ($classeses) {
+                $lists = Training::whereIn('class_id', $classeses)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            }
         } else {
             //学生
             $classeses = Classmate::whereUserId($user_id)->whereStatus(1)->select('class_id')->get()->toArray();
-            $lists = Training::whereIn('class_id', $classeses)->whereStatus(1)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            if ($classeses) {
+                $lists = Training::whereIn('class_id', $classeses)->whereStatus(1)->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+            }
         }
         // dd($classeses);
         if ($query['column_id']) {
