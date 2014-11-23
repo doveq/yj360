@@ -12,7 +12,7 @@
     <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
     @yield('headjs')
   </head>
-  <body role="document">
+  <body role="document">z
       <div id="site-head">
           <div class="">
               <a id="site-logo" href="/"><img src="/assets/img/logo.jpg" /></a>

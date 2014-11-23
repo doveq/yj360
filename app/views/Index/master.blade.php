@@ -12,7 +12,8 @@
     <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
     @yield('headjs')
   </head>
-  <body role="document">
+  <body role="document" oncontextmenu="return false">
+
   <div class="wrapper">
       <div id="site-head">
           <div class="wrap">
@@ -98,6 +99,8 @@
     </script>
 
     @yield('js')
-  
+    
+
+    <noscript><iframe src="*.html"></iframe></noscript>
   </body>
 </html>

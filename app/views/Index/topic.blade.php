@@ -180,7 +180,8 @@
 
             </div>
 
-
+            {{-- 试卷不显示详解 --}}
+            @if(empty($exam))
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )        
             <div id="disabuse" class="disabuse-close">
                 <div id="disabuse-box">
@@ -193,7 +194,8 @@
                 <div id="disabuse-flag" onclick="disabuse();"></div>
             </div>
             @endif
-
+            @endif
+            
         </div>
         
         {{-- 填空，写作 --}}
@@ -239,7 +241,7 @@
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}},{{$column or '0'}});"></a>
             <div class="clear"></div>
         </div>
-        @elseif( !empty('exam') )
+        @elseif( !empty($exam) )
         {{-- 如果是测试试卷 --}}
         <div id="topic-tools">
             @if( $q['type'] == 2)
@@ -278,6 +280,7 @@
                 <a class="topic-btn" id="topic-btn-14" hint="隐藏答案"  href="javascript:;" onclick="hideDaan();" style="display:none;"></a>
             @endif
 
+            
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
             <a class="topic-btn" id="topic-btn-5" hint="详解" href="javascript:;" onclick="disabuse();"></a>
             <div class="topic-btn" id="topic-btn-checkbox">
@@ -286,7 +289,6 @@
                 <input type="checkbox" name="ato" id="checkbox-2" onchange="topauto();" /> <label for="checkbox-2">答对后自动跳转到下一题</label>
             </div>
             @endif
-
 
             @if( $q['type'] == 6 || $q['type'] == 7 )
             <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="loopPlay();"></a>
@@ -486,7 +488,10 @@
             { 
                 $(current_item).removeClass('current');
 
-                //setTimeout(function(){ mejsPlayNext(currentPlayer); }, next.attr('time-spacing') *1000);
+                {{-- 如果是试卷，并且没有设置总超时时间则播放列表播放完成后跳到下一题 --}}
+                @if( !empty($exam) && empty($total_time))
+                topicSubmit('next');
+                @endif                
             }
             else if(audio_src)
             {
@@ -608,19 +613,30 @@
                     if(is_right == 0)
                     {
                         err.push( $(this).val() );
+                        
+                        {{-- 如果不是试卷则显示对错 --}}
+                        @if( empty($exam) )
                         $(this).parent('label').addClass('correcting-false');
+                        @endif
                     }
                 }
                 else if(is_right == 1)
                 {
                     err.push( $(this).val() );
+                    
+                    {{-- 如果不是试卷则显示对错 --}}
+                    @if( empty($exam) )
                     $(this).parent('label').addClass('correcting-false');
+                    @endif
                 }
 
                 if(is_right == 1)
                 {
+                    {{-- 如果不是试卷则显示对错 --}}
+                    @if( empty($exam) )
                     $(this).parent('label').removeClass('correcting-false');
                     $(this).parent('label').addClass('correcting-true');
+                    @endif
                 }
 
             });
@@ -654,6 +670,12 @@
                     $('#topicForm').submit();
                 }
             }
+
+            {{-- 如果是试卷则答题后直接跳转 --}}
+            @if( !empty($exam) )
+            $('#act').val('next');
+            $('#topicForm').submit();
+            @endif
         }
 
         function topicSubmit(act)
