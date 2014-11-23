@@ -592,7 +592,7 @@ li.index-list-more a {
 	font-weight: bold;
 	font-size: 14px;
 	padding:5px 0 0 2px;
-	list-style-type:disc;
+	list-style-type:none;
 }
 .sort-list li{padding:9px 0 1px 40px;height:30px;position:relative;}
 .sort-list li a {color: #3f3f3f;}
@@ -637,6 +637,30 @@ li.index-list-more a {
 }
 .sort-wbj-act .sort-sj{
 	display: block;
+}
+.sort-sncw a{
+	padding-left:20px;
+	background: url("/assets/img/sort-ncw.png") no-repeat 0 1px;
+}
+.sort-snsc a{
+	padding-left:20px;
+	background: url("/assets/img/sort-nsc.png") no-repeat 0 1px;
+}
+.sort-snbj a{
+	padding-left:20px;
+	background: url("/assets/img/sort-nbj.png") no-repeat 0 1px;
+}
+.sort-snzy a{
+	padding-left:20px;
+	background: url("/assets/img/sort-nzy.png") no-repeat 0 1px;
+}
+.sort-snxx a{
+	padding-left:20px;
+	background: url("/assets/img/sort-nxx.png") no-repeat 0 1px;
+}
+.sort-sntk a{
+	padding-left:20px;
+	background: url("/assets/img/sort-ntk.png") no-repeat 0 1px;
 }
 .stable {
 	width: 100%;
