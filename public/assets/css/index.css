@@ -379,7 +379,6 @@ li.index-list-more a {
 
 #answers{
 	position:relative;
-	min-height: 300px;
 	overflow: hidden;
 }
 .answers-list td{
@@ -1214,6 +1213,7 @@ a.tyadel {
 	border:1px solid #e0e0e0;
 	padding:15px;
 	background: url("/assets/img/topic-bg.png") repeat 0 0;
+	min-height: 400px;
 }
 .playbtn{
 	background: url("/assets/img/play.png") repeat 0 0;

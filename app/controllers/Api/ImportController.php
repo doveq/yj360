@@ -156,8 +156,10 @@ class ImportController extends \BaseController {
                                 elseif($char == 'B') $info['answer'][1]['is_right'] = 1;
                                 elseif($char == 'C') $info['answer'][2]['is_right'] = 1;
                                 elseif($char == 'D') $info['answer'][3]['is_right'] = 1;
+                                /*
                                 elseif($char == 'E') $info['answer'][4]['is_right'] = 1;
                                 elseif($char == 'F') $info['answer'][5]['is_right'] = 1;
+                                */
                             }
                         }
                         else
@@ -166,8 +168,10 @@ class ImportController extends \BaseController {
                             elseif($lines[1] == 'B') $info['answer'][1]['is_right'] = 1;
                             elseif($lines[1] == 'C') $info['answer'][2]['is_right'] = 1;
                             elseif($lines[1] == 'D') $info['answer'][3]['is_right'] = 1;
+                            /*
                             elseif($lines[1] == 'E') $info['answer'][4]['is_right'] = 1;
                             elseif($lines[1] == 'F') $info['answer'][5]['is_right'] = 1;
+                            */
                         }
                     }
                     break;
@@ -206,6 +210,16 @@ class ImportController extends \BaseController {
 
         if(is_file($path . '/tm.wav')) 
             $info['question']['hint_file'] = $path . '/tm.wav';
+
+        // 如果是视唱模唱则参考音转为答案音
+        if( $info['question']['type'] = 6 || $info['question']['type'] = 7)
+        {
+            if(is_file($path . '/DEM.wav')) 
+                $info['answer'][0]['sound_file'] = $path . '/DEM.wav';
+
+            if(is_file($path . '/DEM.mp3')) 
+                $info['answer'][0]['sound_file'] = $path . '/DEM.mp3';
+        }
 
         /* 答案图片 */
         if(is_file($path . '/AP.png')) 
@@ -269,7 +283,7 @@ class ImportController extends \BaseController {
         if(is_file($path . '/FM.mp3')) 
             $info['answer'][5]['sound_file'] = $path . '/FM.mp3';
         */
-        
+
         return $info;
     }
 
