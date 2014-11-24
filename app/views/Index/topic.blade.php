@@ -43,11 +43,11 @@
     {{-- 播放音频相关 --}}
     <div style="display:none;">
         <!-- 题干音 -->
-        <audio class="playlist" id="q-sound" src="{{$q['sound_url'] or ''}}">
+        <audio class="playlist" id="q-sound" src="{{$q['sound_url'] or ''}}" ></audio>
         <!-- 提示音 -->
-        <audio class="playlist playloop" id="q-hint" src="{{$q['hint_url'] or ''}}">
+        <audio class="playlist playloop" id="q-hint" src="{{$q['hint_url'] or ''}}" ></audio>
         <!-- 参考音 -->
-        <audio id="q-cky" src="{{$a[0]['sound_url'] or ''}}">
+        <audio id="q-cky" src="{{$a[0]['sound_url'] or ''}}" ></audio>
     </div>
 
     <div class="container wrap">
@@ -267,7 +267,7 @@
             @if( $q['type'] != 6 && $q['type'] != 7 )
                 {{-- 如果有提示音或题目音 --}}
                 @if( !empty($q['hint_url']) || !empty($a[0]['sound_url']))
-                <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="loopPlay();"></a>
+                <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
                 @endif
             @endif
 
@@ -295,7 +295,7 @@
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
             <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
             <a class="topic-btn" id="topic-btn-8" hint="录音回放"  href="javascript:;" onclick="recorderPlay();" style="display:none;"></a>
-            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="loopPlay();"></a>
+            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
             <a class="topic-btn" id="topic-btn-9" hint="听参考音"  href="javascript:;" onclick="ckyPlay();"></a>
             <!--
             <a class="topic-btn" hint="开始"  href="javascript:;" onclick="recorderStart();">开始答题</a>
@@ -453,20 +453,27 @@
         var ip;
         function initPlay()
         {
+            {{-- 设置播放地址为播放列表第一个 --}}
+            $('#list-audio').attr('src', $('#play-list li:first').text() );
+
             ip = new MediaElementPlayer('#list-audio', {
                 success: function (mediaElement, domObject) {
                     mediaElement.addEventListener('ended', function (e) {
                         mejsPlayNext(e.target);
                     });
 
-                    mediaElement.play();
-                    setPlaybtn($('#list-audio').attr('src'));
+                    mediaElement.addEventListener('play', function (e) {
+                        console.log(mediaElement.src.replace('http://' + location.host, ''));
+                        setPlaybtn(mediaElement.src.replace('http://' + location.host, ''));
+                    });
                 },
                 error: function (e) {
                     console.log('MediaElementPlayer error: ' + e);
                 },
                 keyActions: []
             });
+
+            ip.play();
         }
 
         
@@ -490,7 +497,6 @@
                     var audio_src = next.text();
                     $(current_item).next().addClass('current').siblings().removeClass('current');
 
-                    setPlaybtn(audio_src);
                 }
                 console.log('if '+audio_src);
             }
@@ -501,7 +507,6 @@
                 var audio_src = $(current_item).next().text();
                 $(current_item).next().addClass('current').siblings().removeClass('current');
 
-                setPlaybtn(audio_src);
                 console.log('elseif '+audio_src);
             }
 
@@ -509,6 +514,9 @@
             if( $(current_item).is(':last-child') ) 
             { 
                 $(current_item).removeClass('current');
+
+                {{-- 清空播放动画 --}}
+                setPlaybtn("clear");
 
                 {{-- 如果是试卷，并且没有设置总超时时间则播放列表播放完成后跳到下一题 --}}
                 @if( !empty($exam) && empty($total_time))
@@ -519,7 +527,6 @@
             {
                 currentPlayer.setSrc(audio_src);
                 currentPlayer.play();
-                setPlaybtn(audio_src);
             }
         }
 
@@ -536,7 +543,8 @@
                 }
             });
         }
- 
+        
+
 
         /* 手动点击重复播放 */
         function loopPlay()
@@ -544,7 +552,7 @@
             var list = getLoopList();
             if(list.length > 0)
             {
-                $('#play-list').attr('src', list[0]);
+                $('#replist').attr('src', list[0]);
                 try
                 {
                     setPlaybtn(list[0]);
@@ -706,6 +714,15 @@
         {
             correcting();
             $('#act').val(act);
+            try
+            {
+                FWRecorder.stopRecording('audio');
+            }
+            catch(e)
+            {
+                console.log(e);
+            }
+
             $('#topicForm').submit();
         }
 
