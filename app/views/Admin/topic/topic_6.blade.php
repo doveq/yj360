@@ -67,7 +67,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">提干音(TM)</label>
+			    <label class="col-sm-2 control-label">提干提示音(TS)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['sound_url']))
 			      <div>
@@ -85,7 +85,7 @@
 			  </div>
 
 			  <div class="form-group">
-			    <label class="col-sm-2 control-label">提干提示音(TS)</label>
+			    <label class="col-sm-2 control-label">提干音(TM)</label>
 			    <div class="col-sm-10">
 			      @if(isset($q['hint_url']))
 			      <div>
