@@ -58,7 +58,7 @@
             <td class="reg-err"></td>
           </tr>
 
-
+          <!--
           <tr>
             <td class="lable" style="padding-right:15px;">&nbsp;</td>
             <td colspan="2">
@@ -78,6 +78,7 @@
             </td>
             <td class="reg-err"></td>
           </tr>
+          -->
 
           <tr>
             <td class="lable" style="padding-right:15px;">&nbsp;</td>
