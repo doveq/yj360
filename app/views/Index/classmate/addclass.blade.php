@@ -35,7 +35,7 @@
               <div class="classes-box-head" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
               </div>
               <div class="classes-box-name">
-                <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">{{$list->name}}</a>
+                {{$list->name}}
               </div>
               <div class="classes-txt">
                 <div>创建者：{{$list->teacher->name}} @if ($list->teacher->id == Session::get('uid'))(我)@endif</div>
