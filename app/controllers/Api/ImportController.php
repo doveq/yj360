@@ -216,7 +216,7 @@ class ImportController extends \BaseController {
             $info['question']['hint_file'] = $path . '/tm.wav';
 
         // 如果是视唱模唱则参考音转为答案音
-        if( $info['question']['type'] == 6 || $info['question']['type'] == 7)
+        if( !empty($info['question']['type']) && ($info['question']['type'] == 6 || $info['question']['type'] == 7))
         {
             if(is_file($path . '/DAM.wav')) 
                 $info['answer'][0]['sound_file'] = $path . '/DAM.wav';
