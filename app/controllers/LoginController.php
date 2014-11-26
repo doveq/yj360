@@ -85,6 +85,7 @@ class LoginController extends BaseController
 	public function register()
 	{
 		$inviter = Session::get('inviter');
+
 		if ($inviter == '') {
 			return Redirect::to('/invite_by');
 		}
@@ -141,7 +142,6 @@ class LoginController extends BaseController
 		{
 			$data['codeErr'] = "验证码错误";
 		}
-
 
 		return Redirect::to('register')->withErrors($validator)->withInput(Input::except('teacher_img'));
 	}
@@ -275,7 +275,7 @@ class LoginController extends BaseController
         }
         $info = User::whereName($query['name'])->first();
         if ($info) {
-        	Session::flash('inviter', $info->id);
+        	Session::put('inviter', $info->id);
 			return Redirect::to('/register');
         } else {
         	$error = '没有此人';
