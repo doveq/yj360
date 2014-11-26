@@ -135,8 +135,8 @@ $(function(){
         function(data) {
             if(data.status == 1)
             {
-                alert(data.info);
                 location.reload();
+                alert(data.info);
             }
             else
                 alert(data.info);

@@ -29,6 +29,7 @@
             <th>{{Form::checkbox('checkAll', 1,false, array('id' => 'checkAll'))}}</th>
             <th>#</th>
             <th>题干</th>
+            <th>原始编号</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -38,6 +39,7 @@
                 <td><label>{{ Form::checkbox('id[]', $v['question_id']) }}</label></td>
                 <td>{{$v['question_id']}}</td>
                 <td><a href="/topic?id={{$v->question['id']}}" target="_blank">{{$v->question['txt']}}</a></td>
+                <td>{{$v->question['source']}}</td>
                 <td><a href="javascript:;" class="btn btn-primary btn-xs btn-del" data-id="{{$v['question_id']}}">删除</a></td>
             </tr>
             @endforeach
