@@ -780,7 +780,7 @@ li.index-list-more a {
 	z-index:10;
 	position: absolute;
 	right: 0;
-	bottom: 0;
+	bottom: 30px;
 }
 .classse-btn a{
 	color: #000;
