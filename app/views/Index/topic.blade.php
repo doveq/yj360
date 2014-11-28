@@ -36,9 +36,11 @@
             <div id="total_time">
                 答题时间<span id="total_time_show"></span>
             </div>
-            <div id="loop_num" @if( !empty($loops) && loops > 1 ) style="display:block;" @endif >
+            @if( !empty($loops) )
+            <div id="loop_num" @if( $loops > 1 ) style="display:block;" @endif >
                 共<span class="loop">{{$loops or 0}}</span>遍，第<span class="loop" id="show-nloop">1</span>遍
             </div>
+            @endif
         </div>
         <div class="clear"></div>
     </div>
