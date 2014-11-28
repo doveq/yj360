@@ -547,6 +547,8 @@
                 {{-- 如果是真实测试并且设置了播放次数，播放列表播放完成后跳到下一题 --}}
                 @if( !empty($isReal) && !empty($loops) && $loops > 1)
                 topicSubmit('next');
+                @elseif(!empty($isReal) && $q['type'] == 6)
+                topicSubmit('next');
                 @elseif($q['type'] == 6 )
                 {{-- 如果是模唱则播放完成后停止录音 --}}
                 try
