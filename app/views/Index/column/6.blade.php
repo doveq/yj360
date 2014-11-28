@@ -21,7 +21,14 @@
               @foreach($content as $list)
                 <tr>
                     <td class="tytd">
+                        <!--
                         <a href="/topic?exam={{$list->exam_id}}&column={{$column->id}}" target="_blank">{{$list->exam->title}}</a>
+                        -->
+                        {{$list->exam->title}}
+                        &nbsp;&nbsp;
+                        <a href="/topic?exam={{$list->exam_id}}&column={{$column->id}}" target="_blank" style="color:#428bca;">练习模式</a>
+                        &nbsp;&nbsp;
+                        <a href="/topic?exam={{$list->exam_id}}&column={{$column->id}}&real=1" target="_blank" style="color:#428bca;">考试模式</a>
                     </td>
                 </tr>
                 <tr><td colspan="2">
