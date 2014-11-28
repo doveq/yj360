@@ -79,15 +79,9 @@ $(function () {
         FWRecorder.hide();
         setControlsClass($controls, CLASS_RECORDING);
 
-        // 如果是试卷
-        if(is_real)
-        {
-          startQ();
-        }
+        // 视唱模唱点击开始录音后播放声音
+        startQ();
 
-        $('#topic-btn-10').hide();
-        $('#topic-btn-12').show();
-        $('#topic-btn-8').hide();
         
         /* 如果是真实测试，并且设置了答题时间则时间到后跳到下一题 */
         if(is_real && qtime > 0)
@@ -96,13 +90,16 @@ $(function () {
                 topicSubmit('next');
               }, qtime * 1000);
         }
+        else if(qtime > 0)
+        {
+            setTimeout(function(){
+                recorderStop();
+              }, qtime * 1000);
+        }
         else
         {
             setTimeout(function(){
-                $('#topic-btn-10').show();
-                $('#topic-btn-12').hide();
-                $('#topic-btn-8').show();
-                FWRecorder.stopRecording('audio');
+                recorderStop();
             }, TIMEOUT_RECORDING * 1000);
         }
 

@@ -299,7 +299,7 @@
             @endif
 
             @if( !empty($_GET['vetting']) )
-                <a class="topic-btn" id="topic-btn-15" href="javascript:;" onclick="vetting();">审核</a>
+                <a class="topic-btn" id="topic-btn-15" href="javascript:;" onclick="vetting();"></a>
             @endif
 
             <a class="topic-btn" id="topic-btn-6" hint="显示答题卡" href="javascript:;" onclick="showList();"></a>
@@ -307,7 +307,7 @@
         </div>
         @elseif( !empty($_GET['vetting']) )
         <div id="topic-tools">
-            <a class="topic-btn" id="topic-btn-15" href="javascript:;" onclick="vetting();">审核</a>
+            <a class="topic-btn" id="topic-btn-15" href="javascript:;" onclick="vetting();"></a>
             <div class="clear"></div>
         </div>
         @else
@@ -413,10 +413,10 @@
             totalTime({{$total_time}});
             @endif
 
-            {{-- 如果是试卷视唱,并且是试唱或模唱。因为视唱或模唱需要点击开始答题后才能开始 --}}
-            @if( !empty($isReal) && ( $q['type'] == 6 || $q['type'] == 7 ) )
-                {{-- 视唱图片时间到后隐藏--}}
-                @if( $q['type'] == 7 && !empty($q['read_time']) )
+            {{-- 如果是试唱或模唱。因为视唱或模唱需要点击开始答题后才能开始 --}}
+            @if( $q['type'] == 6 || $q['type'] == 7 )
+                {{-- 如果是真题模式，视唱图片时间到后隐藏--}}
+                @if( !empty($isReal) && $q['type'] == 7 && !empty($q['read_time']) )
                 setTimeout(function(){ $('#tp').hide(); }, {{$q['read_time']}} *1000);
                 @endif
             @else
@@ -425,7 +425,7 @@
             @endif
         });
         
-        {{-- 试卷视唱模唱的开始答题,录音开始后回调 --}}
+        {{-- 视唱模唱的开始答题,录音开始后回调 --}}
         function startQ()
         {
             $('#tp').show();
@@ -522,6 +522,16 @@
                 {{-- 如果是真实测试并且是模唱则播放列表播放完成后跳到下一题 --}}
                 @if( !empty($isReal) && $q['type'] == 6 )
                 topicSubmit('next');
+                @elseif($q['type'] == 6 )
+                {{-- 如果是模唱则播放完成后停止录音 --}}
+                try
+                {
+                    recorderStop();
+                }
+                catch(e)
+                {
+                    console.log(e);
+                }
                 @endif
             }
             else if(audio_src)
@@ -746,6 +756,9 @@
 
         function recorderStart()
         {
+            $('#topic-btn-10').hide();
+            $('#topic-btn-12').show();
+            $('#topic-btn-8').hide();
             FWRecorder.record('audio', 'audio.wav');
         }
 
@@ -755,13 +768,8 @@
             $('#topic-btn-12').hide();
             $('#topic-btn-8').show();
             FWRecorder.stopRecording('audio');
-        }
 
-        function autoRecorderStop()
-        {
-            $('#topic-btn-10').show();
-            $('#topic-btn-12').hide();
-            $('#topic-btn-8').show();
+            console.log(" recorderStop ... ");
         }
 
         function recorderPlay()

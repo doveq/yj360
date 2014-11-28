@@ -700,6 +700,9 @@
 
         function recorderStart()
         {
+            $('#topic-btn-10').hide();
+            $('#topic-btn-12').show();
+            $('#topic-btn-8').hide();
             FWRecorder.record('audio', 'audio.wav');
         }
 
@@ -709,13 +712,6 @@
             $('#topic-btn-12').hide();
             $('#topic-btn-8').show();
             FWRecorder.stopRecording('audio');
-        }
-
-        function autoRecorderStop()
-        {
-            $('#topic-btn-10').show();
-            $('#topic-btn-12').hide();
-            $('#topic-btn-8').show();
         }
 
         function recorderPlay()
