@@ -14,6 +14,9 @@ class TopicController extends BaseController {
 		$from = Input::get('from'); // 返回页面url
 		$fromColumn = Input::get('fromColumn');
 
+		// 模拟真实考试环境
+		$isReal = is_numeric(Input::get('real')) ? Input::get('real') : 0;
+
 		// 题目数据保存
 		$qinfo = array();
 		$qlist = array();
@@ -314,9 +317,31 @@ class TopicController extends BaseController {
 		}
 		
 		$info['playList'] = $playList;
-
+		$info['isReal'] = $isReal;
 
 		return $this->indexView('topic', $info);
+	}
+
+
+	/* 上传录音文件 */
+	public function postRecorder()
+	{
+		$inputs = Input::all();
+		$qid = $inputs['id'];
+		$uid = Session::get('uid');
+
+		$att = new Attachments();
+		#Log::info( var_export($_FILES, true) );
+		
+		$saved = $att->addRecorder($_FILES["upload_file"]["tmp_name"]['filename'], $uid, $qid);
+
+		if($_POST['format'] == 'json') {
+		  header('Content-type: application/json');
+		  print "{\"saved\": $saved}";
+		} else {
+		  print $saved ? "Saved" : 'Not saved';
+		}
+
 	}
 
 	/* 记录答题情况 */
@@ -326,17 +351,25 @@ class TopicController extends BaseController {
 		$qid = $inputs['id'];
 		$uid = Session::get('uid');
 
+		$realUrl = '';
+		if($inputs['real'])
+			$realUrl = '&real=' . $inputs['real'];
+
 		// 保存wav录音文件
 		if( !empty($inputs['wavBase64']) )
 		{
-			$fileBase6 = str_replace('data:audio/wav;base64,', '',  $inputs['wavBase64']); 
+			$fileBase6 = str_replace('data:audio/wav;base64,', '',  $_POST['wavBase64']);
+
+			$decoded = base64_decode($fileBase6);
+			//for ($i=0; $i < ceil(mb_strlen($fileBase6)/256); $i++)
+			//   $decoded = $decoded . base64_decode(mb_substr($fileBase6,$i*256,256));
+
 			$tmpname = tempnam("/tmp", 'wav');
-			file_put_contents($tmpname, base64_decode($fileBase6));
+			file_put_contents($tmpname, $decoded);
 
 			$att = new Attachments();
 			$saved = $att->addRecorder($tmpname, $uid, $qid);
 		}
-
 
 		if(!empty($inputs['uniqid']))
 		{
@@ -373,14 +406,14 @@ class TopicController extends BaseController {
 					// 如果已经是第一题
 	        		if($qid == $qk[0])
 	        		{
-	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}");
+	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}" . $realUrl);
 		           		exit;
 	        		}
 	        		elseif($qid == $qk[$i])
 	        		{
 	        			$qid = $qk[$i -1];
 
-	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}");
+	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}". $realUrl);
 		           		exit;
 	        		}
 	        	}
@@ -425,7 +458,7 @@ class TopicController extends BaseController {
 	        		elseif($qid == $qk[$i])
 	        		{
 	        			$qid = $qk[$i +1];
-	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}");
+	        			header("Location: /topic?uniqid={$uniqid}&id={$qid}". $realUrl);
 		           		exit;
 	        		}
 	        	}
@@ -490,7 +523,6 @@ class TopicController extends BaseController {
 
 		return $this->indexView('topic_result',  $data);
 	}
-
 
 
 }

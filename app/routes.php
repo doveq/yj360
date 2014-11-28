@@ -166,6 +166,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/topic', 'TopicController@index');
     Route::post('/topic/post', 'TopicController@post');
     Route::get('/topic/result', 'TopicController@result');
+    Route::post('/topic/postRecorder', 'TopicController@postRecorder');
 
     // 收藏页面
     Route::get('/favorite', 'FavoriteController@index');

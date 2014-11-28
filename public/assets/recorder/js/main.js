@@ -10,14 +10,14 @@ $(function () {
   var CLASS_PLAYING = "playing";
   var CLASS_PLAYBACK_PAUSED = "playback_paused";
   // 设置2分钟停止录音
-  var TIMEOUT_RECORDING = 60;
+  var TIMEOUT_RECORDING = 120;
 
 //  Embedding flash object ---------------------------------------------------------------------------------------------
 
   //setUpFormOptions();
-  var appWidth = 24;
-  var appHeight = 24;
-  var flashvars = {'upload_image': '/assets/recorder/images/upload_blank.jpg'};
+  var appWidth = 1;
+  var appHeight = 1;
+  var flashvars = {'upload_image': '/assets/recorder/images/upload.png'};
   var params = {};
   var attributes = {'id': "recorderApp", 'name': "recorderApp"};
   swfobject.embedSWF("/assets/recorder/recorder.swf", "flashcontent", appWidth, appHeight, "11.0.0", "", flashvars, params, attributes);
@@ -80,7 +80,7 @@ $(function () {
         setControlsClass($controls, CLASS_RECORDING);
 
         // 如果是试卷
-        if(is_exam)
+        if(is_real)
         {
           startQ();
         }
@@ -89,12 +89,22 @@ $(function () {
         $('#topic-btn-12').show();
         $('#topic-btn-8').hide();
         
-        setTimeout(function(){
-            $('#topic-btn-10').show();
-            $('#topic-btn-12').hide();
-            $('#topic-btn-8').show();
-            FWRecorder.stopRecording('audio');
-        }, TIMEOUT_RECORDING * 1000);
+        /* 如果是真实测试，并且设置了答题时间则时间到后跳到下一题 */
+        if(is_real && qtime > 0)
+        {
+              setTimeout(function(){
+                topicSubmit('next');
+              }, qtime * 1000);
+        }
+        else
+        {
+            setTimeout(function(){
+                $('#topic-btn-10').show();
+                $('#topic-btn-12').hide();
+                $('#topic-btn-8').show();
+                FWRecorder.stopRecording('audio');
+            }, TIMEOUT_RECORDING * 1000);
+        }
 
         break;
 
@@ -105,8 +115,9 @@ $(function () {
         FWRecorder.show();
         setControlsClass($controls, CLASS_PLAYBACK_READY);
         $('#duration').text(duration.toFixed(4) + " seconds");
-
+        //FWRecorder.update();
         $('#wavBase64').val(FWRecorder.getBase64() );
+        console.log('recording_stopped');
         break;
 
       case "microphone_level":

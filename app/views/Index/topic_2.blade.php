@@ -12,9 +12,7 @@
 @stop
 @section('headjs')
     <script src="/assets/mediaelement/build/mediaelement-and-player.min.js"></script>
-    <script type="text/javascript" src="/assets/recorder/js/swfobject.js"></script>
-    <script type="text/javascript" src="/assets/recorder/js/recorder.js"></script>
-    <script type="text/javascript" src="/assets/recorder/js/main.js"></script>
+    <script src="/assets/jquery/jquery.cookie.js"></script>
     <script src="/assets/jquery/jquery.cookie.js"></script>
 
     @if( !empty($_GET['vetting']) )
@@ -60,51 +58,7 @@
             {{-- 视唱,模唱 --}}
             @if( $q['type'] == 6 || $q['type'] == 7)
             {{-- 录音相关 --}}
-            <div id="save_button">
-                <span id="flashcontent">
-                <!--
-                  <p>Your browser must have JavaScript enabled and the Adobe Flash Player installed.</p>
-                  -->
-                </span>
-            </div>
-            <div style="display:none;">
-                <div id="recorder-audio" class="control_panel idle">
-                    <button class="record_button" onclick="FWRecorder.record('audio', 'audio.wav');" title="Record">
-                        <img src="/assets/recorder/images/record.png" alt="Record"/>
-                    </button>
-                    <button class="stop_recording_button" onclick="FWRecorder.stopRecording('audio');" title="Stop Recording">
-                        <img src="/assets/recorder/images/stop.png" alt="Stop Recording"/>
-                    </button>
-                    <button class="play_button" onclick="FWRecorder.playBack('audio');" title="Play">
-                        <img src="/assets/recorder/images/play.png" alt="Play"/>
-                    </button>
-                    <button class="pause_playing_button" onclick="FWRecorder.pausePlayBack('audio');" title="Pause Playing">
-                        <img src="/assets/recorder/images/pause.png" alt="Pause Playing"/>
-                    </button>
-                    <button class="stop_playing_button" onclick="FWRecorder.stopPlayBack();" title="Stop Playing">
-                        <img src="/assets/recorder/images/stop.png" alt="Stop Playing"/>
-                    </button>
-                    <div class="level"></div>
-                </div>
-                <div class="details" >
-                  <button class="show_level" onclick="FWRecorder.observeLevel();">Show Level</button>
-                  <button class="hide_level" onclick="FWRecorder.stopObservingLevel();" style="display: none;">Hide Level</button>
-                  
-                  
-                  <div><button class="show_settings" onclick="microphonePermission()">Microphone permission</button></div>
-                  <div id="status">
-                   Recorder Status...
-                  </div>
-                  <div>Duration: <span id="duration"></span></div>
-                  <div>Activity Level: <span id="activity_level"></span></div>
-                  <div>Upload status: <span id="upload_status"></span></div>
-                </div>
-
-                <form id="uploadForm" name="uploadForm" action="/recorder/upload">
-                  <input name="authenticity_token" value="" type="hidden">
-                  <input name="format" value="json" type="hidden">
-                </form>
-            </div>
+            
             @endif
 
             <div id="answers">
@@ -247,7 +201,7 @@
             <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="topicSubmit('next');"></a>
             @if( $q['type'] == 6 || $q['type'] == 7)
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
-            <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;"></a>
+            <a class="topic-btn" id="topic-btn-12" hint="停止录音"  href="javascript:;" onclick="recorderStop();" style="display:none;">停止录音</a>
             @endif
             <div class="clear"></div>
         </div>
@@ -782,8 +736,10 @@
             $.getJSON("/favorite/ajax", {'act':'add','qid':qid,'column':column}, function(data){
                  if(data.state == 1)
                  {
+                    /* 不显示取消收藏
                     $('#topic-btn-4').hide();
                     $('#topic-btn-13').show();
+                    */
                  }
             });
         }
@@ -795,6 +751,7 @@
                 {
                     $('#topic-btn-4').show();
                     $('#topic-btn-13').hide();
+
                 }
             });
         }
