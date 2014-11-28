@@ -393,6 +393,8 @@
         {{-- 循环次数 --}}
         var loops = {{$loops or 0}};
 
+        var is_recorder_start = false;
+
         $(document).ready(function(){
 
             $('.sound-play').click(function(){
@@ -425,8 +427,19 @@
             {{-- 如果是试唱或模唱。因为视唱或模唱需要点击开始答题后才能开始 --}}
             @if( $q['type'] == 6 || $q['type'] == 7 )
                 {{-- 如果是真题模式，视唱图片时间到后隐藏--}}
-                @if( !empty($isReal) && $q['type'] == 7 && !empty($q['read_time']) )
-                setTimeout(function(){ $('#tp').hide(); }, {{$q['read_time']}} *1000);
+                @if( !empty($isReal) )
+
+                @if( $q['type'] == 7 && !empty($q['read_time']) )
+                setTimeout(function(){
+                    if(!is_recorder_start) 
+                        $('#tp').hide();
+                }, {{$q['read_time']}} *1000);
+                @endif
+
+                @if( $q['type'] == 6 )
+                $('#tp').hide();
+                @endif
+
                 @endif
             @else
             // 延时2秒播放
@@ -453,6 +466,18 @@
                 $('#total_time_show').html(t);
 
             setTimeout(function(){ totalTime(--t); }, 1000);
+        }
+
+        function showQtime(t)
+        {
+
+            $('#total_time').show();
+
+            if(t >= 0)
+            {
+                $('#total_time_show').html(t);
+                setTimeout(function(){ showQtime(--t); }, 1000);
+            }
         }
 
         function LoopShow(i)
@@ -776,6 +801,7 @@
 
         function recorderStart()
         {
+            is_recorder_start = true;
             $('#topic-btn-10').hide();
             $('#topic-btn-12').show();
             $('#topic-btn-8').hide();

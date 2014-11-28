@@ -85,12 +85,16 @@ $(function () {
         /* 如果是真实测试，并且设置了答题时间则时间到后跳到下一题 */
         if(is_real && qtime > 0)
         {
+              showQtime(qtime);
+              
               setTimeout(function(){
                 topicSubmit('next');
               }, qtime * 1000);
         }
         else if(qtime > 0)
         {
+            showQtime(qtime);
+
             setTimeout(function(){
                 recorderStop();
                 console.log('qtime stop');
