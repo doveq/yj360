@@ -513,6 +513,7 @@
                     // 显示播放的第几遍
                     next.addClass('current').siblings().removeClass('current');
                     LoopShow(next.attr('loop-num'));
+                    mejsPlayNext(currentPlayer);
                     return;
                 }
                 else
