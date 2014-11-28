@@ -94,12 +94,14 @@ $(function () {
         {
             setTimeout(function(){
                 recorderStop();
+                console.log('qtime stop');
               }, qtime * 1000);
         }
         else
         {
             setTimeout(function(){
                 recorderStop();
+                console.log('TIMEOUT_RECORDING stop');
             }, TIMEOUT_RECORDING * 1000);
         }
 
