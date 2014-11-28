@@ -59,7 +59,7 @@
         </tr>
 
         <tr>
-            <td class="lable">跟换头像</td>
+            <td class="lable">更换头像</td>
             <td>
                 <div class="fileup">
                   <input type='text' name='textfield' id='textfield' class='tyinput' style="width:180px;" />
