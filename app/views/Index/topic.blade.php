@@ -725,14 +725,7 @@
         {
             correcting();
             $('#act').val(act);
-            try
-            {
-                FWRecorder.stopRecording('audio');
-            }
-            catch(e)
-            {
-                console.log(e);
-            }
+            recorderStop();
 
             $('#topicForm').submit();
         }
@@ -767,8 +760,15 @@
             $('#topic-btn-10').show();
             $('#topic-btn-12').hide();
             $('#topic-btn-8').show();
-            FWRecorder.stopRecording('audio');
 
+            try
+            {
+                FWRecorder.stopRecording('audio');
+            }
+            catch(e)
+            {
+                console.log(e);
+            }
             console.log(" recorderStop ... ");
         }
 

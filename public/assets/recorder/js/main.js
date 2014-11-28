@@ -64,7 +64,7 @@ $(function () {
         // 如果选择允许录音则开始录音
         if( FWRecorder.isReady )
         {
-            FWRecorder.record('audio', 'audio.wav');
+            recorderStart();
         }
 
         break;
