@@ -277,8 +277,8 @@ class TopicController extends BaseController {
 			$loop = empty( $info['loops'] ) ? 1 : $info['loops'];
 			for($i = 0; $i < $loop; $i++)
 			{
-				// 如果设置了循环次数，则添加第几遍提示音
-				if( !empty( $info['loops'] ) && $info['loops'] > 1)
+				// 不是模拟模式，设置了循环次数，则添加第几遍提示音
+				if( !$isReal && !empty( $info['loops'] ) && $info['loops'] > 1)
 				{
 					if($i == 0)
 						$playList[] = array('url' => '/assets/sound/d1.mp3');
@@ -287,6 +287,9 @@ class TopicController extends BaseController {
 					else
 						$playList[] = array('url' => '/assets/sound/d3.mp3');
 				}
+
+				if($i > 0)
+					$playList[] = array('loop_num' => $i +1);
 
 				if( !empty($info['q']['hint_url']) )
 				{

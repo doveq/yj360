@@ -36,6 +36,9 @@
             <div id="total_time">
                 答题时间<span id="total_time_show"></span>
             </div>
+            <div id="loop_num">
+                共<span class="loop">{{$loops or 0}}</span>遍，第<span class="loop" id="show-nloop">1</span>遍
+            </div>
         </div>
         <div class="clear"></div>
     </div>
@@ -337,8 +340,9 @@
         @foreach($playList as $v)
             @if(!empty($v['time_spacing']))
             <li time-spacing="{{$v['time_spacing']}}"></li>
-            @endif
-            @if(!empty($v['url']))
+            @elseif(!empty($v['loop_num']))
+            <li loop-num="{{$v['loop_num']}}"></li>
+            @elseif(!empty($v['url']))
             <li>{{$v['url']}}</li>
             @endif
         @endforeach
@@ -383,6 +387,9 @@
 
         {{-- 视唱答题时间，时间 --}}
         var qtime = {{$q['qtime'] or 0}};
+
+        {{-- 循环次数 --}}
+        var loops = {{$loops or 0}};
 
         $(document).ready(function(){
 
@@ -446,10 +453,18 @@
             setTimeout(function(){ totalTime(--t); }, 1000);
         }
 
+        function LoopShow(i)
+        {
+            $('#loop_num').show();
+            $('#show-nloop').html(i);
+        }
+
         /* 播放题干音和提示音 */
         var ip;
         function initPlay()
         {
+            console.log('initPlay');
+
             {{-- 设置播放地址为播放列表第一个 --}}
             first = $('#play-list li:first').text();
             if(first != '')
@@ -488,15 +503,22 @@
                 // 如果是暂停
                 if(next.attr('time-spacing'))
                 {
-                    $(current_item).next().addClass('current').siblings().removeClass('current');
+                    next.addClass('current').siblings().removeClass('current');
                     setTimeout(function(){ mejsPlayNext(currentPlayer); }, next.attr('time-spacing') *1000);
                     console.log('spacing');
+                    return;
+                }
+                else if(next.attr('loop-num'))
+                {
+                    // 显示播放的第几遍
+                    next.addClass('current').siblings().removeClass('current');
+                    LoopShow(next.attr('loop-num'));
                     return;
                 }
                 else
                 {
                     var audio_src = next.text();
-                    $(current_item).next().addClass('current').siblings().removeClass('current');
+                    next.addClass('current').siblings().removeClass('current');
 
                 }
                 console.log('if '+audio_src);

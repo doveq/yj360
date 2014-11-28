@@ -1351,3 +1351,12 @@ a.tyadel {
     color: #fff;
     font-weight: bold;
 }
+#loop_num{
+	float: right;
+	color: #666;
+	display: none;
+}
+#loop_num .loop
+{
+	color:red;
+}

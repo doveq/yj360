@@ -82,7 +82,6 @@ $(function () {
         // 视唱模唱点击开始录音后播放声音
         startQ();
 
-        
         /* 如果是真实测试，并且设置了答题时间则时间到后跳到下一题 */
         if(is_real && qtime > 0)
         {
@@ -105,6 +104,7 @@ $(function () {
             }, TIMEOUT_RECORDING * 1000);
         }
 
+        console.log("recording");
         break;
 
       case "recording_stopped":
