@@ -89,7 +89,7 @@ class ClassesController extends BaseController {
         $query = Input::only('name', 'column_id');
         $validator = Validator::make($query,
             array(
-                'name' => 'alpha_dash|required',
+                'name' => 'required',
                 'column_id' => 'numeric|required',
             )
         );
