@@ -38,8 +38,12 @@ class MessageController extends BaseController {
             $s[] = $value->sender_id;
         }
 
-        $ids = implode(",", $s);
-        $m = DB::select('select * from (select * from message where (`sender_id` = '.Session::get('uid').' and `receiver_id` in ('.$ids.')) or (sender_id in ('.$ids.') and receiver_id='.Session::get('uid').') order by id desc) temp group by sender_id, receiver_id order by created_at desc');
+        $m = array();
+        if($s)
+        {
+            $ids = implode(",", $s);
+            $m = DB::select('select * from (select * from message where (`sender_id` = '.Session::get('uid').' and `receiver_id` in ('.$ids.')) or (sender_id in ('.$ids.') and receiver_id='.Session::get('uid').') order by id desc) temp group by sender_id, receiver_id order by created_at desc');
+        }
 
         // $lists = array();
         $tmp = array();
