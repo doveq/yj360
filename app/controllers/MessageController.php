@@ -60,7 +60,10 @@ class MessageController extends BaseController {
                 $xx[] = $value->id;
             }
         }
-        $lists = Message::whereIn('id', $xx)->orderBy('created_at', 'desc')->get();
+
+        $lists = array();
+        if($xx)
+            $lists = Message::whereIn('id', $xx)->orderBy('created_at', 'desc')->get();
 
         // 获取父类名页面显示
         $cn = new Column();
