@@ -36,13 +36,13 @@
           </tr>
 
           <tr>
-            <td class="lable" style="padding-right:15px;"><span class="must">*</span>密  码</td>
+            <td class="lable" style="padding-right:15px;"><span class="must">*</span>新密码</td>
             <td colspan="2"><input type="password" class="text" name="password" value="" placeholder="密码"  style="padding:5px;"></td>
             <td class="reg-err" id="password-err">{{$errors->first('password')}}</td>
           </tr>
 
           <tr>
-            <td class="lable" style="padding-right:15px;"><span class="must">*</span>重复密码</td>
+            <td class="lable" style="padding-right:15px;"><span class="must">*</span>重复新密码</td>
             <td colspan="2"><input type="password" class="text" name="password_confirmation" value="" placeholder="密码"  style="padding:5px;"></td>
             <td class="reg-err"></td>
           </tr>

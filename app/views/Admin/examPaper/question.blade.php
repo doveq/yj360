@@ -21,6 +21,7 @@
             <th>{{Form::checkbox('checkAll', 1,false, array('id' => 'checkAll'))}}</th>
             <th>#</th>
             <th>题干</th>
+            <th>原始编号</th>
             <th>排序序号</th>
             <th>操作</th>
           </tr>
@@ -31,6 +32,7 @@
                 <td><label>{{ Form::checkbox('id[]', $v['question_id']) }}</label></td>
                 <td>{{$v['question_id']}}</td>
                 <td><a href="/topic?id={{$v->question['id']}}&is_exam={{$v['exam_id']}}" target="_blank">{{$v->question['txt']}}</a></td>
+                <td>{{$v->question['source']}}</td>
                 <td>{{$v['ordern']}}</td>
                 <td>
                   <a href="javascript:;" class="btn btn-primary btn-xs showedit" data-toggle="modal" data-id="{{$v['id']}}" data-tit="{{$v->question['txt']}}" data-ordern="{{$v['ordern']}}">编辑</a>

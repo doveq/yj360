@@ -78,6 +78,13 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/examPaper/doEditQuestion', '\Admin\ExamPaperController@doEditQuestion');
 
     Route::resource('examSort', 'Admin\ExamSortController');
+
+    Route::get('/teacher', '\Admin\TeacherController@index');
+    Route::get('/teacher/add', '\Admin\TeacherController@add');
+    Route::post('/teacher/doAdd', '\Admin\TeacherController@doAdd');
+    Route::get('/teacher/edit', '\Admin\TeacherController@edit');
+    Route::post('/teacher/doEdit', '\Admin\TeacherController@doEdit');
+    Route::post('/teacher/doDel', '\Admin\TeacherController@doDel');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){

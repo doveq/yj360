@@ -6,184 +6,81 @@ use Validator;
 use Input;
 use Paginator;
 use Redirect;
-use Attachments;
+use Teacher;
 
 class TeacherController extends \BaseController {
 
-    public $typeEnum = array('' => '所有类型', '-1' => '管理员', '0' => '学生', '1' => '老师');
-    public $statusEnum = array('' => '所有状态', '0' => '未审核', '1' => '审核通过', '-1' => '锁定');
     public $pageSize = 30;
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
+    public $typeEnum = array('1' => '小学', '2' => '中学', '3' => '音基');
+
     public function index()
     {
-        $query = Input::only('name', 'tel', 'type', 'status', 'page');
+        $query = Input::only('name', 'tel', 'type', 'page');
 
-        // 当前页数
-        if( !is_numeric($query['page']) || $query['page'] < 1 )
-            $query['page'] = 1;
+        $teacher = new Teacher();
+        $lists = $teacher->getList($query)->paginate($this->pageSize);
 
-        $validator = Validator::make($query,
-            array(
-                // 'name'   => 'alpha_dash',
-                'tel'    => 'numeric',
-                'type'   => 'numeric',
-                'status' => 'numeric'
-            )
+        $typeEnum = array('0' => '全部') + $this->typeEnum;
+        return $this->adminView('teacher.index', compact('lists', 'query', 'typeEnum'));
+    }
+
+
+    public function add()
+    {
+        $typeEnum = $this->typeEnum;
+        return $this->adminView('teacher.add', compact('typeEnum'));
+    }
+
+    public function doAdd()
+    {
+        $info = Input::only('type', 'name', 'tel', 'qq', 'professional', 'address', 'school');
+
+        $validator = Validator::make($info, array(
+            'tel' => 'required|digits:11|unique:teacher_info')
         );
 
-        if($validator->fails())
+        if($validator->passes())
         {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "user");
+            $teacher = new Teacher();
+            $teacher->addInfo($info);
+        }
+        else
+        {
+            return $this->adminPrompt("操作失败", '手机号已经注册', $url = "teacher/add");
         }
 
-        $lists = User::where(function($query) {
-            if (strlen(Input::get('type')) > 0) {
-                $query->whereType(Input::get('type'));
-            }
-            if (strlen(Input::get('status')) > 0) {
-                $query->whereStatus(Input::get('status'));
-            }
-            if (strlen(Input::get('name')) > 0) {
-                $query->where('name', 'LIKE', '%'.Input::get('name').'%');
-            }
-            if (strlen(Input::get('tel')) > 0) {
-                $query->where('tel', 'LIKE', Input::get('tel').'%');
-            }
-        })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        return $this->adminPrompt("操作成功", '信息添加成功！', $url = "teacher");
+    }
 
-        $att = new Attachments();
-        foreach ($lists as $key => &$value) 
-        {
-            if($value->is_certificate == 1)
-            {
-                $route = $att->getTeacherRoute($value['id']);
-                $value->certificate = $route['url'];
-            }
-        }
+    public function edit()
+    {
+        $id = Input::only('id');
 
-        $statusEnum = $this->statusEnum;
+        $teacher = new Teacher();
+        $info = $teacher->getInfo($id)->first()->toArray();
         $typeEnum = $this->typeEnum;
-        return $this->adminView('user.index', compact('query', 'lists', 'statusEnum', 'typeEnum'));
+        return $this->adminView('teacher.edit', compact('typeEnum', 'info'));
     }
 
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
+    public function doEdit()
     {
-        //
+        $info = Input::only('id', 'type', 'name', 'tel', 'qq', 'professional', 'address', 'school');
+
+        $teacher = new Teacher();
+        $id = $info['id'];
+        unset($info['id']);
+        $teacher->editInfo($id, $info);
+
+        return $this->adminPrompt("操作成功", '信息编辑成功！', $url = "teacher");
     }
 
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return Response
-     */
-    public function store()
+    public function doDel()
     {
-        //
+        $id = Input::only('id');
+
+        $teacher = new Teacher();
+        $info = $teacher->delInfo($id);
+        
+        return $this->adminPrompt("操作成功", '信息删除成功！', $url = "teacher");
     }
-
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
-        $user = User::find($id);
-        $typeEnum = $this->typeEnum;
-        $statusEnum = $this->statusEnum;
-
-        if($user['is_certificate'])
-        {
-            $att = new Attachments();
-            $route = $att->getTeacherRoute($id);
-            $user['route'] = $route;
-        }
-
-        return $this->adminView('user.edit', compact('user', 'typeEnum', 'statusEnum'));
-    }
-
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function update($id)
-    {
-        //
-        //$data = Input::only('name', 'tel', 'type', 'status');
-        $data = Input::all();
-
-        $validator = Validator::make($data ,
-            array(
-                // 'name' => 'alpha_dash',
-                'tel' => 'numeric',
-                'type' => 'numeric',
-                'status' => 'numeric'
-                )
-        );
-
-        if($validator->fails())
-        {
-            return $this->adminPrompt("参数错误", $validator->messages()->first(), $url = "user/".$id."/edit");
-        }
-
-        $user = user::find($id);
-
-        if (isset($data['name'])) $user->name     = $data['name'];
-        if (isset($data['tel'])) $user->tel       = $data['tel'];
-        if (isset($data['type'])) $user->type     = $data['type'];
-        if (isset($data['status'])) $user->status = $data['status'];
-        if (isset($data['email'])) $user->email = $data['email'];
-        if (isset($data['qq'])) $user->qq = $data['qq'];
-        if (isset($data['company'])) $user->company = $data['company'];
-        if (isset($data['intro'])) $user->intro = $data['intro'];
-
-        if ($user->save()) {
-            return Redirect::to('admin/user');
-        }
-    }
-
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        //
-        User::destroy($id);
-        return Redirect::to('admin/user');
-    }
-
-
 }

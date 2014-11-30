@@ -31,7 +31,7 @@
                 <button id="mcbtn" class="mcbtn-1" onclick="return mobileCode();" autocomplete="off" >点击免费获取验证码</button>
                 <div id="reg-mcjs"></div>
             </td>
-            <td class="reg-err" id="code-err">{{Input::old('codeErr')}}</td>
+            <td class="reg-err" id="code-err">{{$errors->first('code')}}</td>
           </tr>
           <tr id="codebox" style="display:none;">
             <td class="lable" style="padding-right:15px;"><span class="must">&nbsp;</td>

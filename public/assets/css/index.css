@@ -1010,7 +1010,7 @@ li.index-list-more a {
 	background: url("/assets/img/selbtn.jpg") no-repeat 0 0;
 	border:none;
 	height:32px; width:80px;}
-.table-2 .file{ position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:400px; }
+.table-2 .file{ position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:450px; }
 .table-2-del {
 	width: 50px;
 }

@@ -96,7 +96,7 @@ class LoginController extends BaseController
 	{
 		$data = Input::all();
 		$validator = Validator::make($data , array(
-			'name' => 'required|alpha_dash|between:2,8',
+			'name' => 'required|alpha_dash|between:2,5',
 	        'tel' => 'required|digits:11|unique:users',
 	        'password' => 'required|min:6|confirmed',
 	        'inviter' => 'numeric')
@@ -105,8 +105,12 @@ class LoginController extends BaseController
 		$data['is_certificate'] = 0;
 		$data['type'] = 0; // 默认为学生
 
-
-		if($data['code'] == Session::get('code') )
+		// 只允许中文
+		if(!preg_match('/[\x{4e00}-\x{9fa5}]+/u', $data['name']))
+		{
+			$validator->messages()->add('name', '用户名只能使用中文');
+		}
+		elseif($data['code'] == Session::get('code') )
 		{
 			if($validator->passes())
 			{
@@ -140,7 +144,7 @@ class LoginController extends BaseController
 		}
 		else
 		{
-			$data['codeErr'] = "验证码错误";
+			$validator->messages()->add('code', '验证码错误');
 		}
 
 		return Redirect::to('register')->withErrors($validator)->withInput(Input::except('teacher_img'));

@@ -294,7 +294,7 @@ class ExamPaperController extends \BaseController {
         // $column = Column::find($info->column_id);
         // $paths = array_reverse($column->getPath($column->id));
         $list = $ep->getQuestions($id);
-
+        
         return $this->adminView('examPaper.question', compact('column', 'paths', 'parent', 'info', 'list') );
     }
 

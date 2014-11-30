@@ -258,7 +258,7 @@
         </div>
         @elseif( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
         <div id="topic-tools">
-            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting();"></a>
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting(true);"></a>
 
             {{-- 试卷没有上一题，下一题和答题卡 --}}
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
@@ -677,7 +677,7 @@
         }
 
         // js 判断答题对错
-        function correcting()
+        function correcting(is_show)
         {
             try {
                 if(ip) ip.pause();
@@ -710,7 +710,7 @@
                         err.push( $(this).val() );
                         
                         {{-- 如果不是模拟真实环境则显示对错 --}}
-                        if(is_real == false)
+                        if(is_show == true && is_real == false)
                             $(this).parent('label').addClass('correcting-false');
                     }
                 }
@@ -719,14 +719,14 @@
                     err.push( $(this).val() );
                     
                     {{-- 如果不是模拟真实环境则显示对错 --}}
-                    if(!is_real)
+                    if(is_show == true && !is_real)
                         $(this).parent('label').addClass('correcting-false');
                 }
 
                 if(is_right == 1)
                 {
                     {{-- 如果不是模拟真实环境则显示对错 --}}
-                    if(!is_real)
+                    if(is_show == true && !is_real)
                     {
                         $(this).parent('label').removeClass('correcting-false');
                         $(this).parent('label').addClass('correcting-true');
@@ -775,7 +775,7 @@
 
         function topicSubmit(act)
         {
-            correcting();
+            correcting(false);
             $('#act').val(act);
             recorderStop();
 

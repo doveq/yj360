@@ -275,6 +275,11 @@ class TopicController extends BaseController {
 		if( !empty($info['q']['hint_url']) || !empty($info['a'][1]['sound_url']) )
 		{
 			$loop = empty( $info['loops'] ) ? 1 : $info['loops'];
+			
+			// 不是真实测试统一只放一遍
+			if( !$isReal && $loop > 1 )
+				$loop = 1;
+
 			for($i = 0; $i < $loop; $i++)
 			{
 				// 不是模拟模式，设置了循环次数，则添加第几遍提示音

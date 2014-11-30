@@ -64,6 +64,21 @@ class Sort extends Eloquent {
         return $data;
     }
 
+    /* 获取所有子分类 */
+    public function getChilPath($sortId, &$data = array())
+    {
+        $infos = $this->where('parent_id', '=', $sortId)->get();
+        print_r($infos);
+
+        foreach ($infos as $info) 
+        {
+            $data[] = $info->toArray();
+            $this->getPath($info->id, $data);
+        }
+
+        return $data;
+    }
+
     static public function parent($id)
     {
         $sort = parent::find($id);

@@ -62,7 +62,7 @@
             <td class="lable">更换头像</td>
             <td>
                 <div class="fileup">
-                  <input type='text' name='textfield' id='textfield' class='tyinput' style="width:180px;" />
+                  <input type='text' name='textfield' id='textfield' class='tyinput' style="width:182px;" />
                   <input type='button' class='selbtn' value='' />
                   <input type="file" name="avatar" class="file" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" />
                 </div>
@@ -72,7 +72,7 @@
         <tr>
             <td class="lable">简介</td>
             <td>
-                <textarea class="tyinput" name="intro">{{$intro or ''}}</textarea>
+                <textarea class="tyinput" name="intro" style="width:182px;">{{$intro or ''}}</textarea>
             </td>
         </tr>
 
