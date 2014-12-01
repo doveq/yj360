@@ -420,7 +420,8 @@
             if( $.cookie('ato') ==1)
                 $("input[name=ato]").prop("checked", true);
 
-            @if( !empty($isReal) && !empty($total_time) )
+            {{-- 如果有播放遍数则不按答题总时间 --}}
+            @if( !empty($isReal) && !empty($total_time) && ( empty($loops) || $loops <= 1) )
             totalTime({{$total_time}});
             @endif
 
