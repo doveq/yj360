@@ -254,6 +254,8 @@
             <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
             @endif
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}},{{$column or '0'}});"></a>
+            <a class="topic-btn" id="topic-btn-13" hint="取消收藏"  href="javascript:;" onclick="delFavorite({{$q['id']}},{{$column or '0'}});" style="display:none;"></a>
+
             <div class="clear"></div>
         </div>
         @elseif( !empty($isReal) )
