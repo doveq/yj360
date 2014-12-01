@@ -280,6 +280,8 @@ class TopicController extends BaseController {
 			if( !$isReal && $loop > 1 )
 				$loop = 1;
 
+			$info['is_loop'] = $loop;
+
 			for($i = 0; $i < $loop; $i++)
 			{
 				// 不是模拟模式，设置了循环次数，则添加第几遍提示音
