@@ -234,6 +234,7 @@
 
         @if(!empty($from) && $from == 'favorite')
         <div id="topic-tools">
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="topicSubmit('next');"></a>
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
             <div class="clear"></div>
@@ -241,6 +242,7 @@
         @elseif(!empty($from) && $from == 'fail')
         {{--错题记录显示--}}
         <div id="topic-tools">
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="topicSubmit('next');"></a>
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}},{{$column or '0'}});"></a>
@@ -258,7 +260,10 @@
         </div>
         @elseif( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
         <div id="topic-tools">
+            
+            @if( $q['type'] != 6 && $q['type'] != 7 )
             <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting(true);"></a>
+            @endif
 
             {{-- 试卷没有上一题，下一题和答题卡 --}}
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
