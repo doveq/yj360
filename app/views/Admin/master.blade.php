@@ -81,6 +81,8 @@
                   <li class="divider"></li>
                   <li><a href="/admin/uploadbank">上传题库</a></li>
                   <li><a href="/admin/training">教师训练集</a></li>
+                  <li class="divider"></li>
+                  <li><a href="/admin/teacher">教师信息管理</a></li>
                 </ul>
               </li>
               
