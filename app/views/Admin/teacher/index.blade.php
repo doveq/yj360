@@ -30,6 +30,10 @@
         {{ Form::label('inputType', '类型', array('class' => 'sr-only')) }}
         {{ Form::select('type', $typeEnum, $query['type'], array('class' => 'form-control', 'id' => 'inputType')) }}
       </div>
+      <div class="form-group">
+        {{ Form::label('inputType', '状态', array('class' => 'sr-only')) }}
+        {{ Form::select('status', $statusEnum, $query['status'], array('class' => 'form-control', 'id' => 'inputType')) }}
+      </div>
       {{ Form::button('查找', array('class' => 'btn btn-info', 'type' =>'submit')) }}
     {{ Form::close() }}
   </div>
@@ -44,7 +48,8 @@
             <th>学校及专业</th>
             <th>地址</th>
             <th>当前学校</th>
-            <th width="50">类型</th>
+            <th width="80">类型</th>
+            <th width="50">状态</th>
             <th width="120">操作</th>
           </tr>
         </thead>
@@ -59,6 +64,7 @@
             <td>{{$list->address}}</td>
             <td>{{$list->school}}</td>
             <td>{{$typeEnum[$list->type]}}</td>
+            <td>{{$statusEnum[$list->status]}}</td>
             <td>
               <div class="btn-group btn-xs">
                   <a class="btn btn-default btn-xs" href="{{url('/admin/teacher/edit?id='. $list->id) }}"><i class="icon-edit"></i> 编辑</a>

@@ -45,25 +45,40 @@ class Topic  {
 		// 如果设置了分类则需要查询分类对应表
 		if( !empty($data['sort']) )
 		{
+			// 搜索该分类下的所有子分类
+			$sc = new Sort();
+			$spath = $sc->getChilPath($data['sort']);
+			$qsort = $data['sort'];
+			if(!empty($spath))
+			{
+				$sids = array();
+				foreach ($spath as $v) 
+				{
+					$sids[] = $v['id'];
+				}
+
+				$qsort = implode(',', $sids);
+			}
+
 			// 如果是添加科目显示，则去掉已经选择过的题目
 			if(!empty($data['column']))
 			{
-				$where = " where a.id not in( select question_id from column_question_relation where column_id = '{$data['column']}' ) and b.sort_id = '{$data['sort']}' and b.question_id = a.id ";
+				$where = " where a.id not in( select question_id from column_question_relation where column_id = '{$data['column']}' ) and b.sort_id in({$qsort}) and b.question_id = a.id ";
 			}
 			// 如果是添加试卷显示，则去掉已经选择过的题目
 			elseif(!empty($data['exam']))
 			{
-				$where = " where a.id not in( select question_id from exam_question_relation where exam_id = '{$data['exam']}' ) and b.sort_id = '{$data['sort']}' and b.question_id = a.id ";
+				$where = " where a.id not in( select question_id from exam_question_relation where exam_id = '{$data['exam']}' ) and b.sort_id in({$qsort}) and b.question_id = a.id ";
 			}
 			else
-				$where = " where b.sort_id = '{$data['sort']}' and b.question_id = a.id ";
+				$where = " where b.sort_id in({$qsort}) and b.question_id = a.id ";
 
 			if($whereArr)
 				$where = $where . ' and ' . implode(' and ', $whereArr);
 
 			$sql = "select a.* from questions as a, sort_question_relation as b {$where} order by id desc {$limit} ";
 			$results = DB::select($sql, $valueArr);
-
+			
 			// 获取总数分页使用
 			$sql = "select count(*) as num from questions as a, sort_question_relation as b {$where}";
 			$re2 = DB::select($sql, $valueArr);

@@ -25,6 +25,13 @@
       </div>
 
       <div class="form-group">
+        {{ Form::label('user_status', '状态', array('class' => 'col-md-2 control-label')) }}
+        <div class="col-md-6">
+          {{ Form::select('status', $statusEnum, $info['status'], array('class' => 'form-control', 'id' => 'user_status')) }}
+        </div>
+      </div>
+      
+      <div class="form-group">
         {{ Form::label('user_name', '姓名', array('class' => 'col-md-2 control-label')) }}
         <div class="col-md-6">
           {{ Form::text('name', $info['name'], array('class' => 'form-control', 'id' => 'user_name')) }}

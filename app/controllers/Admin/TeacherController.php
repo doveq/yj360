@@ -11,29 +11,33 @@ use Teacher;
 class TeacherController extends \BaseController {
 
     public $pageSize = 30;
-    public $typeEnum = array('1' => '小学', '2' => '中学', '3' => '音基');
+    public $typeEnum = array('1' => '小学', '2' => '中学', '3' => '音基', '4' => '小学教研', '5' => '中学教研', '6' => '少年宫');
+    public $statusEnum = array('-1' => '无效', '1' => '有效');
 
     public function index()
     {
-        $query = Input::only('name', 'tel', 'type', 'page');
+        $query = Input::only('name', 'tel', 'type', 'page', 'status');
 
         $teacher = new Teacher();
         $lists = $teacher->getList($query)->paginate($this->pageSize);
 
         $typeEnum = array('0' => '全部') + $this->typeEnum;
-        return $this->adminView('teacher.index', compact('lists', 'query', 'typeEnum'));
+        $statusEnum = array('0' => '全部') + $this->statusEnum;
+
+        return $this->adminView('teacher.index', compact('lists', 'query', 'typeEnum', 'statusEnum'));
     }
 
 
     public function add()
     {
         $typeEnum = $this->typeEnum;
-        return $this->adminView('teacher.add', compact('typeEnum'));
+        $statusEnum = $this->statusEnum;
+        return $this->adminView('teacher.add', compact('typeEnum', 'statusEnum'));
     }
 
     public function doAdd()
     {
-        $info = Input::only('type', 'name', 'tel', 'qq', 'professional', 'address', 'school');
+        $info = Input::only('type', 'name', 'tel', 'qq', 'professional', 'address', 'school', 'status');
 
         $validator = Validator::make($info, array(
             'tel' => 'required|digits:11|unique:teacher_info')
@@ -59,12 +63,13 @@ class TeacherController extends \BaseController {
         $teacher = new Teacher();
         $info = $teacher->getInfo($id)->first()->toArray();
         $typeEnum = $this->typeEnum;
-        return $this->adminView('teacher.edit', compact('typeEnum', 'info'));
+        $statusEnum = $this->statusEnum;
+        return $this->adminView('teacher.edit', compact('typeEnum', 'statusEnum', 'info'));
     }
 
     public function doEdit()
     {
-        $info = Input::only('id', 'type', 'name', 'tel', 'qq', 'professional', 'address', 'school');
+        $info = Input::only('id', 'type', 'name', 'tel', 'qq', 'professional', 'address', 'school', 'status');
 
         $teacher = new Teacher();
         $id = $info['id'];

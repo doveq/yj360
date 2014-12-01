@@ -68,12 +68,11 @@ class Sort extends Eloquent {
     public function getChilPath($sortId, &$data = array())
     {
         $infos = $this->where('parent_id', '=', $sortId)->get();
-        print_r($infos);
 
         foreach ($infos as $info) 
         {
             $data[] = $info->toArray();
-            $this->getPath($info->id, $data);
+            $this->getChilPath($info->id, $data);
         }
 
         return $data;
