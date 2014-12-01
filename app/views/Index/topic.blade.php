@@ -426,7 +426,7 @@
                 $("input[name=ato]").prop("checked", true);
 
             {{-- 如果有播放遍数则不按答题总时间 --}}
-            @if( !empty($isReal) && !empty($total_time) && ( empty($is_loop) || $loops <= 1) )
+            @if( !empty($isReal) && !empty($total_time) && ( empty($is_loop) || $is_loop <= 1) )
             totalTime({{$total_time}});
             @endif
 
