@@ -60,6 +60,7 @@ class CoursewareController extends BaseController
                     $dir_info[$query['d1']]['files'][$key] = $value;
                 }
                 $lists = $dir_info[$query['d1']];
+                $column_name = $column_name . ' \\ ' . $dir_info[$query['d1']]['name'];
             }
         }
         // 获取父类名页面显示
