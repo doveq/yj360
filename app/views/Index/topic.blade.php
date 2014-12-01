@@ -234,17 +234,25 @@
 
         @if(!empty($from) && $from == 'favorite')
         <div id="topic-tools">
-            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="topicSubmit('next');"></a>
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting(true);"></a>
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
+            {{-- 如果有提示音或题目音 --}}
+            @if( !empty($q['hint_url']) || !empty($a[0]['sound_url']))
+            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
+            @endif
             <div class="clear"></div>
         </div>
         @elseif(!empty($from) && $from == 'fail')
         {{--错题记录显示--}}
         <div id="topic-tools">
-            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="topicSubmit('next');"></a>
+            <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting(true);"></a>
             <a class="topic-btn" id="topic-btn-2" hint="上一题" href="javascript:;" onclick="topicSubmit('prev');"></a>
             <a class="topic-btn" id="topic-btn-3" hint="下一题" href="javascript:;" onclick="topicSubmit('next');"></a>
+            {{-- 如果有提示音或题目音 --}}
+            @if( !empty($q['hint_url']) || !empty($a[0]['sound_url']))
+            <a class="topic-btn" id="topic-btn-7" hint="再听一遍"  href="javascript:;" onclick="initPlay();"></a>
+            @endif
             <a class="topic-btn" id="topic-btn-4" hint="收藏"  href="javascript:;" onclick="addFavorite({{$q['id']}},{{$column or '0'}});"></a>
             <div class="clear"></div>
         </div>
@@ -260,7 +268,7 @@
         </div>
         @elseif( $q['type'] != 8 && $q['type'] != 9 && $q['type'] != 10 )
         <div id="topic-tools">
-            
+
             @if( $q['type'] != 6 && $q['type'] != 7 )
             <a class="topic-btn" id="topic-btn-1" hint="提交" href="javascript:;" onclick="correcting(true);"></a>
             @endif
