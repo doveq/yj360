@@ -69,4 +69,10 @@ class Classes extends Eloquent {
     {
         return $this->hasMany('Training');
     }
+
+    /* 获取老师班级信息 */
+    public function getInfo($uid)
+    {
+        return $this->where('teacherid', $uid)->get();
+    }
 }

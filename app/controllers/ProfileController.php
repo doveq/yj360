@@ -95,4 +95,27 @@ class ProfileController extends BaseController {
 
 		return $this->indexPrompt("", '密码修改失败，请返回重试', $url = "/profile/passwd", false);		
 	}
+
+	/* 显示升级教师页面 */
+	public function up()
+	{
+		return $this->indexView('profile.up');
+	}
+
+	public function doUp()
+	{
+		$inputs = Input::all();
+
+
+		if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK )
+		{
+			$att = new Attachments();
+			$re = $att->addTeacherImg(Session::get('uid'), $_FILES['avatar']['tmp_name']);
+			if($re)
+				$update['is_avatar'] = 1;
+		}
+
+
+	}
+
 }

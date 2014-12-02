@@ -212,6 +212,8 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::post('/doProfile', 'ProfileController@doProfile');
     Route::get('/profile/passwd', 'ProfileController@showPasswd');
     Route::post('/profile/doPasswd', 'ProfileController@doPasswd');
+    Route::get('/profile/up', 'ProfileController@up');
+    Route::post('/profile/doUp', 'ProfileController@doUp');
 
     // 错题记录
     Route::get('/failTopic', 'FailTopicController@index');
@@ -220,6 +222,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     // 问题反馈
     Route::get('/feedback', 'FeedbackController@index');
     Route::post('/feedback/dopost', 'FeedbackController@doPost');
+
 });
 
 // 数据导入

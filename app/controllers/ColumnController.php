@@ -88,6 +88,34 @@ class ColumnController extends BaseController
     /* 科目临时显示 */
     public function tmpShow()
     {
-        return $this->indexView('profile.column');
+        // 公告默认不显示
+        $isBulletin = 0;
+        $minMate = 15;  // 最少学生数
+        $day = 30;  // 30天内提示
+        $bDay = 1;  // 显示的倒计时时间
+
+        // 判断老师班级和学生，显示提示
+        if( Session::get('utype') == 1 )
+        {
+            $uid = Session::get('uid');
+
+            $us = new User();
+            $tr = new Teacher();
+
+            $uinfo = $us->getInfoById($uid); // 用户信息
+            // 判断时间
+            $regtime = strtotime($uinfo['created_at']);  // 注册时间
+            // 计算注册到今天的天数
+            $d = intval( ( time() - $regtime ) /3600/24);
+            $bDay = $day - $d;
+
+            $bDay = $bDay > 1 ? $bDay : 1;
+            
+            $checkInfo = $tr->checkTeacher($uid);
+            $isBulletin = $checkInfo['isCheck'] ? 0 : 1;
+            $minMate = $checkInfo['minMate'];
+        }
+
+        return $this->indexView('profile.column', compact('isBulletin', 'minMate', 'bDay') );
     }
 }

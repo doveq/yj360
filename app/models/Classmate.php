@@ -59,6 +59,10 @@ class Classmate extends Eloquent {
         return $this->hasOne('ClassmateLog', 'classmate_id', 'id');
     }
 
-
+    /* 获取班级学生列表 */
+    public function getList($id)
+    {
+        return $this->where('class_id', $id)->get();
+    }
 
 }
