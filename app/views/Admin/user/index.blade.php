@@ -56,7 +56,7 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->name}}</td>
-            <td>{{$list->tel}}</td>
+            <td>{{substr($list->tel,0,4). '****' .substr($list->tel,8,3)}}</td>
             <td>
 
                 {{$typeEnum[$list->type]}}
