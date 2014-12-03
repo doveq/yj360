@@ -91,7 +91,7 @@ class ColumnController extends BaseController
         // 公告默认不显示
         $isBulletin = 0;
         $minMate = 15;  // 最少学生数
-        $day = 30;  // 30天内提示
+        $day = 31;  // 30天内提示
         $bDay = 1;  // 显示的倒计时时间
 
         // 判断老师班级和学生，显示提示

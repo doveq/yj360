@@ -23,6 +23,7 @@ class ClassesController extends \BaseController {
      */
     public function index()
     {
+        Input::merge(array_map('trim', Input::only('id', 'name', 'teacher_name', 'status', 'column_id', 'page')) );
         $query = Input::only('id', 'name', 'teacher_name', 'status', 'column_id', 'page');
 
         $validator = Validator::make($query,
@@ -53,8 +54,9 @@ class ClassesController extends \BaseController {
             }
             if (Input::get('teacher_name')) {
                 $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->select('id')->get()->toArray();
-                $query->whereIn('teacherid', array_flatten($teachers));
-
+                
+                if(!empty($teachers))
+                    $query->whereIn('teacherid', array_flatten($teachers));
             }
         })->orderBy('id', 'DESC')->paginate($this->pageSize);
 

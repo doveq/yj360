@@ -20,6 +20,8 @@ class UserController extends \BaseController {
      */
     public function index()
     {
+        Input::merge( array_map('trim', Input::only('name', 'tel', 'type', 'status', 'page')) );
+
         $query = Input::only('name', 'tel', 'type', 'status', 'page');
 
         // 当前页数
