@@ -18,6 +18,7 @@ class ExamPaperController extends \BaseController {
 
 	public function index()
 	{
+        Input::merge(array_map('trim', Input::all() ));
 		$query = Input::only('sort1','sort2','sort3','sort4','sort5','name','status');
 
         /*

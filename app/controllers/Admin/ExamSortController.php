@@ -25,6 +25,7 @@ class ExamSortController extends \BaseController {
 	 */
 	public function index()
 	{
+        Input::merge(array_map('trim', Input::all() ));
         $query = Input::only('name', 'parent_id', 'page');
 
         // 当前页数

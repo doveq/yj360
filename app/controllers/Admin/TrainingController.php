@@ -22,6 +22,7 @@ class TrainingController extends \BaseController {
      */
     public function index()
     {
+        Input::merge(array_map('trim', Input::all() ));
         $query = Input::only('name', 'teacher_name', 'status', 'page');
 
         // 当前页数

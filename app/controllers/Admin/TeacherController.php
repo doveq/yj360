@@ -16,6 +16,7 @@ class TeacherController extends \BaseController {
 
     public function index()
     {
+        Input::merge(array_map('trim', Input::all() ));
         $query = Input::only('name', 'tel', 'type', 'page', 'status');
 
         $teacher = new Teacher();
