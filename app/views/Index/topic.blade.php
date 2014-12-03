@@ -506,7 +506,7 @@
         var ip;
         function initPlay()
         {
-            console.log('initPlay');
+            //console.log('initPlay');
 
             {{-- 设置播放地址为播放列表第一个 --}}
             first = $('#play-list li:first').text();
@@ -521,12 +521,12 @@
                         });
 
                         mediaElement.addEventListener('play', function (e) {
-                            console.log(mediaElement.src.replace('http://' + location.host, ''));
+                            //console.log(mediaElement.src.replace('http://' + location.host, ''));
                             setPlaybtn(mediaElement.src.replace('http://' + location.host, ''));
                         });
                     },
                     error: function (e) {
-                        console.log('MediaElementPlayer error: ' + e);
+                        //console.log('MediaElementPlayer error: ' + e);
                     },
                     keyActions: []
                 });
@@ -548,7 +548,7 @@
                 {
                     next.addClass('current').siblings().removeClass('current');
                     setTimeout(function(){ mejsPlayNext(currentPlayer); }, next.attr('time-spacing') *1000);
-                    console.log('spacing');
+                    //console.log('spacing');
                     return;
                 }
                 else if(next.attr('loop-num'))
@@ -565,7 +565,7 @@
                     next.addClass('current').siblings().removeClass('current');
 
                 }
-                console.log('if '+audio_src);
+                //console.log('if '+audio_src);
             }
             else
             {
@@ -574,7 +574,7 @@
                 var audio_src = $(current_item).next().text();
                 $(current_item).next().addClass('current').siblings().removeClass('current');
 
-                console.log('elseif '+audio_src);
+                //console.log('elseif '+audio_src);
             }
 
             // 如果当前是最后一个
@@ -598,7 +598,7 @@
                 }
                 catch(e)
                 {
-                    console.log(e);
+                    //console.log(e);
                 }
                 @endif
             }
@@ -639,7 +639,7 @@
                 }
                 catch (e)
                 {
-                    console.log("loop play fail");
+                    //console.log("loop play fail");
                 }
             }
         }
@@ -698,18 +698,18 @@
             try {
                 if(ip) ip.pause();
             } catch(error) {
-                console.log(error);
+                //console.log(error);
             }
             try {
                 if(hp) hp.pause();
             } catch(error) {
-                console.log(error);
+                //console.log(error);
             }
             
             try {
                 if(sp) sp.pause();
             } catch(error) {
-                console.log(error);
+                //console.log(error);
             }
 
             var err = new Array();
@@ -755,13 +755,13 @@
             $('#result').val(result);
 
             $('input[name=daan]').each(function(){
-                console.log("disabled");
+                //console.log("disabled");
                 $(this).attr("disabled", "disabled");
             });
 
             if(err.length > 0)
             {
-                console.log(err);
+                //console.log(err);
                 $('#isTrue').val('-1');
 
                 if( $("input[name=ashow]").is(':checked') )
@@ -771,7 +771,7 @@
             }
             else
             {
-                console.log('all right!');
+                //console.log('all right!');
                 $('#isTrue').val('1');
 
                 if( $("input[name=ato]").is(':checked') )
@@ -836,9 +836,9 @@
             }
             catch(e)
             {
-                console.log(e);
+                //console.log(e);
             }
-            console.log(" recorderStop ... ");
+            //console.log(" recorderStop ... ");
         }
 
         function recorderPlay()
