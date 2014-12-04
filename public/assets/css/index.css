@@ -1084,11 +1084,13 @@ a.tyadel {
 }
 #index-login #login-input-name {
 	background: url("/assets/img/index-a5.png") no-repeat 0 0;
-	padding-left:45px;
+	padding: 8px 10px 8px 45px;
+	width: 285px;
 }
 #index-login #login-input-passwd{
 	background: url("/assets/img/index-a6.png") no-repeat 0 0;
-	padding-left:45px;
+	padding: 8px 10px 8px 45px;
+	width: 285px;
 }
 .topic-head{
 	background-color: #f1f1f1;

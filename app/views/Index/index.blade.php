@@ -1,6 +1,39 @@
 @extends('Index.master')
 @section('title')首页 @stop
 
+@section('headjs')
+<script src="/assets/layer/layer.min.js"></script>
+@stop
+
+<style>
+  .gonggao{
+    width:335px;
+    height:220px;
+    position:relative;
+  }
+  .gonclose {
+    position:absolute ;
+    top:10px;
+    right:10px;
+    width: 13px;
+    height: 13px;
+  }
+  .gonbtn1{
+    position:absolute;
+    left:50px;
+    bottom:30px;
+    width: 110px;
+    height: 30px;
+  }
+  .gonbtn2{
+    position:absolute;
+    left:180px;
+    bottom:30px;
+    width: 110px;
+    height: 30px;
+  }
+</style>
+
 @section('content')
     <div class="container wrap">
     	<a class="index-block" href="/"><img src="/assets/img/index-2-1.png" /></a>
@@ -117,4 +150,46 @@
         -->
       	<div class="clear"></div>
     </div> <!-- /container -->
+
+
+    <div id="vetting-mode" style="display:none;">
+        <div class="gonggao">
+            <div class="gonclose"><a href="javascript:bclose();"><img src="/assets/img/bupclose.png" /></a></div>
+            <div>
+                <img src="/assets/img/bupbg.png" />
+            </div>
+            <a class="gonbtn1" href="http://www.firefox.com.cn/" target="_blank" ><img src="/assets/img/bupbt1.png" /></a>
+            <a class="gonbtn2" href="javascript:bclose();"><img src="/assets/img/bupbt2.png" /></a>
+        </div>
+    </div>
+
+    <!--[if lt IE 9]>
+    <script type="text/javascript">
+      var ibox;
+      function vetting()
+      {
+          ibox = $.layer({
+              type : 1,
+              title : false,
+              shadeClose: true,
+              offset:['100px' , ''],
+              shade: [0],
+              border: [0],
+              closeBtn: [0, false],
+              area : ['auto','auto'],
+              page : {
+                  html: $("#vetting-mode").html()
+              }
+          });
+      }
+
+      function bclose()
+      {
+         layer.close(ibox);
+      }
+
+      vetting();
+    </script>
+    <![endif]-->
+
 @stop
