@@ -159,6 +159,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		DB::table($this->table)->where('id', $id)->update($data);
 	}
 
+	public function setInfoFromTel($tel, $data)
+	{
+		DB::table($this->table)->where('tel', $tel)->update($data);
+	}
+
 	public function del($id)
 	{
 		DB::table($this->table)->where('id', $id)->delete();

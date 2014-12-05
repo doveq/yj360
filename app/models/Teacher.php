@@ -35,6 +35,7 @@ class Teacher extends Eloquent {
     public function addInfo($info)
     {
         $this->insert($info);
+        $this->sycnUserInfo($info['tel'], $info['status']);
     }
 
     public function getInfo($id)
@@ -49,12 +50,15 @@ class Teacher extends Eloquent {
 
     public function editInfo($id, $info)
     {
-        return $this->where('id', $id)->update($info);
+        $this->where('id', $id)->update($info);
+        $this->sycnUserInfo($info['tel'], $info['status']);
     }
 
     public function delInfo($id)
     {
-        return $this->where('id', $id)->delete();
+        $info = $this->getInfo($id)->toArray();
+        $this->where('id', $id)->delete();
+        $this->sycnUserInfo($info[0]['tel'], 0);
     }
 
 
@@ -96,6 +100,23 @@ class Teacher extends Eloquent {
         }
 
         return $info;
+    }
+
+
+    /** 根据老师表数据，更新用户表用户类型。
+        如果教师表有该手机号，则用户表设置改账户为老师
+    */
+    public function sycnUserInfo($tel, $status)
+    {
+        if( !empty($tel) )
+        {
+            $user = new User();
+            // 老师
+            if($status == 1)
+                $user->setInfoFromTel($tel, array('type' => 1) );
+            else
+                $user->setInfoFromTel($tel, array('type' => 0) ); // 修改为学生
+        }
     }
 
 }

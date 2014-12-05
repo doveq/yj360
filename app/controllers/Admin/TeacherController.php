@@ -89,4 +89,19 @@ class TeacherController extends \BaseController {
         
         return $this->adminPrompt("操作成功", '信息删除成功！', $url = "teacher");
     }
+
+
+    /* 根据老师表的信息修改用户表用户类型 */
+    public function sync()
+    {
+        $teacher = new Teacher();
+        $list = $teacher->getList()->get();
+        foreach ($list as $val) 
+        {
+            $teacher->sycnUserInfo($val->tel, $val->status);
+            echo $val->tel . '#' . $val->status . '<br>';
+        }
+
+        echo '完成~';
+    }
 }

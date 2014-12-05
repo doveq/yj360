@@ -85,6 +85,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::get('/teacher/edit', '\Admin\TeacherController@edit');
     Route::post('/teacher/doEdit', '\Admin\TeacherController@doEdit');
     Route::post('/teacher/doDel', '\Admin\TeacherController@doDel');
+    Route::get('/teacher/sync', '\Admin\TeacherController@sync');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){

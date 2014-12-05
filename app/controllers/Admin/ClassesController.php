@@ -57,6 +57,8 @@ class ClassesController extends \BaseController {
                 
                 if(!empty($teachers))
                     $query->whereIn('teacherid', array_flatten($teachers));
+                else
+                    $query->where('teacherid', '');
             }
         })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
