@@ -9,7 +9,6 @@
   .gonggao{
     width:602px;
     height:405px;
-    overflow-y:auto;
     position:relative;
   }
   #ggaoday{
