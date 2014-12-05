@@ -299,13 +299,16 @@
 
             
             @if( $q['type'] == 1 || $q['type'] == 2 || $q['type'] == 3 )
+            <!--
             <a class="topic-btn" id="topic-btn-5" hint="详解" href="javascript:;" onclick="disabuse();"></a>
+            -->
             <div class="topic-btn" id="topic-btn-checkbox">
                 <input type="checkbox" name="ashow" id="checkbox-1" onchange="topauto();" /> <label for="checkbox-1">答错后自动查看详解</label>
                 <br>
                 <input type="checkbox" name="ato" id="checkbox-2" onchange="topauto();" /> <label for="checkbox-2">答对后自动跳转到下一题</label>
             </div>
             @endif
+           
 
             @if( $q['type'] == 6 || $q['type'] == 7 )
             <a class="topic-btn" id="topic-btn-10" hint="开始录音"  href="javascript:;" onclick="recorderStart();"></a>
