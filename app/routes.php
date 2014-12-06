@@ -19,6 +19,11 @@ Route::filter('adminLogin', function()
     {
         return Redirect::to('/admin/login');
     }
+    elseif(!Session::get('telLogin'))
+    {
+        // 如果不是手机验证也退出
+        return Redirect::to('/admin/login');
+    }
 });
 
 
