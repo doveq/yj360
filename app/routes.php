@@ -32,13 +32,6 @@ Route::filter('indexLogin', function()
 });
 
 
-// 开发使用，创建修改数据库
-Route::get('/admin/sql', function(){
-	$sql = new Sql();
-	$sql->up();
-	echo "sql ok !";
-});
-
 // 后台未登录可以访问页面
 Route::get('/admin/login', 'LoginController@admin');
 Route::post('/admin/doLogin', 'LoginController@doAdminLogin');
@@ -228,3 +221,4 @@ Route::group(array('before' => 'indexLogin'), function(){
 
 // 数据导入
 Route::get('/api/import', '\Api\ImportController@index');
+Route::get('/api/teacherCheck', '\Api\TeacherCheckController@index');
