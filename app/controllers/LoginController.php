@@ -2,6 +2,9 @@
 
 class LoginController extends BaseController
 {
+	/* 允许登录后台的手机号 */
+	public $allowTel = array('' => '13521819218', 
+		'付' => '13146197888', '周景伟' => '18610209630', '张亲' => '18612218171', '冯成强' => '13716966342');
 
 	public function __construct()
     {
@@ -13,6 +16,12 @@ class LoginController extends BaseController
 	{
 		$data['message'] = Session::get('message');
 		return $this->adminView('login', $data);
+	}
+
+	public function adminFromTel()
+	{
+		$data['message'] = Session::get('message');
+		return $this->adminView('login_tel', $data);
 	}
 
 	/* 前台登录 */
@@ -76,6 +85,39 @@ class LoginController extends BaseController
 			$loginlog->save();
 
     		return Redirect::to('admin');
+		}
+		else
+			return Redirect::to('admin/login')->with('message', '登录失败');
+	}
+
+
+	/* 使用手机号和验证码登录 */
+	public function doAdminLoginFromTel()
+	{
+		// pull 取出数据并删除
+		if( in_array(Input::get('tel'), $this->allowTel)
+			&& Input::get('tel') == Session::pull('mobile') 
+			&& Input::get('password') == Session::pull('code') )
+		{
+			$user = User::find(1);
+			Auth::login($user);
+
+			Session::put('uid', $user->id);
+			Session::put('uname', $user->name);
+			Session::put('utype', $user->type);
+			Session::put('utel', $user->tel);
+			Session::put('telLogin', 1);
+
+			//记录登陆日志
+			$loginlog = new Loginlog();
+			$loginlog->user_id = $user->id;
+			$loginlog->ip = Request::getClientIp();
+			$loginlog->created_at = date("Y-m-d H:i:s");
+			$loginlog->user_agent = Request::header('user-agent');
+			$loginlog->save();
+
+
+			return Redirect::to('admin');
 		}
 		else
 			return Redirect::to('admin/login')->with('message', '登录失败');
@@ -188,6 +230,17 @@ class LoginController extends BaseController
 		{
 			$re = $this->mkcode();
 			return Response::json(array('act' => $inputs['act'], 'state' => $re));
+		}
+		// 后台手机登录
+		elseif($inputs['act'] == 'admincode')
+		{
+			if(in_array($inputs['mobile'], $this->allowTel))
+			{
+				$re = $this->mkcode();
+				return Response::json(array('act' => $inputs['act'], 'state' => $re));
+			}
+			else
+				return Response::json(array('act' => $inputs['act'], 'state' => '-70'));
 		}
 		// 重设密码
 		elseif($inputs['act'] == 'forgot')

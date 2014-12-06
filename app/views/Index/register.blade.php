@@ -140,7 +140,7 @@ function mobileCode()
              }
              else
              {
-                $('#mcbtn').removeattr("disabled");
+                $('#mcbtn').removeAttr("disabled");
                 $("#mcbtn").removeClass('mcbtn-2').addClass('mcbtn-1');
 
                 $('#codeerr').text("发送验证短信失败，请重试");
