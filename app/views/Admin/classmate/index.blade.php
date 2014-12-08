@@ -31,7 +31,7 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->name}}</td>
-            <td>{{$genderEnum[$list->gender]}}</td>
+            <td>@if(!empty($list->gender)){{$genderEnum[$list->gender]}}@endif</td>
             <td>{{$list->tel}}</td>
             <td>
               @if ($list->pivot->status == 1)
