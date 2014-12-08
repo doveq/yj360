@@ -7,8 +7,8 @@
 
 <style>
   .gonggao{
-    width:602px;
-    height:405px;
+    width:516px;
+    height:408px;
     position:relative;
   }
   #ggaoday{
@@ -16,9 +16,9 @@
     color: red;
     color: red;
     font-size: 30px;
-    left: 178px;
+    left: 105px;
     position: absolute;
-    top: 22px;
+    top: 42px;
     width: 40px;
     text-align: center;
   }
@@ -64,7 +64,7 @@
           type : 1,
           title : false,
           shadeClose: true,
-          offset:['100px' , ''],
+          offset:['70px' , ''],
           shade: [0],
           border: [0],
           area : ['auto','auto'],
