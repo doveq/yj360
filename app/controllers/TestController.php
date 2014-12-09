@@ -9,7 +9,7 @@ class TestController extends BaseController {
 
 	public function test()
 	{
-		return $this->indexPrompt("操作失败", '题干必须填写', $url = "/", false);
+		phpinfo();
 	}
 
 

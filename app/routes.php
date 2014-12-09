@@ -88,6 +88,13 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/teacher/doEdit', '\Admin\TeacherController@doEdit');
     Route::post('/teacher/doDel', '\Admin\TeacherController@doDel');
     Route::get('/teacher/sync', '\Admin\TeacherController@sync');
+
+    Route::get('/notice', '\Admin\NoticeController@index');
+    Route::get('/notice/add', '\Admin\NoticeController@add');
+    Route::post('/notice/doAdd', '\Admin\NoticeController@doAdd');
+    Route::get('/notice/edit', '\Admin\NoticeController@edit');
+    Route::post('/notice/doEdit', '\Admin\NoticeController@doEdit');
+    Route::post('/notice/doDel', '\Admin\NoticeController@doDel');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
