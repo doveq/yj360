@@ -92,6 +92,7 @@
                 <ul class="dropdown-menu" role="menu">
                   <li><a href="/admin/feedback">反馈信息</a></li>
                   <li><a href="/admin/log">访问日志</a></li>
+                  <li><a href="/admin/notice">帮助公告</a></li>
                 </ul>
               </li>
             </ul>

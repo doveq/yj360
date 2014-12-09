@@ -152,7 +152,9 @@ Route::get('/prompt/test', 'TestController@test');
 Route::get('/forgot', 'LoginController@forgot');
 Route::post('/doForgot', 'LoginController@doForgot');
 Route::get('/invite_by', 'LoginController@inviteby');
-Route::post('/do_invite_by', 'LoginController@doinviteby');
+Route::get('/notice/list', 'NoticeController@showList');
+Route::get('/notice/show', 'NoticeController@show');
+
 
 Route::group(array('before' => 'indexLogin'), function(){
     //
@@ -238,3 +240,7 @@ Route::group(array('before' => 'indexLogin'), function(){
 // 数据导入
 Route::get('/api/import', '\Api\ImportController@index');
 Route::get('/api/teacherCheck', '\Api\TeacherCheckController@index');
+
+Route::get('/api/courseware/column', '\Api\CoursewareController@getColumn');
+Route::get('/api/courseware/list', '\Api\CoursewareController@getList');
+Route::get('/api/courseware/getzip', '\Api\CoursewareController@getZip');

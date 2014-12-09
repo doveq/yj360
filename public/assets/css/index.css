@@ -1362,3 +1362,31 @@ a.tyadel {
 {
 	color:red;
 }
+
+.notice-lt a{
+	color:#499528;
+	font-size: 18px;
+}
+.notice-lc{
+	padding:5px 0;
+	color: #999;
+}
+.notice-tools li {
+	list-style-type:none;
+}
+.notice-tools-t{
+	color: #999;
+}
+.notice-sp{
+	border-bottom: 1px solid #999;
+	margin:10px 0; 
+}
+.notice-tit{
+	color:#499528;
+	font-size: 18px;
+	text-align: center;
+}
+.notice-info{
+	text-align: center;
+	color: #999;
+}
