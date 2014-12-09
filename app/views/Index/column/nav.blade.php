@@ -23,9 +23,11 @@
           <div class="sort-item sort-sncw"><a href="/failTopic?column_id={{$query['column_id']}}">错题记录</a><div class="sort-sj"></div></div>
 
           <div class="sort-bb"></div>
+          <!--
           <div class="sort-item sort-snxx"><a href="/message?column_id={{$query['column_id']}}">我的消息</a><div class="sort-sj"></div></div>
+          -->
           <div class="sort-item sort-snxx"><a href="/notice/list?column_id={{$query['column_id']}}&type=1">帮助手册</a><div class="sort-sj"></div></div>
-          <div class="sort-item sort-snxx"><a href="/notice/list?column_id={{$query['column_id']}}&type=3">音基360活动</a><div class="sort-sj"></div></div>
+          <div class="sort-item sort-snxx"><a href="/notice/list?column_id={{$query['column_id']}}&type=3">360活动</a><div class="sort-sj"></div></div>
           <div class="sort-item sort-snxx"><a href="/notice/list?column_id={{$query['column_id']}}&type=2">系统公告</a><div class="sort-sj"></div></div>
           <div class="sort-bb"></div>
 
