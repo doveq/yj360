@@ -37,7 +37,18 @@ class NoticeController extends BaseController {
 
         // 获取
         $notice = new Notice();
-        $list = $notice->getList(array('type' => $query['type'], 'pageSize' => $this->pageSize));
+        $where = array();
+        $where['type'] = $query['type'];
+        $where['pageSize'] = $this->pageSize;
+        $where['status'] = 1;
+        
+        $utype = Session::get('utype', -999);
+        if($utype == 1)
+            $where['allow'] = 2;  // 老师
+        elseif($utype == 0)
+            $where['allow'] = 1;  // 学生
+        
+        $list = $notice->getList($where);
 
         $typeEnum = $this->typeEnum;
         return $this->indexView('notice.faq', compact('list', 'columns', 'columnHead', 'query', 'typeEnum'));

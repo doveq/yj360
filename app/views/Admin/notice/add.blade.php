@@ -17,21 +17,35 @@
   <form class="form-horizontal" enctype="multipart/form-data" role="form" accept-charset="UTF-8" action="/admin/notice/doAdd" method="POST">
       
       <div class="form-group">
-          <label class="col-md-1 control-label" for="column_name">类型</label>
+          <label class="col-md-2 control-label" for="column_name">状态</label>
+          <div class="col-md-10">
+            {{ Form::select('status', $statusEnum, '', array('class' => 'form-control', 'id' => 'column_parent')) }}
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label" for="column_name">类型</label>
           <div class="col-md-10">
             {{ Form::select('type', $typeEnum, '', array('class' => 'form-control', 'id' => 'column_parent')) }}
           </div>
       </div>
 
       <div class="form-group">
-          <label class="col-md-1 control-label" for="column_name">标题</label>
+          <label class="col-md-2 control-label" for="column_name">允许查看</label>
+          <div class="col-md-10">
+            {{ Form::select('allow', $allowEnum, '', array('class' => 'form-control', 'id' => 'column_parent')) }}
+          </div>
+      </div>
+
+      <div class="form-group">
+          <label class="col-md-2 control-label" for="column_name">标题</label>
           <div class="col-md-10">
             <input type="text" value="" name="title" id="column_name" class="form-control">
           </div>
       </div>
 
       <div class="form-group">
-          <label class="col-md-1 control-label" for="column_name">内容</label>
+          <label class="col-md-2 control-label" for="column_name">内容</label>
           <div class="col-md-10">
             <textarea rows="5" id="content" name="content"></textarea>
           </div>

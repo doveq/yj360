@@ -11,7 +11,10 @@ use Notice;
 class NoticeController extends \BaseController {
 
     public $typeEnum = array('1' => '帮助', '2' => '公告', '3' => '活动');
+    public $statusEnum = array('1' => '通过', '0' => '未通过');
+    public $allowEnum = array('0' => '全部', '1' => '学生', '2' => '老师');
     public $pageSize = 30;
+
     /**
      * Display a listing of the resource.
      *
@@ -30,18 +33,22 @@ class NoticeController extends \BaseController {
         $list = $notice->getList($query);
 
         $typeEnum = array('' => '全部') + $this->typeEnum;
-        return $this->adminView('notice.index', compact('query', 'list', 'typeEnum'));
+        $statusEnum = $this->statusEnum;
+        $allowEnum = $this->allowEnum;
+        return $this->adminView('notice.index', compact('query', 'list', 'typeEnum', 'statusEnum', 'allowEnum'));
     }
 
     public function add()
     {
         $typeEnum = $this->typeEnum;
-        return $this->adminView('notice.add', compact('typeEnum'));
+        $statusEnum = $this->statusEnum;
+        $allowEnum = $this->allowEnum;
+        return $this->adminView('notice.add', compact('typeEnum', 'statusEnum', 'allowEnum'));
     }
 
     public function doAdd()
     {
-        $query = Input::only('title', 'content', 'type');
+        $query = Input::only('title', 'content', 'type', 'status', 'allow');
         $query['uid'] = Session::get('uid');
         $notice = new Notice();
         $notice->addInfo($query);
@@ -56,12 +63,14 @@ class NoticeController extends \BaseController {
         $info = $notice->getInfo($id);
 
         $typeEnum = $this->typeEnum;
-        return $this->adminView('notice.edit', compact('typeEnum', 'info'));
+        $statusEnum = $this->statusEnum;
+        $allowEnum = $this->allowEnum;
+        return $this->adminView('notice.edit', compact('typeEnum', 'statusEnum', 'allowEnum', 'info'));
     }
 
     public function doEdit()
     {
-        $query = Input::only('title', 'content', 'type');
+        $query = Input::only('title', 'content', 'type', 'status', 'allow');
         $id = Input::get('id');
 
         $notice = new Notice();

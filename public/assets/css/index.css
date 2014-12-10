@@ -671,6 +671,22 @@ li.index-list-more a {
 	padding-left:20px;
 	background: url("/assets/img/sort-ntk.png") no-repeat 0 1px;
 }
+.sort-snbz a{
+	padding-left:20px;
+	background: url("/assets/img/sort-nbz.png") no-repeat 0 1px;
+}
+.sort-sn360 a{
+	padding-left:20px;
+	background: url("/assets/img/sort-n360.png") no-repeat 0 1px;
+}
+.sort-sn360 a{
+	padding-left:20px;
+	background: url("/assets/img/sort-n360.png") no-repeat 0 1px;
+}
+.sort-sngg a{
+	padding-left:20px;
+	background: url("/assets/img/sort-ngg.png") no-repeat 0 1px;
+}
 .stable {
 	width: 100%;
 }
@@ -1010,6 +1026,10 @@ li.index-list-more a {
 	background: url("/assets/img/selbtn.jpg") no-repeat 0 0;
 	border:none;
 	height:32px; width:80px;}
+.table-2 .uppho{
+	background: url("/assets/img/uppho.png") no-repeat 0 0;
+	border:none;
+	height:25px; width:80px;}
 .table-2 .file{ position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:450px; }
 .table-2-del {
 	width: 50px;

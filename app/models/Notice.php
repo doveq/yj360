@@ -28,6 +28,15 @@ class Notice extends Eloquent {
         if(!empty($info['type']))
             $db = $db->where('type', $info['type']);
 
+        if(!empty($info['status']))
+            $db = $db->where('status', $info['status']);
+
+        if(!empty($info['allow']))
+        {
+            $in = array(0, $info['allow']);
+            $db = $db->whereIn('allow', $in);
+        }
+
         if(!empty($info['title']))
             $db = $db->where('title', 'like', '%' . $info['title'] . '%');
 

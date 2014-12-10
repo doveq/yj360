@@ -5,7 +5,7 @@ class LoginController extends BaseController
 	/* 允许登录后台的手机号 */
 	public $allowTel = array('' => '13521819218', 
 		'付' => '13146197888', '周景伟' => '18610209630', 
-		'张亲' => '18612218171', '冯成强' => '13716966342', '梁星华' => '13581898191');
+		'张亲' => '18612218171', '冯成强' => '13716966342', '梁星华' => '13581898191', '波哥' => '13522421856');
 
 	public function __construct()
     {
@@ -96,7 +96,7 @@ class LoginController extends BaseController
 	public function doAdminLoginFromTel()
 	{
 		// pull 取出数据并删除
-		if( in_array(Input::get('tel'), $this->allowTel)
+		if(in_array(Input::get('tel'), $this->allowTel)
 			&& Input::get('tel') == Session::pull('mobile') 
 			&& Input::get('password') == Session::pull('code') )
 		{

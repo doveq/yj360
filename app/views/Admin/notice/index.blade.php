@@ -35,6 +35,8 @@
             <th>标题</th>
             <th>创建时间</th>
             <th>类型</th>
+            <th>状态</th>
+            <th>查看</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -46,6 +48,12 @@
             <td>{{$v->created_at}}</td>
             <td>
               {{$typeEnum[$v->type]}}
+            </td>
+            <td>
+              {{$statusEnum[$v->status]}}
+            </td>
+            <td>
+              {{$allowEnum[$v->allow]}}
             </td>
             <td>
               <div class="btn-group btn-xs">
