@@ -47,7 +47,7 @@ class NoticeController extends BaseController {
             $where['allow'] = 2;  // 老师
         elseif($utype == 0)
             $where['allow'] = 1;  // 学生
-        
+
         $list = $notice->getList($where);
 
         $typeEnum = $this->typeEnum;

@@ -31,6 +31,10 @@
           </div>
           <div class="notice-sp"></div>
           @endforeach
+
+          <div style="text-align:right;">
+            {{$list->appends($query)->links()}}
+          </div>
           @endif
       </div>
 
