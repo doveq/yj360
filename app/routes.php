@@ -135,7 +135,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/relation/doExam', '\Admin\RelationController@doExam');
     Route::post('/relation/delExam', '\Admin\RelationController@delExam');
     Route::post('/relation/columnExam', '\Admin\RelationController@doColumnExam');
-     Route::post('/relation/delColumnExam', '\Admin\RelationController@delColumnExam');
+    Route::post('/relation/delColumnExam', '\Admin\RelationController@delColumnExam');
 });
 
 // 前台路由

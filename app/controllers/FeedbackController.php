@@ -7,7 +7,9 @@ class FeedbackController extends BaseController {
 
     public function index()
     {
-        return $this->indexView('profile.feedback');
+        $list = Feedback::where('user_id', Session::get('uid'))->orderBy('id', 'desc')->paginate(5);
+
+        return $this->indexView('profile.feedback', compact('list'));
     }
 
     public function doPost()
@@ -20,7 +22,7 @@ class FeedbackController extends BaseController {
         $f = new Feedback();
         $f->user_id = Session::get('uid');
         $f->type = 1;
-        $f->content = htmlentities($content);
+        $f->content = htmlentities(trim($content));
         $f->save();
 
         return $this->indexPrompt("", "问题反馈提交成功", $url = "/feedback", false);

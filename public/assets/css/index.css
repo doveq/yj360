@@ -1410,3 +1410,27 @@ a.tyadel {
 	text-align: center;
 	color: #999;
 }
+.fbitem{
+	border: 1px solid #c9c9c9;
+	margin-bottom: 25px;
+}
+.fbitit{
+	color: #999;
+	padding:8px 10px;
+	background-color: #fcfcfc;
+}
+.fbiok{
+	float: right;
+	color:#499528;
+}
+.fbicon{padding:15px 10px;}
+.fbireply{
+	padding:10px;
+	color: #009966;
+}
+.fbisp-1{
+	border-bottom: 1px solid #c9c9c9;
+}
+.fbisp-2{
+	border-bottom: 1px dashed #c9c9c9;
+}

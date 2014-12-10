@@ -20,6 +20,7 @@
             <th>#</th>
             <th>反馈者</th>
             <th>内容</th>
+            <th>回复</th>
             <th>创建时间</th>
             <th>类型</th>
             <th>操作</th>
@@ -31,6 +32,7 @@
             <td>{{$list->id}}</td>
             <td>{{$list->user->name}}</td>
             <td><a href="{{url('/admin/feedback/'.$list->id)}}">{{Str::words($list->content, $words = 2, $end = '...')}}</a></td>
+            <td>{{$list->reply}}</td>
             <td>{{$list->created_at}}</td>
             <td>
               {{$typeEnum[$list->type]}}

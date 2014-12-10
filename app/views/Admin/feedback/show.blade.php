@@ -14,6 +14,8 @@
   </div>
 
   <div class="row">
+    <form enctype="multipart/form-data" method="POST" action="/admin/feedback/{{$feedback->id}}" >
+    <input name="_method" type="hidden" value="PUT">
     <table class="table">
       <tr>
         <td class="text-right">反馈者: </td>
@@ -32,12 +34,22 @@
         <td><p>{{nl2br(htmlentities($feedback->content))}}</p></td>
       </tr>
       <tr>
+        <td class="text-right col-md-2">回复: </td>
+        <td>
+            <textarea style="width:600px;" rows="5" name="reply">{{$feedback->reply}}</textarea>
+        </td>
+      </tr>
+      <tr>
         <td></td>
         <td>
+          <button type="submit" class="btn btn-primary">保存</button>
+          <!--
           <a class="btn btn-xs btn-danger btn_delete" data-toggle="modal" data-id="{{$feedback->id}}"><i class="icon-trash"></i> 删除</a>
+          -->
         </td>
       </tr>
     </table>
+    </form>
   </div>
 
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
