@@ -99,12 +99,45 @@ class ProfileController extends BaseController {
 	/* 显示升级教师页面 */
 	public function up()
 	{
-		return $this->indexView('profile.up');
+		$user = new User();
+		$uinfo = $user->getInfoById( Session::get('uid') );
+
+		$teacher = new Teacher();
+		$tinfo = $teacher->getInfoFromTel($uinfo['tel']);
+
+		$att = new Attachments();
+		$route = $att->getTeacherRoute( Session::get('uid') );
+		if(is_file($route['path']))
+		{
+			$tinfo->img = $route['url'];
+		}
+
+		$statusEnum = array('1' => '审核通过', '-1' => '审核未通过', '0' => '未审核');
+
+		return $this->indexView('profile.up', compact('tinfo', 'statusEnum') );
 	}
 
 	public function doUp()
 	{
 		$inputs = Input::all();
+
+		$validator = Validator::make($inputs , array(
+			'professional' => 'required|alpha_dash',
+			'address' => 'required|alpha_dash',
+			'school' => 'required|alpha_dash',
+			'qq' => 'numeric',
+	        'avatar' => 'required')
+		);
+
+		if(!$validator->passes())
+		{
+			return $this->indexPrompt("", '各项必须填写', $url = "/profile/up");
+		}
+
+
+
+		$user = new User();
+		$teacher = new Teacher();
 
 
 		if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK )
@@ -112,10 +145,40 @@ class ProfileController extends BaseController {
 			$att = new Attachments();
 			$re = $att->addTeacherImg(Session::get('uid'), $_FILES['avatar']['tmp_name']);
 			if($re)
-				$update['is_avatar'] = 1;
+			{
+				$user->setInfo(Session::get('uid'), array('is_certificate' => 1) );
+			}
+			else
+			{
+				return $this->indexPrompt("", '必须上传教师资格证', $url = "/profile/up");
+			}
+		}
+		else
+		{
+			return $this->indexPrompt("", '必须上传教师资格证', $url = "/profile/up");
 		}
 
+		$uinfo = $user->getInfoById( Session::get('uid') );
+		$tinfo = $teacher->getInfoFromTel($uinfo['tel']);
 
+		$info = array();
+		$info['professional'] = $inputs['professional'];
+		$info['address'] = $inputs['address'];
+		$info['school'] = $inputs['school'];
+		$info['qq'] = $inputs['qq'];
+
+		if(empty($tinfo))
+		{
+			$info['tel'] = $uinfo['tel'];
+			$info['name'] = $uinfo['name'];
+			Teacher::insert($info);
+		}
+		else
+		{
+			Teacher::where('tel', $uinfo['tel'])->update($info);
+		}
+
+		return $this->indexPrompt("", '信息已保存，请耐心等待审核通过。', $url = "/profile/up");
 	}
 
 }

@@ -1172,6 +1172,15 @@ a.tyadel {
 	color:#fff;
 	padding-left: 25px;
 }
+.sort-nnpw a{
+	background: url("/assets/img/nnpw.png") no-repeat 0 3px;
+	padding-left: 25px;
+}
+.sort-nnpw-sel a{
+	background: url("/assets/img/nnpw-sel.png") no-repeat 0 3px !important;
+	color:#fff;
+	padding-left: 25px;
+}
 .sort-nwt a{
 	background: url("/assets/img/nwt.png") no-repeat 0 3px;
 	padding-left: 25px;

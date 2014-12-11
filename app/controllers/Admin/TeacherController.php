@@ -12,7 +12,7 @@ class TeacherController extends \BaseController {
 
     public $pageSize = 30;
     public $typeEnum = array('1' => '小学', '2' => '中学', '3' => '音基', '4' => '小学教研', '5' => '中学教研', '6' => '少年宫');
-    public $statusEnum = array('1' => '有效', '-1' => '无效');
+    public $statusEnum = array('1' => '有效', '-1' => '无效', '0' => '未审核');
 
     public function index()
     {
@@ -23,7 +23,7 @@ class TeacherController extends \BaseController {
         $lists = $teacher->getList($query)->paginate($this->pageSize);
 
         $typeEnum = array('0' => '全部') + $this->typeEnum;
-        $statusEnum = array('0' => '全部') + $this->statusEnum;
+        $statusEnum = array('' => '全部') + $this->statusEnum;
 
         return $this->adminView('teacher.index', compact('lists', 'query', 'typeEnum', 'statusEnum'));
     }

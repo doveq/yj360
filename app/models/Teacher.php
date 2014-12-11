@@ -24,7 +24,7 @@ class Teacher extends Eloquent {
         if( !empty($info['type']) )
            $data = $data->where('type', $info['type']);
 
-        if( !empty($info['status']) )
+        if( is_numeric($info['status']) )
            $data = $data->where('status', $info['status']);
 
         $data = $data->orderBy('id', 'desc');
