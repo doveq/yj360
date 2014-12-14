@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>音基360_让音乐学习变得简单有趣</title>
-    <--  @yield('title', '')  -->
     
     <link href="/assets/css/index.css" rel="stylesheet">
     @yield('css')
