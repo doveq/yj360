@@ -291,7 +291,7 @@ class MessageController extends BaseController {
             Message::whereIn('id', $msgs)->whereReceiverId(Session::get('uid'))->update(array('status' => 1));
         }
 
-        $classes = Classes::find($query['class_id'])->first();
+        $classes = Classes::where('id', $query['class_id'])->first();
         $user = User::whereId($query['user_id'])->first();
 
         // 获取父类名页面显示
