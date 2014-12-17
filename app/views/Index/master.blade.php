@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>音基360_让音乐学习变得简单有趣</title>
-    
+    <title>音基360_音基考级_音基考试_小学音乐测评_中学音乐测评_免费题库</title>
+    <meta name="Keywords" content="全国音乐等级考试,音基题库,音基360,音基考级,音基考试免费题库,小学音乐测评,中学音乐测评,音乐题库,音基考试,音乐测评题库,趣味游戏" />
+    <meta name="Description" content="音基360（www.yinji360.com）免费提供音基考试题库,小学音乐测评,中学音乐测评,趣味游戏等。从音基教材基础知识学习、知识点测评到模拟真实考场，完善了学习中的每一个环节，通过学、练、测三个环节完美实现网络教学目标。" />
     <link href="/assets/css/index.css" rel="stylesheet">
     @yield('css')
 
