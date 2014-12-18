@@ -54,9 +54,9 @@
               <tr>
                   <td class="tytd" style="color:#999999;">
                     @if ($list->type == 1)
-                      {{$list->created_at}} 你邀请 {{$list->student->name}} 加入 {{$list->classes->name}}
+                      {{$list->created_at}} 你邀请 {{$list->student->name or '#'}} 加入 {{$list->classes->name or '#'}}
                     @elseif ($list->type == 2)
-                      {{$list->created_at}} {{$list->student->name}} 申请加入{{$list->teacher->name}} 的 {{$list->classes->name}}
+                      {{$list->created_at}} {{$list->student->name or '#'}} 申请加入{{$list->teacher->name or '#'}} 的 {{$list->classes->name or '#'}}
                     @endif
                   </td>
                   <td class="tytd" style="color:#999999;">
