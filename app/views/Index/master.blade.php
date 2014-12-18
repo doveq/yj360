@@ -13,7 +13,7 @@
     <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
     @yield('headjs')
   </head>
-  <body role="document" oncontextmenu="return false">
+  <body role="document" @if($_SERVER["REQUEST_URI"] != '/') oncontextmenu="return false" @endif >
 
   <div class="wrapper">
       <div id="site-head">
@@ -66,9 +66,9 @@
       <div  class="wrap">
         <ul class="footer-links">
           <li>商务合作QQ：3171278340</li>
-          <li>音基教师群：347576642</li>
-          <li>音基家长群：283516538</li>
-          <li><img width="18" src="/assets/img/qq.png" style="float:left;padding-right:5px;" /><a href="tencent://message/?uin=1302473868">在线客服QQ</a></li>
+          <li>音基考级教师群：347576642</li>
+          <li>音基考级家长群：283516538</li>
+          <li><a href="tencent://message/?uin=1302473868">在线客服</a><img width="18" src="/assets/img/qq.png" style="float:left;padding-right:5px;" /></li>
           <!--
           <li><span class="footer-sp">|</span></li>
           <li><a href="/link">联系我们</a></li>
