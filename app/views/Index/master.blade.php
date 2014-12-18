@@ -68,7 +68,7 @@
           <li>商务合作QQ：3171278340</li>
           <li>音基考级教师群：347576642</li>
           <li>音基考级家长群：283516538</li>
-          <li><a href="tencent://message/?uin=1302473868">在线客服</a><img width="18" src="/assets/img/qq.png" style="float:left;padding-right:5px;" /></li>
+          <li><a href="tencent://message/?uin=1302473868">在线客服</a><img width="18" src="/assets/img/qq.png" style="float:right;padding-right:5px;" /></li>
           <!--
           <li><span class="footer-sp">|</span></li>
           <li><a href="/link">联系我们</a></li>
