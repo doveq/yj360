@@ -70,11 +70,11 @@
             </td>
         </tr>
 
-        @if(!empty($tinfo->img))
+        @if(!empty($uinfo->img))
         <tr>
             <td class="lable"></td>
             <td>
-                <img src="{{$tinfo->img}}" width="200" />
+                <img src="{{$uinfo['img']}}" width="200" />
             </td>
         </tr>
         @endif

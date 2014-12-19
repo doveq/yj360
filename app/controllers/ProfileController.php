@@ -107,14 +107,14 @@ class ProfileController extends BaseController {
 
 		$att = new Attachments();
 		$route = $att->getTeacherRoute( Session::get('uid') );
-		if(is_file($route['path']))
+		if(is_file($route['path']) )
 		{
-			$tinfo->img = $route['url'];
+			$uinfo['img'] = $route['url'];
 		}
 
 		$statusEnum = array('1' => '审核通过', '-1' => '审核未通过', '0' => '未审核');
 
-		return $this->indexView('profile.up', compact('tinfo', 'statusEnum') );
+		return $this->indexView('profile.up', compact('tinfo', 'uinfo', 'statusEnum') );
 	}
 
 	public function doUp()
