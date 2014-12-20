@@ -7,6 +7,7 @@ use Input;
 use Paginator;
 use Redirect;
 use Teacher;
+use Attachments;
 
 class TeacherController extends \BaseController {
 
@@ -21,6 +22,27 @@ class TeacherController extends \BaseController {
 
         $teacher = new Teacher();
         $lists = $teacher->getList($query)->paginate($this->pageSize);
+
+        // 判断显示教师证
+        $user = new User();
+        $atts = new Attachments();
+
+        foreach ($lists as &$v) 
+        {
+            if(!empty($v->tel))
+            {
+                $uinfo = $user->getInfoByTel($v->tel);
+                if( !empty($uinfo) )
+                {
+
+                    $route = $atts->getTeacherRoute($uinfo->id);
+                    if( is_file($route['path']) )
+                    {
+                        $v->certificate = $route['url'];
+                    }
+                }
+            }
+        }
 
         $typeEnum = array('0' => '全部') + $this->typeEnum;
         $statusEnum = array('' => '全部') + $this->statusEnum;
