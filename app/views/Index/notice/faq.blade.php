@@ -21,10 +21,12 @@
           @if(!empty($list))
           @foreach($list as $v)
           <div class="notice-item">
-            <div class="notice-lt">{{$v->title}}</div>
-            <div class="notice-lc" style="font-size:13px;">{{str_limit(strip_tags($v->content), $limit = 100, $end = '...')}}</div>
+            <div class="notice-lt">
+            	<a style="color:#499528;" href="/notice/show?type=1&id={{$v->id}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">{{$v->title}}</a>
+            </div>
+            <div class="notice-lc">{{str_limit(strip_tags($v->content), $limit = 100, $end = '...')}}</div>
             <ul class="notice-tools">
-              <li class="notice-tools-t" style="margin-top:5px;font-size:13px;">
+              <li class="notice-tools-t" style="margin-top:5px;">
 	              <span class="faq-time">{{$v->created_at}}</span>
 	              <span style="margin-left:30px;">评论：{{count($v->commentcount)}}</span>
 	              <span style="margin-left:30px;">

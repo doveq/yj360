@@ -404,34 +404,53 @@
 	        <input type="hidden" id="column" value="" />
 			<div class="cl fsort-tit">
 	            <span>添加到收藏夹</span>
-	            <span class="fsort-close" style="float:right;" onclick="layer.close(layerSort);" title="关闭"></span>
+	            <span style="line-height:18px;margin-left:130px;">
+	            	<a class="fsort-new" style="font-weight:normal;margin-top:0;" href="javascript:void(0);" onclick="newSort()">+新建收藏夹</a>
+	            </span>
+	            <span class="fsort-close" style="float:right;" onclick="layer.close(layerAdd);" title="关闭"></span>
         	</div>
 	        
 		    <div class="fsort-select-content">
-		    	@if(count($fsList) != 0)
-		    	@foreach($fsList as $fs)
-		    	<div style="margin:5px 5px 5px 80px">
-			    	<input type="checkbox" name="fsort" id="fav{{$fs->id}}" data-id="{{$fs->id}}" 
-			    		onclick="selectSort(event)"
-			    		style="vertical-align:middle;">&nbsp;&nbsp;
-			    	<label for="fav{{$fs->id}}" title="{{$fs->name}}" style="vertical-align:middle;">@if(strlen($fs->name)>20){{substr($fs->name,0,20).'...'}}@else{{$fs->name}}@endif</label>
-		    	</div>
-		    	@endforeach
-		    	@else
-				<div style="margin:5px 5px 5px 80px;">
+				<div style="margin:5px 5px 5px 40px;">
 					<input type="checkbox" name="fsort" id="fav0" data-id="0" style="vertical-align:middle;">&nbsp;&nbsp;
 					<label for="fav0" style="vertical-align:middle;">默认收藏</label>
 				</div>
+		    	@if(count($fsList) != 0)
+		    	@foreach($fsList as $fs)
+		    	<div style="margin:5px 5px 5px 40px">
+			    	<input type="checkbox" name="fsort" id="fav{{$fs->id}}" data-id="{{$fs->id}}" 
+			    		onclick="selectSort(event)"
+			    		style="vertical-align:middle;">&nbsp;&nbsp;
+			    	<label for="fav{{$fs->id}}" title="{{$fs->name}}" style="vertical-align:middle;">@if(strlen($fs->name)>30){{substr($fs->name,0,30).'...'}}@else{{$fs->name}}@endif</label>
+		    	</div>
+		    	@endforeach
 		    	@endif
 		    </div>
 		    
-	        <div class="fsort-bot">
+	        <div class="fsort-bot" style="padding-bottom:5px;">
 	          <button class="fsort-btn-ok"
 	          	onclick="addToFav()"></button>
 	          <button class="fsort-btn-cancel" style="margin-left:10px;" 
-	          	onclick="layer.close(layerSort);return false;"></button>
+	          	onclick="layer.close(layerAdd);return false;"></button>
 	        </div>
         </div>
+	</div>
+	
+	<div id="fsort-add" style="display:none;">
+	    <div class="fsort-box">
+	        <div class="cl fsort-tit">
+	            <span>创建收藏夹</span>
+	            <span class="fsort-close" style="float:right;" onclick="layer.close(layerSort);" title="关闭"></span>
+	        </div>
+	        <div class="fsort-con">
+	          	 收藏夹名称：<input type="text" name="sortname" value="" 
+	          	 style="padding:3px 5px;width:230px;height:30px;border:1px solid #c9c9c9;" maxlength="64" />
+	        </div>
+	        <div class="fsort-bot" style="border-top:none;">
+	          <button class="fsort-btn-ok" type="button" onclick="fsortAdd(event)"></button>
+	          <button class="fsort-btn-cancel" style="margin-left:10px;" onclick="layer.close(layerSort);"></button>
+	        </div>
+	    </div>
 	</div>
 
     <script>
@@ -890,6 +909,7 @@
             $('#qlist').toggle();
         }
 
+        var layerAdd = null;
         var layerSort = null;
 
         /**
@@ -906,7 +926,7 @@
 				if(data.state == 1) {
 					$('#topic-btn-4').hide();
 		            $('#topic-btn-13').show();
-		            layer.close(layerSort);
+		            layer.close(layerAdd);
 				}
 			});
         }
@@ -938,7 +958,7 @@
             $('#qid').val(qid);
             $('#column').val(column);
             
-        	layerSort = $.layer({
+        	layerAdd = $.layer({
                 type : 1,
                 title : false,
                 closeBtn: [0, false],
@@ -950,6 +970,39 @@
                     html: $("#fsort-select").html()
                 }
             });
+        }
+
+        /**
+         * 新建收藏夹
+         */
+        function newSort() {
+        	layerSort = $.layer({
+                type : 1,
+                title : false,
+                offset:['100px' , ''],
+                closeBtn: [0, false],
+                shade: [0],
+                border: [0],
+                area : ['auto','auto'],
+                page : {
+                    html: $("#fsort-add").html()
+                }
+            });
+        }
+
+        function fsortAdd(event) {
+            var $cur = $(event.target);
+            var name = $cur.parents('.fsort-box').find('[name="sortname"]').val();
+            if(name == '') {
+                alert('请输入收藏夹名称');
+                return;
+            }
+        	$.getJSON("/favorite/ajaxSort", {'act':'add','name':name}, function(data) {
+        		if(data.state == 1) {
+            		// 添加收藏夹成功刷新页面
+            		window.location.reload();
+        		}
+        	});
         }
 
         function delFavorite(qid, column)

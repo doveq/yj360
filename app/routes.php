@@ -11,7 +11,6 @@
 |
 */
 
-
 // 后台登录认证
 Route::filter('adminLogin', function()
 {
@@ -202,6 +201,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/topic/result', 'TopicController@result');
     Route::post('/topic/postRecorder', 'TopicController@postRecorder');
 
+
     // 收藏页面
     Route::get('/favorite', 'FavoriteController@index');
     Route::get('/favorite/del', 'FavoriteController@doDel');
@@ -213,6 +213,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::post('/favorite/sort/doEdit', 'FavoriteController@sortDoEdit');
     Route::get('/favorite/sort/doDel', 'FavoriteController@sortDoDel');
     Route::get('/favorite/move', 'FavoriteController@move');
+    Route::get('/favorite/ajaxSort', 'FavoriteController@ajaxSort'); // 收藏夹管理ajax
     
     //初级
     Route::get('/column', 'ColumnController@index');

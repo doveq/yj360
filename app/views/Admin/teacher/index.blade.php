@@ -48,6 +48,7 @@
             <th>学校及专业</th>
             <th>地址</th>
             <th>当前学校</th>
+            <th>教师证</th>
             <th width="80">类型</th>
             <th width="50">状态</th>
             <th width="120">操作</th>
@@ -63,6 +64,9 @@
             <td>{{$list->professional}}</td>
             <td>{{$list->address}}</td>
             <td>{{$list->school}}</td>
+            <td>
+              <a href="{{$list->certificate}}" data-lightbox="image-{{$list->id}}" data-title="{{$list->name}}教师证"><span class="icon-credit-card"></span></a>
+            </td>
             <td>{{$typeEnum[$list->type]}}</td>
             <td>{{$statusEnum[$list->status]}}</td>
             <td>

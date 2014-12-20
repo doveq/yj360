@@ -1394,7 +1394,7 @@ a.tyadel {
 
 .notice-lt {
 	color: #000;
-	font-size: 16px;
+	font-size: 18px;
 }
 .notice-lc{
 	padding:5px 0;
@@ -1411,19 +1411,19 @@ a.tyadel {
 	margin:10px 0; 
 }
 .notice-tit{
-	color:#00b8b8;
+	color:#499528;
 	font-size: 18px;
 	text-align: center;
 }
 .notice-info{
 	margin-top: 10px;
 	text-align: center;
-	font-size: 13px;
 	color: #999;
 }
 .fbitem{
 	border: 1px solid #c9c9c9;
-	margin-bottom: 25px;
+	margin-bottom: 15px;
+	margin-left: 10px;
 }
 .fbitit{
 	color: #999;
@@ -1678,26 +1678,22 @@ a.tyadel {
 .notice-list {
 	margin: 0 10px;
 	padding: 10px;
-	background-color: #f5f5f5;
 	border: 1px solid #c9c9c9;
 }
 .faq-time {
-	padding-left: 20px;
+	padding-left: 10px;
     width: 20px;
     height: 19px;
-    background: url("/assets/img/faq-time.png") no-repeat 0 0;
     border: none;
 }
 .notice-detail {
 	margin-left: 10px;
-	background-color: #f5f5f5;
 	border: 1px solid #c9c9c9;
 }
 .notice-comment {
 	margin-left: 10px;
 	margin-top: 10px;
 	padding-left: 20px;
-	background-color: #f5f5f5;
 	border: 1px solid #c9c9c9;
 }
 .notice-comment-total {
@@ -1712,7 +1708,6 @@ a.tyadel {
 	width: 650px;
 	max-width: 650px;
 	height: 100px;
-	background-color: #f5f5f5;
 	border: 1px solid #c9c9c9;
 }
 .notice-comment-btn {

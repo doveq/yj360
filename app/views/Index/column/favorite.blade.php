@@ -40,7 +40,7 @@
       	@else
       		class="fsort-title"
       	@endif
-      	href="/favorite?column_id={{$query['column_id']}}&sort=0">默认分类</a>
+      	href="/favorite?column_id={{$query['column_id']}}&sort=0">默认收藏</a>
       
       @if(!empty($slist))
       @foreach($slist as $k => $v)
@@ -75,7 +75,7 @@
                     	<input type="checkbox" value="{{$v->id}}" name="fid" />
                     </td>
                     <td class="tytd" style="color:#499528;font-family: Microsoft Yahei,Arial;font-size:18px;">
-                    {{$v->id}}
+                    {{$k+1}}
                     </td>
                     <td class="tytd">
                       @if(empty($v->question->txt))
@@ -85,7 +85,7 @@
                       @endif
                     </td>
 					<td class="tytd">
-				      {{$typeEnum[$v->question->type] or '默认分类'}}
+				      {{$typeEnum[$v->question->type] or ''}}
                     </td>
                     <td class="tytd table-2-del"><a href="/favorite/del?column_id={{$query['column_id']}}&qid={{$v->question->id}}" class="tyadel">删除</a></td>
                 </tr>

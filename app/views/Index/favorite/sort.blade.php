@@ -29,7 +29,7 @@
           <input type="hidden" name="column_id" value="{{$v->column_id}}" />
           
           <div style="float:left;">
-          	<span class="fsort-num">{{$v->id}}</span>
+          	<span class="fsort-num">{{$k+1}}</span>
             <input class="fsort-input" type="text" name="name" value="{{$v->name}}" maxlength="64" />
           </div>
 

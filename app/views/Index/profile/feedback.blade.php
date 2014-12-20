@@ -25,14 +25,14 @@
       <table class="table-2" border="0" cellpadding="0" cellspacing="0">
     
         <tr>
-            <td style="padding:10px 10px;">
+            <td style="padding:10px 0 10px 10px;">
               <textarea name="content" rows="5" style="width:100%;" placeholder="您可以将你的问题与联系方式写在这里"></textarea>
             </td>
         </tr>
 
         <tr>
-            <td style="padding:10px 10px;">
-              <input type="submit" value="提交" style="padding:10px 20px;background-color:#00b1bb;border:none;color:#fff;" />
+            <td style="padding:0 0 0 10px;">
+              <input type="submit" value="提交" style="padding:5px 20px;background-color:#00b1bb;border:none;color:#fff;" />
             </td>
         </tr>
 
@@ -58,7 +58,7 @@
         <div class="fbireply">
           <table>
             <tr>
-                <td style="width:60px;color:red;padding-right:15px;">系统回复</td>
+                <td style="width:60px;color:red;padding-right:15px;">客服雯雯</td>
                 <td>{{$v->reply}}</td>
             </tr>
           </table>

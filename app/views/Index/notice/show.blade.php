@@ -31,7 +31,6 @@
 
       <div class="notice-comment">
       	<div class="notice-comment-total">评论：（共{{count($info->commentcount)}}条）</div>
-      	<div style="margin-top:20px;margin-bottom:10px;font-size:13px;">您需要登录后才能提交评论。</div>
       	
       	{{-- 评论form --}}
         <form method="post" action="/notice/doComment" style="margin-bottom:40px;">
@@ -58,7 +57,15 @@
         	</div>
         	<div class="cl notice-comment-info" style="float:left;">
         		<div class="cl">
-        			<span style="color:#54b5e0;">{{$comment->user->name or '未知用户'}}</span> 
+        			<span style="color:#54b5e0;">
+        			@if($comment->user && $comment->user->name)
+        				@if($comment->user->name == 'admin')
+        				客服雯雯
+        				@else
+        				{{$comment->user->name}}
+        				@endif
+        			@endif
+        			</span> 
         			<span class="created_at" style="margin-left:10px;">{{$comment->created_at or '0'}}</span> 说：
 	        		<span class="notice-floor">
 	        			{{$floornums[$comment->id]}}
@@ -78,7 +85,15 @@
 	        	</div>
 	        	
         		<div class="cl notice-cite">
-	        		<span style="color:#54b5e0;">{{$comment->cite->user->name}}</span>
+	        		<span style="color:#54b5e0;">
+        			@if($comment->cite->user && $comment->cite->user->name)
+        				@if($comment->cite->user->name == 'admin')
+        				客服雯雯
+        				@else
+        				{{$comment->cite->user->name}}
+        				@endif
+        			@endif
+	        		</span>
 	        		{{$comment->cite->created_at}} 发表在 
 	        		<span style="color:#54b5e0;">{{$floornums[$comment->cite->id]}} 楼</span>
 	        		<br>

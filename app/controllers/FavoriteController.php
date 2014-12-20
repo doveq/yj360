@@ -115,6 +115,19 @@ class FavoriteController extends BaseController
             return Redirect::to("/favorite?column_id=". $column_id);
         }
     }
+    
+    public function ajaxSort() {
+    	$inputs = Input::all();
+        if(!isset($inputs['act']) || !isset($inputs['name'])) {
+            return Response::json(array('act' => $inputs['act'], 'state' => '0'));
+        }
+        $query['name'] = $inputs['name'];
+        $fs = new FavoriteSort();
+        $query['uid'] = Session::get('uid');
+        $query['created_at'] = date("Y-m-d H:i:s");
+        $fs->addInfo($query);
+        return Response::json(array('state' => '1'));
+    }
 
     public function ajax()
     {
@@ -183,6 +196,7 @@ class FavoriteController extends BaseController
          
          $tag = Input::get('tag');
          if($tag && $tag == 'sort') {
+         	// 收藏管理页面
          	return Redirect::to("/favorite/sort?column_id=". $query['column_id']);
          } else {
          	return Redirect::to("/favorite?column_id=". $query['column_id']);
