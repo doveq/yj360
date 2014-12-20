@@ -106,12 +106,14 @@
             
             @if(count($slist)!=0)
             <div style="float:left;margin-left:20px;">
-	            <select name="msort">
+	            <select name="msort" class="vm" style="font-size:13px;">
 	              @foreach($slist as $k => $v)
-	                <option value="{{$v->id}}" title="{{$v->name}}">@if(strlen($v->name)>20){{substr($v->name,0,20).'...'}}@else{{$v->name}}@endif</option>
+	                <option value="{{$v->id}}" title="{{$v->name}}">
+	                	<span>@if(strlen($v->name)>20){{substr($v->name,0,20).'...'}}@else{{$v->name}}@endif</span>
+	                </option>
 	              @endforeach
 	            </select>
-	            <a class="fav-move-btn" style="margin-left:5px;" href="javascript:void(0);" onclick="moveCheck()">批量移动</a>
+	            <a class="vm fav-move-btn" style="margin-left:0;" href="javascript:void(0);" onclick="moveCheck()">批量移动</a>
             </div>
             @endif
           </div>
