@@ -328,6 +328,10 @@ class TopicController extends BaseController {
 		
 		$info['playList'] = $playList;
 		$info['isReal'] = $isReal;
+		
+		// 收藏分类列表
+		$fs = new FavoriteSort();
+		$info['fsList'] = $fs->getList(array('uid' => Session::get('uid')));
 
 		return $this->indexView('topic', $info);
 	}

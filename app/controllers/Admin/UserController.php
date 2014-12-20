@@ -11,7 +11,7 @@ use Attachments;
 class UserController extends \BaseController {
 
     public $typeEnum = array('' => '所有类型', '-1' => '管理员', '0' => '学生', '1' => '老师');
-    public $statusEnum = array('' => '所有状态', '0' => '未审核', '1' => '审核通过', '-1' => '锁定');
+    public $statusEnum = array('' => '所有状态', '0' => '未审核', '1' => '审核通过', '-1' => '锁定', '2' => '手机未验证');
     public $pageSize = 30;
     /**
      * Display a listing of the resource.
@@ -55,7 +55,7 @@ class UserController extends \BaseController {
             if (strlen(Input::get('tel')) > 0) {
                 $query->where('tel', 'LIKE', Input::get('tel').'%');
             }
-        })->orderBy('created_at', 'DESC')->paginate($this->pageSize);
+        })->orderBy('id', 'DESC')->paginate($this->pageSize);
 
         $att = new Attachments();
         foreach ($lists as $key => &$value) 

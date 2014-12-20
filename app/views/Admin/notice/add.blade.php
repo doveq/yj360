@@ -36,6 +36,13 @@
             {{ Form::select('allow', $allowEnum, '', array('class' => 'form-control', 'id' => 'column_parent')) }}
           </div>
       </div>
+      
+	  <div class="form-group">
+          <label class="col-md-2 control-label" for="column_ordern">排序序号</label>
+          <div class="col-md-10">
+            <input type="text" value="" name="ordern" id="column_ordern" class="form-control">
+          </div>
+	  </div>
 
       <div class="form-group">
           <label class="col-md-2 control-label" for="column_name">标题</label>

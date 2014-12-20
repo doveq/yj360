@@ -5,7 +5,9 @@ class LoginController extends BaseController
 	/* 允许登录后台的手机号 */
 	public $allowTel = array('' => '13521819218', 
 		'付' => '13146197888', '周景伟' => '18610209630', 
-		'张亲' => '18612218171', '冯成强' => '13716966342', '梁星华' => '13581898191', '波哥' => '13522421856');
+		'张亲' => '18612218171', '冯成强' => '13716966342', '梁星华' => '13581898191', '波哥' => '13522421856',
+		'zhouds' => '15856392832'
+	);
 
 	public function __construct()
     {
@@ -37,8 +39,9 @@ class LoginController extends BaseController
 	{
 		$data = Input::all();
 
-		// Auth::attempt( array('name' => $data['name'], 'password' => $data['password'], 'status' => 1))
-		if( Auth::attempt( array('tel' => trim($data['name']), 'password' => $data['password'], 'status' => 1)) )
+		// 允许已通过的和批量导入手机未验证的用户登录
+		if( Auth::attempt( array('tel' => trim($data['name']), 'password' => $data['password'], 'status' => 1)) 
+			|| Auth::attempt( array('tel' => trim($data['name']), 'password' => $data['password'], 'status' => 2)) )
 		{
 			//login(UserInterface $user, bool $remember = false);
 			$user = Auth::user();

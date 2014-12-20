@@ -2,7 +2,7 @@
 
 class NoticeController extends BaseController {
 
-    public $typeEnum = array('1' => '帮助手册', '2' => '系统公告', '3' => '360活动');
+    public $typeEnum = array('1' => '帮助中心', '2' => '系统公告', '3' => '360活动');
     public $pageSize = 30;
 
     public function index()
@@ -50,13 +50,17 @@ class NoticeController extends BaseController {
 
         $list = $notice->getList($where);
 
+        // 获取评论列表
+        $nc = new NoticeComments();
+        
+        
         $typeEnum = $this->typeEnum;
         return $this->indexView('notice.faq', compact('list', 'columns', 'columnHead', 'query', 'typeEnum'));
     }
 
     public function show()
     {
-        $query = Input::only('column_id', 'id');
+        $query = Input::only('column_id', 'id', 'type');
 
         $validator = Validator::make($query , array(
             'column_id' => 'numeric',
@@ -79,12 +83,53 @@ class NoticeController extends BaseController {
             $columnHead = $arr[0];
         }
 
-        // 获取
+        // 获取详情
         $notice = new Notice();
         $info = $notice->getInfo($query['id']);
         
+        // 获取评论详情
+        $nc = new NoticeComments();
+        $comments = $nc->getListPage($query['id'], $this->pageSize);
+        
+        // 获取评论楼层
+        $floornums = $nc->getFloornums($query['id']); // key:commentid,val:floornum
+        
         $typeEnum = $this->typeEnum;
-        return $this->indexView('notice.show', compact('info', 'columns', 'columnHead', 'query', 'typeEnum'));
+        return $this->indexView('notice.show', 
+        		compact('info', 'columns', 'columnHead', 'query', 
+        				'typeEnum', 'comments', 'floornums'));
+    }
+
+    /* 评论内容 */
+    public function doComment()
+    {
+        $query = Input::only('notice_id', 'content', 'column_id', 'parent_id');
+
+        $validator = Validator::make($query , array(
+            'column_id' => 'numeric',
+            'notice_id' => 'required|numeric',
+            'parent_id' => 'numeric',
+            'content' => 'required')
+        );
+
+        $query['content'] = htmlspecialchars( trim( $query['content'] ) );
+
+        if(!$validator->passes() || $query['content'] == '' )
+        {
+            //return $this->indexPrompt("操作失败", "错误的提交数据", $url = "/notice/show?id={$query['notice_id']}&column_id={$query['column_id']}", $auto = true);
+            return Redirect::to("/notice/show?id={$query['notice_id']}&column_id={$query['column_id']}");
+        }
+
+        $data = array();
+        $data['uid'] = Session::get('uid');
+        $data['notice_id'] = $query['notice_id'];
+        $data['content'] = $query['content'];
+        $data['parent_id'] = $query['parent_id'] ? $query['parent_id'] : 0;
+
+        $nc = new NoticeComments();
+        $nc->addInfo( $data );
+
+        return Redirect::to("/notice/show?id={$query['notice_id']}&column_id={$query['column_id']}");
     }
 
 }

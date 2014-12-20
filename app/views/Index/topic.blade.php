@@ -16,10 +16,7 @@
     <script type="text/javascript" src="/assets/recorder/js/recorder.js"></script>
     <script type="text/javascript" src="/assets/recorder/js/main.js"></script>
     <script src="/assets/jquery/jquery.cookie.js"></script>
-
-    @if( !empty($_GET['vetting']) )
     <script src="/assets/layer/layer.min.js"></script>
-    @endif
 @stop
 
 @section('content')
@@ -400,6 +397,42 @@
             <button class="tyinput" onclick="doVetting();">提交审核</button>
         </div>
     </div>
+    
+	<div id="fsort-select" style="display:none;">
+        <div class="fsort-select-box">
+			<input type="hidden" id="qid" value="" />
+	        <input type="hidden" id="column" value="" />
+			<div class="cl fsort-tit">
+	            <span>添加到收藏夹</span>
+	            <span class="fsort-close" style="float:right;" onclick="layer.close(layerSort);" title="关闭"></span>
+        	</div>
+	        
+		    <div class="fsort-select-content">
+		    	@if(count($fsList) != 0)
+		    	@foreach($fsList as $fs)
+		    	<div style="margin:5px 5px 5px 80px">
+			    	<input type="checkbox" name="fsort" id="fav{{$fs->id}}" data-id="{{$fs->id}}" 
+			    		onclick="selectSort(event)"
+			    		style="vertical-align:middle;">&nbsp;&nbsp;
+			    	<label for="fav{{$fs->id}}" title="{{$fs->name}}" style="vertical-align:middle;">@if(strlen($fs->name)>20){{substr($fs->name,0,20).'...'}}@else{{$fs->name}}@endif</label>
+		    	</div>
+		    	@endforeach
+		    	@else
+				<div style="margin:5px 5px 5px 80px;">
+					<input type="checkbox" name="fsort" id="fav0" data-id="0" style="vertical-align:middle;">&nbsp;&nbsp;
+					<label for="fav0" style="vertical-align:middle;">默认收藏</label>
+				</div>
+		    	@endif
+		    </div>
+		    
+	        <div class="fsort-bot">
+	          <button class="fsort-btn-ok"
+	          	onclick="addToFav()"></button>
+	          <button class="fsort-btn-cancel" style="margin-left:10px;" 
+	          	onclick="layer.close(layerSort);return false;"></button>
+	        </div>
+        </div>
+	</div>
 
     <script>
         {{-- 如果是模拟真实做题环境 --}}
@@ -857,14 +890,65 @@
             $('#qlist').toggle();
         }
 
+        var layerSort = null;
+
+        /**
+         * 保存到收藏夹
+         */
+        function addToFav() {
+        	var msort = $('input[name="fsort"]:checked').data('id');
+        	if(msort == null) {
+            	return;
+        	}
+            var qid = $('#qid').val();
+            var column = $('#column').val();
+			$.getJSON("/favorite/ajax", {'act':'add','qid':qid,'column':column, 'msort':msort}, function(data) {
+				if(data.state == 1) {
+					$('#topic-btn-4').hide();
+		            $('#topic-btn-13').show();
+		            layer.close(layerSort);
+				}
+			});
+        }
+
+        /**
+         * 选择某一收藏夹
+         */
+        function selectSort(event) {
+            var $cur = $(event.target);
+			if($cur.prop('checked') == false) {
+				return;
+			}
+            var curid = $cur.attr('id');
+        	$('input[name="fsort"]').each(function() {
+        		var $this = $(this);
+        		var thisid = $this.attr('id');
+        		// 保留当前checkbox选择,取消其他checkbox
+        		if(thisid != curid) {
+        			$this.prop('checked', false);
+                }
+        	});
+        }
+
+        /**
+         * 打开"添加到收藏夹"弹出框
+         */
         function addFavorite(qid, column)
         {
-            $.getJSON("/favorite/ajax", {'act':'add','qid':qid,'column':column}, function(data){
-                 if(data.state == 1)
-                 {
-                    $('#topic-btn-4').hide();
-                    $('#topic-btn-13').show();
-                 }
+            $('#qid').val(qid);
+            $('#column').val(column);
+            
+        	layerSort = $.layer({
+                type : 1,
+                title : false,
+                closeBtn: [0, false],
+                offset:['100px' , ''],
+                shade: [0],
+                border: [0],
+                area : ['auto','auto'],
+                page : {
+                    html: $("#fsort-select").html()
+                }
             });
         }
 

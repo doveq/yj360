@@ -19,7 +19,7 @@ class Notice extends Eloquent {
 
     public function user()
     {
-        return $this->belongsTo('User', 'user_id', 'id');
+        return $this->belongsTo('User', 'uid', 'id');
     }
 
     public function getList($info = array())
@@ -40,12 +40,12 @@ class Notice extends Eloquent {
         if(!empty($info['title']))
             $db = $db->where('title', 'like', '%' . $info['title'] . '%');
 
-        return $db->orderBy('id', 'desc')->paginate($info['pageSize']);
+        return $db->orderBy('ordern', 'asc')->paginate($info['pageSize']);
     }
 
     public function addInfo($info)
     {
-        $info['created_at'] = date('Y-m-d H:m:s');
+        $info['created_at'] = date('Y-m-d H:i:s');
         $this->insert($info);
     }
 
@@ -62,5 +62,12 @@ class Notice extends Eloquent {
     public function editInfo($id, $info)
     {
         return $this->where('id', $id)->update($info);
+    }
+    
+    /**
+     * 获取评论数量
+     */
+    public function commentcount() {
+    	return $this->hasMany('NoticeComments', 'notice_id', 'id');
     }
 }

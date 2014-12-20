@@ -7,7 +7,6 @@
 
 
   <div class="wrap-right">
-      <form role="form" action="doProfile" method="post" enctype="multipart/form-data" >
       <table class="table-2" border="0" cellpadding="0" cellspacing="0">
         <tr>
             <th colspan="2">我的收藏</th>
@@ -32,7 +31,6 @@
         @endif
         
       </table>
-      </form>
   </div>
   <div class="clear"></div>
 </div> <!-- /container -->

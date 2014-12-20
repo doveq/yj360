@@ -14,11 +14,10 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-      <span class="tab-bar"></span>
-      <span style="color:#499528;">我的收藏（共{{count($list)}}条）</span>
-      <span style="float:right;">
-      	<a class="tabtool-btn" style="font-weight:600;" href="/favorite/sort?column_id={{$query['column_id']}}">管理收藏夹</a>
-      </span>
+                   我的收藏
+                 （共{{$favcount}}条）
+
+      <span style="float:right;"><a class="tabtool-btn" href="/favorite/sort?column_id={{$query['column_id']}}">管理收藏夹</a></span>
       </div>
       <div class="clear"></div>
 
@@ -26,19 +25,19 @@
       
       <a 
       	@if($query['sort'] === null)
-      		class="fsort-title on" 
+      		class="tabtool-btn fav-sort-title on" 
       	@else 
-      		class="fsort-title" 
+      		class="tabtool-btn fav-sort-title" 
       	@endif 
       	href="/favorite?column_id={{$query['column_id']}}">
-      	全部收藏
+      	全部收藏夹
       </a>
       
       <a 
         @if($query['sort'] === '0')
-      		class="fsort-title on"
+      		class="tabtool-btn fav-sort-title on"
       	@else
-      		class="fsort-title"
+      		class="tabtool-btn fav-sort-title"
       	@endif
       	href="/favorite?column_id={{$query['column_id']}}&sort=0">默认分类</a>
       
@@ -46,27 +45,32 @@
       @foreach($slist as $k => $v)
         <a
         @if($query['sort'] == $v->id)
-        	class="fsort-title on"
+        	class="tabtool-btn fav-sort-title on"
         @else
-        	class="fsort-title"
+        	class="tabtool-btn fav-sort-title"
         @endif	
-        href="/favorite?column_id={{$query['column_id']}}&sort={{$v->id}}" title="{{$v->name}}">
-         <span class="fsort-title-text">{{$v->name}}</span>
+        href="/favorite?column_id={{$query['column_id']}}&sort={{$v->id}}">
+        {{$v->name}}
         </a>
       @endforeach
       @endif
       
-      <a class="fsort-new" href="javascript:void(0);" onclick="newSort();">+新建收藏夹</a>
+      <a class="fav-sort-new" href="javascript:void(0);" onclick="newSort();">新建收藏夹</a>
       </div>
 
-      <div class="fav-list">
-          <table class="table-2" border="0" cellpadding="0" cellspacing="0">
+      <div class="classes-list">
+          <table class="table-2" border="0" cellpadding="0" cellspacing="0" style="margin-top:20px;margin-bottom:50px;">
+          <tr style="font-weight:bold;">
+            <td></td>
+            <td>序号</td>
+            <td style="padding-left:25px;">标题</td>
+            <td>所属分类</td>
+            <td style="padding-left:15px;">操作</td>
+          </tr>
           <tr>
-            <td style="width:30px;"></td>
-            <td style="padding:10px 0;font-size:15px;font-weight:600;">序号</td>
-            <td style="padding:10px 0;font-size:15px;font-weight:600;">标题</td>
-            <td style="padding:10px 0;font-size:15px;font-weight:600;">所属分类</td>
-            <td style="padding:10px 0;font-size:15px;font-weight:600;">操作</td>
+            <td colspan="5">
+            	<div style="margin-top:5px;border-top:1px solid #333;"></div>
+            </td>
           </tr>
             @if(!empty($list))
               @foreach($list as $k => $v)
@@ -74,52 +78,52 @@
                     <td>
                     	<input type="checkbox" value="{{$v->id}}" name="fid" />
                     </td>
-                    <td class="tytd" style="color:#499528;font-family: Microsoft Yahei,Arial;font-size:18px;">
-                    {{$v->id}}
+                    <td class="tytd">
+                    {{$k+1}}
                     </td>
                     <td class="tytd">
                       @if(empty($v->question->txt))
-                       	 该题已下架
+                        该题已下架
                       @else
                         <a href="/topic?id={{$v->question->id}}&column_id={{$query['column_id']}}&from=favorite" target="_blank">{{$v->question->txt}}</a>
                       @endif
                     </td>
 					<td class="tytd">
-				      {{$typeEnum[$v->question->type] or '默认分类'}}
+				      {{$sinfo[$v->sort] or '默认分类'}}
                     </td>
                     <td class="tytd table-2-del"><a href="/favorite/del?column_id={{$query['column_id']}}&qid={{$v->question->id}}" class="tyadel">删除</a></td>
                 </tr>
+                <tr><td colspan="5">
+                    <div class="table-2-sp"></div>
+                </td></tr>
               @endforeach
             @endif
           </table>
 
-          <div class="cl">
-            <div style="float:left;width:33%;font-size:13px;">
-            	<input id="check-all" type="checkbox" style="margin-left:10px;vertical-align:middle;" onclick="checkAll(event)">
-            	<label for="check-all" style="vertical-align:middle;">全选</label>
-            	
-            	<input id="invert-check" type="checkbox" style="margin-left:10px;vertical-align:middle;" onclick="invertCheck()">
-            	<label for="invert-check" style="vertical-align:middle;">反选</label>
-            	
-            	<span style="margin-left:10px;vertical-align:middle;cursor:pointer;" onclick="deleteCheck()">批量删除</span>
-            </div>
-            
+          <div>
+            <a class="fav-btn" href="javascript:void(0);" onclick="checkAll()">全选</a>
+            <a class="fav-btn" href="javascript:void(0);" onclick="invertCheck()">反选</a>
+            <a class="fav-btn" href="javascript:void(0);" onclick="deleteCheck()">批量删除</a>
+
             @if(count($slist)!=0)
             <div style="float:right;">
 	            <select name="msort">
 	              @foreach($slist as $k => $v)
-	                <option value="{{$v->id}}" title="{{$v->name}}">@if(strlen($v->name)>20){{substr($v->name,0,20).'...'}}@else{{$v->name}}@endif</option>
+	                <option value="{{$v->id}}">{{$v->name}}</option>
 	              @endforeach
 	            </select>
-	            <a class="fav-move-btn" style="margin-left:5px;" href="javascript:void(0);" onclick="moveCheck()">批量移动</a>
+	            <a class="fav-btn" style="margin-left:20px;" href="javascript:void(0);" onclick="moveCheck()">批量移动</a>
             </div>
             @endif
+            
           </div>
+          
+          <div class="clear"></div>
+          
+          <div style="text-align:right;margin-top:20px;">
+			{{$list->appends($query)->links()}}
+		  </div>
       </div>
-      
-      <div style="text-align:center;">
-		{{$list->appends($query)->links()}}
-	  </div>
   </div>
   <div class="clear"></div>
 
@@ -131,17 +135,13 @@
       <form action="/favorite/sort/doAdd" method="post">
         <input type="hidden" name="column_id" value="{{$query['column_id']}}" />
 
-        <div class="cl fsort-tit">
-            <span>创建收藏夹</span>
-            <span class="fsort-close" style="float:right;" onclick="closeSort();" title="关闭"></span>
-        </div>
+        <div class="fsort-tit">创建收藏夹</div>
         <div class="fsort-con">
-          	 收藏夹名称：<input type="text" name="name" value="" 
-          	 style="padding:3px 5px;width:230px;height:30px;border:1px solid #c9c9c9;" maxlength="64" />
+          	 收藏夹名称：<input type="text" name="name" value="" style="padding:5px;width:200px;" />
         </div>
-        <div class="fsort-bot" style="border-top:none;">
-          <button class="fsort-btn-ok" type="submit"></button>
-          <button class="fsort-btn-cancel" style="margin-left:10px;" onclick="closeSort();return false;"></button>
+        <div class="fsort-bot">
+          <button class="fsort-btn fsort-btn-ok" type="submit">确定</button>
+          <button class="fsort-btn" style="margin-left:10px;" onclick="closeSort();return false;">取消</button>
         </div>
       </form>
     </div>
@@ -155,9 +155,8 @@
 /**
  * 全选
  */
-function checkAll(event) {
-	var $cur = $(event.target);
-	$('input[name="fid"]').prop('checked', $cur.prop('checked'));
+function checkAll() {
+	$('input[name="fid"]').prop('checked', true);
 }
 
 /**
@@ -223,8 +222,8 @@ function newSort() {
 	layerSort = $.layer({
         type : 1,
         title : false,
+        shadeClose: true,
         offset:['100px' , ''],
-        closeBtn: [0, false],
         shade: [0],
         border: [0],
         area : ['auto','auto'],
@@ -235,6 +234,9 @@ function newSort() {
 }
 
 function closeSort() {
+	if(layerSort == null) {
+		return;
+	}
 	layer.close(layerSort);
 }
 

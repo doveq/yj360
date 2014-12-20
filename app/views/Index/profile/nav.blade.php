@@ -4,9 +4,16 @@
           <div class="avatar-box">
               <img src="{{Attachments::getAvatar(Session::get('uid'))}}" width="140" height="140" />
           </div>
+          
+          @if(Auth::user()->status == 2)
+          <div class="sort-item" style="padding-left:60px;">
+            <span style="background-color: #1db5a9;padding:5px 10px;color:#fff;">未验证</span>
+          </div>
+          @endif
+
          <!--  <div class="sort-bb"></div>
           <div class="sort-item @if($_SERVER["REQUEST_URI"] == '/column/static') sort-item-sel sort-nkm-sel @else sort-nkm @endif"><a href="/column/static">科目选择</a><div class="sort-nsj"></div></div>
- -->
+          -->
           <div class="sort-bb"></div>
           <div class="sort-item @if($_SERVER["REQUEST_URI"] == '/profile') sort-item-sel sort-ngr-sel @else sort-ngr @endif"><a href="/profile">个人资料</a><div class="sort-nsj"></div></div>
           <div class="sort-bb"></div>

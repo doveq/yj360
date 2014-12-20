@@ -3,20 +3,25 @@
 
 @section('content')
 <div class="container-column wrap">
+
+  <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
+     <span class="vm faq-tabbar"></span>
+     <span class="vm"><a style="color:#c9c9c9;" href="/">首页</a><span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span></span>
+     <span class="vm tab-title">
+     	<a style="color:#499528;" href="/feedback">问题反馈</a>
+     </span>
+  </div>
+
   <div class="row">
 
-  @include('Index.profile.nav')
-
+  <?php 
+  $query=array('type'=>4,'column_id'=>'');
+  ?>
+  @include('Index.notice.nav')
   
 
   <div class="wrap-right">
-      <div class="tabtool">
-        <span class="tab-bar"></span>
-        <span class="tab-title">问题反馈</span>
-      </div>
-      <div class="clear"></div>
-
-      <form role="form" action="/feedback/dopost" method="post" enctype="multipart/form-data" >
+      <form role="form" action="/feedback/dopost" method="post" enctype="multipart/form-data" style="margin-top:-10px;">
       <table class="table-2" border="0" cellpadding="0" cellspacing="0">
     
         <tr>

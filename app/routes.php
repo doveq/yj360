@@ -30,7 +30,7 @@ Route::filter('adminLogin', function()
 // 前台登录认证
 Route::filter('indexLogin', function()
 {
-    if( !Auth::check() || Auth::user()->status != 1 )
+    if( !Auth::check() || (Auth::user()->status != 1 && Auth::user()->status != 2) )
     {
         return Redirect::to('/login');
     }
@@ -95,6 +95,20 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::get('/notice/edit', '\Admin\NoticeController@edit');
     Route::post('/notice/doEdit', '\Admin\NoticeController@doEdit');
     Route::post('/notice/doDel', '\Admin\NoticeController@doDel');
+
+    Route::get('/notice/comment', '\Admin\NoticeController@comment'); // 管理员查看评论
+    Route::post('/notice/doCommentDel', '\Admin\NoticeController@doCommentDel'); // 管理员删除评论
+    Route::get('/notice/reply', '\Admin\NoticeController@reply'); // 管理员回复评论
+    Route::post('/notice/doReply', '\Admin\NoticeController@doReply'); // 管理员删除评论
+
+    Route::get('/student', '\Admin\StudentController@index');
+    Route::get('/student/add', '\Admin\StudentController@add');
+    Route::post('/student/doAdd', '\Admin\StudentController@doAdd');
+    Route::get('/student/edit', '\Admin\StudentController@edit');
+    Route::post('/student/doEdit', '\Admin\StudentController@doEdit');
+    Route::post('/student/doDel', '\Admin\StudentController@doDel');
+    Route::get('/student/import', '\Admin\StudentController@import');
+    Route::post('/student/doImport', '\Admin\StudentController@doImport');
 });
 
 Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
@@ -194,7 +208,12 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/favorite/ajax', 'FavoriteController@ajax');
     Route::get('/favorite/choose', 'FavoriteController@choose');
     Route::post('/favorite/doChoose', 'FavoriteController@dochoose');
-
+    Route::get('/favorite/sort', 'FavoriteController@sort');
+    Route::post('/favorite/sort/doAdd', 'FavoriteController@sortDoAdd');
+    Route::post('/favorite/sort/doEdit', 'FavoriteController@sortDoEdit');
+    Route::get('/favorite/sort/doDel', 'FavoriteController@sortDoDel');
+    Route::get('/favorite/move', 'FavoriteController@move');
+    
     //初级
     Route::get('/column', 'ColumnController@index');
     Route::get('/column/static', 'ColumnController@tmpShow');
@@ -236,6 +255,8 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/feedback', 'FeedbackController@index');
     Route::post('/feedback/dopost', 'FeedbackController@doPost');
 
+    // 公告评论
+    Route::post('/notice/doComment', 'NoticeController@doComment');
 });
 
 // 数据导入

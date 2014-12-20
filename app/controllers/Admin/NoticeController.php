@@ -7,6 +7,7 @@ use Paginator;
 use Redirect;
 use DB;
 use Notice;
+use NoticeComments;
 
 class NoticeController extends \BaseController {
 
@@ -48,10 +49,20 @@ class NoticeController extends \BaseController {
 
     public function doAdd()
     {
-        $query = Input::only('title', 'content', 'type', 'status', 'allow');
+        $query = Input::only('title', 'content', 'type', 'status', 'allow', 'ordern'); // 增加排序序号
+        if(isset($query['ordern']) && !is_numeric($query['ordern'])) {
+        	$query['ordern'] = '0';
+        }
+        
         $query['uid'] = Session::get('uid');
         $notice = new Notice();
-        $notice->addInfo($query);
+        $insertedId = $notice->addInfo($query);
+        
+        if ($query['ordern'] == '0') {
+        	// 未设置排序序号时使用当前id
+        	$query['ordern'] = $insertedId;
+        	$notice->editInfo($insertedId, $query);
+        }
 
         return $this->adminPrompt("操作成功", '数据添加成功', $url = "/admin/notice");
     }
@@ -70,8 +81,11 @@ class NoticeController extends \BaseController {
 
     public function doEdit()
     {
-        $query = Input::only('title', 'content', 'type', 'status', 'allow');
+        $query = Input::only('title', 'content', 'type', 'status', 'allow', 'ordern'); // 增加排序序号
         $id = Input::get('id');
+        if(isset($query['ordern']) && !is_numeric($query['ordern'])) {
+        	$query['ordern'] = $id;
+        }
 
         $notice = new Notice();
         $notice->editInfo($id, $query);
@@ -87,5 +101,73 @@ class NoticeController extends \BaseController {
         $notice->delInfo($id);
 
         return $this->adminPrompt("操作成功", '数据删除成功', $url = "/admin/notice");
+    }
+    
+    /**
+     * 评论列表
+     */
+    public function comment() {
+        $query = Input::only('page', 'type', 'title', 'id');
+        $query['pageSize'] = $this->pageSize;
+
+        // 当前页数
+        if( !is_numeric($query['page']) || $query['page'] < 1 ) {
+            $query['page'] = 1;
+        }
+
+        $notice = new Notice();
+        $noticeinfo = $notice->getInfo($query['id']);
+
+        $typeEnum = array('' => '全部') + $this->typeEnum;
+        $statusEnum = $this->statusEnum;
+        $allowEnum = $this->allowEnum;
+        
+        // 获取评论详情
+        $nc = new NoticeComments();
+        $comments = $nc->getListPage($query['id'], $this->pageSize);
+        
+        // 获取评论楼层
+        $floornums = $nc->getFloornums($query['id']); // key:commentid,val:floornum
+        
+    	return $this->adminView('notice.comment', 
+    			compact('query', 'typeEnum', 'statusEnum', 'allowEnum', 
+    					'noticeinfo', 'comments', 'floornums'));
+    }
+    
+    /**
+     * 删除评论
+     */
+    public function doCommentDel() {
+    	$id = Input::get('id'); // comment_id
+    	$noticeid = Input::get('noticeid'); // notice_id
+    	$nc = new NoticeComments();
+    	$nc->delInfo($id);
+    	return $this->adminPrompt("操作成功", '数据删除成功', $url = "/admin/notice/comment?id=".$noticeid, true);
+    }
+    
+    /**
+     * 转到回复页
+     */
+    public function reply() {
+    	$commentid = Input::get('commentid'); // comment_id
+    	$noticeid = Input::get('noticeid'); // notice_id
+    	$nc = new NoticeComments();
+    	$comment = $nc->getInfo($commentid); // 评论内容
+    	return $this->adminView('notice.reply', compact('commentid', 'noticeid', 'comment'));
+    }
+    
+    /**
+     * 发表回复
+     */
+    public function doReply() {
+    	$query = Input::only('commentid', 'noticeid', 'content');
+    	$data = array();
+    	$data['uid'] = Session::get('uid');
+    	$data['notice_id'] = $query['noticeid'];
+    	$data['content'] = $query['content'];
+    	$data['parent_id'] = $query['commentid'] ? $query['commentid'] : 0;
+    	$nc = new NoticeComments();
+    	$nc->addInfo( $data );
+    	return $this->adminPrompt("操作成功", '回复成功', $url = "/admin/notice/comment?id=".$query['noticeid'], true);
     }
 }

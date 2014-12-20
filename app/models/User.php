@@ -67,11 +67,20 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 				'name' =>  $data['name'],
     			'tel' => $data['tel'],
     			'password' => $this->encPasswd($data['password']),
-    			'is_certificate' => $data['is_certificate'],
     			'type' => $data['type'],
-    			'created_at' => date('Y-m-d H:i:s'),
-    			'status' => 1,
+    			'created_at' => date('Y-m-d H:i:s')
     		);
+
+
+		 if( isset($data['is_certificate']) && is_numeric($data['is_certificate']) )
+		 	$info['is_certificate'] = $data['is_certificate'];
+		 else
+		 	$info['is_certificate'] = 0;
+
+		 if( isset($data['status']) && is_numeric($data['status']) )
+		 	$info['status'] = $data['status'];
+		 else
+		 	$info['status'] = 1;  // 默认通过
 
 		 if(!empty($data['inviter']) && is_numeric($data['inviter']))
 		 	$info['inviter'] = $data['inviter'];
@@ -152,6 +161,11 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 		$re = DB::table($this->table)->where('id', $id)->get();
 		return (array)$re[0];
 	}
+
+	public function getInfoByTel($tel)
+    {
+        return DB::table($this->table)->where('tel', $tel)->first();
+    }
 
 	/* 跟新用户信息 */
 	public function setInfo($id, $data)

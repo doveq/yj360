@@ -34,9 +34,11 @@
             <th>#</th>
             <th>标题</th>
             <th>创建时间</th>
+            <th>查看评论</th>
             <th>类型</th>
             <th>状态</th>
             <th>查看</th>
+            <th>排序序号</th>
             <th>操作</th>
           </tr>
         </thead>
@@ -46,6 +48,7 @@
             <td>{{$v->id}}</td>
             <td><a href="{{url('/admin/notice/edit?id='.$v->id)}}">{{$v->title}}</a></td>
             <td>{{$v->created_at}}</td>
+            <td><a href="{{url('/admin/notice/comment?id='.$v->id)}}">查看评论（{{count($v->commentcount)}}）</a></td>
             <td>
               {{$typeEnum[$v->type]}}
             </td>
@@ -55,6 +58,7 @@
             <td>
               {{$allowEnum[$v->allow]}}
             </td>
+            <td>{{$v->ordern}}</td>
             <td>
               <div class="btn-group btn-xs">
                 <a class="btn btn-default btn-xs btn_delete" href="#" data-toggle="modal" data-id="{{$v->id}}" data-status="-1"><i class="glyphicon glyphicon-remove"></i></a>
