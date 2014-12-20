@@ -18,12 +18,12 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>反馈者</th>
+            <th width="80">反馈者</th>
             <th>内容</th>
             <th>回复</th>
-            <th>创建时间</th>
-            <th>类型</th>
-            <th>操作</th>
+            <th width="80">创建时间</th>
+            <th width="80">类型</th>
+            <th width="40">操作</th>
           </tr>
         </thead>
         <tbody>

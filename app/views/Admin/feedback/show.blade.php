@@ -18,7 +18,7 @@
     <input name="_method" type="hidden" value="PUT">
     <table class="table">
       <tr>
-        <td class="text-right">反馈者: </td>
+        <td class="text-right" >反馈者: </td>
         <td>{{$feedback->user->name}}</td>
       </tr>
       <tr>
@@ -36,7 +36,7 @@
       <tr>
         <td class="text-right col-md-2">回复: </td>
         <td>
-            <textarea style="width:600px;" rows="5" name="reply">{{$feedback->reply}}</textarea>
+            <textarea id="reply" name="reply" style="width:700px;">{{$feedback->reply}}</textarea>
         </td>
       </tr>
       <tr>
@@ -77,9 +77,15 @@
 @stop
 
 @section('js')
+<script type="text/javascript" src="/assets/ueditor/ueditor-notice.config.js"></script>
+<script type="text/javascript" src="/assets/ueditor/ueditor.all.min.js"></script>
+<script type="text/javascript" src="/assets/ueditor/lang/zh-cn/zh-cn.js"></script>
+
 <script type="text/javascript">
 
 $(function(){
+
+  var ue = UE.getEditor('reply');
 
   //删除
   $(".btn_delete").bind("click", function(){
