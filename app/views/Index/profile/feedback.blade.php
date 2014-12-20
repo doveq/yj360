@@ -45,7 +45,7 @@
       @foreach($list as $v)
       <div class="fbitem">
         <div class="fbitit">
-            <span>{{$v->created_at}} 提出问题</span>
+            <span>{{$v->created_at}} 我提出的问题</span>
             @if(!empty($v->reply))
             <span class="fbiok">已解决</span>
             @endif
@@ -58,7 +58,7 @@
         <div class="fbireply">
           <table>
             <tr>
-                <td style="width:60px;color:red;padding-right:15px;">客服雯雯</td>
+                <td style="width:100px;color:red;padding-right:15px;">客服雯雯回答：</td>
                 <td>{{$v->reply}}</td>
             </tr>
           </table>

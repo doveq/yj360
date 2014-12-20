@@ -97,7 +97,7 @@ class FeedbackController extends \BaseController {
      */
     public function update($id)
     {
-        $reply = htmlentities(Input::get('reply'));
+        $reply = Input::get('reply');
         Feedback::where('id', $id)->update(array('reply' => $reply));
 
         return Redirect::to('admin/feedback');
