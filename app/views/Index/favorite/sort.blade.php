@@ -26,7 +26,7 @@
       <div class="clear fsort-line">
         <form action="/favorite/sort/doEdit" method="post" >
           <input type="hidden" name="id" value="{{$v->id}}" />
-          <input type="hidden" name="column_id" value="{{$v->column_id}}" />
+          <input type="hidden" name="column_id" value="{{$query['column_id']}}" />
           
           <div style="float:left;">
           	<span class="fsort-num">{{$k+1}}</span>
@@ -35,7 +35,7 @@
 
           <div style="float:right;line-height:40px;">
             <button class="fsort-delete" type="button" 
-            	onclick="location.href='/favorite/sort/doDel?id={{$v->id}}&column_id={{$v->column_id}}'"></button>
+            	onclick="location.href='/favorite/sort/doDel?id={{$v->id}}&column_id={{$query['column_id']}}'"></button>
             <button class="fsort-save" style="margin-left:10px;" type="submit"></button>
           </div>
         

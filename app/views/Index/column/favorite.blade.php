@@ -74,14 +74,14 @@
                     <td>
                     	<input type="checkbox" value="{{$v->id}}" name="fid" />
                     </td>
-                    <td class="tytd" style="color:#499528;font-family: Microsoft Yahei,Arial;font-size:18px;">
+                    <td class="tytd" style="color:#499528;font-family: Microsoft Yahei,Arial;font-size:15px;">
                     {{$k+1}}
                     </td>
                     <td class="tytd">
                       @if(empty($v->question->txt))
                        	 该题已下架
                       @else
-                        <a href="/topic?id={{$v->question->id}}&column_id={{$query['column_id']}}&from=favorite" target="_blank">{{$v->question->txt}}</a>
+                        <a class="fav-title" href="/topic?id={{$v->question->id}}&column_id={{$query['column_id']}}&from=favorite" target="_blank">{{$v->question->txt}}</a>
                       @endif
                     </td>
 					<td class="tytd">
@@ -94,7 +94,7 @@
           </table>
 
           <div class="cl">
-            <div style="float:left;width:33%;font-size:13px;">
+            <div style="float:left;font-size:13px;">
             	<input id="check-all" type="checkbox" style="margin-left:10px;vertical-align:middle;" onclick="checkAll(event)">
             	<label for="check-all" style="vertical-align:middle;">全选</label>
             	
@@ -105,7 +105,7 @@
             </div>
             
             @if(count($slist)!=0)
-            <div style="float:right;">
+            <div style="float:left;margin-left:20px;">
 	            <select name="msort">
 	              @foreach($slist as $k => $v)
 	                <option value="{{$v->id}}" title="{{$v->name}}">@if(strlen($v->name)>20){{substr($v->name,0,20).'...'}}@else{{$v->name}}@endif</option>

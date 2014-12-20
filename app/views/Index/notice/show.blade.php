@@ -19,7 +19,7 @@
   <div class="wrap-right">
       <div class="notice-detail">
 	    <div style="padding:20px;">
-		  <div class="notice-tit">{{$info->title}}</div>
+		  <div class="notice-tit" style="color:#000;">{{$info->title}}</div>
 	      <div class="notice-info">
 	      	<span class="faq-time">{{$info->created_at}}</span>
 	      	<span style="margin-left:30px;">评论：{{count($info->commentcount)}}</span>

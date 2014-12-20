@@ -22,7 +22,7 @@
           @foreach($list as $v)
           <div class="notice-item">
             <div class="notice-lt">
-            	<a style="color:#499528;" href="/notice/show?type=1&id={{$v->id}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">{{$v->title}}</a>
+            	<a style="color:#000;" href="/notice/show?type=1&id={{$v->id}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">{{$v->title}}</a>
             </div>
             <div class="notice-lc">{{str_limit(strip_tags($v->content), $limit = 100, $end = '...')}}</div>
             <ul class="notice-tools">

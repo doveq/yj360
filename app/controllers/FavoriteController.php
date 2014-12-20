@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Input;
 
 class FavoriteController extends BaseController
 {
-	public $pageSize = 20;
+	public $pageSize = 15;
 	public $typeEnum = array('1' => '单选择题', '2' => '多选择题',  '3' => '判断题', '4' => '填空题', '5' => '写作题', '6' => '模唱', '7' => '视唱', '8' => '视频', '9' => '教材', '10' => '游戏');
 
     public function __construct()
@@ -118,15 +118,28 @@ class FavoriteController extends BaseController
     
     public function ajaxSort() {
     	$inputs = Input::all();
-        if(!isset($inputs['act']) || !isset($inputs['name'])) {
+        if(!isset($inputs['act'])) {
             return Response::json(array('act' => $inputs['act'], 'state' => '0'));
         }
-        $query['name'] = $inputs['name'];
-        $fs = new FavoriteSort();
-        $query['uid'] = Session::get('uid');
-        $query['created_at'] = date("Y-m-d H:i:s");
-        $fs->addInfo($query);
-        return Response::json(array('state' => '1'));
+        if($inputs['act'] == 'add') {
+        	if(!isset($inputs['name'])) {
+        		return Response::json(array('act' => $inputs['act'], 'state' => '0'));
+        	}
+	        $query['name'] = $inputs['name'];
+	        $fs = new FavoriteSort();
+	        $query['uid'] = Session::get('uid');
+	        $query['created_at'] = date("Y-m-d H:i:s");
+	        $fs->addInfo($query);
+	        
+	        $fs = new FavoriteSort();
+	        $slist = $fs->getList(array('uid' => Session::get('uid')));
+	        
+	        return Response::json(array('state' => '1', 'sortlist' => $slist));
+        } else if($inputs['act'] == 'query') {
+        	$fs = new FavoriteSort();
+        	$slist = $fs->getList(array('uid' => Session::get('uid')));
+        	return Response::json(array('state' => '1', 'sortlist' => $slist));
+        }
     }
 
     public function ajax()

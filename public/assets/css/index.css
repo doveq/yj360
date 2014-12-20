@@ -1457,6 +1457,12 @@ a.tyadel {
 	border-top: 1px solid #c9c9c9;
 	font-size: 13px;
 }
+.fav-list .tytd {
+	padding: 3px 15px;
+}
+.fav-list .fav-title:hover {
+	color: #499528;
+}
 .fav-list .pagination {
 	margin-top: -5px;
 }

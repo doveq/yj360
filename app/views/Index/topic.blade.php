@@ -415,16 +415,19 @@
 					<input type="checkbox" name="fsort" id="fav0" data-id="0" style="vertical-align:middle;">&nbsp;&nbsp;
 					<label for="fav0" style="vertical-align:middle;">默认收藏</label>
 				</div>
-		    	@if(count($fsList) != 0)
-		    	@foreach($fsList as $fs)
-		    	<div style="margin:5px 5px 5px 40px">
-			    	<input type="checkbox" name="fsort" id="fav{{$fs->id}}" data-id="{{$fs->id}}" 
-			    		onclick="selectSort(event)"
-			    		style="vertical-align:middle;">&nbsp;&nbsp;
-			    	<label for="fav{{$fs->id}}" title="{{$fs->name}}" style="vertical-align:middle;">@if(strlen($fs->name)>30){{substr($fs->name,0,30).'...'}}@else{{$fs->name}}@endif</label>
+				
+		    	<div name="customsortlist">
+					@if(count($fsList) != 0)
+			    	@foreach($fsList as $fs)
+			    	<div style="margin:5px 5px 5px 40px">
+				    	<input type="checkbox" name="fsort" id="fav{{$fs->id}}" data-id="{{$fs->id}}" 
+				    		onclick="selectSort(event)"
+				    		style="vertical-align:middle;">&nbsp;&nbsp;
+				    	<label for="fav{{$fs->id}}" title="{{$fs->name}}" style="vertical-align:middle;">@if(strlen($fs->name)>30){{substr($fs->name,0,30).'...'}}@else{{$fs->name}}@endif</label>
+			    	</div>
+			    	@endforeach
+			    	@endif
 		    	</div>
-		    	@endforeach
-		    	@endif
 		    </div>
 		    
 	        <div class="fsort-bot" style="padding-bottom:5px;">
@@ -999,8 +1002,15 @@
             }
         	$.getJSON("/favorite/ajaxSort", {'act':'add','name':name}, function(data) {
         		if(data.state == 1) {
-            		// 添加收藏夹成功刷新页面
-            		window.location.reload();
+            		var sortlist = data.sortlist;
+            		var str = '';
+            		$.each(sortlist, function(index, elem) {
+                		var sortobj = elem;
+                		str += '<div style="margin:5px 5px 5px 40px"><input type="checkbox" name="fsort" id="fav' + sortobj.id + '" data-id="' + sortobj.id + '" onclick="selectSort(event)" style="vertical-align:middle;">&nbsp;&nbsp; <label for="fav' + sortobj.id + '" title="' + sortobj.name + '" style="vertical-align:middle;">' + sortobj.name + '</label></div>';
+                    });
+                    $('div[name="customsortlist"]').html(str);
+                    
+                    layer.close(layerSort);
         		}
         	});
         }
