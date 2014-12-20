@@ -11,6 +11,18 @@
 |
 */
 
+
+// 如果已经登录则访问以下页面自动跳转
+if($_SERVER["REQUEST_URI"] == '/login' || $_SERVER["REQUEST_URI"] == '/' 
+    || $_SERVER["REQUEST_URI"] == '/invite_by' || $_SERVER["REQUEST_URI"] == '/register' )
+{
+    if( Auth::check() )
+    {
+        header('Location: /column/static');
+        exit;
+    }
+}
+
 // 后台登录认证
 Route::filter('adminLogin', function()
 {
@@ -214,7 +226,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/favorite/sort/doDel', 'FavoriteController@sortDoDel');
     Route::get('/favorite/move', 'FavoriteController@move');
     Route::get('/favorite/ajaxSort', 'FavoriteController@ajaxSort'); // 收藏夹管理ajax
-    
+
     //初级
     Route::get('/column', 'ColumnController@index');
     Route::get('/column/static', 'ColumnController@tmpShow');
