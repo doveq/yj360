@@ -62,12 +62,12 @@
           <tr>
             <td>{{$list->id}}</td>
             <td>{{$list->name}}</td>
-            <td>{{$list->tel}}</td>
+            <td>{{substr($list->tel,0,3). '****' .substr($list->tel,7,4)}}</td>
             <td>{{$list->address}}</td>
             <td>{{$list->school}}</td>
             <td>{{$list->class}}</td>
             <td>{{$list->teacher}}</td>
-            <td>{{$list->retel}}</td>
+            <td>{{substr($list->retel,0,3). '****' .substr($list->retel,7,4)}}</td>
             <td>{{$statusEnum[$list->status]}}</td>
             <td>
               <div class="btn-group btn-xs">
