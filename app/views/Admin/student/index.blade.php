@@ -27,6 +27,14 @@
         {{ Form::text('tel', $query['tel'], array('class' => 'form-control', 'id' => 'inputTel', 'placeholder' => '手机号')) }}
       </div>
       <div class="form-group">
+        {{ Form::label('inputTel', '推荐老师', array('class' => 'sr-only')) }}
+        {{ Form::text('teacher', $query['teacher'], array('class' => 'form-control', 'id' => 'inputTel', 'placeholder' => '推荐老师')) }}
+      </div>
+      <div class="form-group">
+        {{ Form::label('inputTel', '老师手机', array('class' => 'sr-only')) }}
+        {{ Form::text('retel', $query['retel'], array('class' => 'form-control', 'id' => 'inputTel', 'placeholder' => '老师手机')) }}
+      </div>
+      <div class="form-group">
         {{ Form::label('inputType', '状态', array('class' => 'sr-only')) }}
         {{ Form::select('status', $statusEnum, $query['status'], array('class' => 'form-control', 'id' => 'inputType')) }}
       </div>
@@ -44,6 +52,7 @@
             <th>学校</th>
             <th>班级</th>
             <th>推荐老师</th>
+            <th>老师手机</th>
             <th width="50">状态</th>
             <th width="120">操作</th>
           </tr>
@@ -58,6 +67,7 @@
             <td>{{$list->school}}</td>
             <td>{{$list->class}}</td>
             <td>{{$list->teacher}}</td>
+            <td>{{$list->retel}}</td>
             <td>{{$statusEnum[$list->status]}}</td>
             <td>
               <div class="btn-group btn-xs">

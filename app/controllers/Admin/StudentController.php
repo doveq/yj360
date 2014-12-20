@@ -18,7 +18,7 @@ class StudentController extends \BaseController {
     public function index()
     {
         Input::merge(array_map('trim', Input::all() ));
-        $query = Input::only('name', 'tel', 'type', 'page', 'status');
+        $query = Input::only('name', 'tel', 'type', 'page', 'status', 'retel', 'teacher');
 
         $student = new Student();
         $lists = $student->getList($query)->paginate($this->pageSize);
@@ -39,10 +39,11 @@ class StudentController extends \BaseController {
 
     public function doAdd()
     {
-        $info = Input::only('name', 'tel', 'class', 'address', 'school', 'status', 'teacher');
+        $info = Input::only('name', 'tel', 'class', 'address', 'school', 'status', 'teacher', 'retel');
 
         $validator = Validator::make($info, array(
-            'tel' => 'required|digits:11|unique:student_info')
+            'tel' => 'required|digits:11|unique:student_info',
+            'retel' => 'digits:11')
         );
 
         if($validator->passes())
@@ -72,7 +73,7 @@ class StudentController extends \BaseController {
 
     public function doEdit()
     {
-        $info = Input::only('id', 'name', 'tel', 'class', 'address', 'school', 'status', 'teacher');
+        $info = Input::only('id', 'name', 'tel', 'class', 'address', 'school', 'status', 'teacher', 'retel');
 
         $student = new Student();
         $id = $info['id'];
@@ -120,6 +121,7 @@ class StudentController extends \BaseController {
                     $dinfo['school'] = trim( mb_convert_encoding($data[3], 'UTF-8', 'GBK') );
                     $dinfo['class'] = trim( mb_convert_encoding($data[4], 'UTF-8', 'GBK') );
                     $dinfo['teacher'] = trim( mb_convert_encoding($data[5], 'UTF-8', 'GBK') );
+                    $dinfo['retel'] = trim( mb_convert_encoding($data[6], 'UTF-8', 'GBK') );
                     $dinfo['status'] = 1;
 
                     if(empty($dinfo['name']) && empty($dinfo['tel']) && empty($dinfo['address']) 

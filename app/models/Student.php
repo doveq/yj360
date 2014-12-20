@@ -18,6 +18,12 @@ class Student extends Eloquent {
         if( !empty($info['name']) )
            $data = $data->where('name', 'like', '%' . $info['name'] . '%'); 
 
+        if( !empty($info['teacher']) )
+           $data = $data->where('teacher', 'like', '%' . $info['teacher'] . '%'); 
+
+        if( !empty($info['retel']) )
+           $data = $data->where('retel', $info['retel']);
+
         if( !empty($info['tel']) )
            $data = $data->where('tel', $info['tel']);
 
@@ -52,6 +58,17 @@ class Student extends Eloquent {
                 $uinfo['password'] = '123456';  // 默认密码
                 $uinfo['type'] = 0;  // 学生
                 $uinfo['status'] = 2; // 手机号未验证
+                
+                // 获取推荐人信息
+                if( !empty($info['retel']) )
+                {
+                    $ud = $user->getInfoByTel( $info['retel'] );
+                    if( !empty($ud) )
+                    {
+                        $uinfo['inviter'] = $ud->id;
+                    }
+                }
+
                 $user->add($uinfo);
             }
 
