@@ -11,17 +11,19 @@ use SortQuestionRelation;
 use Sort;
 use Column;
 use ExamPaper;
+use Config;
 
 /* 原始题库功能 */
 class TopicController extends \BaseController {
 
 	public $statusEnum = array('' => '所有状态', '0' => '未审核', '1' => '审核通过', '-1' => '审核未通过');
-	public $typeEnum = array('1' => '单选择题', '2' => '多选择题',  '3' => '判断题', '4' => '填空题', '5' => '写作题', '6' => '模唱', '7' => '视唱', '8' => '视频', '9' => '教材', '10' => '游戏');
+	#public $typeEnum = array('1' => '单选择题', '2' => '多选择题',  '3' => '判断题', '4' => '填空题', '5' => '写作题', '6' => '模唱', '7' => '视唱', '8' => '视频', '9' => '教材', '10' => '游戏');
 	public $flag = array(0 => 'A', 1 => 'B', 2 => 'C', 3 => 'D', 4 => 'E', 5 => 'F');
 
 	public function __construct()
 	{
 		$this->att = new Attachments();
+		$this->typeEnum = Config::get('app.topic_type'); // 读取配置文件
 	}
 
 
