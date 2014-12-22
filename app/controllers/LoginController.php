@@ -9,6 +9,7 @@ class LoginController extends BaseController
 
     	// 允许后台登录的手机号
     	$this->allowTel = Config::get('app.allow_admin_tel');
+    	
     }
 
 	/*  后台登录 */
