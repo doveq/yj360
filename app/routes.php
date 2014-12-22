@@ -259,6 +259,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::post('/profile/doPasswd', 'ProfileController@doPasswd');
     Route::get('/profile/up', 'ProfileController@up');
     Route::post('/profile/doUp', 'ProfileController@doUp');
+    Route::get('/profile/verify', 'ProfileController@verify');
 
     // 错题记录
     Route::get('/failTopic', 'FailTopicController@index');

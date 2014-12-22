@@ -181,4 +181,14 @@ class ProfileController extends BaseController {
 		return $this->indexPrompt("", '信息已保存，请耐心等待审核通过。', $url = "/profile/up");
 	}
 
+
+	/* 批量开通账户验证手机号 */
+	public function verify()
+	{
+		$user = new User();
+		$uinfo = $user->getInfoById( Session::get('uid') );
+
+		return $this->indexView('profile.verify', compact('uinfo') );
+	}
+
 }
