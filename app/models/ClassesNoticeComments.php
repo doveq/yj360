@@ -33,6 +33,13 @@ class ClassesNoticeComments extends Eloquent {
     public function getInfo($id) {
         return $this->find($id);
     }
+    
+    /**
+     * 根据班级消息id删除所有相关评论
+     */
+    public function delByNotice($notice_id) {
+        return $this->where('notice_id', '=', $notice_id)->delete();
+    }
 
     public function delInfo($id) {
         return $this->find($id)->delete();

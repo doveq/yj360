@@ -206,6 +206,10 @@ class ClassesNoticeController extends BaseController {
     	// 获取班级消息列表
     	$cn = new ClassesNotice();
     	$cn->delInfo($query['id']);
+    	
+    	// 同时删除消息评论
+    	$cnc = new ClassesNoticeComments();
+    	$cnc->delByNotice($query['id']);
     	 
     	return Redirect::to("/classes_notice/showList?class_id=". $query['class_id']."&column_id=".$query['column_id']);
     }
