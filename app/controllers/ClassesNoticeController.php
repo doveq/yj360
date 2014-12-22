@@ -4,7 +4,7 @@
  * 班级消息
  */
 class ClassesNoticeController extends BaseController {
-	public $pageSize = 5;
+	public $pageSize = 20;
 	
 	public function __construct() {
 		$query = Input::only('column_id');
