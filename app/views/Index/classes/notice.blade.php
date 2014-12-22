@@ -37,7 +37,7 @@
           @foreach($cnList as $v)
           <div class="notice-item">
             <div class="notice-lt">
-            	<a style="color:#000;font-weight:bold;" href="/classes_notice/show?id={{$v->id}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">{{$v->title}}</a>
+            	<a style="color:#000;font-weight:bold;" href="/classes_notice/show?id={{$v->id}}&class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">{{$v->title}}</a>
             </div>
             <div class="notice-lc">{{str_limit(strip_tags($v->content), $limit = 100, $end = '...')}}</div>
             <ul class="notice-tools">
