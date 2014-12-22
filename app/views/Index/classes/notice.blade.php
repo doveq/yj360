@@ -43,6 +43,7 @@
             <ul class="notice-tools">
               <li class="notice-tools-t" style="margin-top:5px;">
 	              <span class="faq-time">{{$v->created_at}}</span>
+	              <span style="margin-left:30px;">浏览量：{{$v->visits or '0'}}</span>
 	              <span style="margin-left:30px;">评论：{{$v->commentcount->count()}}</span>
 	              <span style="margin-left:30px;">
 	              	<a style="color:#499528;" href="/classes_notice/show?id={{$v->id}}&class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">[查看全文]</a>

@@ -82,9 +82,13 @@ class NoticeController extends BaseController {
             $arr = $cn->getPath($query['column_id']);
             $columnHead = $arr[0];
         }
-
-        // 获取详情
+        
+        // 计算页面浏览量
         $notice = new Notice();
+        $ip = Request::getClientIp();
+        $notice->computeVisits($query['id'], $ip);
+        
+        // 获取详情
         $info = $notice->getInfo($query['id']);
         
         // 获取评论详情

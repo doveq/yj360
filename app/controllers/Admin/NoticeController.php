@@ -8,6 +8,7 @@ use Redirect;
 use DB;
 use Notice;
 use NoticeComments;
+use IpPage;
 
 class NoticeController extends \BaseController {
 
@@ -99,6 +100,14 @@ class NoticeController extends \BaseController {
 
         $notice = new Notice();
         $notice->delInfo($id);
+        
+        // 同时删除消息评论
+        $nc = new NoticeComments();
+        $nc->delByNotice($id);
+        
+        // 同时删除ip_page表中相关记录
+        $ipmodel = new IpPage();
+        $ipmodel->delByPageType($id, 0);
 
         return $this->adminPrompt("操作成功", '数据删除成功', $url = "/admin/notice");
     }

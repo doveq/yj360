@@ -32,6 +32,7 @@
 		  <div class="notice-tit" style="color:#000;font-weight:bold;">{{$info->title}}</div>
 	      <div class="notice-info">
 	      	<span class="faq-time">{{$info->created_at}}</span>
+	      	<span style="margin-left:30px;">浏览量：{{$info->visits or '0'}}</span>
 	      	<span style="margin-left:30px;">评论：{{$info->commentcount->count()}}</span>
 	      </div>
 	      <div class="notice-sp"></div>

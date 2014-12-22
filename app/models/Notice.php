@@ -70,4 +70,45 @@ class Notice extends Eloquent {
     public function commentcount() {
     	return $this->hasMany('NoticeComments', 'notice_id', 'id');
     }
+    
+    /**
+     * 计算页面浏览量
+     */
+    public function computeVisits($page_id, $ip) {
+        // 在ip_page中notice表的type为0
+        $page_type = 0;
+        
+        $data = $this->where('id', $page_id)->first()->toArray();
+        if(empty($data)) {
+            return 0;
+        }
+        
+        $ip_model = new IpPage();
+        $ip_info = $ip_model->where('type', $page_type)->where('ip', $ip)->where('page_id', $page_id)->first();
+        if(empty($ip_info)) {
+            // 未找到添加记录并修改访问量
+            $ip_data = array();
+            $ip_data['type'] = $page_type;
+            $ip_data['page_id'] = $page_id;
+            $ip_data['ip'] = $ip;
+            $ip_data['created_at'] = date('Y-m-d H:i:s');
+            $ip_model->insert($ip_data);
+            
+            if(empty($data['visits'])) {
+                $data['visits'] = 1;
+            } else {
+                $data['visits'] = $data['visits'] + 1;
+            }
+            $this->where('id', $page_id)->update($data);
+            return $data['visits'];
+        } else {
+            // 找到的话直接返回
+            $ip_data = $ip_info->toArray();
+            $ip_data['updated_at'] = date('Y-m-d H:i:s');
+            $ip_model->where('id', $ip_data['id'])->update($ip_data);
+            
+            return $data['visits'];
+        }
+    }
 }
+
