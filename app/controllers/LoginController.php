@@ -2,16 +2,13 @@
 
 class LoginController extends BaseController
 {
-	/* 允许登录后台的手机号 */
-	public $allowTel = array('' => '13521819218', 
-		'付' => '13146197888', '周景伟' => '18610209630', 
-		'张亲' => '18612218171', '冯成强' => '13716966342', '梁星华' => '13581898191', '波哥' => '13522421856',
-		'zhouds' => '15856392832'
-	);
-
+	
 	public function __construct()
     {
     	//$this->beforeFilter('csrf', array('on' => 'post'));
+
+    	// 允许后台登录的手机号
+    	$this->allowTel = Config::get('app.allow_admin_tel');
     }
 
 	/*  后台登录 */
