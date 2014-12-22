@@ -24,7 +24,7 @@
          	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
          </span>
          @endif
-	     <span class="vm tab-title">
+	     <span class="vm tab-title" style="color:#000;">
 	     	班级消息
 	     </span>
 	     <span style="float:right;">

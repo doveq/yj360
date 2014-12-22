@@ -9,7 +9,7 @@
      <span class="vm faq-tabbar"></span>
      <span class="vm"><a style="color:#c9c9c9;" href="/">首页</a><span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span></span>
      <span class="vm tab-title">
-     	<a style="color:#499528;" href="/notice/list?column_id={{$query['column_id']}}&type=1">{{$typeEnum[1]}}</a>
+     	<a style="color:#499528;" href="/notice/list?column_id={{$query['column_id']}}&type={{$query['type']}}">{{$typeEnum[$query['type']]}}</a>
      </span>
   </div>
 
