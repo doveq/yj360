@@ -191,7 +191,22 @@ Route::group(array('before' => 'indexLogin'), function(){
 
     //我的班级
     Route::get('/classes/mates', 'ClassesController@mates');
+    Route::get('/classes/manage', 'ClassesController@manage'); // 班级管理
+    Route::get('/classes/manage/doDel', 'ClassesController@manageDel'); // 班级管理删除
+    Route::post('/classes/manage/doEdit', 'ClassesController@manageEdit'); // 班级管理保存
     Route::resource('classes', 'ClassesController');
+    
+    // 我的班级－班级消息
+
+    Route::get('/classes_notice/showList', 'ClassesNoticeController@showList'); // 班级消息列表
+    Route::get('/classes_notice/create', 'ClassesNoticeController@create'); // 发布班级消息页面
+    Route::get('/classes_notice/edit', 'ClassesNoticeController@edit'); // 修改班级消息页面
+    Route::post('/classes_notice/doEdit', 'ClassesNoticeController@doEdit'); // 发布/修改班级消息页面
+    Route::get('/classes_notice/doDel', 'ClassesNoticeController@doDel'); // 班级消息删除
+    Route::get('/classes_notice/show', 'ClassesNoticeController@show'); // 班级消息查看页面
+    Route::post('/classes_notice/doComment', 'ClassesNoticeController@doComment'); // 对班级消息发表评论
+    Route::get('/classes_notice/doCommentDel', 'ClassesNoticeController@doCommentDel'); // 删除班级消息的评论
+    
     //训练集
     Route::resource('training', 'TrainingController');
     //班级同学对应

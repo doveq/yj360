@@ -1,28 +1,38 @@
 @extends('Index.master')
-@section('title'){{$typeEnum[$info->type]}} @stop
+@section('title') 班级消息详情 @stop
 @extends('Index.column.columnHead')
 
 @section('content')
 <div class="container-column wrap">
-
-  <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
-     <span class="vm faq-tabbar"></span>
-     <span class="vm"><a style="color:#c9c9c9;" href="/">首页</a><span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span></span>
-     <span class="vm tab-title">
-     	<a style="color:#499528;" href="/notice/list?column_id={{$query['column_id']}}&type={{$query['type']}}">{{$typeEnum[$query['type']]}}</a>
-     </span>
-  </div>
-
   <div class="row">
-    @include('Index.notice.nav')
+    @include('Index.column.nav')
 
   <div class="wrap-right">
+      <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
+         <span class="vm faq-tabbar"></span>
+         <span class="vm">
+         	<a style="color:#499528;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
+         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+         </span>
+         <span class="vm tab-title">
+         	<a style="color:#499528;" href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$info->classes->name}}</a>
+         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+         </span>
+         <span class="vm tab-title">
+         	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级消息</a>
+         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+         </span>
+         <span class="vm tab-title">
+             <span style="color:#000;">{{$info->title}}</span>
+         </span>
+      </div>
+      
       <div class="notice-detail">
 	    <div style="padding:20px;">
 		  <div class="notice-tit" style="color:#000;font-weight:bold;">{{$info->title}}</div>
 	      <div class="notice-info">
 	      	<span class="faq-time">{{$info->created_at}}</span>
-	      	<span style="margin-left:30px;">评论：{{count($info->commentcount)}}</span>
+	      	<span style="margin-left:30px;">评论：{{$info->commentcount->count()}}</span>
 	      </div>
 	      <div class="notice-sp"></div>
 	      <div class="notice-con">{{$info->content}}</div>
@@ -30,11 +40,12 @@
       </div>
 
       <div class="notice-comment">
-      	<div class="notice-comment-total">评论：（共{{count($info->commentcount)}}条）</div>
+      	<div class="notice-comment-total">评论：（共{{$info->commentcount->count()}}条）</div>
       	
       	{{-- 评论form --}}
-        <form method="post" action="/notice/doComment" style="margin-bottom:40px;">
+        <form method="post" action="/classes_notice/doComment" style="margin-bottom:40px;">
             <input type='hidden' name="notice_id" value="{{$info->id}}" />
+            <input type='hidden' name="class_id" value="{{$query['class_id']}}" />
             <input type='hidden' name="column_id" value="{{$query['column_id']}}" />
             <textarea name="content" class="notice-comment-body" maxlength="250"></textarea>
             <br>
@@ -43,8 +54,9 @@
         </form>
         
         {{-- 回复form(隐藏) --}}
-		<form style="display:none;" id="replyform" method="post" action="/notice/doComment">
+		<form style="display:none;" id="replyform" method="post" action="/classes_notice/doComment">
             <input type='hidden' name="notice_id" value="{{$info->id}}" />
+            <input type='hidden' name="class_id" value="{{$query['class_id']}}" />
             <input type='hidden' name="column_id" value="{{$query['column_id']}}" />
             <input type='hidden' name="parent_id" value="" />
             <input type='hidden' name="content" value="" />
@@ -61,6 +73,10 @@
         			@if($comment->user && $comment->user->name)
         				@if($comment->user->name == 'admin')
         				客服雯雯
+        				@elseif($comment->user->id == Session::get('uid'))
+        				{{$comment->user->name}}(我)
+        				@elseif($comment->user->id == $comment->classes->teacherid)
+        				{{$comment->user->name}}(老师)
         				@else
         				{{$comment->user->name}}
         				@endif
@@ -76,6 +92,11 @@
         		@if($comment->cite && $comment->cite->content)
 				<span class="notice-reply-link" style="float:right;margin-top:-20px;" 
 	        			onclick="toggleReply(event, 'reply1')">回复</span>
+	            @if($comment->cite->classes && $comment->cite->classes->teacherid == Session::get('uid'))
+				<span class="notice-reply-link" style="float:right;margin-top:-20px;margin-right:45px;" title="删除该条评论"
+	        	    onclick="location.href='/classes_notice/doCommentDel?comment_id={{$comment->id}}&notice_id={{$info->id}}&class_id={{$query['class_id']}}&column_id={{$query['column_id']}}'">
+	        	    删除评论</span>
+	        	@endif
 	        	<div name="reply1" style="margin-bottom:10px;text-align:right;display:none;">
 	        		<textarea class="notice-comment-body" maxlength="250" style="width:600px;margin-top:5px;"></textarea>
 	        		<input type="hidden" value="{{$comment->id}}">
@@ -86,9 +107,13 @@
 	        	
         		<div class="cl notice-cite">
 	        		<span style="color:#54b5e0;">
-        			@if($comment->cite->user && $comment->cite->user->name)
+        			@if($comment->cite->user && $comment->cite->user)
         				@if($comment->cite->user->name == 'admin')
         				客服雯雯
+        				@elseif($comment->cite->user->id == Session::get('uid'))
+        				{{$comment->cite->user->name}}(我)
+        				@elseif($comment->cite->user->id == $comment->cite->classes->teacherid)
+        				{{$comment->cite->user->name}}(老师)
         				@else
         				{{$comment->cite->user->name}}
         				@endif
@@ -106,8 +131,14 @@
         		<div class="cl" style="margin-top:5px;">
         			<span style="word-wrap:break-word;">{{$comment->content}}</span>
         			@if(empty($comment->cite))
-					<span class="notice-reply-link" style="float:right;" 
+					<span class="notice-reply-link" style="float:right;"
 	        			onclick="toggleReply(event, 'reply2')">回复</span>
+	        		@if($comment->classes && $comment->classes->teacherid == Session::get('uid'))
+					<span class="notice-reply-link" style="float:right;margin-right:20px;" title="删除该条评论"
+	        			onclick="location.href='/classes_notice/doCommentDel?comment_id={{$comment->id}}&notice_id={{$info->id}}&class_id={{$query['class_id']}}&column_id={{$query['column_id']}}'">
+	        			删除评论
+	        		</span>
+	        		@endif
         			@endif
         		</div>
         	</div>

@@ -1780,3 +1780,22 @@ a.tyadel {
 	margin-right: 60px;
 }
 
+/**
+ * 班级管理
+ */
+.manage-btn {
+	width: 80px;
+	height: 25px;
+	line-height: 25px;
+	vertical-align: middle; /* 否则雅黑字体无法垂直对齐 */
+	text-align: center;
+	background-color: #fb9742;
+	color: #fff;
+	font-family: Microsoft Yahei,Arial;
+	font-size: 14px;
+	border: none;
+	cursor: pointer;
+}
+.manage-btn:hover {
+    background-color: #fcac68;
+}

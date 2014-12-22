@@ -28,7 +28,9 @@ class ClassesController extends BaseController {
 
         $myclasses = array(-1);
         if ($user_type == 1) {
-            $thisclasses = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->get()->toArray();
+//             $thisclasses = Classes::whereTeacherid($user_id)->whereColumnId($query['column_id'])->get()->toArray();
+            // 班级不再区分科目
+            $thisclasses = Classes::whereTeacherid($user_id)->get()->toArray();
         }
         if (!empty($thisclasses)) {
             foreach ($thisclasses as $key => $value) {
@@ -45,7 +47,9 @@ class ClassesController extends BaseController {
                 $myclasses[] = $value['class_id'];
             }
         }
-        $classes = Classes::whereIn('id', $myclasses)->whereColumnId($query['column_id'])->orderBy('created_at', 'desc')->get();
+//         $classes = Classes::whereIn('id', $myclasses)->whereColumnId($query['column_id'])->orderBy('created_at', 'desc')->get();
+        // 班级不再区分科目
+        $classes = Classes::whereIn('id', $myclasses)->orderBy('created_at', 'desc')->get();
 
         $classmate_logs = ClassmateLog::where(function($q){
                 $q->whereTeacherId(Session::get('uid'));
@@ -66,7 +70,7 @@ class ClassesController extends BaseController {
      */
     public function create()
     {
-        $query = Input::only('column_id');
+        $query = Input::only('column_id', 'tag');
         //班级数
         $user_id = Session::get('uid');
         $classes = Classes::whereTeacherid($user_id)->select('id', 'name')->get();
@@ -86,7 +90,7 @@ class ClassesController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('name', 'column_id');
+        $query = Input::only('name', 'column_id', 'tag');
         $validator = Validator::make($query,
             array(
                 'name' => 'required',
@@ -107,6 +111,11 @@ class ClassesController extends BaseController {
         $training->created_at = date("Y-m-d H:i:s");
         $training->status = 1; // 默认上线
         if ($training->save()) {
+            if(isset($query['tag']) && $query['tag']=='manage') {
+                // 从班级管理页面跳转过来的,创建完成之后返回此页
+                return Redirect::to("classes/manage?column_id={$query['column_id']}");
+            }
+            
             return Redirect::to('classes?column_id='. $query['column_id']);
         }
     }
@@ -257,4 +266,76 @@ class ClassesController extends BaseController {
         return $this->indexView('classes.view', compact("classes", 'columns', 'query', 'students', 'classmate', 'genderEnum', 'columnHead'));
     }
 
+    /**
+     * 班级管理
+     */
+    public function manage() {
+        $query = Input::only('column_id');
+        $uid = Session::get('uid');
+        $utype = Session::get('utype');
+        if ($utype < 0) {
+            $utype = 1;
+        }
+        if ($utype == 1) {
+            // 班级不再区分科目
+            $classes = Classes::whereTeacherid($uid)->orderBy('id','desc')->paginate($this->pageSize);
+        } else {
+            $classes = array();
+        }
+        $classes_num = count($classes);
+         
+        $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+        $columnHead = Column::whereId($query['column_id'])->first();
+         
+        return $this->indexView('classes.manage',
+                compact('columns', 'columnHead', 'query', 'classes', 'classes_num'));
+    }
+    
+    /**
+     * 班级管理-保存
+     */
+    public function manageEdit() {
+    	$utype = Session::get('utype');
+    	if ($utype < 0) {
+    		$utype = 1;
+    	}
+    	if($utype != 1) {
+    		return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
+    	}
+    	
+    	$query = Input::only('column_id', 'name', 'id');
+    	$query['uid'] = Session::get('uid');
+    	
+    	$c = new Classes();
+    	$c->editInfo($query);
+    	
+    	return Redirect::to("/classes/manage?column_id=". $query['column_id']);
+    }
+    
+    /**
+     * 班级管理-删除
+     */
+    public function manageDel() {
+    	$utype = Session::get('utype');
+    	if ($utype < 0) {
+    		$utype = 1;
+    	}
+    	
+    	$query = Input::only('id', 'column_id');
+    	if($utype != 1 || empty($query['id']) || empty($query['column_id'])) {
+    		return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
+    	}
+    	$query['uid'] = Session::get('uid');
+    	
+    	$classmates = Classmate::whereClassId($query['id'])->get();
+    	if ($classmates->count() > 0) {
+    		return $this->indexPrompt("操作失败", "删除失败,班级中还有成员", 
+    				$url = "/classes/manage?column_id=".$query['column_id'], $auto = true);
+    	}
+    	
+    	$c = new Classes();
+    	$c->delInfo($query);
+    	
+    	return Redirect::to("/classes/manage?column_id=". $query['column_id']);
+    }
 }

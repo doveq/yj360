@@ -22,6 +22,7 @@
       <div class="classes-list">
         {{ HTML::ul($errors->all()) }}
         {{ Form::open(array('url' => '/classes', 'method' => 'post')) }}
+          <input type="hidden" name="tag" value="@if(!empty($query['tag'])){{$query['tag']}}@endif">
           <table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #f1f1f1; width:100%;">
             <tr><td style="padding:10px;color:#ccc;text-align:center;" colspan="2">
 创建的班级，最多可加入60位学生，解散班级需要先移除班级内成员。
