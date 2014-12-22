@@ -34,6 +34,14 @@
           	  <input type="hidden" name="id" value="@if(!empty($query['id'])){{$query['id']}}@endif"> 
           	  <input type="hidden" name="class_id" value="{{$query['class_id']}}"> 
           	  <input type="hidden" name="column_id" value="@if(!empty($query['column_id'])){{$query['column_id']}}@endif"> 
+			  <div style="margin-bottom:10px;">
+	          	<label>序号：</label>
+	          	<input name="ordern" type="text" 
+	          		style="width:50px;border:1px solid #c9c9c9;padding:2px 5px;" maxlength="6" 
+	          		onkeyup="this.value=this.value.replace(/\D/g,'')"
+	          		value="@if(!empty($notice)){{$notice->ordern}}@endif">
+	          	<span style="color:#c9c9c9;font-size:13px;">（序号越小，排序越靠前）</span>
+	          </div>
 			  <div>
 	          	<label>标题：</label>
 	          	<input name="title" type="text" 

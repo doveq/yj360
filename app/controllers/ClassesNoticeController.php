@@ -44,7 +44,7 @@ class ClassesNoticeController extends BaseController {
     	$cnList = $cn->getListPage($info, $this->pageSize);
     	
     	return $this->indexView('classes.notice', 
-    			compact('query', 'columns', 'columnHead', 'classes', 'cnList'));
+    			compact('query', 'columns', 'columnHead', 'classes', 'cnList', 'use_ordern'));
     }
     
     /**
@@ -147,7 +147,7 @@ class ClassesNoticeController extends BaseController {
      * 班级消息添加/修改
      */
     public function doEdit() {
-    	$query = Input::only('id', 'column_id', 'class_id', 'title', 'content');
+    	$query = Input::only('id', 'column_id', 'class_id', 'title', 'content', 'ordern');
     	$validator = Validator::make($query , array(
 			'title' => 'required',
 			'content' => 'required'
@@ -163,7 +163,19 @@ class ClassesNoticeController extends BaseController {
     		$info['class_id'] = $query['class_id'];
     		$info['title'] = $query['title'];
     		$info['content'] = $query['content'];
-    		$cn->addInfo($info);
+    		if(!isset($query['ordern']) || empty($query['ordern'])) {
+    		    $ordern = '0';
+    		} else {
+    		    $ordern = $query['ordern'];
+    		}
+    		$info['ordern'] = $ordern;
+    		$id = $cn->addInfo($info);
+    		
+    		if(!isset($query['ordern']) || empty($query['ordern'])) {
+    		    // 未设置排序序号时使用id作为排序序号
+    		    $info['ordern'] = $id;
+    		    $cn->editInfo($id, $info);
+    		}
     	} else {
     		// 修改
     		$cn = new ClassesNotice();
@@ -171,6 +183,7 @@ class ClassesNoticeController extends BaseController {
     		$info['class_id'] = $query['class_id'];
     		$info['title'] = $query['title'];
     		$info['content'] = $query['content'];
+    		$info['ordern'] = $query['ordern'];
     		$cn->editInfo($query['id'], $info);
     	}
     	

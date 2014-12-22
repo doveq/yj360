@@ -5,6 +5,11 @@
  */
 class ClassesNotice extends Eloquent {
     protected $table = 'class_notice';
+    
+    /**
+     * 是否启用ordern排序
+     */
+    protected $use_ordern = true;
 
     public function user() {
         return $this->belongsTo('User', 'uid', 'id');
@@ -15,9 +20,16 @@ class ClassesNotice extends Eloquent {
     }
 
     public function getListPage($info = array(), $pageSize) {
+        if($this->use_ordern) {
+            $ordername = 'ordern';
+            $ordertype = 'asc';
+        } else {
+            $ordername = 'id';
+            $ordertype = 'desc';
+        }
         return $this
         	->where('class_id', '=', $info['class_id'])
-        	->orderBy('id', 'desc')
+        	->orderBy($ordername, $ordertype)
         	->paginate($pageSize);
     }
 
