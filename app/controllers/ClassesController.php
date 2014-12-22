@@ -70,7 +70,7 @@ class ClassesController extends BaseController {
      */
     public function create()
     {
-        $query = Input::only('column_id');
+        $query = Input::only('column_id', 'tag');
         //班级数
         $user_id = Session::get('uid');
         $classes = Classes::whereTeacherid($user_id)->select('id', 'name')->get();
@@ -90,7 +90,7 @@ class ClassesController extends BaseController {
      */
     public function store()
     {
-        $query = Input::only('name', 'column_id');
+        $query = Input::only('name', 'column_id', 'tag');
         $validator = Validator::make($query,
             array(
                 'name' => 'required',
@@ -111,6 +111,11 @@ class ClassesController extends BaseController {
         $training->created_at = date("Y-m-d H:i:s");
         $training->status = 1; // 默认上线
         if ($training->save()) {
+            if(isset($query['tag']) && $query['tag']=='manage') {
+                // 从班级管理页面跳转过来的,创建完成之后返回此页
+                return Redirect::to("classes/manage?column_id={$query['column_id']}");
+            }
+            
             return Redirect::to('classes?column_id='. $query['column_id']);
         }
     }
@@ -273,7 +278,7 @@ class ClassesController extends BaseController {
         }
         if ($utype == 1) {
             // 班级不再区分科目
-            $classes = Classes::whereTeacherid($uid)->paginate($this->pageSize);
+            $classes = Classes::whereTeacherid($uid)->orderBy('id','desc')->paginate($this->pageSize);
         } else {
             $classes = array();
         }

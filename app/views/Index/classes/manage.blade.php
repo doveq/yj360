@@ -41,7 +41,7 @@
             	onclick="location.href='/classes/{{$v->id}}?column_id={{$query['column_id']}}'">成员管理</button>
             <button type="button" class="manage-btn" style="margin-left:5px;">班级转让</button>
             <button type="button" class="manage-btn" style="margin-left:5px;"
-            	onclick="location.href='/classes/manage/doDel?id={{$v->id}}&column_id={{$query['column_id']}}';">删&nbsp;除</button>
+            	onclick="delClasses({{$v->id}})">删&nbsp;除</button>
             <button type="submit" class="manage-btn" style="margin-left:5px;">保&nbsp;存</button>
           </div>
         </form>
@@ -49,7 +49,7 @@
       @endforeach
       
       <div>
-      	<a class="fsort-new" href="/classes/create?column_id={{$query['column_id']}}" target="_blank">+创建班级</a>
+      	<a class="fsort-new" href="/classes/create?column_id={{$query['column_id']}}&tag=manage">+创建班级</a>
       </div>
       
 	  <div style="text-align:center;margin-top:20px;">
@@ -62,6 +62,13 @@
 </div>
 
 <script type="text/javascript">
+
+function delClasses(id) {
+	layer.confirm('您确定要删除吗？', function() {
+    	location.href='/classes/manage/doDel?id=' + id + '&column_id={{$query['column_id']}}';
+	});
+}
+
 </script>
 
 @stop
