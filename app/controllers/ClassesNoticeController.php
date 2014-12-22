@@ -19,8 +19,8 @@ class ClassesNoticeController extends BaseController {
     public function showList() {
     	$query = Input::only('column_id', 'class_id');
     	$validator = Validator::make($query , array(
-    			'column_id' => 'numeric',
-    			'class_id' => 'numeric'
+            'column_id' => 'numeric',
+            'class_id' => array('numeric', 'required')
     	));
     	if(!$validator->passes()) {
     		return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
@@ -33,6 +33,10 @@ class ClassesNoticeController extends BaseController {
     	$arr = $col->getPath($query['column_id']);
     	$columnHead = $arr[0];
     	
+    	// 查询班级信息
+    	$c = new Classes();
+    	$classes = $c->whereId($query['class_id'])->first();
+    	
     	// 获取班级消息列表
     	$cn = new ClassesNotice();
     	$info['uid'] = Session::get('uid');
@@ -40,7 +44,7 @@ class ClassesNoticeController extends BaseController {
     	$cnList = $cn->getListPage($info, $this->pageSize);
     	
     	return $this->indexView('classes.notice', 
-    			compact('query', 'columns', 'columnHead', 'cnList'));
+    			compact('query', 'columns', 'columnHead', 'classes', 'cnList'));
     }
     
     /**
@@ -85,7 +89,7 @@ class ClassesNoticeController extends BaseController {
     	$query = Input::only('column_id', 'class_id');
     	$validator = Validator::make($query , array(
 			'column_id' => 'numeric',
-			'class_id' => 'numeric'
+			'class_id' => array('numeric', 'required')
     	));
     	if(!$validator->passes()) {
     		return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
@@ -98,8 +102,12 @@ class ClassesNoticeController extends BaseController {
     	$arr = $col->getPath($query['column_id']);
     	$columnHead = $arr[0];
     	
+    	// 查询班级信息
+    	$c = new Classes();
+    	$classes = $c->whereId($query['class_id'])->first();
+    	
     	return $this->indexView('classes.notice_edit',
-    			compact('query', 'columns', 'columnHead'));
+    			compact('query', 'columns', 'columnHead', 'classes'));
     }
     
     /**
@@ -108,9 +116,9 @@ class ClassesNoticeController extends BaseController {
     public function edit() {
     	$query = Input::only('id', 'column_id', 'class_id');
     	$validator = Validator::make($query , array(
-    			'id' => 'numeric|required',
-    			'column_id' => 'numeric',
-    			'class_id' => 'numeric'
+            'id' => array('numeric', 'required'),
+            'column_id' => 'numeric',
+            'class_id' => array('numeric', 'required')
     	));
     	if(!$validator->passes()) {
     		return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
@@ -123,12 +131,16 @@ class ClassesNoticeController extends BaseController {
     	$arr = $col->getPath($query['column_id']);
     	$columnHead = $arr[0];
     	
+    	// 查询班级信息
+    	$c = new Classes();
+    	$classes = $c->whereId($query['class_id'])->first();
+    	
     	// 查询消息内容
     	$cn = new ClassesNotice();
     	$notice = $cn->getInfo($query['id']);
     	 
     	return $this->indexView('classes.notice_edit',
-    			compact('query', 'columns', 'columnHead', 'notice'));
+    			compact('query', 'columns', 'columnHead', 'notice', 'classes'));
     }
     
     /**
@@ -217,6 +229,32 @@ class ClassesNoticeController extends BaseController {
     
         $cnc = new ClassesNoticeComments();
         $cnc->addInfo($data);
+        
+        return Redirect::to("/classes_notice/show?id=$notice_id&class_id=$class_id&column_id=$column_id");
+    }
+    
+    /**
+     * 删除评论
+     */
+    public function doCommentDel() {
+        $query = Input::only('comment_id', 'notice_id', 'class_id', 'column_id');
+        
+        $validator = Validator::make($query , array(
+            'comment_id' => array('required', 'numeric'),
+            'notice_id' => array('required', 'numeric'),
+            'class_id' => array('required', 'numeric'),
+            'notice_id' => array('required', 'numeric')
+        ));
+        $comment_id = $query['comment_id'];
+        $notice_id = $query['notice_id'];
+        $class_id = $query['class_id'];
+        $column_id = $query['column_id'];
+        if(!$validator->passes()) {
+            return Redirect::to("/classes_notice/show?id=$notice_id&class_id=$class_id&column_id=$column_id");
+        }
+        
+        $cnc = new ClassesNoticeComments();
+        $cnc->delInfo($comment_id);
         
         return Redirect::to("/classes_notice/show?id=$notice_id&class_id=$class_id&column_id=$column_id");
     }

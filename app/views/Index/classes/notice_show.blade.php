@@ -15,6 +15,10 @@
          	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
          </span>
          <span class="vm tab-title">
+         	<a style="color:#499528;" href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$info->classes->name}}</a>
+         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+         </span>
+         <span class="vm tab-title">
          	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级消息</a>
          	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
          </span>
@@ -69,6 +73,10 @@
         			@if($comment->user && $comment->user->name)
         				@if($comment->user->name == 'admin')
         				客服雯雯
+        				@elseif($comment->user->id == Session::get('uid'))
+        				{{$comment->user->name}}(我)
+        				@elseif($comment->user->id == $comment->classes->teacherid)
+        				{{$comment->user->name}}(老师)
         				@else
         				{{$comment->user->name}}
         				@endif
@@ -84,6 +92,11 @@
         		@if($comment->cite && $comment->cite->content)
 				<span class="notice-reply-link" style="float:right;margin-top:-20px;" 
 	        			onclick="toggleReply(event, 'reply1')">回复</span>
+	            @if($comment->cite->classes && $comment->cite->classes->teacherid == Session::get('uid'))
+				<span class="notice-reply-link" style="float:right;margin-top:-20px;margin-right:45px;" title="删除该条评论"
+	        	    onclick="location.href='/classes_notice/doCommentDel?comment_id={{$comment->id}}&notice_id={{$info->id}}&class_id={{$query['class_id']}}&column_id={{$query['column_id']}}'">
+	        	    删除评论</span>
+	        	@endif
 	        	<div name="reply1" style="margin-bottom:10px;text-align:right;display:none;">
 	        		<textarea class="notice-comment-body" maxlength="250" style="width:600px;margin-top:5px;"></textarea>
 	        		<input type="hidden" value="{{$comment->id}}">
@@ -94,9 +107,13 @@
 	        	
         		<div class="cl notice-cite">
 	        		<span style="color:#54b5e0;">
-        			@if($comment->cite->user && $comment->cite->user->name)
+        			@if($comment->cite->user && $comment->cite->user)
         				@if($comment->cite->user->name == 'admin')
         				客服雯雯
+        				@elseif($comment->cite->user->id == Session::get('uid'))
+        				{{$comment->cite->user->name}}(我)
+        				@elseif($comment->cite->user->id == $comment->cite->classes->teacherid)
+        				{{$comment->cite->user->name}}(老师)
         				@else
         				{{$comment->cite->user->name}}
         				@endif
@@ -114,8 +131,14 @@
         		<div class="cl" style="margin-top:5px;">
         			<span style="word-wrap:break-word;">{{$comment->content}}</span>
         			@if(empty($comment->cite))
-					<span class="notice-reply-link" style="float:right;" 
+					<span class="notice-reply-link" style="float:right;"
 	        			onclick="toggleReply(event, 'reply2')">回复</span>
+	        		@if($comment->classes && $comment->classes->teacherid == Session::get('uid'))
+					<span class="notice-reply-link" style="float:right;margin-right:20px;" title="删除该条评论"
+	        			onclick="location.href='/classes_notice/doCommentDel?comment_id={{$comment->id}}&notice_id={{$info->id}}&class_id={{$query['class_id']}}&column_id={{$query['column_id']}}'">
+	        			删除评论
+	        		</span>
+	        		@endif
         			@endif
         		</div>
         	</div>

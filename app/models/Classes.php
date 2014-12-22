@@ -75,4 +75,27 @@ class Classes extends Eloquent {
     {
         return $this->where('teacherid', $uid)->get();
     }
+    
+    /**
+     * 编辑班级信息
+     */
+    public function editInfo($info) {
+    	$data = array();
+    	$data['name'] = $info['name'];
+    	return $this->where('id', $info['id'])->where('teacherid', $info['uid'])->update($data);
+    }
+    
+    /**
+     * 删除班级
+     */
+    public function delInfo($info) {
+    	return $this->where('id', $info['id'])->where('teacherid', $info['uid'])->delete();
+    }
+    
+    /**
+     * 班级消息数目
+     */
+    public function noticescount() {
+        return $this->hasMany('ClassesNotice', 'class_id', 'id')->count();
+    }
 }

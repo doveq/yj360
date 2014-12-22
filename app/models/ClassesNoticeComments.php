@@ -10,6 +10,10 @@ class ClassesNoticeComments extends Eloquent {
     	return $this->belongsTo('User', 'uid', 'id');
     }
     
+    public function classes() {
+        return $this->belongsTo('Classes', 'class_id', 'id');
+    }
+    
     /**
      * 父评论
      */

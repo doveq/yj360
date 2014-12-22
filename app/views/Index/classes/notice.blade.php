@@ -18,6 +18,12 @@
 	     	<a style="color:#499528;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
 	     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
 	     </span>
+	     @if($classes && $classes->name)
+         <span class="vm tab-title">
+         	<a style="color:#499528;" href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$classes->name}}</a>
+         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+         </span>
+         @endif
 	     <span class="vm tab-title">
 	     	班级消息
 	     </span>

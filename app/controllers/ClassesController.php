@@ -290,47 +290,47 @@ class ClassesController extends BaseController {
      * 班级管理-保存
      */
     public function manageEdit() {
-        $utype = Session::get('utype');
-        if ($utype < 0) {
-            $utype = 1;
-        }
-        if($utype != 1) {
-            return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
-        }
-         
-        $query = Input::only('column_id', 'name', 'id');
-        $query['uid'] = Session::get('uid');
-         
-        $c = new Classes();
-        $c->editInfo($query);
-         
-        return Redirect::to("/classes/manage?column_id=". $query['column_id']);
+    	$utype = Session::get('utype');
+    	if ($utype < 0) {
+    		$utype = 1;
+    	}
+    	if($utype != 1) {
+    		return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
+    	}
+    	
+    	$query = Input::only('column_id', 'name', 'id');
+    	$query['uid'] = Session::get('uid');
+    	
+    	$c = new Classes();
+    	$c->editInfo($query);
+    	
+    	return Redirect::to("/classes/manage?column_id=". $query['column_id']);
     }
     
     /**
      * 班级管理-删除
      */
     public function manageDel() {
-        $utype = Session::get('utype');
-        if ($utype < 0) {
-            $utype = 1;
-        }
-         
-        $query = Input::only('id', 'column_id');
-        if($utype != 1 || empty($query['id']) || empty($query['column_id'])) {
-            return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
-        }
-        $query['uid'] = Session::get('uid');
-         
-        $classmates = Classmate::whereClassId($query['id'])->get();
-        if ($classmates->count() > 0) {
-            return $this->indexPrompt("操作失败", "删除失败,班级中还有成员",
-                    $url = "/classes/manage?column_id=".$query['column_id'], $auto = true);
-        }
-         
-        $c = new Classes();
-        $c->delInfo($query);
-         
-        return Redirect::to("/classes/manage?column_id=". $query['column_id']);
+    	$utype = Session::get('utype');
+    	if ($utype < 0) {
+    		$utype = 1;
+    	}
+    	
+    	$query = Input::only('id', 'column_id');
+    	if($utype != 1 || empty($query['id']) || empty($query['column_id'])) {
+    		return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
+    	}
+    	$query['uid'] = Session::get('uid');
+    	
+    	$classmates = Classmate::whereClassId($query['id'])->get();
+    	if ($classmates->count() > 0) {
+    		return $this->indexPrompt("操作失败", "删除失败,班级中还有成员", 
+    				$url = "/classes/manage?column_id=".$query['column_id'], $auto = true);
+    	}
+    	
+    	$c = new Classes();
+    	$c->delInfo($query);
+    	
+    	return Redirect::to("/classes/manage?column_id=". $query['column_id']);
     }
 }

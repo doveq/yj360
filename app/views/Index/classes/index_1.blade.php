@@ -66,7 +66,7 @@
                         @if ($list->classmate->status == 0)
                           @if ($list->type == 2 && $list->teacher_id == Session::get('uid'))
                             <a href="javascript:;" onclick="do_status({{$list->classmate_id}},1)">同意</a>
-                            <a href="javascript:;" onclick="do_status({{$list->classmate_id}},2)">拒绝</a>
+                            <a href="javascript:;" onclick="do_status_refuse({{$list->classmate_id}})">拒绝</a>
                           @else
                             待确认 <a href="javascript:;" onclick="cancel_sq({{$list->classmate_id}})">撤销申请</a>
 
@@ -105,6 +105,12 @@
 <script type="text/javascript" src="/assets/layer/layer.min.js"></script>
 
 <script type="text/javascript">
+    function do_status_refuse(classmateid) {
+    	layer.confirm('您确定要拒绝吗？', function() {
+    		do_status(classmateid, 2);
+    	});
+    }
+
   function do_status(classmateid, status)
   {
     $.ajax({

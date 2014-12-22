@@ -18,6 +18,12 @@
 	     	<a style="color:#499528;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
 	     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
 	     </span>
+	     @if($classes && $classes->name)
+	     <span class="vm">
+	     	<a style="color:#499528;" href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$classes->name}}</a>
+	     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+	     </span>
+	     @endif
 	     <span class="vm tab-title">
 	     	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级消息</a>
 	     </span>
@@ -32,16 +38,15 @@
 	          	<label>标题：</label>
 	          	<input name="title" type="text" 
 	          		style="width:500px;border:1px solid #c9c9c9;padding:2px 5px;" maxlength="100" 
-	          		value="@if($notice){{$notice->title}}@endif">
+	          		value="@if(!empty($notice)){{$notice->title}}@endif">
 	          </div>
 	          <div class="cl" style="margin-top:10px;">
 	          	<label style="float:left;">正文：</label>
 	          	<textarea rows="5" id="content" name="content" 
-	          		style="float:left;width:93%;margin-left:5px;">@if($notice){{$notice->content}}@endif</textarea>
+	          		style="float:left;width:93%;margin-left:5px;">@if(!empty($notice)){{$notice->content}}@endif</textarea>
 	          </div>
 	          <div style="margin-top:10px;">
-	          	<input type="submit" value="提 交" 
-	          		style="margin-left:50px;width:70px;padding:2px 5px;border:1px solid #c9c9c9;cursor:pointer;">
+	          	<input type="submit" value="提 交" class="notice-comment-btn" style="width:70px;margin-left:50px;">
 	          </div>
           </form>
       </div>

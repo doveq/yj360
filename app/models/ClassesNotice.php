@@ -16,7 +16,6 @@ class ClassesNotice extends Eloquent {
 
     public function getListPage($info = array(), $pageSize) {
         return $this
-        	->where('uid', '=', $info['uid'])
         	->where('class_id', '=', $info['class_id'])
         	->orderBy('id', 'desc')
         	->paginate($pageSize);
