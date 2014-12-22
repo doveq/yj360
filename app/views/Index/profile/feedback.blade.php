@@ -6,7 +6,14 @@
 
   <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
      <span class="vm faq-tabbar"></span>
-     <span class="vm"><a style="color:#c9c9c9;" href="/">首页</a><span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span></span>
+     <span class="vm">
+         <a style="color:#c9c9c9;" href="/">首页</a>
+         <span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
+     </span>
+     <span class="vm tab-title">
+     	<a style="color:#499528;" href="javascript:void(0);">帮助中心</a>
+     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+     </span>
      <span class="vm tab-title">
      	<a style="color:#499528;" href="/feedback">问题反馈</a>
      </span>
@@ -59,6 +66,8 @@
           <table>
             <tr>
                 <td style="width:100px;color:red;padding-right:15px;">客服雯雯回答：</td>
+            </tr>
+            <tr>
                 <td>{{$v->reply}}</td>
             </tr>
           </table>
