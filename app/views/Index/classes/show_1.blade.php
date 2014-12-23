@@ -9,11 +9,12 @@
 
   <div class="wrap-right">
     <div class="tabtool">
-	  <a style="color:#999999;" href="/classes?column_id={{$query['column_id']}}">
-      		<span class="fsort-back"></span>&nbsp;&nbsp;返回
+	  <a style="color:#999999;display:none;" href="/classes?column_id={{$query['column_id']}}">
+        <span class="fsort-back"></span>&nbsp;&nbsp;返回
       </a>
       <span class="tab-bar"></span>
-      <a style="color:#499528;" href="/classes?column_id={{$query['column_id']}}">我的班级</a> > 
+      <a style="color:#c9c9c9;" href="/classes?column_id={{$query['column_id']}}">我的班级</a>
+      <span style="color:#c9c9c9;"> > </span>
       <span class="tab-title">{{$classes->name}}</span>
       <span class="tab-btn">
       	<a href="/classes_notice/showList?column_id={{$query['column_id']}}&class_id={{$classes->id}}" class="tabtool-btn">班级公告({{$classes->noticescount()}})</a>

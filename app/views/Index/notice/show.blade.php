@@ -12,16 +12,16 @@
          <span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
      </span>
      <span class="vm tab-title">
-     	<a style="color:#499528;" href="javascript:void(0);">帮助中心</a>
-     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+     	<a style="color:#c9c9c9;" href="javascript:void(0);">帮助中心</a>
+     	<span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
      </span>
      <span class="vm tab-title">
-     	<a style="color:#499528;" 
+     	<a style="color:#c9c9c9;" 
      	    href="/notice/list?column_id={{$query['column_id']}}&type={{$query['type']}}">{{$typeEnum[$query['type']]}}</a>
-     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+     	<span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
      </span>
      <span class="vm tab-title">
-     	<span style="color:#000;">{{$info->title}}</span>
+     	<span style="color:#499528;">{{$info->title}}</span>
      </span>
   </div>
 

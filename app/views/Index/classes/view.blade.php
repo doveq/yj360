@@ -10,7 +10,9 @@
   <div class="wrap-right">
     <div class="tabtool">
       <span class="tab-bar"></span>
-      <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
+      <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back" style="display:none;">返回></a>
+      <a style="color:#c9c9c9;" href="/classes?column_id={{$query['column_id']}}">我的班级</a>
+      <span style="color:#c9c9c9;"> > </span>
       <span class="tab-title">{{$classes->name}}</span>
       <span class="tab-btn">
         <a href="/classes/{{$classes->id}}?column_id={{$query['column_id']}}" class="tabtool-btn">返回班级</a>

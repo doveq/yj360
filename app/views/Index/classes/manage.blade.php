@@ -13,12 +13,12 @@
 
   <div class="wrap-right">
       <div class="cl tabtool">
-      	<a style="color:#999999;" href="/classes?column_id={{$query['column_id']}}">
+      	<a style="color:#999999;display:none;" href="/classes?column_id={{$query['column_id']}}">
       		<span class="fsort-back"></span>&nbsp;&nbsp;返回
       	</a>
-      	<span class="tab-bar" style="margin-left:15px;"></span>
-        <span style="color:#499528;">
-	        <a style="color:#499528;" href="/classes?column_id={{$query['column_id']}}">我的班级</a> > 
+      	<span class="tab-bar"></span>
+        <span style="color:#c9c9c9;">
+	        <a style="color:#c9c9c9;" href="/classes?column_id={{$query['column_id']}}">我的班级</a> > 
 	        <a style="color:#499528;" href="/classes/manage?column_id={{$query['column_id']}}">班级管理</a>
         </span>
       </div>

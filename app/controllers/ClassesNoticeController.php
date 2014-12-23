@@ -110,8 +110,10 @@ class ClassesNoticeController extends BaseController {
     	$c = new Classes();
     	$classes = $c->whereId($query['class_id'])->first();
     	
+    	$mode = '发布公告';
+    	
     	return $this->indexView('classes.notice_edit',
-    			compact('query', 'columns', 'columnHead', 'classes'));
+    			compact('query', 'columns', 'columnHead', 'classes', 'mode'));
     }
     
     /**
@@ -142,9 +144,11 @@ class ClassesNoticeController extends BaseController {
     	// 查询消息内容
     	$cn = new ClassesNotice();
     	$notice = $cn->getInfo($query['id']);
-    	 
+
+    	$mode = '编辑公告';
+    	
     	return $this->indexView('classes.notice_edit',
-    			compact('query', 'columns', 'columnHead', 'notice', 'classes'));
+    			compact('query', 'columns', 'columnHead', 'notice', 'classes', 'mode'));
     }
     
     /**
