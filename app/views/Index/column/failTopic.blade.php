@@ -28,9 +28,15 @@
                       @endif
                     </td>
 
+                    <td width="80">
+                      @if(!empty($v->question->type))
+                      {{$typeEnum[$v->question->type]}}
+                      @endif
+                    </td>
+
                     <td class="tytd table-2-del"><a href="/failTopic/del?column_id={{$query['column_id']}}&id={{$v->id}}" class="tyadel">删除</a></td>
                 </tr>
-                <tr><td colspan="2">
+                <tr><td colspan="3">
                     <div class="table-2-sp"></div>
                 </td></tr>
               @endforeach

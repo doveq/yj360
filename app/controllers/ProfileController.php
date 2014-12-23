@@ -181,4 +181,42 @@ class ProfileController extends BaseController {
 		return $this->indexPrompt("", '信息已保存，请耐心等待审核通过。', $url = "/profile/up");
 	}
 
+
+	/* 批量开通账户验证手机号 */
+	public function verify()
+	{
+		$user = new User();
+		$uinfo = $user->getInfoById( Session::get('uid') );
+
+		return $this->indexView('profile.verify', compact('uinfo') );
+	}
+
+
+	public function doVerify()
+	{
+		$data = Input::all();
+
+		$validator = Validator::make($data , array(
+	        'tel' => 'required|digits:11',
+	        'password' => 'required|min:6|confirmed')
+		);
+
+		if($data['code'] == Session::get('code') && $data['tel'] == Session::get('mobile') )
+		{
+			if($validator->passes())
+			{
+				$user = new User;
+				
+				$user->setInfo(Session::get('uid'), array('status' => 1) );
+				return $this->indexPrompt("操作成功", "账号验证成功", $url = "/profile", $auto = true);
+			}
+		}
+		else
+		{
+			$data['codeErr'] = "验证码错误";
+		}
+
+		return Redirect::to('/profile/verify')->withErrors($validator)->withInput($data);
+	}
+
 }

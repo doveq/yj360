@@ -9,7 +9,7 @@ class LoginController extends BaseController
 
     	// 允许后台登录的手机号
     	$this->allowTel = Config::get('app.allow_admin_tel');
-    	
+
     }
 
 	/*  后台登录 */
@@ -36,10 +36,11 @@ class LoginController extends BaseController
 	public function doLogin()
 	{
 		$data = Input::all();
+		$remember = empty($data['remember']) ? false : true;
 
 		// 允许已通过的和批量导入手机未验证的用户登录
-		if( Auth::attempt( array('tel' => trim($data['name']), 'password' => $data['password'], 'status' => 1)) 
-			|| Auth::attempt( array('tel' => trim($data['name']), 'password' => $data['password'], 'status' => 2)) )
+		if( Auth::attempt( array('tel' => trim($data['name']), 'password' => $data['password'], 'status' => 1), $remember) 
+			|| Auth::attempt( array('tel' => trim($data['name']), 'password' => $data['password'], 'status' => 2), $remember) )
 		{
 			//login(UserInterface $user, bool $remember = false);
 			$user = Auth::user();
@@ -59,7 +60,11 @@ class LoginController extends BaseController
 
 			// echo "登录成功~";
     		//return Redirect::to('/');
-    		return Redirect::to('/column/static');
+
+    		if($user->status == 2)
+    			return Redirect::to('/profile/verify');  // 如果是未验证的账户
+    		else
+    			return Redirect::to('/column/static');
 		}
 		else
 			return Redirect::to('login')->with('message', '登录失败')->withInput($data);

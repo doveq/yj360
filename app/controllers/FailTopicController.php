@@ -16,7 +16,7 @@ class FailTopicController extends BaseController
 
 		$info = array();
 		$f = new FailTopic();
-		$list = $f->getList( array('uid' => Session::get('uid'), 'column_id' => $query['column_id'], 'limit' => 15 ) );
+		$list = $f->getList( array('uid' => Session::get('uid'),  'limit' => 15 ) );
 
 		if(empty($query['column_id']))
 			return $this->indexView('profile.failTopic', array('list' => $list) );
@@ -31,7 +31,9 @@ class FailTopicController extends BaseController
 	        $arr = $cn->getPath($query['column_id']);
 	        $columnHead = $arr[0];
 
-			return $this->indexView('column.failTopic', compact('list', 'columns', 'columnHead', 'query') );
+	        $typeEnum = Config::get('app.topic_type'); // 读取配置文件
+
+			return $this->indexView('column.failTopic', compact('list', 'columns', 'columnHead', 'query', 'typeEnum') );
 		}
 	}
 
