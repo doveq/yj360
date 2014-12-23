@@ -1846,4 +1846,7 @@ a.tyadel {
 	margin: 0 20px 5px 20px;
 	color: #FFF;
 }
+.classes-notice:hover {
+	color: #499528;
+}
 
