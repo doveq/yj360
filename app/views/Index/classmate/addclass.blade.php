@@ -38,7 +38,7 @@
                 {{$list->name}}
               </div>
               <div class="classes-txt index" style="bottom:0;">
-                <div title="老师：{{$list->teacher->name}}">老师：{{str_limit($list->teacher->name,3)}} @if($list->teacher->id == Session::get('uid'))(我)@endif</div>
+                <div>老师：{{$list->teacher->name}} @if($list->teacher->id == Session::get('uid'))(我)@endif</div>
                 <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
               </div>
               @if ($list->teacher->id != Session::get('uid'))
