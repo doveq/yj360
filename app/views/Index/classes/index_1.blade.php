@@ -25,31 +25,28 @@
           </div>
         @else
           @foreach ($classes as $list)
-          <div class="classse-box" id="classes_{{$list->id}}" style="">
-            <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}">
-            <div class="classes-box-head" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
-            </div>
-            <div class="classes-box-name">
-              {{$list->name}}
-            </div>
-            <div class="classes-txt">
-              <div>创建者：{{$list->teacher->name}} @if ($list->teacher->id == Session::get('uid'))(我)@endif</div>
-              <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
-            </div>
+          <div class="classse-box index" id="classes_{{$list->id}}">
+            <a href="/classes/{{$list->id}}?column_id={{$list->column->id}}" class="classes-hottop">
+                <div class="classes-box-head index" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
+                </div>
+                <div class="classes-box-name index">
+                  {{$list->name}}
+                </div>
+                <div class="classes-txt index">
+                  <div title="{{$list->teacher->name}}">老师：{{str_limit($list->teacher->name,3)}} @if($list->teacher->id == Session::get('uid'))(我)@endif</div>
+                  <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
+                </div>
             </a>
-            @if ($list->teacher->id == Session::get('uid'))
-            <div class="classse-btn">
-                <a class="delclass" href="javascript:;" onClick="delete_classes('{{$list->id}}');">删除</a>
-            </div>
-            @endif
-
+            <a href="/classes_notice/showList?column_id={{$query['column_id']}}&class_id={{$list->id}}" class="classes-hotbottom">
+                <div class="classes-notice">公告：{{$list->noticescount()}}</div>      
+            </a>
           </div>
           @endforeach
           <div class="clear"></div>
         @endif
 
         @if($classmate_logs->count() > 0)
-        <div style="margin:20px 10px 0px 0px;font-size:18px;color:#499528;border-bottom: 1px solid #ccc;">班级申请加入消息</div>
+        <div style="margin:10px 10px 0px 0px;font-size:18px;color:#499528;border-bottom: 1px solid #ccc;">班级申请加入消息</div>
         <table class="table-2" border="0" cellpadding="0" cellspacing="0">
             @foreach($classmate_logs as $list)
               <tr>
@@ -165,12 +162,6 @@ $(document).ready(function () {
       });
     });
   };
-
-  $(".classse-box").hover(function(){
-    $(this).children(".classse-btn").css('display','block');
-  }, function(){
-    $(this).children(".classse-btn").css('display','none');
-  });
 });
 </script>
 @stop

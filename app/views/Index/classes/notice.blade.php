@@ -1,5 +1,5 @@
 @extends('Index.master')
-@section('title') 班级消息  @stop
+@section('title') 班级公告  @stop
 @extends('Index.column.columnHead')
 
 @section('content')
@@ -10,9 +10,6 @@
 
   <div class="wrap-right">
 	  <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
-      	 <a style="color:#999999;" href="/classes?column_id=@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">
-      		<span class="fsort-back"></span>&nbsp;&nbsp;返回
-      	 </a>
 	     <span class="vm faq-tabbar" style="margin-left:10px;"></span>
 	     <span class="vm">
 	     	<a style="color:#499528;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
@@ -25,10 +22,10 @@
          </span>
          @endif
 	     <span class="vm tab-title" style="color:#000;">
-	     	班级消息
+	     	班级公告
 	     </span>
 	     <span style="float:right;">
-	     	<a href="/classes_notice/create?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif" class="tabtool-btn">发布消息</a>
+	     	<a href="/classes_notice/create?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif" class="tabtool-btn">发布公告</a>
 	     </span>
 	  </div>
   
@@ -66,7 +63,7 @@
             {{$cnList->appends($query)->links()}}
           </div>
           @else
-          <span>暂时没有班级消息</span>
+          <span>暂时没有班级公告</span>
           @endif
       </div>
 

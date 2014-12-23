@@ -1799,3 +1799,51 @@ a.tyadel {
 .manage-btn:hover {
     background-color: #fcac68;
 }
+
+/**
+ * 班级管理首页box样式
+ */
+.classse-box.index {
+	width: 150px;
+	height: 220px;
+	margin-right: 10px;
+	font-family: Microsoft Yahei,Arial;
+}
+.classes-box-head.index {
+	top: 10px;
+	right: 25px;
+	bottom: auto;
+}
+.classes-hottop {
+    display: inline-block;
+    width: 150px;
+    height: 190px;
+}
+.classes-box-name.index {
+	position: relative;
+	top: 120px;
+	margin: 0 5px;
+	padding-bottom: 5px;
+	text-align: center;
+	font-weight: bold;
+	border-bottom: 1px dotted #fff;
+}
+.classes-txt.index {
+    bottom: 15px;
+	margin-right: 0;
+}
+.classes-hotbottom {
+    display: inline-block;
+    width: 150px;
+    height: 30px;
+}
+.classes-notice {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	width: 110px;
+	z-index: 9;
+	margin: 0 20px 5px 20px;
+	color: #FFF;
+}
+

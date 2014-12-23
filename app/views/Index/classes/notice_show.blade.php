@@ -1,5 +1,5 @@
 @extends('Index.master')
-@section('title') 班级消息详情 @stop
+@section('title') 班级公告详情 @stop
 @extends('Index.column.columnHead')
 
 @section('content')
@@ -19,7 +19,7 @@
          	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
          </span>
          <span class="vm tab-title">
-         	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级消息</a>
+         	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级公告</a>
          	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
          </span>
          <span class="vm tab-title">
