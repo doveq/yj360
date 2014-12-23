@@ -14,7 +14,7 @@
                 <div class="row"><input type="text" class="text" name="name" value="" placeholder="手机号" ></div>
                 <div class="row"><input type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
                 <div class="row">
-                    <input type="checkbox" name="" id="checkbox-1" class="labelinput" /> <label for="checkbox-1">记住密码</label>
+                    <input type="checkbox" name="remember" id="checkbox-1" class="labelinput" /> <label for="checkbox-1">记住密码</label>
                     <a href="/forgot" class="forget">忘记密码</a>
                 </div>
                 <br>

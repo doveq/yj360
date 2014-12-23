@@ -49,7 +49,7 @@
         -->
 
         <div class="index-block" id="index-login">
-            <form role="form" action="doLogin" method="post">
+            <form role="form" id="dologin" action="doLogin" method="post">
             <!--
             <h1>音基360登录</h1>
             -->
@@ -57,7 +57,7 @@
             <div class="row"><input id="login-input-name" type="text" class="text" name="name" value="" placeholder="手机号" ></div>
             <div class="row"><input id="login-input-passwd" type="password"  class="text" name="password" value="" class="form-control" placeholder="密码"> </div>
             <div class="row">
-                <input type="checkbox" name="" id="checkbox-1" class="labelinput" /> <label for="checkbox-1">记住密码</label>
+                <input type="checkbox" name="remember" id="checkbox-1" class="labelinput" /> <label for="checkbox-1">记住密码</label>
                 <a href="/forgot" class="forget">忘记密码？</a>
                 <div class="clear"></div>
             </div>
@@ -79,75 +79,7 @@
         <a class="index-block" style="margin-left:25px;" style="" href="/column/static"><img src="/assets/img/index-a2.png" /></a>
         <a class="index-block" style="margin-left:25px;" href="/column/static"><img src="/assets/img/index-a1.png" /></a>
 
-        <!--
-    	<div class="index-list">
-    		<div class="index-list-head">
-    			<img src="/assets/img/index-list-1.jpg" />
-    		</div>
-
-    		<ul id="index-list-1">
-    			<li><a href="">教材强化学习</a></li>
-    			<li><a href="">教材强化学习</a></li>
-    			<li><a href="">教材强化学习</a></li>
-    			<li class="index-list-more"><a href="/indexColumn">更多 >></a></li>
-    		</ul>
-
-    		<div class="index-list-footer">
-    			<img src="/assets/img/index-list-2.jpg" />
-    		</div>
-    	</div>
-
-    	<div class="index-list">
-    		<div class="index-list-head">
-    			<img src="/assets/img/index-list-3.jpg" />
-    		</div>
-
-    		<ul id="index-list-2">
-    			<li><a href="">教材强化学习</a></li>
-    			<li><a href="">教材强化学习</a></li>
-    			<li><a href="">教材强化学习</a></li>
-    			<li class="index-list-more"><a href="">更多 >></a></li>
-    		</ul>
-
-    		<div class="index-list-footer">
-    			<img src="/assets/img/index-list-4.jpg" />
-    		</div>
-    	</div>
-
-    	<div class="index-list">
-    		<div class="index-list-head">
-    			<img src="/assets/img/index-list-5.jpg" />
-    		</div>
-
-    		<ul id="index-list-3">
-    			<li><a href="">教材强化学习</a></li>
-    			<li><a href="">教材强化学习</a></li>
-    			<li><a href="">教材强化学习</a></li>
-    			<li class="index-list-more"><a href="">更多 >></a></li>
-    		</ul>
-
-    		<div class="index-list-footer">
-    			<img src="/assets/img/index-list-6.jpg" />
-    		</div>
-    	</div>
-
-    	<div class="index-list">
-    		<div class="index-list-head">
-    			<img src="/assets/img/index-list-7.jpg" />
-    		</div>
-
-    		<ul id="index-list-4">
-    			<li><a href="">教材强化学习</a></li>
-    			<li><a href="">教材强化学习</a></li>
-    			<li><a href="">教材强化学习</a></li>
-    			<li class="index-list-more"><a href="">更多 >></a></li>
-    		</ul>
-
-    		<div class="index-list-footer">
-    			<img src="/assets/img/index-list-8.jpg" />
-    		</div>
-    	</div>
-        -->
+      
       	<div class="clear"></div>
     </div> <!-- /container -->
 
@@ -192,4 +124,50 @@
     </script>
     <![endif]-->
 
+@stop
+
+@section('js')
+<script>
+
+$("#dologin").submit(function(){
+    isok = 1;
+
+    $(".reg-err").text("");
+
+    mobile = $("#login-input-name").val();
+    re = /^1\d{10}$/
+
+    if( !re.test(mobile) )
+    {
+        $("#tel-err").text("");
+
+        layer.tips('填写手机号登录', $('#login-input-name'), {
+            time: 5,
+            style: ['background-color:#F26C4F; color:#fff', '#F26C4F'],
+            maxWidth:240
+        });
+
+        isok = 0;
+    }
+
+    if( $("#login-input-passwd").val() == '' )
+    {
+        layer.tips('必须填写密码', $('#login-input-passwd'), {
+            time: 5,
+            guide: 2,
+            style: ['background-color:#F26C4F; color:#fff', '#F26C4F'],
+            maxWidth:240
+        });
+
+        isok = 0;
+    }
+
+
+    if(isok == 1)
+      return true;
+    else
+      return false;
+
+});
+</script>
 @stop

@@ -7,7 +7,9 @@
           
           @if(Auth::user()->status == 2)
           <div class="sort-item" style="padding-left:60px;">
-            <span style="background-color: #1db5a9;padding:5px 10px;color:#fff;">未验证</span>
+            <span style="background-color: #1db5a9;padding:5px 10px;">
+              <a href="/profile/verify" style="color:#fff;">未验证</a>
+            </span>
           </div>
           @endif
 

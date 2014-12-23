@@ -275,6 +275,7 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/profile/up', 'ProfileController@up');
     Route::post('/profile/doUp', 'ProfileController@doUp');
     Route::get('/profile/verify', 'ProfileController@verify');
+    Route::post('/profile/doVerify', 'ProfileController@doVerify');
 
     // 错题记录
     Route::get('/failTopic', 'FailTopicController@index');

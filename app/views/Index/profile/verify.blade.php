@@ -26,7 +26,7 @@
           <p>温馨提示：您的账号处于未验证状态，15天后将无法使用，请尽快验证！</p>
       </div>
 
-    <form id="regform" role="form" action="/doVerify" method="post" enctype="multipart/form-data" >
+    <form id="regform" role="form" action="/profile/doVerify" method="post" >
       {{Form::token()}}
    
       <table class="regtable">
@@ -58,7 +58,7 @@
           <tr>
             <td class="lable" style="padding-right:15px;"><span class="must">*</span>系统默认密码</td>
             <td colspan="2">123456</td>
-            <td class="reg-err" id="password-err"></td>
+            <td></td>
           </tr>
 
           <tr>
@@ -92,10 +92,97 @@
 @stop
 
 @section('js')
-<script type="text/javascript">
-$(document).ready(function () {
+<script>
+
+function mobileCode()
+{
+    $('#tel-err').text("");
+    mobile = $("input[name=tel]").val();
+    re = /^1\d{10}$/
+    
+    if (re.test(mobile))
+    {
+        $("#mcbtn").attr('disabled',"true");
+        $("#mcbtn").text('重新获取');
+        $("#mcbtn").removeClass('mcbtn-1').addClass('mcbtn-2');
+
+        $.getJSON("/login/ajax", {'act':'code','mobile':mobile}, function(data){
+
+            $('#codebox').show();
+             if(data.state == 1)
+             {
+                t = 120;
+                $('#codeerr').text(t + " 秒后可重新获取短信");
+                res  = setInterval(function(){
+                    $('#codeerr').text(t + " 秒后可重新获取短信");
+                    
+                    if(t <= 0)
+                    {
+                        $('#codebox').hide();
+                        $('#mcbtn').removeAttr("disabled");
+                        $("#mcbtn").removeClass('mcbtn-2').addClass('mcbtn-1');
+                        clearInterval(res);
+                    }
+
+                    t -= 1;
+                }, 1000);
+             }
+             else
+             {
+                $('#mcbtn').removeattr("disabled");
+                $("#mcbtn").removeClass('mcbtn-2').addClass('mcbtn-1');
+
+                $('#codeerr').text("发送验证短信失败，请重试");
+                //alert("发送验证短信失败，请重试");
+             }
+        });
+    }
+    else
+    {
+        $('#tel-err').text("手机号错误");
+    }
+    
+    return false;
+}
+
+$("#regform").submit(function(){
+    isok = 1;
+
+    $(".reg-err").text("");
+
+    mobile = $("input[name=tel]").val();
+    re = /^1\d{10}$/
+
+    if( !re.test(mobile) )
+    {
+        $("#tel-err").text("手机号错误");
+        isok = 0;
+    }
+
+    if( $("input[name=code]").val() == '' )
+    {
+        $("#code-err").text("必须填写验证码");
+        isok = 0;
+    }
+
+    if( $("input[name=password]").val() == '' )
+    {
+        $("#password-err").text("必须填写密码");
+        isok = 0;
+    }
+
+    if($("input[name=password]").val() !== $("input[name=password_confirmation]").val() )
+    {
+        $("#password-err").text("二次密码不匹配");
+        isok = 0;
+    }
+    
+
+    if(isok == 1)
+      return true;
+    else
+      return false;
+
 });
 </script>
 @stop
-
-
