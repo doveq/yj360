@@ -39,7 +39,7 @@
           <div style="float:right;line-height:40px;">
             <button type="button" class="manage-btn"
             	onclick="location.href='/classes/{{$v->id}}?column_id={{$query['column_id']}}'">成员管理</button>
-            <button type="button" class="manage-btn" style="margin-left:5px;">班级转让</button>
+            <button type="button" class="manage-btn" style="margin-left:5px;display:none;">班级转让</button>
             <button type="button" class="manage-btn" style="margin-left:5px;"
             	onclick="delClasses({{$v->id}})">删&nbsp;除</button>
             <button type="submit" class="manage-btn" style="margin-left:5px;">保&nbsp;存</button>

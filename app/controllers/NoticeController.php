@@ -2,7 +2,7 @@
 
 class NoticeController extends BaseController {
 
-    public $typeEnum = array('1' => '帮助中心', '2' => '系统公告', '3' => '360 活动', '4' => '问题反馈');
+    public $typeEnum = array('1' => '帮助手册', '2' => '系统公告', '3' => '360 活动', '4' => '问题反馈');
     public $pageSize = 30;
 
     public function index()
