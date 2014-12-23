@@ -5,6 +5,10 @@
   @include('Admin.teacher.nav')
 @stop
 
+@section('headjs')
+<script src="/assets/js/PCASClass.js"></script>
+@stop
+
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
@@ -58,19 +62,29 @@
       </div>
 
       <div class="form-group">
-        {{ Form::label('user_address', '地址', array('class' => 'col-md-2 control-label')) }}
-        <div class="col-md-6">
-          {{ Form::text('address', '', array('class' => 'form-control', 'id' => 'user_address')) }}
-        </div>
-      </div>
-
-      <div class="form-group">
         {{ Form::label('user_school', '当前学校', array('class' => 'col-md-2 control-label')) }}
         <div class="col-md-6">
           {{ Form::text('school', '', array('class' => 'form-control', 'id' => 'user_school')) }}
         </div>
       </div>
 
+      <div class="form-group">
+        {{ Form::label('user_district', '地区', array('class' => 'col-md-2 control-label')) }}
+        <div class="col-md-6 form-inline">
+          <select name="province" class="form-control"></select>
+          <select name="city" class="form-control"></select>
+          <select name="district" class="form-control"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        {{ Form::label('user_address', '详细地址', array('class' => 'col-md-2 control-label')) }}
+        <div class="col-md-6">
+          {{ Form::text('address', '', array('class' => 'form-control', 'id' => 'user_address')) }}
+        </div>
+      </div>
+
+      
       <div class="form-group">
         <div class="col-md-offset-2 col-md-6">
           {{ Form::submit('提交', array('class' => 'btn btn-default')) }}
@@ -89,4 +103,8 @@
   </div>
 @stop
 
-
+@section('js')
+<script type="text/javascript">
+  new PCAS("province=选择省份","city=选择城市","district=选择地区");
+</script>
+@stop

@@ -128,7 +128,6 @@
 
 @section('js')
 <script>
-
 $("#dologin").submit(function(){
     isok = 1;
 
