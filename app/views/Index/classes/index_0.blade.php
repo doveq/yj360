@@ -32,7 +32,7 @@
                   {{$list->name}}
                 </div>
                 <div class="classes-txt index">
-                  <div title="{{$list->teacher->name}}">老师：{{str_limit($list->teacher->name,5)}}</div>
+                  <div title="老师：{{$list->teacher->name}}">老师：{{str_limit($list->teacher->name,5)}}</div>
                   <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
                 </div>
               </a>
