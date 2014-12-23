@@ -17,8 +17,9 @@
       		<span class="fsort-back"></span>&nbsp;&nbsp;返回
       	</a>
       	<span class="tab-bar"></span>
-        <span style="color:#c9c9c9;">
-	        <a style="color:#c9c9c9;" href="/classes?column_id={{$query['column_id']}}">我的班级</a> > 
+        <span class="tab-title-prev">
+	        <a href="/classes?column_id={{$query['column_id']}}">我的班级</a>
+	        <span>&nbsp;>&nbsp;</span>
 	        <span style="color:#499528;">班级管理</span>
         </span>
       </div>
