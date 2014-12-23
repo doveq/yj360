@@ -37,7 +37,7 @@
                 </div>
               </a>
               <a href="/classes_notice/showList?column_id={{$query['column_id']}}&class_id={{$list->id}}" class="classes-hotbottom">
-                 <div class="classes-notice">公告：{{$list->noticescount()}}</div>      
+                 <div class="classes-notice">公告：{{$list->noticesunread(Session::get('uid'))}}</div>      
               </a>
           </div>
           @endforeach
