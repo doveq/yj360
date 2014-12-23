@@ -9,8 +9,8 @@
     @include('Index.column.nav')
 
   <div class="wrap-right">
-	  <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
-	     <span class="vm faq-tabbar" style="margin-left:10px;"></span>
+	  <div class="cl tabtool" style="margin-bottom:10px;">
+	     <span class="vm tab-bar"></span>
 	     <span class="vm">
 	     	<a style="color:#c9c9c9;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
 	     	<span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>

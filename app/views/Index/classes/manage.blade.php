@@ -19,7 +19,7 @@
       	<span class="tab-bar"></span>
         <span style="color:#c9c9c9;">
 	        <a style="color:#c9c9c9;" href="/classes?column_id={{$query['column_id']}}">我的班级</a> > 
-	        <a style="color:#499528;" href="/classes/manage?column_id={{$query['column_id']}}">班级管理</a>
+	        <span style="color:#499528;">班级管理</span>
         </span>
       </div>
 

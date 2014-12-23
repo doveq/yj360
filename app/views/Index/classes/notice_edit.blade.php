@@ -9,11 +9,11 @@
     @include('Index.column.nav')
 
   <div class="wrap-right">
-	  <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
+	  <div class="cl tabtool" style="margin-bottom:10px;">
       	 <a style="color:#999999;display:none;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">
       		<span class="fsort-back"></span>&nbsp;&nbsp;返回
       	 </a>
-	     <span class="vm faq-tabbar" style="margin-left:10px;"></span>
+	     <span class="vm tab-bar"></span>
 	     <span class="vm">
 	     	<a style="color:#c9c9c9;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
 	     	<span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
