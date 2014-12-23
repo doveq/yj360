@@ -128,7 +128,7 @@
 
 @section('js')
 <script>
-
+/*
 $("#dologin").submit(function(){
     isok = 1;
 
@@ -169,5 +169,6 @@ $("#dologin").submit(function(){
       return false;
 
 });
+*/
 </script>
 @stop

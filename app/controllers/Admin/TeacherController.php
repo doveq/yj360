@@ -60,7 +60,7 @@ class TeacherController extends \BaseController {
 
     public function doAdd()
     {
-        $info = Input::only('type', 'name', 'tel', 'qq', 'professional', 'address', 'school', 'status');
+        $info = Input::only('type', 'name', 'tel', 'qq', 'professional', 'address', 'school', 'status', 'province', 'city', 'district');
 
         $validator = Validator::make($info, array(
             'tel' => 'required|digits:11|unique:teacher_info')
@@ -92,7 +92,7 @@ class TeacherController extends \BaseController {
 
     public function doEdit()
     {
-        $info = Input::only('id', 'type', 'name', 'tel', 'qq', 'professional', 'address', 'school', 'status');
+        $info = Input::only('id', 'type', 'name', 'tel', 'qq', 'professional', 'address', 'school', 'status', 'province', 'city', 'district');
 
         $teacher = new Teacher();
         $id = $info['id'];

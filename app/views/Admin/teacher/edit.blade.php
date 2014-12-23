@@ -5,6 +5,10 @@
   @include('Admin.teacher.nav')
 @stop
 
+@section('headjs')
+<script src="/assets/js/PCASClass.js"></script>
+@stop
+
 @section('content')
   <div class="row">
     <ol class="breadcrumb">
@@ -60,16 +64,25 @@
       </div>
 
       <div class="form-group">
-        {{ Form::label('user_address', '地址', array('class' => 'col-md-2 control-label')) }}
+        {{ Form::label('user_school', '当前学校', array('class' => 'col-md-2 control-label')) }}
         <div class="col-md-6">
-          {{ Form::text('address', $info['address'], array('class' => 'form-control', 'id' => 'user_address')) }}
+          {{ Form::text('school', $info['school'], array('class' => 'form-control', 'id' => 'user_school')) }}
         </div>
       </div>
 
       <div class="form-group">
-        {{ Form::label('user_school', '当前学校', array('class' => 'col-md-2 control-label')) }}
+        {{ Form::label('user_district', '地区', array('class' => 'col-md-2 control-label')) }}
+        <div class="col-md-6 form-inline">
+          <select name="province" class="form-control"></select>
+          <select name="city" class="form-control"></select>
+          <select name="district" class="form-control"></select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        {{ Form::label('user_address', '详细地址', array('class' => 'col-md-2 control-label')) }}
         <div class="col-md-6">
-          {{ Form::text('school', $info['school'], array('class' => 'form-control', 'id' => 'user_school')) }}
+          {{ Form::text('address', $info['address'], array('class' => 'form-control', 'id' => 'user_address')) }}
         </div>
       </div>
 
@@ -91,4 +104,9 @@
   </div>
 @stop
 
+@section('js')
+<script type="text/javascript">
+  new PCAS("province={{$info['province']}},选择省份","city={{$info['city']}},选择城市","district={{$info['district']}},选择地区");
+</script>
+@stop
 
