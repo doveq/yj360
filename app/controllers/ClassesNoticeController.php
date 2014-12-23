@@ -67,8 +67,12 @@ class ClassesNoticeController extends BaseController {
     	$arr = $col->getPath($query['column_id']);
     	$columnHead = $arr[0];
     	 
-    	// 查询消息内容
+    	// 计算页面浏览量
     	$cn = new ClassesNotice();
+    	$ip = Request::getClientIp();
+    	$cn->computeVisits($query['id'], $ip);
+    	
+    	// 查询消息内容
     	$info = $cn->getInfo($query['id']);
     	
     	// 消息对应评论
@@ -210,6 +214,10 @@ class ClassesNoticeController extends BaseController {
     	// 同时删除消息评论
     	$cnc = new ClassesNoticeComments();
     	$cnc->delByNotice($query['id']);
+    	
+    	// 同时删除ip_page表中相关记录
+    	$ipmodel = new IpPage();
+    	$ipmodel->delByPageType($query['id'], 1);
     	 
     	return Redirect::to("/classes_notice/showList?class_id=". $query['class_id']."&column_id=".$query['column_id']);
     }

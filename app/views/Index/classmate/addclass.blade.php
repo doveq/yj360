@@ -31,14 +31,14 @@
         @if (isset($classes))
           @if ($classes->count() > 0)
             @foreach ($classes as $list)
-            <div class="classse-box" id="classes_{{$list->id}}" style="">
-              <div class="classes-box-head" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
+            <div class="classse-box index" id="classes_{{$list->id}}" style="height:205px;">
+              <div class="classes-box-head index" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
               </div>
-              <div class="classes-box-name">
+              <div class="classes-box-name index">
                 {{$list->name}}
               </div>
-              <div class="classes-txt">
-                <div>创建者：{{$list->teacher->name}} @if ($list->teacher->id == Session::get('uid'))(我)@endif</div>
+              <div class="classes-txt index" style="bottom:0;">
+                <div>老师：{{$list->teacher->name}} @if($list->teacher->id == Session::get('uid'))(我)@endif</div>
                 <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
               </div>
               @if ($list->teacher->id != Session::get('uid'))

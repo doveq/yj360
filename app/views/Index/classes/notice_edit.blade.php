@@ -1,5 +1,5 @@
 @extends('Index.master')
-@section('title') 班级消息  @stop
+@section('title') 班级公告  @stop
 @extends('Index.column.columnHead')
 
 @section('content')
@@ -10,7 +10,7 @@
 
   <div class="wrap-right">
 	  <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
-      	 <a style="color:#999999;" href="/classes/showList?class_id={{$query['class_id']}}column_id=@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">
+      	 <a style="color:#999999;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">
       		<span class="fsort-back"></span>&nbsp;&nbsp;返回
       	 </a>
 	     <span class="vm faq-tabbar" style="margin-left:10px;"></span>
@@ -25,7 +25,7 @@
 	     </span>
 	     @endif
 	     <span class="vm tab-title">
-	     	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级消息</a>
+	     	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级公告</a>
 	     </span>
 	  </div>
   

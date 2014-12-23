@@ -73,4 +73,11 @@ class NoticeComments extends Eloquent {
     public function getListPage($id, $pageSize) {
     	return $this->where('notice_id', $id)->orderBy('id', 'desc')->paginate($pageSize);
     }
+    
+    /**
+     * 根据消息id删除所有相关评论
+     */
+    public function delByNotice($notice_id) {
+        return $this->where('notice_id', $notice_id)->delete();
+    }
 }
