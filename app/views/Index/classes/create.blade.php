@@ -10,8 +10,11 @@
   <div class="wrap-right">
       <div class="tabtool">
         <span class="tab-bar"></span>
-        <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
-        <span class="tab-title">我的班级</span>
+        <span class="tab-title-prev">
+            <a href="/classes?column_id={{$query['column_id']}}" class="tabtool-btn-back">我的班级</a>
+            <span>&nbsp;>&nbsp;</span>
+        </span>
+        <span class="tab-title">创建班级</span>
         <span class="tab-btn">
           <a href="/classes/create?column_id={{$query['column_id']}}" class="tabtool-btn">创建班级</a>
           <a href="/classm/add_class?column_id={{$query['column_id']}}" class="tabtool-btn">加入班级</a>

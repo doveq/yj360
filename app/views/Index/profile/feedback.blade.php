@@ -11,8 +11,8 @@
          <span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
      </span>
      <span class="vm tab-title">
-     	<a style="color:#499528;" href="javascript:void(0);">帮助中心</a>
-     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+     	<a style="color:#c9c9c9;" href="javascript:void(0);">帮助中心</a>
+     	<span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
      </span>
      <span class="vm tab-title">
      	<a style="color:#499528;" href="/feedback">问题反馈</a>

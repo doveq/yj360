@@ -9,23 +9,27 @@
     @include('Index.column.nav')
 
   <div class="wrap-right">
-	  <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
-      	 <a style="color:#999999;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">
+	  <div class="cl tabtool" style="margin-bottom:10px;">
+      	 <a style="color:#999999;display:none;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">
       		<span class="fsort-back"></span>&nbsp;&nbsp;返回
       	 </a>
-	     <span class="vm faq-tabbar" style="margin-left:10px;"></span>
-	     <span class="vm">
-	     	<a style="color:#499528;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
-	     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+	     <span class="vm tab-bar"></span>
+	     <span class="vm tab-title-prev">
+	     	<a href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
+	     	<span>&nbsp;&gt;&nbsp;</span>
 	     </span>
 	     @if($classes && $classes->name)
-	     <span class="vm">
-	     	<a style="color:#499528;" href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$classes->name}}</a>
-	     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+	     <span class="vm tab-title-prev">
+	     	<a href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$classes->name}}</a>
+	     	<span>&nbsp;&gt;&nbsp;</span>
 	     </span>
 	     @endif
-	     <span class="vm tab-title">
-	     	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级公告</a>
+	     <span class="vm tab-title-prev">
+	     	<a href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级公告</a>
+	        <span>&nbsp;&gt;&nbsp;</span>
+	     </span>
+	     <span class="vm">
+	     	<a class="tab-title">{{$mode}}</a>
 	     </span>
 	  </div>
   
@@ -34,7 +38,7 @@
           	  <input type="hidden" name="id" value="@if(!empty($query['id'])){{$query['id']}}@endif"> 
           	  <input type="hidden" name="class_id" value="{{$query['class_id']}}"> 
           	  <input type="hidden" name="column_id" value="@if(!empty($query['column_id'])){{$query['column_id']}}@endif"> 
-			  <div style="margin-bottom:10px;">
+			  <div style="margin-bottom:10px;display:none;">
 	          	<label>序号：</label>
 	          	<input name="ordern" type="text" 
 	          		style="width:50px;border:1px solid #c9c9c9;padding:2px 5px;" maxlength="6" 

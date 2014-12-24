@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 班级消息
+ * 班级公告
  */
 class ClassesNoticeController extends BaseController {
 	public $pageSize = 20;
@@ -67,10 +67,11 @@ class ClassesNoticeController extends BaseController {
     	$arr = $col->getPath($query['column_id']);
     	$columnHead = $arr[0];
     	 
-    	// 计算页面浏览量
+    	// 计算公告浏览量和当前用户是否已读该公告
     	$cn = new ClassesNotice();
     	$ip = Request::getClientIp();
     	$cn->computeVisits($query['id'], $ip);
+    	$cn->computeReads($query['id'], Session::get('uid'));
     	
     	// 查询消息内容
     	$info = $cn->getInfo($query['id']);
@@ -110,8 +111,10 @@ class ClassesNoticeController extends BaseController {
     	$c = new Classes();
     	$classes = $c->whereId($query['class_id'])->first();
     	
+    	$mode = '发布公告';
+    	
     	return $this->indexView('classes.notice_edit',
-    			compact('query', 'columns', 'columnHead', 'classes'));
+    			compact('query', 'columns', 'columnHead', 'classes', 'mode'));
     }
     
     /**
@@ -142,9 +145,11 @@ class ClassesNoticeController extends BaseController {
     	// 查询消息内容
     	$cn = new ClassesNotice();
     	$notice = $cn->getInfo($query['id']);
-    	 
+
+    	$mode = '编辑公告';
+    	
     	return $this->indexView('classes.notice_edit',
-    			compact('query', 'columns', 'columnHead', 'notice', 'classes'));
+    			compact('query', 'columns', 'columnHead', 'notice', 'classes', 'mode'));
     }
     
     /**
@@ -218,6 +223,10 @@ class ClassesNoticeController extends BaseController {
     	// 同时删除ip_page表中相关记录
     	$ipmodel = new IpPage();
     	$ipmodel->delByPageType($query['id'], 1);
+    	
+    	// 同时删除class_notice_user表中相关记录
+    	$cnu = new ClassesNoticeUser();
+    	$cnu->delByNotice($query['id']);
     	 
     	return Redirect::to("/classes_notice/showList?class_id=". $query['class_id']."&column_id=".$query['column_id']);
     }

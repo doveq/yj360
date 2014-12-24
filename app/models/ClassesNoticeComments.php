@@ -1,7 +1,7 @@
 <?php
 
 /**
- * 班级消息评论
+ * 班级公告评论
  */
 class ClassesNoticeComments extends Eloquent {
     protected $table = 'class_notice_comments';

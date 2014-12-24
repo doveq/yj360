@@ -9,14 +9,17 @@
 
   <div class="wrap-right">
     <div class="tabtool">
-	  <a style="color:#999999;" href="/classes?column_id={{$query['column_id']}}">
-      		<span class="fsort-back"></span>&nbsp;&nbsp;返回
+	  <a style="color:#999999;display:none;" href="/classes?column_id={{$query['column_id']}}">
+        <span class="fsort-back"></span>&nbsp;&nbsp;返回
       </a>
       <span class="tab-bar"></span>
-      <a style="color:#499528;" href="/classes?column_id={{$query['column_id']}}">我的班级</a> > 
+      <span class="tab-title-prev">
+          <a href="/classes?column_id={{$query['column_id']}}">我的班级</a>
+          <span>&nbsp;>&nbsp;</span>
+      </span>
       <span class="tab-title">{{$classes->name}}</span>
       <span class="tab-btn">
-      	<a href="/classes_notice/showList?column_id={{$query['column_id']}}&class_id={{$classes->id}}" class="tabtool-btn">班级公告({{$classes->noticescount()}})</a>
+      	<a href="/classes_notice/showList?column_id={{$query['column_id']}}&class_id={{$classes->id}}" class="tabtool-btn">班级公告({{$classes->noticesunread(Session::get('uid'))}})</a>
       
         @if ($classes->teacher->id == Session::get('uid'))
         <a href="/classes/mates?class_id={{$classes->id}}&column_id={{$query['column_id']}}" class="tabtool-btn">成员管理</a>

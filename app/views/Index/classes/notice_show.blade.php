@@ -8,22 +8,22 @@
     @include('Index.column.nav')
 
   <div class="wrap-right">
-      <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
-         <span class="vm faq-tabbar"></span>
+      <div class="cl tabtool" style="margin-bottom:10px;">
+         <span class="vm tab-bar"></span>
+         <span class="vm tab-title-prev">
+         	<a href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
+         	<span>&nbsp;&gt;&nbsp;</span>
+         </span>
+         <span class="vm tab-title-prev">
+         	<a href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$info->classes->name}}</a>
+         	<span>&nbsp;&gt;&nbsp;</span>
+         </span>
+         <span class="vm tab-title-prev">
+         	<a href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级公告</a>
+         	<span>&nbsp;&gt;&nbsp;</span>
+         </span>
          <span class="vm">
-         	<a style="color:#499528;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
-         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
-         </span>
-         <span class="vm tab-title">
-         	<a style="color:#499528;" href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$info->classes->name}}</a>
-         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
-         </span>
-         <span class="vm tab-title">
-         	<a style="color:#499528;" href="/classes_notice/showList?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">班级公告</a>
-         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
-         </span>
-         <span class="vm tab-title">
-             <span style="color:#000;">{{$info->title}}</span>
+             <span class="tab-title">{{$info->title}}</span>
          </span>
       </div>
       

@@ -12,12 +12,12 @@
          <span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
      </span>
      <span class="vm tab-title">
-     	<a style="color:#499528;" href="javascript:void(0);">帮助中心</a>
-     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+     	<a style="color:#c9c9c9;" href="javascript:void(0);">帮助中心</a>
+     	<span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
      </span>
      <span class="vm tab-title">
      	<a style="color:#499528;" 
-     	    href="/notice/list?column_id={{$query['column_id']}}&type={{$query['type']}}">{{$typeEnum[$query['type']]}}</a>
+     	    href="/notice/list?type={{$query['type']}}">{{$typeEnum[$query['type']]}}</a>
      </span>
   </div>
 
@@ -30,7 +30,7 @@
           @foreach($list as $v)
           <div class="notice-item">
             <div class="notice-lt">
-            	<a style="color:#000;font-weight:bold;" href="/notice/show?type={{$query['type']}}&id={{$v->id}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">{{$v->title}}</a>
+            	<a style="color:#000;font-weight:bold;" href="/notice/show?type={{$query['type']}}&id={{$v->id}}">{{$v->title}}</a>
             </div>
             <div class="notice-lc">{{str_limit(strip_tags($v->content), $limit = 100, $end = '...')}}</div>
             <ul class="notice-tools">
@@ -39,7 +39,7 @@
 	              <span style="margin-left:30px;">浏览量：{{$v->visits or '0'}}</span>
 	              <span style="margin-left:30px;">评论：{{count($v->commentcount)}}</span>
 	              <span style="margin-left:30px;">
-	              	<a style="color:#499528;" href="/notice/show?type={{$query['type']}}&id={{$v->id}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif">[查看全文]</a>
+	              	<a style="color:#499528;" href="/notice/show?type={{$query['type']}}&id={{$v->id}}">[查看全文]</a>
 	              </span>
               </li>
             </ul>

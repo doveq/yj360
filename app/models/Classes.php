@@ -93,9 +93,35 @@ class Classes extends Eloquent {
     }
     
     /**
-     * 班级消息数目
+     * 班级公告数目
      */
     public function noticescount() {
         return $this->hasMany('ClassesNotice', 'class_id', 'id')->count();
+    }
+    
+    /**
+     * 计算某用户的未读班级公告数目
+     */
+    public function noticesunread($uid) {
+        if(empty($uid)) {
+            return 0;
+        }
+        $class_id = $this->id;
+        
+        $cn = new ClassesNotice();
+        $noticeids = $cn->where('class_id', $class_id)->select('id')->get()->toArray();
+        $total = count($noticeids); // 消息总数
+        
+        $cnu = new ClassesNoticeUser();
+        $reads = 0;
+        if($total > 0) {
+            $reads = $cnu->where('uid', $uid)->whereIn('notice_id', $noticeids)->count(); // 某用户已读消息数
+        }
+        
+        if($total > 0 && $total > $reads) {
+            return $total-$reads;
+        } else {
+            return 0;
+        }
     }
 }

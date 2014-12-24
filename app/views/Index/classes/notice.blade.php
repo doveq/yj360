@@ -9,24 +9,27 @@
     @include('Index.column.nav')
 
   <div class="wrap-right">
-	  <div class="cl tabtool" style="background-color:#fff;margin-bottom:0;border:0;">
-	     <span class="vm faq-tabbar" style="margin-left:10px;"></span>
-	     <span class="vm">
-	     	<a style="color:#499528;" href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
-	     	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+	  <div class="cl tabtool" style="margin-bottom:10px;">
+	     <span class="vm tab-bar"></span>
+	     <span class="vm tab-title-prev">
+	     	<a href="/classes?@if(!empty($query['column_id']))column_id={{$query['column_id']}}@endif">我的班级</a>
+	     	<span>&nbsp;&gt;&nbsp;</span>
 	     </span>
 	     @if($classes && $classes->name)
-         <span class="vm tab-title">
-         	<a style="color:#499528;" href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$classes->name}}</a>
-         	<span style="color:#499528;">&nbsp;&gt;&nbsp;</span>
+         <span class="vm tab-title-prev">
+         	<a href="/classes/{{$query['class_id']}}@if(!empty($query['column_id']))?column_id={{$query['column_id']}}@endif">{{$classes->name}}</a>
+         	<span>&nbsp;&gt;&nbsp;</span>
          </span>
          @endif
-	     <span class="vm tab-title" style="color:#000;">
+	     <span class="vm tab-title">
 	     	班级公告
 	     </span>
+	     {{-- 只有老师可以发布公告 --}}
+	     @if($classes && $classes->teacherid==Session::get('uid'))
 	     <span style="float:right;">
 	     	<a href="/classes_notice/create?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif" class="tabtool-btn">发布公告</a>
 	     </span>
+	     @endif
 	  </div>
   
       <div class="notice-list">

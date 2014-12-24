@@ -10,8 +10,12 @@
   <div class="wrap-right">
       <div class="tabtool">
         <span class="tab-bar"></span>
-        <a href="/classes/{{$query['class_id']}}?column_id={{$query['column_id']}}" class="tabtool-btn-back">返回></a>
-        <span class="tab-title">{{$classes->name}}></span>
+        <a href="/classes/{{$query['class_id']}}?column_id={{$query['column_id']}}" class="tabtool-btn-back" style="color:#c9c9c9;">
+                        返回&nbsp;>&nbsp;</a>
+        <span class="tab-title">
+            <a href="/classes/{{$query['class_id']}}?column_id={{$query['column_id']}}" style="color:#c9c9c9;">
+                {{$classes->name}}&nbsp;>&nbsp;</a>
+        </span>
         <span class="tab-title">与{{$user->name}}对话</span>
         <span class="tab-btn">
           <a href="javascript:void(0);" onClick="delete_message();" class="tabtool-btn">全部清除</a>
