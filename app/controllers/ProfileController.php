@@ -170,6 +170,7 @@ class ProfileController extends BaseController {
 		$info['province'] = $inputs['province'];
 		$info['city'] = $inputs['city'];
 		$info['district'] = $inputs['district'];
+		$info['status'] = 0;  // 状态改为未审核
 
 		if(empty($tinfo))
 		{

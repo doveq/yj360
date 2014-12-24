@@ -527,6 +527,12 @@ li.index-list-more a {
 	background: url("/assets/img/regbnt.jpg") no-repeat 0 0;
 	border: none;
 }
+.fileup{position:relative;}
+.regtable .selbtn{
+	background: url("/assets/img/selbtn.jpg") no-repeat 0 0;
+	border:none;
+	height:32px; width:80px;}
+.regtable .file{ position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:400px; }
 
 .loginbox{
 	background: url("/assets/img/regbg.jpg") no-repeat 0 0;
@@ -1842,12 +1848,5 @@ a.tyadel {
 }
 .classes-notice:hover {
 	color: #499528;
-}
-/**
- * 导航条中父导航样式
- */
-.tab-title-prev,
-.tab-title-prev > * {
-	color: #c9c9c9;
 }
 

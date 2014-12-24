@@ -11,13 +11,13 @@
     .tyinput{padding:5px;margin:5px;}
     .tyerr{color:red;padding-left:10px;}
     .fileup{position:relative;}
-    .regtable .selbtn{
-        background: url("/assets/img/uprebtn.jpg") no-repeat 0 0;
+    .table-2 .selbtn{
+        background: url("/assets/img/selbtn.jpg") no-repeat 0 0;
         border:none;
-        height:91px; width:104px;
+        height:32px; width:80px;
     }
-    .regtable .file{ 
-        position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:400px; 
+    .table-2 .file{ 
+        position:absolute; top:0; left:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:380px; 
     }
 </style>
 <div class="container-column wrap">
