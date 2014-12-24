@@ -14,11 +14,15 @@
     .table-2 .selbtn{
         background: none no-repeat 0 0 #1db5a9;
         border:none;
-        height:32px; width:100px;
+        width:100px;
+        padding:10px 0;
         position:relative;
+        height: auto;
+
     }
     .table-2 .file{ 
-        position:absolute; top:0; left:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:380px; 
+        position:absolute; top:0; left:5px; height:40px; filter:alpha(opacity:0);opacity: 0;width:380px;
+        cursor: pointer;
     }
 </style>
 <div class="container-column wrap">
