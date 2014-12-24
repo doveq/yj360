@@ -12,9 +12,10 @@
     .tyerr{color:red;padding-left:10px;}
     .fileup{position:relative;}
     .table-2 .selbtn{
-        background: url("/assets/img/selbtn.jpg") no-repeat 0 0;
+        background: none no-repeat 0 0 #1db5a9;
         border:none;
-        height:32px; width:80px;
+        height:32px; width:100px;
+        position:relative;
     }
     .table-2 .file{ 
         position:absolute; top:0; left:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:380px; 
@@ -43,8 +44,8 @@
             <td class="lable">上传教师证</td>
             <td>
                 <div class="fileup">
-                  <input type='text' name='textfield' id='textfield' class='tyinput' style="width:262px;" />
-                  <input type='button' class='selbtn' value='' />
+                  <input type='text' name='textfield' id='textfield' class='tyinput' style="width:237px;" />
+                  <button type="submit" class='selbtn' style="margin-left:5px;padding:5px 10px;border:none;color:#fff;">选择文件</button>
                   <input type="file" name="avatar" class="file" id="fileField" size="12" onchange="document.getElementById('textfield').value=this.value" />
                   <span class="tyerr"></span>
                 </div>
@@ -107,7 +108,7 @@
         <tr>
             <td class="lable">&nbsp;</td>
             <td>
-                <button type="submit" class="pfbnt"></button>
+                <button type="submit" style="margin-left:5px;background-color:#1db5a9;padding:5px 10px;border:none;color:#fff;">提交</button>
             </td>
         </tr>
       </table>
