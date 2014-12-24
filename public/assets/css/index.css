@@ -1849,11 +1849,4 @@ a.tyadel {
 .classes-notice:hover {
 	color: #499528;
 }
-/**
- * 导航条中父导航样式
- */
-.tab-title-prev,
-.tab-title-prev > * {
-	color: #c9c9c9;
-}
 

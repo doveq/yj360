@@ -13,12 +13,22 @@
 
 App::before(function($request)
 {
-	//
+	
 });
 
 
 App::after(function($request, $response)
 {
+	// 记着密码登录的账户设置session
+	if( Auth::check() && Auth::viaRemember() && empty(Session::get('uid')))
+	{
+		$user = Auth::user();
+		Session::put('uid', $user->id);
+		Session::put('uname', $user->name);
+		Session::put('utype', $user->type);
+		Session::put('utel', $user->tel);
+	}
+
 	//
 	if( Auth::check() ) {
 		Session::put('newmassage_count', User::find(Session::get('uid'))->receiver()->whereStatus(0)->count());

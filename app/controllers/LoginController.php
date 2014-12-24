@@ -129,6 +129,7 @@ class LoginController extends BaseController
 		else
 			return Redirect::to('admin/login')->with('message', '登录失败');
 	}
+	
 
 	/* 用户注册 */
 	public function register()
