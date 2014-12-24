@@ -122,6 +122,9 @@ class ProfileController extends BaseController {
 		$inputs = Input::all();
 
 		$validator = Validator::make($inputs , array(
+			'province' => 'required|alpha_dash',
+			'city' => 'required|alpha_dash',
+			'district' => 'required|alpha_dash',
 			'professional' => 'required|alpha_dash',
 			'address' => 'required|alpha_dash',
 			'school' => 'required|alpha_dash',
@@ -134,11 +137,8 @@ class ProfileController extends BaseController {
 			return $this->indexPrompt("", '各项必须填写', $url = "/profile/up");
 		}
 
-
-
 		$user = new User();
 		$teacher = new Teacher();
-
 
 		if(isset($_FILES['avatar']) && $_FILES['avatar']['error'] == UPLOAD_ERR_OK )
 		{
@@ -166,6 +166,10 @@ class ProfileController extends BaseController {
 		$info['address'] = $inputs['address'];
 		$info['school'] = $inputs['school'];
 		$info['qq'] = $inputs['qq'];
+
+		$info['province'] = $inputs['province'];
+		$info['city'] = $inputs['city'];
+		$info['district'] = $inputs['district'];
 
 		if(empty($tinfo))
 		{

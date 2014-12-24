@@ -1,11 +1,24 @@
 @extends('Index.master')
 @section('title')个人中心 @stop
 
+@section('headjs')
+<script src="/assets/js/PCASClass.js"></script>
+@stop
+
 @section('content')
 <style>
     .table-2 .lable {padding:5px;}
     .tyinput{padding:5px;margin:5px;}
     .tyerr{color:red;padding-left:10px;}
+    .fileup{position:relative;}
+    .regtable .selbtn{
+        background: url("/assets/img/uprebtn.jpg") no-repeat 0 0;
+        border:none;
+        height:91px; width:104px;
+    }
+    .regtable .file{ 
+        position:absolute; top:0; right:0px; height:40px; filter:alpha(opacity:0);opacity: 0;width:400px; 
+    }
 </style>
 <div class="container-column wrap">
     <div class="row">
@@ -27,42 +40,10 @@
         @endif
 
         <tr>
-            <td class="lable">毕业学校及专业</td>
-            <td>
-                <input class="tyinput" type="text" name="professional" value="{{$tinfo->professional or ''}}" />
-                <span class="tyerr"></span>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="lable">所在省份</td>
-            <td>
-                <input class="tyinput" type="text" name="address" value="{{$tinfo->address or ''}}"  />
-                <span class="tyerr"></span>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="lable">所在学校</td>
-            <td>
-                <input class="tyinput" type="text" name="school" value="{{$tinfo->school or ''}}"  />
-                <span class="tyerr"></span>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="lable">QQ</td>
-            <td>
-                <input class="tyinput" type="text" name="qq" value="{{$tinfo->qq or ''}}"  />
-                <span class="tyerr"></span>
-            </td>
-        </tr>
-
-        <tr>
-            <td class="lable">教师资格证</td>
+            <td class="lable">上传教师证</td>
             <td>
                 <div class="fileup">
-                  <input type='text' name='textfield' id='textfield' class='tyinput' style="width:182px;" />
+                  <input type='text' name='textfield' id='textfield' class='tyinput' style="width:262px;" />
                   <input type='button' class='selbtn' value='' />
                   <input type="file" name="avatar" class="file" id="fileField" size="12" onchange="document.getElementById('textfield').value=this.value" />
                   <span class="tyerr"></span>
@@ -70,6 +51,50 @@
             </td>
         </tr>
 
+        <tr>
+            <td class="lable">地区</td>
+            <td>
+              <select name="province" class="tyinput"></select>
+              <select name="city" class="tyinput"></select>
+              <select name="district" class="tyinput"></select>
+              <span class="tyerr"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="lable">详细地址</td>
+            <td>
+                <input class="tyinput" style="width:350px;" type="text" name="address" value="{{$tinfo->address or ''}}"  />
+                <span class="tyerr"></span>
+            </td>
+        </tr>
+
+
+        <tr>
+            <td class="lable">毕业学校及专业</td>
+            <td>
+                <input class="tyinput" style="width:350px;" type="text" name="professional" value="{{$tinfo->professional or ''}}" />
+                <span class="tyerr"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="lable">所在学校</td>
+            <td>
+                <input class="tyinput" style="width:350px;" type="text" name="school" value="{{$tinfo->school or ''}}"  />
+                <span class="tyerr"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <td class="lable">QQ</td>
+            <td>
+                <input class="tyinput" style="width:350px;" type="text" name="qq" value="{{$tinfo->qq or ''}}"  />
+                <span class="tyerr"></span>
+            </td>
+        </tr>
+
+        
         @if(!empty($uinfo->img))
         <tr>
             <td class="lable"></td>
@@ -95,18 +120,37 @@
 
 @section('js')
 <script type="text/javascript">
+
+new PCAS("province={{$tinfo->province or ''}},选择省份","city={{$tinfo->city or ''}},选择城市","district={{$tinfo->district or ''}},选择地区");
+
 $('#fdoup').submit(function(){
+
+    $('.tyerr').html('');
+
+    if($('input[name=avatar]').val() == '')
+    {
+        $('input[name=avatar]').next('.tyerr').html('必须上传教师资格证');
+        return false;
+    }
+
+    if($('select[name=district]').val() == '')
+    {
+        $('select[name=district]').next('.tyerr').html('该项必须选择');
+        return false;
+    }
+
+    if($('input[name=address]').val() == '')
+    {
+        $('input[name=address]').next('.tyerr').html('该项必须填写');
+        return false;
+    }
 
     if($('input[name=professional]').val() == '')
     {
         $('input[name=professional]').next('.tyerr').html('该项必须填写');
         return false;
     }
-    if($('input[name=address]').val() == '')
-    {
-        $('input[name=address]').next('.tyerr').html('该项必须填写');
-        return false;
-    }
+    
     if($('input[name=school]').val() == '')
     {
         $('input[name=school]').next('.tyerr').html('该项必须填写');
@@ -117,14 +161,11 @@ $('#fdoup').submit(function(){
         $('input[name=qq]').next('.tyerr').html('该项必须填写');
         return false;
     }
-    if($('input[name=avatar]').val() == '')
-    {
-        $('input[name=avatar]').next('.tyerr').html('必须上传教师资格证');
-        return false;
-    }
+    
     return true;
 });
 </script>
 @stop
 
 
+@stop
