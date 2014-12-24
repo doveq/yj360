@@ -24,9 +24,12 @@
 	     <span class="vm tab-title">
 	     	班级公告
 	     </span>
+	     {{-- 只有老师可以发布公告 --}}
+	     @if($classes && $classes->teacherid==Session::get('uid'))
 	     <span style="float:right;">
 	     	<a href="/classes_notice/create?class_id={{$query['class_id']}}@if(!empty($query['column_id']))&column_id={{$query['column_id']}}@endif" class="tabtool-btn">发布公告</a>
 	     </span>
+	     @endif
 	  </div>
   
       <div class="notice-list">

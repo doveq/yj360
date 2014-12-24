@@ -38,7 +38,7 @@
           	  <input type="hidden" name="id" value="@if(!empty($query['id'])){{$query['id']}}@endif"> 
           	  <input type="hidden" name="class_id" value="{{$query['class_id']}}"> 
           	  <input type="hidden" name="column_id" value="@if(!empty($query['column_id'])){{$query['column_id']}}@endif"> 
-			  <div style="margin-bottom:10px;">
+			  <div style="margin-bottom:10px;display:none;">
 	          	<label>序号：</label>
 	          	<input name="ordern" type="text" 
 	          		style="width:50px;border:1px solid #c9c9c9;padding:2px 5px;" maxlength="6" 

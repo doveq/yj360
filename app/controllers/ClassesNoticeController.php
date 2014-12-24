@@ -223,6 +223,10 @@ class ClassesNoticeController extends BaseController {
     	// 同时删除ip_page表中相关记录
     	$ipmodel = new IpPage();
     	$ipmodel->delByPageType($query['id'], 1);
+    	
+    	// 同时删除class_notice_user表中相关记录
+    	$cnu = new ClassesNoticeUser();
+    	$cnu->delByNotice($query['id']);
     	 
     	return Redirect::to("/classes_notice/showList?class_id=". $query['class_id']."&column_id=".$query['column_id']);
     }

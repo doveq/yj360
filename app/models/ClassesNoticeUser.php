@@ -22,4 +22,12 @@ class ClassesNoticeUser extends Eloquent {
     public function editInfo($id, $info) {
         return $this->where('id', $id)->update($info);
     }
+    
+    /**
+     * 根据公告id删除相关记录
+     * @param int $notice_id 公告id
+     */
+    public function delByNotice($notice_id) {
+        return $this->where('notice_id', $notice_id)->delete();
+    }
 }

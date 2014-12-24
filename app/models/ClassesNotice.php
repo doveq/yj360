@@ -9,7 +9,7 @@ class ClassesNotice extends Eloquent {
     /**
      * 是否启用ordern排序
      */
-    protected $use_ordern = true;
+    protected $use_ordern = false;
 
     public function user() {
         return $this->belongsTo('User', 'uid', 'id');

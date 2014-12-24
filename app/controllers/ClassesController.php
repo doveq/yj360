@@ -210,7 +210,7 @@ class ClassesController extends BaseController {
         if (Request::ajax()) {
             return Response::json('ok');
         } else {
-            return Redirect::to('/classes/'.$class_id);
+            return Redirect::to('/classes/'.$id);
         }
     }
 
