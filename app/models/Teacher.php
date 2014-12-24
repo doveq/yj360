@@ -50,8 +50,15 @@ class Teacher extends Eloquent {
 
     public function editInfo($id, $info)
     {
+        $oinfo = $this->getInfo($id);
         $this->where('id', $id)->update($info);
-        $this->sycnUserInfo($info['tel'], $info['status']);
+
+        if($oinfo->status == 0 && $info['status'] == 1)
+        {
+            $this->sycnUserInfo($info['tel'], $info['status'], date('Y-m-d H:i:s') );
+        }
+        else
+            $this->sycnUserInfo($info['tel'], $info['status']);
     }
 
     public function delInfo($id)
@@ -106,16 +113,27 @@ class Teacher extends Eloquent {
     /** 根据老师表数据，更新用户表用户类型。
         如果教师表有该手机号，则用户表设置改账户为老师
     */
-    public function sycnUserInfo($tel, $status)
+    public function sycnUserInfo($tel, $status, $retime = '')
     {
         if( !empty($tel) )
         {
             $user = new User();
+
+            $data = array();
+            if(!empty($retime))
+                $data['created_at'] = $retime;
+
             // 老师
             if($status == 1)
-                $user->setInfoFromTel($tel, array('type' => 1) );
+            {
+                $data['type'] = 1;
+                $user->setInfoFromTel($tel, $data );
+            }
             else
-                $user->setInfoFromTel($tel, array('type' => 0) ); // 修改为学生
+            {
+                $data['type'] = 0;
+                $user->setInfoFromTel($tel, $data ); // 修改为学生
+            }
         }
     }
 
