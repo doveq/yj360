@@ -35,6 +35,10 @@
               <div id="site-right">
                 <div id="site-right-info">
                   @if(Auth::check())
+                    @if(Session::get('utype') == 0)
+                    <a href="/profile/up" style="color:#e6d65c;">升级教师</a>
+                    <span class="sp" style="color:#e6d65c;">|</span>
+                    @endif
                     <a href="/notice/list?type=1" style="color:#e6d65c;">帮助手册</a>
                     <span class="sp" style="color:#e6d65c;">|</span>
                     <?php
