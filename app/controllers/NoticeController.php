@@ -107,11 +107,11 @@ class NoticeController extends BaseController {
     /* 评论内容 */
     public function doComment()
     {
-        $query = Input::only('notice_id', 'content', 'column_id', 'parent_id');
+        $query = Input::only('notice_id', 'content', 'parent_id', 'type');
 
         $validator = Validator::make($query , array(
-            'column_id' => 'numeric',
-            'notice_id' => 'required|numeric',
+            'notice_id' => array('required', 'numeric'),
+            'type' => array('required', 'numeric'),
             'parent_id' => 'numeric',
             'content' => 'required')
         );
@@ -120,7 +120,6 @@ class NoticeController extends BaseController {
 
         if(!$validator->passes() || $query['content'] == '' )
         {
-            //return $this->indexPrompt("操作失败", "错误的提交数据", $url = "/notice/show?id={$query['notice_id']}&column_id={$query['column_id']}", $auto = true);
             return Redirect::to("/notice/show?id={$query['notice_id']}&column_id={$query['column_id']}");
         }
 
@@ -133,7 +132,7 @@ class NoticeController extends BaseController {
         $nc = new NoticeComments();
         $nc->addInfo( $data );
 
-        return Redirect::to("/notice/show?id={$query['notice_id']}&column_id={$query['column_id']}");
+        return Redirect::to("/notice/show?type={$query['type']}&id={$query['notice_id']}");
     }
 
 }

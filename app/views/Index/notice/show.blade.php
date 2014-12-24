@@ -17,7 +17,7 @@
      </span>
      <span class="vm tab-title">
      	<a style="color:#c9c9c9;" 
-     	    href="/notice/list?column_id={{$query['column_id']}}&type={{$query['type']}}">{{$typeEnum[$query['type']]}}</a>
+     	    href="/notice/list?type={{$query['type']}}">{{$typeEnum[$query['type']]}}</a>
      	<span style="color:#c9c9c9;">&nbsp;&gt;&nbsp;</span>
      </span>
      <span class="vm tab-title">
@@ -48,7 +48,7 @@
       	{{-- 评论form --}}
         <form method="post" action="/notice/doComment" style="margin-bottom:40px;">
             <input type='hidden' name="notice_id" value="{{$info->id}}" />
-            <input type='hidden' name="column_id" value="{{$query['column_id']}}" />
+            <input type='hidden' name="type" value="{{$query['type']}}" />
             <textarea name="content" class="notice-comment-body" maxlength="250"></textarea>
             <br>
             <input type="submit" class="notice-comment-btn" value="提交评论" />
@@ -58,7 +58,7 @@
         {{-- 回复form(隐藏) --}}
 		<form style="display:none;" id="replyform" method="post" action="/notice/doComment">
             <input type='hidden' name="notice_id" value="{{$info->id}}" />
-            <input type='hidden' name="column_id" value="{{$query['column_id']}}" />
+            <input type='hidden' name="type" value="{{$query['type']}}" />
             <input type='hidden' name="parent_id" value="" />
             <input type='hidden' name="content" value="" />
         </form>
