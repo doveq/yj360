@@ -20,7 +20,7 @@ App::before(function($request)
 App::after(function($request, $response)
 {
 	// 记着密码登录的账户设置session
-	if(Auth::viaRemember() && empty(Session::get('uid')))
+	if( Auth::check() && Auth::viaRemember() && empty(Session::get('uid')))
 	{
 		$user = Auth::user();
 		Session::put('uid', $user->id);
