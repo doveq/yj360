@@ -42,7 +42,10 @@
             <td>{{ Form::checkbox('commentid[]', $v->id) }}<label>&nbsp;{{$v->id}}</label></td>
             <td>
                 <?php $notice=$v->notice; ?>
+                <!--
                 <a href="/admin/notice/edit?id={{$v->notice_id}}" target="_blank">
+                -->
+                <a href="/notice/show?type={{$notice->type}}&id={{$v->notice_id}}" target="_blank">
                     @if(!empty($notice->type)){{$typeEnum[$notice->type]}}/@endif
                     {{$notice->title or ''}}
                 </a>
