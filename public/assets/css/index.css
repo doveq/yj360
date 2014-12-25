@@ -1849,4 +1849,7 @@ a.tyadel {
 .classes-notice:hover {
 	color: #499528;
 }
-
+.tab-title-prev,
+.tab-title-prev * {
+	color: #c9c9c9;
+}
