@@ -45,7 +45,7 @@
         @endif
 
         <tr>
-            <td class="lable">教师资格证</td>
+            <td class="lable" style="vertical-align:top;padding-top:12px;">教师资格证</td>
             <td>
                 <div class="fileup">
                   <input type='text' name='textfield' id='textfield' class='tyinput' style="width:237px;" />
