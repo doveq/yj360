@@ -1,11 +1,7 @@
 <?php namespace Admin;
-use View;
 use Session;
-use Validator;
 use Input;
-use Paginator;
-use Redirect;
-use DB;
+use Response;
 use Notice;
 use NoticeComments;
 use IpPage;
@@ -113,6 +109,34 @@ class NoticeController extends \BaseController {
     }
     
     /**
+     * 查看所有评论列表
+     */
+    public function allcomment() {
+        $query = Input::only('page', 'type', 'title', 'content');
+        $query['pageSize'] = $this->pageSize;
+        
+        // 当前页数
+        if( !is_numeric($query['page']) || $query['page'] < 1 ) {
+            $query['page'] = 1;
+        }
+        
+        $typeEnum = array('' => '全部') + $this->typeEnum;
+        $statusEnum = $this->statusEnum;
+        $allowEnum = $this->allowEnum;
+        
+        // 获取所有评论详情
+        $nc = new NoticeComments();
+        if(isset($query['content']) && $query['content'] != '') {
+            $comments = $nc->getAllListPage($query['content'], $this->pageSize);
+        } else {
+            $comments = $nc->getAllListPage('', $this->pageSize);
+        }
+        
+        return $this->adminView('notice.allcomment',
+                compact('query', 'typeEnum', 'statusEnum', 'allowEnum', 'comments'));
+    }
+    
+    /**
      * 评论列表
      */
     public function comment() {
@@ -151,7 +175,28 @@ class NoticeController extends \BaseController {
     	$noticeid = Input::get('noticeid'); // notice_id
     	$nc = new NoticeComments();
     	$nc->delInfo($id);
-    	return $this->adminPrompt("操作成功", '数据删除成功', $url = "/admin/notice/comment?id=".$noticeid, true);
+    	
+    	$tag = Input::get('tag');
+    	if(isset($tag) && $tag == 'allcomment') {
+    	    return $this->adminPrompt("操作成功", '数据删除成功', $url = "/admin/notice/allcomment", true);
+    	} else {
+    	    return $this->adminPrompt("操作成功", '数据删除成功', $url = "/admin/notice/comment?id=".$noticeid, true);
+    	}
+    }
+    
+    /**
+     * 批量删除
+     */
+    public function doCommentDelMany() {
+        $ids = Input::get('ids'); // comment_ids
+        if(empty($ids)) {
+            $tmp = array('info' => '操作失败', 'status' => 0);
+            return $response = Response::json($tmp);
+        }
+        $nc = new NoticeComments();
+        $nc->delInfos($ids);
+        $tmp = array('info' => '操作成功', 'status' => 1);
+        return $response = Response::json($tmp);
     }
     
     /**
@@ -160,16 +205,17 @@ class NoticeController extends \BaseController {
     public function reply() {
     	$commentid = Input::get('commentid'); // comment_id
     	$noticeid = Input::get('noticeid'); // notice_id
+    	$tag = Input::get('tag');
     	$nc = new NoticeComments();
     	$comment = $nc->getInfo($commentid); // 评论内容
-    	return $this->adminView('notice.reply', compact('commentid', 'noticeid', 'comment'));
+    	return $this->adminView('notice.reply', compact('commentid', 'noticeid', 'comment', 'tag'));
     }
     
     /**
      * 发表回复
      */
     public function doReply() {
-    	$query = Input::only('commentid', 'noticeid', 'content');
+    	$query = Input::only('commentid', 'noticeid', 'content', 'tag');
     	$data = array();
     	$data['uid'] = Session::get('uid');
     	$data['notice_id'] = $query['noticeid'];
@@ -177,6 +223,10 @@ class NoticeController extends \BaseController {
     	$data['parent_id'] = $query['commentid'] ? $query['commentid'] : 0;
     	$nc = new NoticeComments();
     	$nc->addInfo( $data );
-    	return $this->adminPrompt("操作成功", '回复成功', $url = "/admin/notice/comment?id=".$query['noticeid'], true);
+    	if(isset($query['tag']) && $query['tag']=='allcomment') {
+    	    return $this->adminPrompt("操作成功", '回复成功', $url = "/admin/notice/allcomment", true);
+    	} else {
+        	return $this->adminPrompt("操作成功", '回复成功', $url = "/admin/notice/comment?id=".$query['noticeid'], true);
+    	}
     }
 }

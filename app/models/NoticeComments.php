@@ -21,6 +21,10 @@ class NoticeComments extends Eloquent {
     	return $this->belongsTo('User', 'uid', 'id');
     }
     
+    public function notice() {
+        return $this->belongsTo('Notice', 'notice_id', 'id');
+    }
+    
     /**
      * 父评论
      */
@@ -48,6 +52,16 @@ class NoticeComments extends Eloquent {
     {
         return $this->find($id)->delete();
     }
+    
+    /**
+     * 根据id批量删除
+     */
+    public function delInfos($idarr) {
+        if(empty($idarr)) {
+            return;
+        }
+        return $this->whereIn('id', $idarr)->delete();
+    }
 
     public function editInfo($id, $info)
     {
@@ -72,6 +86,20 @@ class NoticeComments extends Eloquent {
      */
     public function getListPage($id, $pageSize) {
     	return $this->where('notice_id', $id)->orderBy('id', 'desc')->paginate($pageSize);
+    }
+    
+    /**
+     * 查看所有评论分页
+     * @param $content 要搜索的评论内容
+     * @param $pageSize 分页数目
+     */
+    public function getAllListPage($content, $pageSize) {
+        $data = $this;
+        if($content != '') {
+            $data = $data->where('content', 'like', "%$content%");
+        }
+        $data = $data->orderBy('id', 'desc')->paginate($pageSize);
+        return $data;
     }
     
     /**

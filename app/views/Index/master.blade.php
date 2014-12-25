@@ -41,7 +41,10 @@
                     @endif
                     <a href="/notice/list?type=1" style="color:#e6d65c;">帮助手册</a>
                     <span class="sp" style="color:#e6d65c;">|</span>
-                    <a href="/feedback" id="site-fk">问题反馈</a>
+                    <?php
+                    $unreadreplycount = FeedbackUser::unreadreplycount(Session::get('uid'));
+                    ?>
+                    <a href="/feedback" id="site-fk">问题反馈 @if($unreadreplycount>0)({{$unreadreplycount}})@endif</a>
                     <span class="sp" style="color:#e6d65c;">|</span>
                     <a href="/profile" id="site-ubg">{{Session::get('uname')}} (@if(Session::get('utype') == -1)管理员@elseif(Session::get('utype') == 1)老师@else学生@endif)</a>
                     <span class="sp">|</span>
