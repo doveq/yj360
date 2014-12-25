@@ -257,7 +257,9 @@ class ClassmateController extends BaseController {
             }
 
             if (!empty($teachers)) {
-                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->whereColumnId($query['column_id'])->where('teacherid', '!=', Session::get('uid'))->get();
+                //$classes = Classes::whereIn('teacherid', array_flatten($teachers))->whereColumnId($query['column_id'])->where('teacherid', '!=', Session::get('uid'))->get();
+                // 不对班级科目限制
+                $classes = Classes::whereIn('teacherid', array_flatten($teachers))->where('teacherid', '!=', Session::get('uid'))->get();
             }
         }
         // else

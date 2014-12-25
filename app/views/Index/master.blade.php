@@ -120,6 +120,8 @@
     <script type="text/javascript">
     var _bdhmProtocol = (("https:" == document.location.protocol) ? " https://" : " http://");
     document.write(unescape("%3Cscript src='" + _bdhmProtocol + "hm.baidu.com/h.js%3F33052c1a3ea5668c69b1ccee9c3f6e7c' type='text/javascript'%3E%3C/script%3E"));
+    
+    window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"音基360（www.yinji360.com）免费提供音基考试题库,小学音乐测评,中学音乐测评,趣味游戏等。从音基教材基础知识学习、知识点测评到模拟真实考场，完善了学习中的每一个环节，通过学、练、测三个环节完美实现网络教学目标。","bdMini":"2","bdMiniList":["weixin","sqq","qzone","tsina"],"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"1","bdPos":"left","bdTop":"168.5"},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"把音基360内容分享到：","viewSize":"24"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
     </script>
 
   </body>
