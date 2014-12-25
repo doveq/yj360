@@ -74,9 +74,15 @@
     <div id="footer">
       <div  class="wrap">
         <ul class="footer-links">
-          <li>商务合作QQ：37716890</li>
-          <li>音基考级教师群：347576642</li>
-          <li>音基考级家长群：283516538</li>
+          <li>
+            <div>小学教师群:249878625</div>
+            <div>中学教师群:249878648</div>
+          </li>
+          <li>
+            <div>音基教师群:347576642</div>
+            <div>家长群:283516538</div>
+          </li>
+          <li>商务合作QQ:37716890</li>
           <li><a href="tencent://message/?uin=1302473868">在线客服</a><img width="18" src="/assets/img/qq.png" style="float:right;padding-right:5px;" /></li>
           <!--
           <li><span class="footer-sp">|</span></li>
