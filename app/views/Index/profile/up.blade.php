@@ -38,14 +38,14 @@
         @if(!empty($tinfo))
         <tr>
             <td class="lable">状态</td>
-            <td>
+            <td style="padding-left:5px;">
                 {{$statusEnum[$tinfo->status]}}
             </td>
         </tr>
         @endif
 
         <tr>
-            <td class="lable">上传教师证</td>
+            <td class="lable">教师资格证</td>
             <td>
                 <div class="fileup">
                   <input type='text' name='textfield' id='textfield' class='tyinput' style="width:237px;" />
@@ -53,6 +53,7 @@
                   <input type="file" name="avatar" class="file" id="fileField" size="12" onchange="document.getElementById('textfield').value=this.value" />
                   <span class="tyerr"></span>
                 </div>
+                <div style="color:#8a8a86;padding-left:5px;">校外音乐培训老师，也可使用毕业证书</div>
             </td>
         </tr>
 
