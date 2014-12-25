@@ -30,7 +30,7 @@
           @foreach ($lists as $list)
           <tr>
             <td>{{$list->id}}</td>
-            <td>{{$list->user->name}}</td>
+            <td>{{$list->user->name or '#'}}</td>
             <td><a href="{{url('/admin/feedback/'.$list->id)}}">{{Str::words($list->content, $words = 2, $end = '...')}}</a></td>
             <td>{{$list->reply}}</td>
             <td>{{$list->created_at}}</td>
