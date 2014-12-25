@@ -72,7 +72,7 @@
       <div  class="wrap">
         <ul class="footer-links">
           <li>
-            <div>小学教学群:249878625</div>
+            <div>小学教师群:249878625</div>
             <div>中学教师群:249878648</div>
           </li>
           <li>
