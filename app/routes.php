@@ -108,6 +108,7 @@ Route::group(array('prefix' => 'admin', 'before' => 'adminLogin'), function(){
     Route::post('/notice/doDel', '\Admin\NoticeController@doDel');
 
     Route::get('/notice/allcomment', '\Admin\NoticeController@allcomment'); // 管理员查看所有评论
+    Route::post('/notice/doCommentDelMany', '\Admin\NoticeController@doCommentDelMany'); // 管理员批量删除评论
     Route::get('/notice/comment', '\Admin\NoticeController@comment'); // 管理员查看评论
     Route::post('/notice/doCommentDel', '\Admin\NoticeController@doCommentDel'); // 管理员删除评论
     Route::get('/notice/reply', '\Admin\NoticeController@reply'); // 管理员回复评论

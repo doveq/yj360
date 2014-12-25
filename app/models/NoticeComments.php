@@ -52,6 +52,16 @@ class NoticeComments extends Eloquent {
     {
         return $this->find($id)->delete();
     }
+    
+    /**
+     * 根据id批量删除
+     */
+    public function delInfos($idarr) {
+        if(empty($idarr)) {
+            return;
+        }
+        return $this->whereIn('id', $idarr)->delete();
+    }
 
     public function editInfo($id, $info)
     {

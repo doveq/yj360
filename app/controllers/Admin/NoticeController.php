@@ -1,6 +1,7 @@
 <?php namespace Admin;
 use Session;
 use Input;
+use Response;
 use Notice;
 use NoticeComments;
 use IpPage;
@@ -181,6 +182,21 @@ class NoticeController extends \BaseController {
     	} else {
     	    return $this->adminPrompt("操作成功", '数据删除成功', $url = "/admin/notice/comment?id=".$noticeid, true);
     	}
+    }
+    
+    /**
+     * 批量删除
+     */
+    public function doCommentDelMany() {
+        $ids = Input::get('ids'); // comment_ids
+        if(empty($ids)) {
+            $tmp = array('info' => '操作失败', 'status' => 0);
+            return $response = Response::json($tmp);
+        }
+        $nc = new NoticeComments();
+        $nc->delInfos($ids);
+        $tmp = array('info' => '操作成功', 'status' => 1);
+        return $response = Response::json($tmp);
     }
     
     /**

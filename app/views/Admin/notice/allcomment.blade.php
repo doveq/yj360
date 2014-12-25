@@ -27,7 +27,7 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th>#</th>
+            <th style="width:135px;">{{ Form::checkbox('checkAll', 1,false, array('id' => 'checkAll')) }}</th>
             <th style="width:300px;">帮助公告</th>
             <th style="width:500px;">评论/回复内容</th>
             <th style="width:300px;">评论/回复</th>
@@ -39,7 +39,7 @@
         <tbody>
           @foreach ($comments as $k=>$v)
           <tr>
-            <td>{{$v->id}}</td>
+            <td>{{ Form::checkbox('commentid[]', $v->id) }}<label>&nbsp;{{$v->id}}</label></td>
             <td>
                 <?php $notice=$v->notice; ?>
                 <a href="/admin/notice/edit?id={{$v->notice_id}}" target="_blank">
@@ -89,6 +89,10 @@
   <div class="row text-right">
       {{$comments->appends($query)->links()}}
   </div>
+  <div class="col-md-12">
+      {{ Form::button('批量删除', array('class' => 'btn btn-primary btn-xs pull-right', 'id' => 'deleteMany', 'style' => 'margin:10px')) }}
+  </div>
+  
   <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     {{ Form::open(array('role' => 'form', 'class' => 'form-horizontal', 'id' => 'myModalForm', 'method' => 'post')) }}
 
@@ -174,6 +178,44 @@ $(function(){
           return false;
       }
       window.location.href = '/admin/notice/reply?commentid=' +data_id + '&noticeid=' + noticeid + '&tag=allcomment';
+  });
+
+  // 全选或全不选
+  $("#checkAll").click(function() {
+      $('input[name="commentid[]"]').prop("checked", this.checked);
+  });
+
+  // 批量删除
+  $('#deleteMany').bind('click', function() {
+	  var $item = $('input[name="commentid[]"]:checked');
+	  if ($item.length <= 0) {
+        alert('请选择评论后删除');
+        return;
+      }
+	  var ids = new Array();
+	  $item.each(function(){
+		  ids.push($(this).val());
+	  });
+	  if(!confirm('您确定要批量删除吗？')){
+		  return;
+	  };
+	  $.post("/admin/notice/doCommentDelMany", {
+          ids: ids
+      },
+      function(data) {
+        if(data.status == 1) {
+            location.href = '/admin/notice/allcomment';
+        } else {
+        	alert('操作失败');
+        	return;
+        }
+       },
+      "json"
+    )
+    .fail(function(){
+    	alert('操作失败');
+    	return;
+    });
   });
 });
 </script>
