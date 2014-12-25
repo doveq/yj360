@@ -18,6 +18,7 @@
 	  <form class="form-horizontal" enctype="multipart/form-data" role="form" accept-charset="UTF-8" action="/admin/notice/doReply" method="POST">
 	      <input name="commentid" value="{{$commentid}}" type="hidden" />
 	      <input name="noticeid" value="{{$noticeid}}" type="hidden" />
+	      <input name="tag" value="@if($tag){{$tag}}@endif" type="hidden" />
 	      
 	  	  <div class="form-group">
 			  <label class="col-md-2 control-label" for="column_name">评论内容</label>
