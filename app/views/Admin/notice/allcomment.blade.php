@@ -61,7 +61,7 @@
             	评论
             	@endif
             </td>
-            <td>{{$v->user->name}}</td>
+            <td>{{$v->user->name or '#'}}</td>
             <td>{{$v->created_at or ''}}</td>
             <td style="width:100px;">
 			  <div class="btn-group btn-xs">
