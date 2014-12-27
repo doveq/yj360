@@ -21,7 +21,7 @@
       <table border="0" cellpadding="0" cellspacing="0" style="border:1px solid #f1f1f1; width:100%;">
         <tr>
           <td style="width:20%;text-align:center;">
-          老师 {{ Form::text('teacher_name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'padding:5px;width:100px'))}}
+          老师姓名或手机号 {{ Form::text('teacher_name', '', array('class' => 'tyinput', 'id' => 'inputName', 'style' => 'padding:5px;width:100px'))}}
 
             {{ Form::hidden('column_id', $query['column_id'], array('class' => '')) }}
             {{ Form::submit('搜索', array('class' => 'btnsubmit')) }}

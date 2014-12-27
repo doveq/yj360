@@ -252,7 +252,7 @@ class ClassmateController extends BaseController {
         $user = User::find(Session::get('uid'));
         if ((isset($query['teacher_name']) && $query['teacher_name']!= '')) {
             if (strlen(Input::get('teacher_name'))>0) {
-                $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->select('id')->get()->toArray();
+                $teachers = User::where('type',1)->where('name', 'LIKE', '%'.Input::get('teacher_name').'%')->orWhere('tel', Input::get('teacher_name'))->select('id')->get()->toArray();
                 // $q->whereIn('teacherid', array_flatten($teachers));
             }
 
