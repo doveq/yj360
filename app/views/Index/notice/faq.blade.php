@@ -30,9 +30,11 @@
           @foreach($list as $v)
           <div class="notice-item">
             <div class="notice-lt">
-            	<a style="color:#000;font-weight:bold;" href="/notice/show?type={{$query['type']}}&id={{$v->id}}">{{$v->title}}</a>
+            	<li style="margin-left:5px;">
+            	    <a style="color:#000;font-weight:bold;margin-left:-5px;" href="/notice/show?type={{$query['type']}}&id={{$v->id}}">{{$v->title}}</a>
+            	</li>
             </div>
-            <div class="notice-lc">{{str_limit(strip_tags($v->content), $limit = 100, $end = '...')}}</div>
+            <div class="notice-lc" style="display:none;">{{str_limit(strip_tags($v->content), $limit = 100, $end = '...')}}</div>
             <ul class="notice-tools">
               <li class="notice-tools-t" style="margin-top:5px;">
 	              <span class="faq-time">{{$v->created_at}}</span>

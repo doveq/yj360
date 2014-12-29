@@ -14,6 +14,108 @@ class ClassesNoticeController extends BaseController {
 	}
 	
 	/**
+	 * 跳转到班级消息群发页面
+	 */
+	public function batchmsg() {
+	    $query = Input::only('column_id', 'class_id');
+	    $validator = Validator::make($query , array(
+	        'class_id' => array('numeric', 'required')
+	    ));
+	    if(!$validator->passes()) {
+	        return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
+	    }
+	    // 分类页面显示
+	    $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+	    // 获取父类名页面显示
+	    $col = new Column();
+	    $arr = $col->getPath($query['column_id']);
+	    $columnHead = $arr[0];
+	    
+	    // 查询班级信息
+	    $c = new Classes();
+	    $classes = $c->whereId($query['class_id'])->first();
+	    
+	    // 班级内学生
+	    $students = $classes->students()->get();
+	    
+	    return $this->indexView('classes.batchmsg',
+	            compact('query', 'columns', 'columnHead', 'classes', 'students'));
+	}
+	
+	/**
+	 * 执行班级消息群发
+	 */
+	public function dobatchmsg() {
+	    $query = Input::only('column_id', 'class_id', 'content', 'stu');
+	    $validator = Validator::make($query , array(
+	        'class_id' => array('numeric', 'required')
+	    ));
+	    if(!$validator->passes()) {
+	        return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
+	    }
+	    if(!isset($query['content']) || $query['content'] == '') {
+	        return $this->indexPrompt("操作成功", "消息内容不能为空", 
+	            $url = "/classes_notice/batchmsg?column_id={$query['column_id']}&class_id={$query['class_id']}", $auto = true);
+	    }
+	    // 分类页面显示
+	    $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
+	    // 获取父类名页面显示
+	    $col = new Column();
+	    $arr = $col->getPath($query['column_id']);
+	    $columnHead = $arr[0];
+	    
+	    // 查询班级学生列表
+	    $classes = Classes::whereId($query['class_id'])->first();
+	    $uid = Session::get('uid');
+	    if(empty($classes) || $classes->teacherid != $uid) {
+	        return $this->indexPrompt("操作失败", "错误的访问参数", $url = "/", $auto = true);
+	    }
+	    
+	    $stuids = array();
+	    if(!isset($query['stu']) || empty($query['stu'])) {
+    	    $stus = $classes->students()->where('classmate.status', 1)->get();
+    	    if(empty($stus) || $stus->count() == 0) {
+    	        return $this->indexPrompt("操作失败", "班级内无学生，无法群发消息", $url = "/classes/{$query['class_id']}?column_id={$query['column_id']}", $auto = true);
+    	    }
+	        // 给所有学生发消息
+	        foreach($stus as $stu) {
+	            if(empty($stu)) {
+	                continue;
+	            }
+	            $stuids[] = $stu->id;
+	        }
+	    } else {
+	        $stuids = $query['stu']; // 只给部分学生发消息
+	    }
+	    $this->_dobatchmsg($stuids, $query['content']);
+	    
+	    return $this->indexPrompt("操作成功", "消息群发成功", $url = "/classes/{$query['class_id']}?column_id={$query['column_id']}", $auto = true);
+	}
+	
+	public function _dobatchmsg($stuids, $content) {
+	    if(empty($stuids)) {
+	        return;
+	    }
+	    $content = htmlspecialchars(trim($content));
+	    $uid = Session::get('uid');
+	    // 循环给班级中每个学生发送一条消息
+	    $msgs = array();
+	    $time = date("Y-m-d H:i:s");
+	    foreach($stuids as $stuid) {
+	        $msg = array();
+	        $msg['sender_id'] = $uid;
+	        $msg['receiver_id'] = $stuid;
+	        $msg['content'] = $content;
+	        $msg['created_at'] = $time;
+	        $msg['type'] = 1;
+	        $msg['dialog'] = 1;
+	        $msgs[] = $msg;
+	    }
+	    $msg_model = new Message();
+	    $msg_model->insert($msgs); 
+	}
+	
+	/**
 	 * 班级消息列表
 	 */
     public function showList() {

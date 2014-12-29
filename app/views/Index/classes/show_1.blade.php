@@ -19,6 +19,10 @@
       </span>
       <span class="tab-title">{{$classes->name}}</span>
       <span class="tab-btn">
+        @if($students->count() > 0)
+        <a href="/classes_notice/batchmsg?column_id={{$query['column_id']}}&class_id={{$classes->id}}" class="tabtool-btn">班级消息群发</a>
+        @endif
+      
       	<a href="/classes_notice/showList?column_id={{$query['column_id']}}&class_id={{$classes->id}}" class="tabtool-btn">班级公告({{$classes->noticesunread(Session::get('uid'))}})</a>
       
         @if ($classes->teacher->id == Session::get('uid'))
@@ -127,6 +131,3 @@ function quit_class(classmateid)
 
 </script>
 @stop
-
-
-

@@ -208,6 +208,8 @@ Route::group(array('before' => 'indexLogin'), function(){
     Route::get('/classes_notice/show', 'ClassesNoticeController@show'); // 班级消息查看页面
     Route::post('/classes_notice/doComment', 'ClassesNoticeController@doComment'); // 对班级消息发表评论
     Route::get('/classes_notice/doCommentDel', 'ClassesNoticeController@doCommentDel'); // 删除班级消息的评论
+    Route::get('/classes_notice/batchmsg', 'ClassesNoticeController@batchmsg'); // 跳转到班级消息群发页面
+    Route::post('/classes_notice/dobatchmsg', 'ClassesNoticeController@dobatchmsg'); // 执行班级消息群发
     
     //训练集
     Route::resource('training', 'TrainingController');

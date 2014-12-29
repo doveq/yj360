@@ -41,7 +41,9 @@
       </div>
 
       <div class="notice-comment">
-      	<div class="notice-comment-total">评论：（共{{$info->commentcount->count()}}条）</div>
+      	<div class="notice-comment-total">评论：（共{{$info->commentcount->count()}}条）
+      	    <span style="color:#F97E7E;font-weight:normal;">注：发布不友善言论或反动言论一律永久封号！严重者将追究法律责任！</span>
+      	</div>
       	
       	{{-- 评论form --}}
         <form method="post" action="/classes_notice/doComment" style="margin-bottom:40px;">
