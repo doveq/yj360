@@ -113,7 +113,7 @@
         <tr>
             <td class="lable">&nbsp;</td>
             <td>
-                <button type="submit" style="margin-left:5px;background-color:#1db5a9;padding:5px 10px;border:none;color:#fff;">提交</button>
+                <button type="submit" style="margin-left:5px;background-color:#1db5a9;padding:5px 10px;border:none;color:#fff;cursor:pointer;">提交</button>
             </td>
         </tr>
       </table>

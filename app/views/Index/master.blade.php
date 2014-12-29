@@ -39,7 +39,7 @@
                     <a href="/profile/up" style="color:#e6d65c;">升级教师</a>
                     <span class="sp" style="color:#e6d65c;">|</span>
                     @endif
-                    <a href="/notice/list?type=1" style="color:#e6d65c;">帮助手册</a>
+                    <a href="/notice/list?type=1" style="color:#e6d65c;">帮助中心</a>
                     <span class="sp" style="color:#e6d65c;">|</span>
                     <?php
                     $unreadreplycount = FeedbackUser::unreadreplycount(Session::get('uid'));

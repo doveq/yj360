@@ -64,7 +64,7 @@
                 <div class="fileup">
                   <input type='text' name='textfield' id='textfield' class='tyinput' style="width:182px;" />
                   <input type='button' class='uppho' value='' />
-                  <input type="file" name="avatar" class="file" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" />
+                  <input type="file" name="avatar" class="file" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" style="cursor:pointer;" />
                 </div>
             </td>
         </tr>
@@ -79,7 +79,7 @@
         <tr>
             <td class="lable">&nbsp;</td>
             <td>
-                <button type="submit" class="pfbnt"></button>
+                <button type="submit" class="pfbnt" style="cursor:pointer;"></button>
             </td>
         </tr>
       </table>

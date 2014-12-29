@@ -39,7 +39,7 @@
 
         <tr>
             <td style="padding:0 0 0 10px;">
-              <input type="submit" value="提交" style="padding:5px 20px;background-color:#00b1bb;border:none;color:#fff;" />
+              <input type="submit" value="提交" style="padding:5px 20px;background-color:#00b1bb;border:none;color:#fff;cursor: pointer; " />
             </td>
         </tr>
 
