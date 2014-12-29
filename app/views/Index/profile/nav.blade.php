@@ -2,7 +2,7 @@
       <div class="sort">
           <div class="sort-bb"></div>
           <div class="avatar-box">
-              <img src="{{Attachments::getAvatar(Session::get('uid'))}}" width="140" height="140" />
+              <img src="{{Attachments::getAvatar(Session::get('uid'))}}?t={{time()}}" width="140" height="140" />
           </div>
           
           @if(Auth::user()->status == 2)
