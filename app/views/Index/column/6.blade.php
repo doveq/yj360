@@ -24,7 +24,7 @@
                         <!--
                         <a href="/topic?exam={{$list->exam_id}}&column={{$column->id}}" target="_blank">{{$list->exam->title}}</a>
                         -->
-                        <span style="float:left;margin-left:-10px;">
+                        <span style="float:left;">
                             <li style="color:#00B1BC;"><span style="color:#000;">{{$list->exam->title}}</span></li>
                         </span>
                         

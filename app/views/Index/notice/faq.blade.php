@@ -30,7 +30,7 @@
           @foreach($list as $v)
           <div class="notice-item">
             <div class="notice-lt">
-            	<li style="margin-left:5px;">
+            	<li style="margin-left:15px;">
             	    <a style="color:#000;font-weight:bold;margin-left:-5px;" href="/notice/show?type={{$query['type']}}&id={{$v->id}}">{{$v->title}}</a>
             	</li>
             </div>
