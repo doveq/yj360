@@ -302,9 +302,13 @@ class TopicController extends BaseController {
 				{
 					$playList[] = array('url' => $info['q']['hint_url']);
 
+					/* 2014.12.29亲需求模唱只播放一遍
+
 					// 如果是模唱则默认放二遍提示音
 					if($info['q']['type'] == 6)
 						$playList[] = array('url' => $info['q']['hint_url']);
+					
+					*/
 				}
 
 
