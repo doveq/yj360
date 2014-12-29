@@ -12,7 +12,6 @@
         <span class="tab-title">我的班级</span>
         <span class="tab-btn">
           <a href="/classes/create?column_id={{$query['column_id']}}" class="tabtool-btn">创建班级</a>
-          <a href="/classm/add_class?column_id={{$query['column_id']}}" class="tabtool-btn">加入班级</a>
           <a href="/classes/manage?column_id={{$query['column_id']}}" class="tabtool-btn">管理班级</a>
         </span>
       </div>
