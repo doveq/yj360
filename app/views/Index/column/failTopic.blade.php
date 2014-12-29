@@ -10,7 +10,8 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-        错题记录
+      <span class="tab-bar"></span>
+      <span style="color:#499528;">错题记录</span>
       </div>
       <div class="clear"></div>
 

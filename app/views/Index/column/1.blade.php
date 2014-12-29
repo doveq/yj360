@@ -9,7 +9,8 @@
   @include('Index.column.nav')
   <div class="wrap-right">
       <div class="tabtool">
-{{$column->name}}
+      <span class="tab-bar"></span>
+      <span style="color:#499528;">{{$column->name}}</span>
       </div>
       <div class="clear"></div>
 

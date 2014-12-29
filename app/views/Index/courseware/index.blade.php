@@ -10,9 +10,19 @@
   <div class="wrap-right">
       <div class="tabtool">
         @if ($back_url && isset($query['d1']))
-        <a href="{{$back_url}}" style="color:#499626;background-color:transparent;">&lt; 返回</a>
+        <a href="{{$back_url}}" style="color:#499626;background-color:transparent;display:none;">&lt; 返回</a>
         @endif
-          {{$column_name}}
+          <span class="tab-bar"></span>
+          @if(empty($dir_name))
+          <span style="color:#499528;">{{$column_name}}</span>
+          @else
+          <span class="tab-title-prev">
+    	      <a href="/courseware?id={{$query['id']}}&column_id={{$query['column_id']}}&type={{$query['type']}}">{{$column_name}}</a>
+    	      <span>&nbsp;>&nbsp;</span>
+    	      <span style="color:#499528;">{{$dir_name}}</span>
+          </span>
+          @endif
+          
           {{Form::open(array('url' => '/courseware?column_id='.$query['column_id'].'&id='.$query['id'].'&type=' . $query['type'], 'method' => 'get', 'style' => 'margin-left:20px;float:right;'))}}
            {{Form::text('q', '', array('style' => 'padding:2px;') )}}
            {{Form::hidden('column_id', $query['column_id'])}}
