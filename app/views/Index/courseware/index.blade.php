@@ -45,7 +45,6 @@
           @foreach($lists as $k => $d)
             <div style="float:left;
             margin-bottom: 20px;
-            width:25%;
             margin-left:10px;
             padding: 4px;
             text-align:center;">
