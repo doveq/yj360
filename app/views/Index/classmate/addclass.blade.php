@@ -2,6 +2,20 @@
 @section('title')我的班级@stop
 @extends('Index.column.columnHead')
 
+@section('css')
+<style>
+  .ccinc {
+    text-align:center;position:relative;top:185px;
+  }
+  .ccinc a{
+    border:1px solid #FA9641;color:#FA9641;padding:0px 20px;
+  }
+  .ccinc a:hover{
+    color: red;
+  }
+</style>
+@stop
+
 @section('content')
 <div class="container-column wrap">
   <div class="row">
@@ -34,7 +48,7 @@
         @if (isset($classes))
           @if ($classes->count() > 0)
             @foreach ($classes as $list)
-            <div class="classse-box index" id="classes_{{$list->id}}" style="height:205px;">
+            <div class="classse-box index" id="classes_{{$list->id}}" style="height:205px;margin-bottom:50px;">
               <div class="classes-box-head index" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
               </div>
               <div class="classes-box-name index">
@@ -44,11 +58,13 @@
                 <div>老师：{{$list->teacher->name}} @if($list->teacher->id == Session::get('uid'))(我)@endif</div>
                 <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
               </div>
+              
               @if ($list->teacher->id != Session::get('uid'))
-              <div class="classse-btn">
-                <a class="addclass" href="javascript:;" onClick="add_class('{{$list->id}}');">加入班级</a>
+              <div class="ccinc">
+                  <a href="javascript:;" onClick="add_class('{{$list->id}}');">加入班级</a>
               </div>
               @endif
+
             </div>
             @endforeach
           @endif
