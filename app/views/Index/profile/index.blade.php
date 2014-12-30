@@ -5,6 +5,7 @@
 <style>
     .table-2 .lable {padding:5px;}
     .tyinput{padding:5px;margin:5px;}
+    .table-2 .file{height:60px;top:-20px;}
 </style>
 <div class="container-column wrap">
     <div class="row">
@@ -61,7 +62,7 @@
         <tr>
             <td class="lable">更换头像</td>
             <td>
-                <div class="fileup">
+                <div class="fileup" style="cursor:pointer;">
                   <input type='text' name='textfield' id='textfield' class='tyinput' style="width:182px;" />
                   <input type='button' class='uppho' value='' />
                   <input type="file" name="avatar" class="file" id="fileField" size="28" onchange="document.getElementById('textfield').value=this.value" style="cursor:pointer;" />

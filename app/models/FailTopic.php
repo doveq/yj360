@@ -23,6 +23,13 @@ class FailTopic extends Eloquent {
         return $this->belongsTo('Question', 'question_id');
     }
 
+    public function getSortName($sid)
+    {
+        $ri = DB::table('sort_question_relation')->where('question_id', $sid)->first();
+        $si = DB::table('sort')->where('id', $ri->sort_id)->first();
+        return $si->name;
+    }
+
     public function add($info)
     {
         $this->uid = $info['uid'];

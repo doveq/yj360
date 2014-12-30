@@ -23,6 +23,7 @@
                 <td style="padding:10px 0;font-size:15px;font-weight:600;">序号</td>
                 <td style="padding:10px 0;font-size:15px;font-weight:600;">标题</td>
                 <td style="padding:10px 0;font-size:15px;font-weight:600;">所属分类</td>
+                <td style="padding:10px 0;font-size:15px;font-weight:600;">所属题型</td>
                 <td style="padding:10px 0;font-size:15px;font-weight:600;">操作</td>
               </tr>
 
@@ -40,11 +41,15 @@
                       @if(empty($v->question->txt))
                         该题已下架
                       @else
-                        <a class="fav-title" href="/topic?id={{$v->question->id}}&column_id={{$query['column_id']}}&from=fail" target="_blank">{{$v->question->txt}}</a>
+                        <a class="fav-title" href="/topic?id={{$v->question->id}}&column_id={{$query['column_id']}}&from=fail" target="_blank">{{str_limit($v->question->txt, $limit = 30, $end = '...')}}</a>
                       @endif
                     </td>
 
-                    <td width="80">
+                    <td width="80" style="padding:0 5px;">
+                      {{$v->getSortName($v->question->id)}}
+                    </td>
+
+                    <td width="80" style="padding:0 5px;">
                       @if(!empty($v->question->type))
                       {{$typeEnum[$v->question->type]}}
                       @endif
