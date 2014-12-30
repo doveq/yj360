@@ -14,7 +14,7 @@
     <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
     @yield('headjs')
   </head>
-  <body role="document" @if($_SERVER["REQUEST_URI"] != '/')  @endif >
+  <body role="document" @if($_SERVER["REQUEST_URI"] != '/') oncontextmenu="return false" @endif >
 
   <div class="wrapper">
       <div id="site-head">
