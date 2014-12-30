@@ -5,13 +5,25 @@
 @section('css')
 <style>
   .ccinc {
-    text-align:center;position:relative;top:185px;
+    text-align:center;position:relative;
+    top:10px;
   }
   .ccinc a{
     border:1px solid #FA9641;color:#FA9641;padding:0px 20px;
   }
   .ccinc a:hover{
     color: red;
+  }
+  .classes-box-head {
+    position:relative;top:0;left:25px;
+  }
+  .classes-txt {
+    position:relative;top:0;left:0;
+    margin-top:10px;
+  }
+  .classes-box-name.index {
+    margin-top:10px;
+    top:0;
   }
 </style>
 @stop
@@ -49,12 +61,12 @@
           @if ($classes->count() > 0)
             @foreach ($classes as $list)
             <div class="classse-box index" id="classes_{{$list->id}}" style="height:205px;margin-bottom:50px;">
-              <div class="classes-box-head index" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}'); ">
+              <div class="classes-box-head index" style="background-image:url('{{Attachments::getAvatar($list->teacher->id)}}');">
               </div>
               <div class="classes-box-name index">
                 {{$list->name}}
               </div>
-              <div class="classes-txt index" style="bottom:0;">
+              <div class="classes-txt index" >
                 <div>老师：{{$list->teacher->name}} @if($list->teacher->id == Session::get('uid'))(我)@endif</div>
                 <div>成员：{{$list->students()->where('classmate.status', 1)->count()}}</div>
               </div>
@@ -81,13 +93,8 @@
 <script type="text/javascript" src="/assets/layer/layer.min.js"></script>
 
 <script type="text/javascript">
-$(function(){
-  $(".classse-box").hover(function(){
-    $(this).children(".classse-btn").css('display','block');
-  }, function(){
-    $(this).children(".classse-btn").css('display','none');
-  });
-  add_class = function(id){
+ function add_class(id)
+ {
     layer.confirm('您确定要加入吗？', function(){
         $.ajax({
           url:'/classm/doAddClass?class_id='+id,
@@ -108,9 +115,6 @@ $(function(){
           }
         });
     });
-  };
-
-
-});
+}
 </script>
 @stop

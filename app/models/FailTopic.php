@@ -23,6 +23,13 @@ class FailTopic extends Eloquent {
         return $this->belongsTo('Question', 'question_id');
     }
 
+    public function getSortName($sid)
+    {
+        $ri = DB::table('sort_question_relation')->where('question_id', $sid)->first();
+        $si = DB::table('sort')->where('id', $ri->sort_id)->first();
+        return $si->name;
+    }
+
     public function add($info)
     {
         $this->uid = $info['uid'];
@@ -43,7 +50,7 @@ class FailTopic extends Eloquent {
     {
         if(empty($info['column_id']))
         {
-            $list = $this->with('Question')->where('uid', '=', $info['uid'])->take($info['limit'])->get();
+            $list = $this->with('Question')->where('uid', '=', $info['uid'])->paginate($info['limit']);
             return $list;
         }
         else
@@ -52,7 +59,7 @@ class FailTopic extends Eloquent {
             $c = new Column();
             $carr = $c->allchild($info['column_id']);
 
-            $list = $this->with('Question')->where('uid', '=', $info['uid'])->whereIn('column_id', $carr)->take($info['limit'])->get();
+            $list = $this->with('Question')->where('uid', '=', $info['uid'])->whereIn('column_id', $carr)->paginate($info['limit']);
             return $list;
         }
     }

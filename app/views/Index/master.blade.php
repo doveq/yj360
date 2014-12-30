@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>音基360_音基考级_音基考试_小学音乐测评_中学音乐测评_免费题库</title>
     <meta name="Keywords" content="全国音乐等级考试,音基题库,音基360,音基考级,音基考试免费题库,小学音乐测评,中学音乐测评,音乐题库,音基考试,音乐测评题库,趣味游戏" />
@@ -13,7 +14,7 @@
     <script type="text/javascript" src="/assets/jquery/jquery-1.11.1.min.js"></script>
     @yield('headjs')
   </head>
-  <body role="document" @if($_SERVER["REQUEST_URI"] != '/') oncontextmenu="return false" @endif >
+  <body role="document" @if($_SERVER["REQUEST_URI"] != '/')  @endif >
 
   <div class="wrapper">
       <div id="site-head">
