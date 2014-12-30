@@ -90,7 +90,7 @@ class ColumnController extends BaseController
     {
         // 公告默认不显示
         $isBulletin = 0;
-        $minMate = 15;  // 最少学生数
+        $minMate = 1;  // 最少学生数
         $day = 60;  // 30天内提示
         $bDay = 1;  // 显示的倒计时时间
 

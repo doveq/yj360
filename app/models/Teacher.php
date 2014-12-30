@@ -73,7 +73,7 @@ class Teacher extends Eloquent {
     public function checkTeacher($uid)
     {
         $info['isCheck'] = 1;  // 默认通过
-        $info['minMate'] = 15;  // 最少学生数
+        $info['minMate'] = 1;  // 最少学生数
 
         $cs = new Classes();
         $cm = new Classmate();
@@ -93,7 +93,7 @@ class Teacher extends Eloquent {
 
             // 音基老师只需要5个学生
             if(!empty($teacher) && $teacher->type == 3)
-                $info['minMate'] = 5;
+                $info['minMate'] = 1;
 
             foreach ($cslist as $key => $value) 
             {
