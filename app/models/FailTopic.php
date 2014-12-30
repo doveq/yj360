@@ -38,12 +38,16 @@ class FailTopic extends Eloquent {
         return 1;
     }
 
+    public function delByIds($uid, $idarr) {
+        $this->where('uid', '=', $uid)->whereIn('id', $idarr)->delete();
+        return 1;
+    }
 
     public function getList($info)
     {
         if(empty($info['column_id']))
         {
-            $list = $this->with('Question')->where('uid', '=', $info['uid'])->take($info['limit'])->get();
+            $list = $this->with('Question')->where('uid', '=', $info['uid'])->paginate($info['limit']);
             return $list;
         }
         else
@@ -52,7 +56,7 @@ class FailTopic extends Eloquent {
             $c = new Column();
             $carr = $c->allchild($info['column_id']);
 
-            $list = $this->with('Question')->where('uid', '=', $info['uid'])->whereIn('column_id', $carr)->take($info['limit'])->get();
+            $list = $this->with('Question')->where('uid', '=', $info['uid'])->whereIn('column_id', $carr)->paginate($info['limit']);
             return $list;
         }
     }
