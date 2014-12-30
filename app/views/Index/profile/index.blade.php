@@ -5,6 +5,7 @@
 <style>
     .table-2 .lable {padding:5px;}
     .tyinput{padding:5px;margin:5px;}
+    .table-2 .file{height:60px;top:-20px;}
 </style>
 <div class="container-column wrap">
     <div class="row">
