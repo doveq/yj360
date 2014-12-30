@@ -45,6 +45,10 @@ class FailTopic extends Eloquent {
         return 1;
     }
 
+    public function delByIds($uid, $idarr) {
+        $this->where('uid', '=', $uid)->whereIn('id', $idarr)->delete();
+        return 1;
+    }
 
     public function getList($info)
     {

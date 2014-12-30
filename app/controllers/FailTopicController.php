@@ -18,8 +18,10 @@ class FailTopicController extends BaseController
 		$f = new FailTopic();
 		$list = $f->getList( array('uid' => Session::get('uid'),  'limit' => 15 ) );
 
-		if(empty($query['column_id']))
-			return $this->indexView('profile.failTopic', array('list' => $list) );
+		if(empty($query['column_id'])) {
+		    $typeEnum = Config::get('app.topic_type'); // 读取配置文件
+			return $this->indexView('profile.failTopic', compact('list', 'query', 'typeEnum') );
+		}
 		else
 		{
 			// 分类页面显示
@@ -39,14 +41,22 @@ class FailTopicController extends BaseController
 
 	public function doDel()
 	{
-		$id = Input::get('id');
-		$column_id = Input::get('column_id');
-
-		if(!is_numeric($id))
-			return $this->indexPrompt("", "错误的ID号", $url = "/failTopic");
-
-		$f = new FailTopic();
-		$f->del( array('uid' => Session::get('uid'), 'id' => $id ) );
+	    $ids = Input::get('ids');
+        $column_id = Input::get('column_id');
+	    if(!empty($ids)) {
+	        // 根据id直接删除
+	        $idarr = explode(',', $ids);
+	        $f = new FailTopic();
+	        $f->delByIds(Session::get('uid'), $idarr);
+	    } else {
+	        $id = Input::get('id');
+	        
+	        if(!is_numeric($id))
+	            return $this->indexPrompt("", "错误的ID号", $url = "/failTopic");
+	        
+	        $f = new FailTopic();
+	        $f->del( array('uid' => Session::get('uid'), 'id' => $id ) );
+	    }
 
 		if(empty($column_id))
 		{
