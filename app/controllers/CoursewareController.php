@@ -60,7 +60,8 @@ class CoursewareController extends BaseController
                     $dir_info[$query['d1']]['files'][$key] = $value;
                 }
                 $lists = $dir_info[$query['d1']];
-                $column_name = $column_name . ' > ' . $dir_info[$query['d1']]['name'];
+                //$column_name = $column_name . ' > ' . $dir_info[$query['d1']]['name'];
+                $dir_name = $dir_info[$query['d1']]['name'];
             }
         }
         // 获取父类名页面显示
@@ -68,7 +69,8 @@ class CoursewareController extends BaseController
         $arr = $cn->getPath($query['column_id']);
         $columnHead = $arr[0];
         $columns = Column::find($query['column_id'])->child()->whereStatus(1)->orderBy('ordern', 'ASC')->get();
-        return $this->indexView('courseware.index', compact('columns', 'query', 'lists', 'config_path', 'back_url', 'column_name', 'columnHead', 'color'));
+        return $this->indexView('courseware.index', 
+                compact('columns', 'query', 'lists', 'config_path', 'back_url', 'column_name', 'dir_name', 'columnHead', 'color'));
 	}
 
     public function show()

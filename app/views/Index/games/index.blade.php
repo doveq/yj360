@@ -9,7 +9,10 @@
 
   <div class="wrap-right">
       <div class="tabtool">
-          {{$column_name}}
+          <span class="tab-bar"></span>
+          <span style="color:#499528;">{{$column_name}}</span>
+          </div>
+          
           {{Form::open(array('url' => '/games?column_id='.$query['column_id'].'&id='.$query['id'], 'method' => 'get', 'style' => 'margin-left:20px;float:right;'))}}
            {{Form::text('q', '', array('style' => 'padding:2px;') )}}
            {{Form::hidden('column_id', $query['column_id'])}}
