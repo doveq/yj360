@@ -22,6 +22,7 @@
                 <td style="padding:10px 0;font-size:15px;font-weight:600;">序号</td>
                 <td style="padding:10px 0;font-size:15px;font-weight:600;">标题</td>
                 <td style="padding:10px 0;font-size:15px;font-weight:600;">所属分类</td>
+                <td style="padding:10px 0;font-size:15px;font-weight:600;">所属题型</td>
                 <td style="padding:10px 0;font-size:15px;font-weight:600;">操作</td>
               </tr>
           
@@ -43,7 +44,11 @@
                       @endif
                     </td>
                     
-                    <td width="80">
+                    <td width="80" style="padding:0 5px;">
+                      {{$v->getSortName($v->question->id)}}
+                    </td>
+                    
+                    <td width="80" style="padding:0 5px;">
                       @if(!empty($v->question->type))
                       {{$typeEnum[$v->question->type]}}
                       @endif
