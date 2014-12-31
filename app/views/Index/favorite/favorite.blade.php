@@ -64,7 +64,7 @@
             <td></td>
             <td>序号</td>
             <td style="padding-left:25px;">标题</td>
-            <td>所属分类</td>
+            <td>所属题型</td>
             <td style="padding-left:15px;">操作</td>
           </tr>
           <tr>

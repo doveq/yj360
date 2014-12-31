@@ -65,7 +65,7 @@
             <td style="width:30px;"></td>
             <td style="padding:10px 0;font-size:15px;font-weight:600;">序号</td>
             <td style="padding:10px 0;font-size:15px;font-weight:600;">标题</td>
-            <td style="padding:10px 0;font-size:15px;font-weight:600;">所属分类</td>
+            <td style="padding:10px 0;font-size:15px;font-weight:600;">所属题型</td>
             <td style="padding:10px 0;font-size:15px;font-weight:600;">操作</td>
           </tr>
             @if(!empty($list))

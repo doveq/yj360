@@ -78,24 +78,29 @@
 @stop
 
 @section('js')
+<script type="text/javascript" src="/assets/layer/layer.min.js"></script>
+
 <script type="text/javascript">
 function quit_class(classmateid)
   {
-    $.ajax({
-      url:'/classmate/'+classmateid,
-      data: {status: status},
-      // async:false,
-      type:'delete',
-    })
-    .fail(function(){
-      alert('操作失败');
-    })
-    .success(function(){
-      // alert(update_status);
-      // $this.attr('data-status', update_status);
-      // $this.text(status_txt)
-      // location.reload();
-      window.location.replace("/classes?column_id={{$query['column_id']}}");
+
+    layer.confirm('您确定要退出班级吗？', function(){
+        $.ajax({
+          url:'/classmate/'+classmateid,
+          data: {status: status},
+          // async:false,
+          type:'delete',
+        })
+        .fail(function(){
+          alert('操作失败');
+        })
+        .success(function(){
+          // alert(update_status);
+          // $this.attr('data-status', update_status);
+          // $this.text(status_txt)
+          // location.reload();
+          window.location.replace("/classes?column_id={{$query['column_id']}}");
+        });
     });
   }
 </script>
