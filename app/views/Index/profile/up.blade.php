@@ -58,6 +58,13 @@
         </tr>
 
         <tr>
+            <td class="lable">教师分类</td>
+            <td>
+                {{ Form::select('type', $typeEnum, empty($tinfo->type) ? '' : $tinfo->type, array('class' => 'tyinput')) }}
+            </td>
+        </tr>
+
+        <tr>
             <td class="lable">地区</td>
             <td>
               <select name="province" class="tyinput"></select>

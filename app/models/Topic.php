@@ -9,6 +9,11 @@ class Topic  {
 		$whereArr = array();
 		$valueArr = array();
 
+		if( is_numeric($data['id']) )
+		{
+			$whereArr[] = " `id` = ? ";
+			$valueArr[] = $data['id'];
+		}
 
 		if( $data['txt'] )
 		{

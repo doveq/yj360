@@ -113,8 +113,9 @@ class ProfileController extends BaseController {
 		}
 
 		$statusEnum = array('1' => '审核通过', '-1' => '审核未通过', '0' => '未审核');
+    	$typeEnum = array('1' => '小学', '2' => '中学', '4' => '小学教研', '5' => '中学教研', '6' => '少年宫', '3' => '音基', '7' => '器乐', '8' => '幼儿园');
 
-		return $this->indexView('profile.up', compact('tinfo', 'uinfo', 'statusEnum') );
+		return $this->indexView('profile.up', compact('tinfo', 'uinfo', 'statusEnum', 'typeEnum') );
 	}
 
 	public function doUp()
@@ -128,6 +129,7 @@ class ProfileController extends BaseController {
 			'professional' => 'required|alpha_dash',
 			'address' => 'required|alpha_dash',
 			'school' => 'required|alpha_dash',
+			'type' => 'required|numeric',
 			'qq' => 'numeric',
 	        'avatar' => 'required')
 		);
@@ -166,7 +168,7 @@ class ProfileController extends BaseController {
 		$info['address'] = $inputs['address'];
 		$info['school'] = $inputs['school'];
 		$info['qq'] = $inputs['qq'];
-
+		$info['type'] = $inputs['type'];
 		$info['province'] = $inputs['province'];
 		$info['city'] = $inputs['city'];
 		$info['district'] = $inputs['district'];

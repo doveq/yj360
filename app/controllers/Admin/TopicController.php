@@ -33,10 +33,10 @@ class TopicController extends \BaseController {
 	{
 		$pageSize = 30;  // 每页显示条数
 
-        $query = Input::only('txt', 'source', 'type', 'status', 'page', 'sort1', 'sort2', 'sort3', 'sort4', 'sort5');
+        $query = Input::only('id', 'txt', 'source', 'type', 'status', 'page', 'sort1', 'sort2', 'sort3', 'sort4', 'sort5');
         $query['pageSize'] = $pageSize;
         //$query = array_filter($query); // 删除空值
-
+        
         // 当前页数
         if( !is_numeric($query['page']) || $query['page'] < 1 )
             $query['page'] = 1;

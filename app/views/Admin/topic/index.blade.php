@@ -16,6 +16,10 @@
       <div class="clearfix"></div>
 
       <div class="form-group">
+        {{ Form::label('inputTel', 'ID号', array('class' => 'sr-only')) }}
+        {{ Form::text('id', $query['id'], array('class' => 'form-control', 'id' => 'inputTel', 'placeholder' => 'ID号')) }}
+      </div>
+      <div class="form-group">
         {{ Form::label('inputType', '类型', array('class' => 'sr-only')) }}
         {{ Form::select('type', $typeEnum, $query['type'], array('class' => 'form-control', 'id' => 'inputType')) }}
       </div>

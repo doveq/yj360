@@ -12,7 +12,7 @@ use Attachments;
 class TeacherController extends \BaseController {
 
     public $pageSize = 30;
-    public $typeEnum = array('1' => '小学', '2' => '中学', '3' => '音基', '4' => '小学教研', '5' => '中学教研', '6' => '少年宫');
+    public $typeEnum = array('1' => '小学', '2' => '中学', '4' => '小学教研', '5' => '中学教研', '6' => '少年宫', '3' => '音基', '7' => '器乐', '8' => '幼儿园');
     public $statusEnum = array('1' => '有效', '-1' => '无效', '0' => '未审核');
 
     public function index()
